@@ -1,0 +1,6 @@
+language: node_js
+deploy:
+  provider: heroku
+  api_key:
+    secure: da05675c-e520-446d-8a18-97d28928a5c8
+    app: luupeli
