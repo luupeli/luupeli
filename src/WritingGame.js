@@ -39,7 +39,7 @@ class WritingGame extends React.Component {
   handleSubmit(event) {
     this.checkCorrectness();
     this.changeCounter();
-    event.target.reset()
+    //event.target.reset() does not working
     event.preventDefault();
   }
 
@@ -48,6 +48,7 @@ class WritingGame extends React.Component {
     if (this.state.images[this.state.counter].name.toLowerCase() == this.state.value.toLowerCase()) {
       //copypaste..
       this.setState({ correctVisible: true })
+      //timeout jumping? seek better answer
       setTimeout(() => {
         this.setState({ correctVisible: false });
       }, 5000);
@@ -59,7 +60,7 @@ class WritingGame extends React.Component {
     }
   }
   
-  //looppaa
+  //method causes the game to loop 4ever
   changeCounter() {
     if (this.state.counter == this.state.images.length - 1) {
       this.setState({ counter : 0})
@@ -68,6 +69,7 @@ class WritingGame extends React.Component {
     }
   }
 
+  //Method returns the index of previous image. Rework when looping is removed!
   previousIndex() {
     if (this.state.counter == 0) {
       return this.state.images.length - 1
@@ -75,19 +77,18 @@ class WritingGame extends React.Component {
     return this.state.counter - 1
   }
 
-  render() {  
-
+  render() {
     return (
       <div className="App">
         <div class="container">
           <div>
-          {this.state.correctVisible && <div class="alert alert-success" role="alert">
-                                          <p>Oikein!</p>
+            {this.state.correctVisible && <div class="alert alert-success" role="alert">
+                                            <p>Oikein!</p>
+                                          </div>}
+            {this.state.wrongVisible && <div class="alert alert-danger" role="alert"
+                                          ><p>Väärin! Oikea vastaus oli 
+                                          { " " }{this.state.images[this.previousIndex()].name.toLowerCase()}</p>
                                         </div>}
-          {this.state.wrongVisible && <div class="alert alert-danger" role="alert"
-                                        ><p>Väärin! Oikea vastaus oli 
-                                        { " " }{this.state.images[this.previousIndex()].name.toLowerCase()}</p>
-                                      </div>}
           </div>
           <div class="row">
             <div class="col-md-12">
