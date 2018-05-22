@@ -80,7 +80,7 @@ class WritingGame extends React.Component {
     return (
       <div className="App">
         <div class="container">
-          <div>
+          <div id="wr-message">
           {this.state.correctVisible && <div class="alert alert-success" role="alert">
                                           <p>Oikein!</p>
                                         </div>}

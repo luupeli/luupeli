@@ -6,6 +6,6 @@
     width: auto;
 }
 
-#error-margin {
-    margin-bottom: 200px
+#wr-message {
+    height: 60px;
 }
