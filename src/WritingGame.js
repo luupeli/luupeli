@@ -7,6 +7,8 @@ class WritingGame extends React.Component {
     this.state = {
       value: '',
       counter: 0,
+      correctVisible: false,
+      wrongVisible: false,
       images:  [
         {
           id: 1,
@@ -37,18 +39,27 @@ class WritingGame extends React.Component {
   handleSubmit(event) {
     this.checkCorrectness();
     this.changeCounter();
-
+    event.target.reset()
     event.preventDefault();
   }
 
+  //Checks if the answer is correct, and shows&hides the proper message after that.
   checkCorrectness() {
     if (this.state.images[this.state.counter].name.toLowerCase() == this.state.value.toLowerCase()) {
-      alert('Oikein!');
+      //copypaste..
+      this.setState({ correctVisible: true })
+      setTimeout(() => {
+        this.setState({ correctVisible: false });
+      }, 5000);
     } else {
-      alert('Väärin!')
+      this.setState({ wrongVisible: true })
+      setTimeout(() => {
+        this.setState({ wrongVisible: false });
+      }, 5000);
     }
   }
   
+  //looppaa
   changeCounter() {
     if (this.state.counter == this.state.images.length - 1) {
       this.setState({ counter : 0})
@@ -56,13 +67,31 @@ class WritingGame extends React.Component {
       this.setState({ counter: this.state.counter + 1})
     }
   }
-  
-  render() {
+
+  previousIndex() {
+    if (this.state.counter == 0) {
+      return this.state.images.length - 1
+    }
+    return this.state.counter - 1
+  }
+
+  render() {  
+
     return (
       <div className="App">
         <div class="container">
+          <div>
+          {this.state.correctVisible && <div class="alert alert-success" role="alert">
+                                          <p>Oikein!</p>
+                                        </div>}
+          {this.state.wrongVisible && <div class="alert alert-danger" role="alert"
+                                        ><p>Väärin! Oikea vastaus oli 
+                                        { " " }{this.state.images[this.previousIndex()].name.toLowerCase()}</p>
+                                      </div>}
+          </div>
           <div class="row">
-            <div class="col-md-12"><img id="question-image" src={this.state.images[this.state.counter].src} /></div>
+            <div class="col-md-12">
+            <img id="question-image" src={this.state.images[this.state.counter].src} /></div>
           </div>
           <div class="text">
             <p>Syötä luun nimi</p>
