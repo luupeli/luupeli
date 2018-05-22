@@ -1,17 +1,19 @@
+const sequelize = require('sequelize')
+
 const Bone = sequelize.define('bone', {
-  boneid: {
+  boneId: {
     type: Sequelize.INTEGER
   },
   name: {
     type: Sequelize.STRING
   },
-  name_lat: {
+  nameLat: {
     type: Sequelize.STRING
   },
   difficulty: {
     type: Sequelize.STRING
   },
-  bonesize: {
+  boneSize: {
     type: Sequelize.INTEGER
   },
   handedness: {
@@ -20,31 +22,31 @@ const Bone = sequelize.define('bone', {
   description: {
     type: Sequelize.STRING
   },
-  creationtime: {
+  creationTime: {
     type: Sequelize.DATE
   },
-  lastmodified: {
+  lastModified: {
     type: Sequelize.DATE
   },
-  bodypart: {
+  bodyPart: {
     type: Sequelize.STRING
   },
   attempts: {
     type: Sequelize.INTEGER
   },
-  correctattempts: {
+  correctAttempts: {
     type: Sequelize.INTEGER
   },
   shape: {
     type: Sequelize.STRING
   },
-  bonestructureid: {
+  boneStructureid: {
     type: Sequelize.INTEGER
   },
-  speciesanatomyid: {
+  speciesAnatomyId: {
     type: Sequelize.INTEGER
   },
-  boneimageid: {
+  boneImageId: {
     type: Sequelize.INTEGER
   }
 })

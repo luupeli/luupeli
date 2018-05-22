@@ -1,5 +1,5 @@
 const User = sequelize.define('user', {
-  userid :{
+  userId :{
     type: Sequelize.INTEGER
   },
   username :{
@@ -14,19 +14,19 @@ const User = sequelize.define('user', {
   admin :{
     type: Sequelize.BOOLEAN
   },
-  creationtime :{
+  creationTime :{
     type: Sequelize.DATE
   },
-  lastmodified :{
+  lastModified :{
     type: Sequelize.DATE
   },
-  lastlogin :{
+  lastLogin :{
     type: Sequelize.DATE
   },
-  logincount :{
+  loginCount :{
     type: Sequelize.INTEGER
   },
-  gamecount :{
+  gameCount :{
     type: Sequelize.INTEGER
   }
 })
