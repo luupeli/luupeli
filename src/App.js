@@ -5,7 +5,6 @@ class App extends Component {
   render() {
     return (
       <div>
-				<p>On tämä työmaa</p>
         <Main />
       </div>
     );
