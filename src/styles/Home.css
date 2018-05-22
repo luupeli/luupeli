@@ -1,0 +1,31 @@
+.btn-group button {
+    background-color: rgb(5, 163, 255);
+    color: #fff;
+    padding: 20px 24px;
+    cursor: pointer;
+    width: 100%;
+    display: block;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    border: none;
+    outline: none;
+    box-shadow: 0 5px #999;
+    font-size: 24px;
+}
+
+.btn-group button:hover {
+    background-color: #292cff;
+}
+
+.btn-group button:active {
+    background-color: #292cff;
+    box-shadow: 0 5px #666;
+    transform: translateY(3px);
+  }
+
+.h1 {
+    color: rgb(38, 0, 255);
+    font-family: "Verdana";
+    font-size: 100px;
+    margin-bottom: 40px;
+}

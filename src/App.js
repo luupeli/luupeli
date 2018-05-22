@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import Main from './Main'
 
 class App extends Component {
   render() {
     return (
+<<<<<<< HEAD
       <div className="App">
         <div class="container">
 					<div class="row">
@@ -18,6 +20,11 @@ class App extends Component {
 					</div>
         </div>
       </div>  
+=======
+      <div>
+        <Main />
+      </div>
+>>>>>>> 5e411e418485b2cf995ee77088914a575104cd97
     );
   }
 }
