@@ -1,12 +1,12 @@
 import React from 'react'
-import './styles/Home.css';
+import '../styles/App.css';
 import { Link } from 'react-router-dom'
 
 const Home = () => (
-  <div className="Home" align="center">
+  <div className="App">
     <h1 className="h1">Luupeli</h1>
     <div className="btn-group">
-      <Link to='/writinggame'><button>Pelaa</button></Link>
+      <Link to='/game'><button>Pelaa</button></Link>
       <button>Kirjaudu sisään</button>
       <button>Luo käyttäjätili</button>
     </div>
