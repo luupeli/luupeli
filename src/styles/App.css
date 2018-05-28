@@ -29,9 +29,10 @@
   }
 
   .gobackbutton {
-    left: 20px;
-    bottom: 20px;
-    position: absolute;
+    float: left;
+    margin-left: 5%;
+    margin-bottom: 5%;
+    position: relative;
     background-color: rgb(5, 163, 255);
     color: white;
   }
@@ -41,4 +42,15 @@
     color: rgb(38, 0, 255);
     font-size: 80px;
     margin-bottom: 40px;
+}
+
+.h2 {
+    color: rgb(38, 0, 255);
+    font-size: 50px;
+    margin-bottom: 30px;
+}
+
+.settingspage {
+    font-size: 20px;
+    margin-top: 60px;
 }
