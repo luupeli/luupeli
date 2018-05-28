@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import WGMessage from './WGMessage'
 
 class WritingGame extends React.Component {
 
@@ -28,19 +29,20 @@ class WritingGame extends React.Component {
       ]
     };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value});
+    this.setState({value: event.target.value})
   }
 
   handleSubmit(event) {
-    this.checkCorrectness();
-    this.changeCounter();
+    this.wgmessage.mountTimer()
+    this.checkCorrectness()
+    this.changeCounter()
     //event.target.reset() does not working
-    event.preventDefault();
+    event.preventDefault()
   }
 
   //Checks if the answer is correct, and shows&hides the proper message after that.
@@ -48,15 +50,10 @@ class WritingGame extends React.Component {
     if (this.state.images[this.state.counter].name.toLowerCase() == this.state.value.toLowerCase()) {
       //copypaste..
       this.setState({ correctVisible: true })
-      //timeout jumping? seek better answer
-      setTimeout(() => {
-        this.setState({ correctVisible: false });
-      }, 5000);
+      this.wgmessage.setMessage('Oikein!')
     } else {
       this.setState({ wrongVisible: true })
-      setTimeout(() => {
-        this.setState({ wrongVisible: false });
-      }, 5000);
+      this.wgmessage.setMessage('Väärin! Oikea vastaus oli ' + this.state.images[this.state.counter].name.toLowerCase())
     }
   }
   
@@ -82,13 +79,8 @@ class WritingGame extends React.Component {
       <div className="App">
         <div class="container">
           <div>
-            {this.state.correctVisible && <div class="alert alert-success" role="alert">
-                                            <p>Oikein!</p>
-                                          </div>}
-            {this.state.wrongVisible && <div class="alert alert-danger" role="alert"
-                                          ><p>Väärin! Oikea vastaus oli 
-                                          { " " }{this.state.images[this.previousIndex()].name.toLowerCase()}</p>
-                                        </div>}
+            <WGMessage ref={instance => this.wgmessage = instance}/>
+            
           </div>
           <div class="row">
             <div class="col-md-12">
@@ -112,4 +104,4 @@ class WritingGame extends React.Component {
   }
 }
 
-export default WritingGame;
+export default WritingGame
