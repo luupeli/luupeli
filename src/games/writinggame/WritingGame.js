@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import WGMessage from './WGMessage'
 
 class WritingGame extends React.Component {
@@ -44,7 +44,7 @@ class WritingGame extends React.Component {
 
   //Checks if the answer is correct, and shows&hides the proper message after that.
   checkCorrectness() {
-    if (this.state.images[this.state.index].name.toLowerCase() == this.state.value.toLowerCase()) {
+    if (this.state.images[this.state.index].name.toLowerCase() === this.state.value.toLowerCase()) {
       //copypaste..
       this.setState({ correctVisible: true })
       this.wgmessage.setMessage('Oikein!')
@@ -56,7 +56,7 @@ class WritingGame extends React.Component {
   
   //method causes the game to loop 4ever
   changeCounter() {
-    if (this.state.index == this.state.images.length - 1) {
+    if (this.state.index === this.state.images.length - 1) {
       this.setState({ index : 0})
     } else {
       this.setState({ index: this.state.index + 1})
@@ -65,7 +65,7 @@ class WritingGame extends React.Component {
 
   //Method returns the index of previous image. Rework when looping is removed!
   previousIndex() {
-    if (this.state.index == 0) {
+    if (this.state.index === 0) {
       return this.state.images.length - 1
     }
     return this.state.index - 1
@@ -80,8 +80,8 @@ class WritingGame extends React.Component {
           </div>
           <div class="row">
             <div class="col-md-12">
-            <img id="question-image" src={this.state.images[this.state.index].src} /></div>
-          </div>
+              <img id="question-image" alt='Pelottava luuranko' src={this.state.images[this.state.index].src} /></div>
+            </div>
           <div class="text">
             <p>Syötä luun nimi</p>
           </div>
