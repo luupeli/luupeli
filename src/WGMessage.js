@@ -12,7 +12,7 @@ class WGMessage extends React.Component {
 	}
 	
 	componentWillUnmount() {
-    this.clearInterval(this.state.timer);
+    clearInterval(this.state.timer);
 	}
 	
 	mountTimer() {
@@ -34,9 +34,6 @@ class WGMessage extends React.Component {
 		console.log(this.state.counter)
 	}
 	
-	onClick() {
-		alert('Moi maailma')
-	}
 
 	setMessage(message) {
 		this.setState({message: message})
