@@ -11,8 +11,8 @@ const SelectGameMode = () => (
 			<button>...</button>
 		</div>
 		</div>
-		<div className="btn-group">
-			<Link to='/'><button>Takaisin</button></Link>
+		<div className="App">
+		<Link to='/'><button className="gobackbutton">Takaisin</button></Link>
 		</div>
 	</div>
 )

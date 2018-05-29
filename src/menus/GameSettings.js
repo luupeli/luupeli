@@ -41,8 +41,8 @@ class GameSettings extends React.Component {
 						<Link to='/writinggame'><button>Peliin >></button></Link>
 					</div>
 				</div>
-				<div className="btn-group">
-					<Link to='/game'><button>Takaisin</button></Link>
+				<div className="App">
+					<Link to='/game'><button className="gobackbutton">Takaisin</button></Link>
 				</div>
 			</div>
 		);
