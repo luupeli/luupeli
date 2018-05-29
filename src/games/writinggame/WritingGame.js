@@ -33,7 +33,7 @@ class WritingGame extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value})
+    this.setState({ value: event.target.value })
     console.log(this.state.value)
   }
 
@@ -62,14 +62,14 @@ class WritingGame extends React.Component {
     if (this.state.index >= this.state.images.length) {
 			this.wgmessage.componentWillUnmount()
     } else {
-      this.setState({ index: this.state.index + 1})
+      this.setState({ index: this.state.index + 1 })
     }
   }
 
   //clears text field, sets text field value to empty string
   clearTextField() {
     document.getElementById('gameForm').reset()
-    this.setState( { value: ''} )
+    this.setState({ value: '' })
   }
 
   //Method returns the index of previous image.
@@ -95,7 +95,7 @@ class WritingGame extends React.Component {
             <div class="col-md-12">
               <img id="question-image" alt='Pelottava luuranko' src={this.state.images[this.state.index].src} /></div>
             </div>
-          <div class="text">
+          <div className="title">
             <p>Syötä luun nimi</p>
           </div>
           <div class="row">
