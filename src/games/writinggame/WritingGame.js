@@ -1,3 +1,4 @@
+import { Redirect } from 'react-router-dom'
 import React from 'react'
 import WGMessage from './WGMessage'
 
@@ -54,24 +55,29 @@ class WritingGame extends React.Component {
     }
   }
   
-  //method causes the game to loop 4ever
+  //If all images have been cycled through, unmount wgmessage in preparation for endscreen redirect. Else increment counter by 1
   changeCounter() {
-    if (this.state.index === this.state.images.length - 1) {
-      this.setState({ index : 0})
+    if (this.state.index >= this.state.images.length) {
+			this.wgmessage.componentWillUnmount()
     } else {
       this.setState({ index: this.state.index + 1})
     }
   }
 
-  //Method returns the index of previous image. Rework when looping is removed!
+  //Method returns the index of previous image.
   previousIndex() {
-    if (this.state.index === 0) {
-      return this.state.images.length - 1
-    }
-    return this.state.index - 1
+    return this.state.counter - 1
   }
 
+	//If all iages have been cycled through, redirect to endscreen, otherwise render quiz page
   render() {
+		
+		if (this.state.index >= this.state.images.length) {
+			return (
+				<Redirect to="/endscreen" />
+			)
+		}
+		
     return (
       <div className="App">
         <div class="container">

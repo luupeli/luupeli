@@ -12,7 +12,7 @@ class WGMessage extends React.Component {
 	}
 	
 	componentWillUnmount() {
-    clearInterval(this.state.timer);
+		clearInterval(this.timer);
 	}
 	
 	mountTimer() {
@@ -57,3 +57,4 @@ class WGMessage extends React.Component {
 }
 
 export default WGMessage;
+
