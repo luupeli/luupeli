@@ -30,9 +30,9 @@
 
   .gobackbutton {
     float: left;
-    margin-left: 5%;
-    margin-bottom: 5%;
-    position: relative;
+    position: fixed;
+    top: 10% !important;
+    left: 0.8% !important;
     background-color: rgb(5, 163, 255);
     color: white;
   }
@@ -53,4 +53,9 @@
 .settingspage {
     font-size: 20px;
     margin-top: 60px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
 }
