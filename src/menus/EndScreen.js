@@ -8,7 +8,7 @@ const EndScreen = () => (
 			<p>Oikeita vastauksia: 3/3</p><br/>
 		</div>
 		<div>
-			<Link to='/'><button className='gobackbutton'>Takaisin</button></Link>
+			<Link to='/'><button className='gobackbutton'>Etusivulle</button></Link>
 		</div>
 	</div>
 )

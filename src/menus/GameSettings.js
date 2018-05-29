@@ -6,6 +6,40 @@ class GameSettings extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.state = {
+			bodyParts: [
+				{
+					checked: false
+				},
+				{
+					checked: false
+				},
+				{
+					checked: false
+				},
+				{
+					checked: false
+				}
+			],
+		};
+
+		this.toggleCheck = this.toggleCheck.bind(this)
+	}
+
+	//if the id of the calling event is 1, change the boolean value
+	//of index 1 of array bodyParts. The method creates a copy
+	//of the existing array, modifies it, and replaces the old array
+	//in this.state with it. Hopefully.
+	toggleCheck(event) {
+
+		const bodyParts = this.state.bodyParts
+
+		if (bodyParts[event.target.id].checked)
+			bodyParts[event.target.id].checked = false
+		else {
+			bodyParts[event.target.id].checked = true
+		}
+		this.setState({ bodyParts } )
 	}
 
 	render() {
@@ -14,17 +48,17 @@ class GameSettings extends React.Component {
 				<div className="App settingspage">
 					<h1 className="h2">Valitse eläin:</h1>
 					<form>
-						<label className="radio-inline"><input type="radio" name="name" id="1" defaultChecked></input>Koira</label>
-						<label className="radio-inline"><input type="radio" name="name" id="2"></input>Kissa</label>
-						<label className="radio-inline"><input type="radio" name="name" id="3"></input>Hevonen</label>
-						<label className="radio-inline"><input type="radio" name="name" id="4"></input>Gorilla</label>
+						<label className="radio-inline"><input type="radio" name="name" defaultChecked></input>Koira</label>
+						<label className="radio-inline"><input type="radio" name="name"></input>Kissa</label>
+						<label className="radio-inline"><input type="radio" name="name"></input>Hevonen</label>
+						<label className="radio-inline"><input type="radio" name="name"></input>Gorilla</label>
 					</form>
 					<h1 className="h2">Valitse ruumiinosa:</h1>
 					<form>
-						<label className="radio-inline"><input type="radio" id="head" defaultChecked></input>Pää</label>
-						<label className="radio-inline"><input type="radio" id="body"></input>Keho</label>
-						<label className="radio-inline"><input type="radio" id="front"></input>Eturaaja</label>
-						<label className="radio-inline"><input type="radio" id="back"></input>Takaraaja</label>
+						<label className="checkbox-inline"><input type="checkbox" id="0" onClick={this.toggleCheck}></input>Pää</label>
+						<label className="checkbox-inline"><input type="checkbox" id="1" onClick={this.toggleCheck}></input>Keho</label>
+						<label className="checkbox-inline"><input type="checkbox" id="2" onClick={this.toggleCheck}></input>Eturaaja</label>
+						<label className="checkbox-inline"><input type="checkbox" id="3" onClick={this.toggleCheck}></input>Takaraaja</label>
 					</form>
 					<h1 className="h2">Pelin pituus:</h1>
 					<form>
