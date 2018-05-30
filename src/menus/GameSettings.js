@@ -1,5 +1,6 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
+import WGMessage from '../games/writinggame/WGMessage'
 
 class GameSettings extends React.Component {
 
@@ -21,9 +22,11 @@ class GameSettings extends React.Component {
 					checked: false
 				}
 			],
+			redirect: false
 		};
 
 		this.toggleCheck = this.toggleCheck.bind(this)
+		this.atLeastOneBodyPartIsChecked = this.atLeastOneBodyPartIsChecked.bind(this)
 	}
 
 	//if the id of the calling event is 1, change the boolean value
@@ -39,19 +42,41 @@ class GameSettings extends React.Component {
 		else {
 			bodyParts[event.target.id].checked = true
 		}
-		this.setState({ bodyParts } )
+		this.setState({ bodyParts })
+	}
+
+	//at least one body part needs to be selected, so here
+	//we check if none is.
+	atLeastOneBodyPartIsChecked() {
+
+		if (!this.state.bodyParts[0].checked && !this.state.bodyParts[1].checked
+			&& !this.state.bodyParts[2].checked && !this.state.bodyParts[3].checked) {
+			this.wgmessage.mountTimer()
+			this.wgmessage.setMessage('Valitse ainakin yksi ruumiinosa.')
+		} else {
+			this.setState({ redirect: true })
+		}
 	}
 
 	render() {
+
+		if (this.state.redirect) {
+			return (
+				<Redirect to='/writinggame' />
+			)
+		}
 		return (
 			<div>
 				<div className="App settingspage">
+					<div>
+						<WGMessage ref={instance => this.wgmessage = instance} />
+					</div>
 					<h1 className="h2">Valitse eläin:</h1>
 					<form>
 						<label className="radio-inline"><input type="radio" name="name" defaultChecked></input>Koira</label>
 						<label className="radio-inline"><input type="radio" name="name"></input>Kissa</label>
 						<label className="radio-inline"><input type="radio" name="name"></input>Hevonen</label>
-						<label className="radio-inline"><input type="radio" name="name"></input>Gorilla</label>
+						<label className="radio-inline"><input type="radio" name="name"></input>Nauta</label>
 					</form>
 					<h1 className="h2">Valitse ruumiinosa:</h1>
 					<form>
@@ -73,7 +98,7 @@ class GameSettings extends React.Component {
 						<label className="radio-inline"><input type="radio" name="1"></input>Vaikea</label>
 					</form>
 					<div className="btn-group settingspage">
-						<Link to='/writinggame'><button>Peliin >></button></Link>
+						<button onClick={this.atLeastOneBodyPartIsChecked}>Peliin >></button>
 					</div>
 				</div>
 				<div className="App">
