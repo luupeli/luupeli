@@ -25,6 +25,16 @@ class WritingGame extends React.Component {
           id: 3,
           name: "Kirsikka", 
           src: "kirsikka.jpg"
+        },
+        {
+          id: 4,
+          name: "Persikka", 
+          src: "persikka.jpg"
+        },
+        {
+          id: 5,
+          name: "Omena", 
+          src: "omena.jpg"
         }
       ]
     };
