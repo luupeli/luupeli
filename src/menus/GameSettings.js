@@ -35,6 +35,8 @@ class GameSettings extends React.Component {
 	//in this.state with it. Hopefully.
 	toggleCheck(event) {
 
+		console.log(event)
+
 		const bodyParts = this.state.bodyParts
 
 		if (bodyParts[event.target.id].checked)
