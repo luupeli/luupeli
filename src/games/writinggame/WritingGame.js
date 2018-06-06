@@ -7,36 +7,11 @@ class WritingGame extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      testiviesti: props.location.state.testiviesti,
       value: '',
       index: 0,
       correct: 0,
-      images:  [
-        {
-          id: 1,
-          name: "Mansikka", 
-          src: "mansikka.jpg"
-        },
-        {
-          id: 2,
-          name: "Mustikka", 
-          src: "mustikka.jpg"
-        },
-        {
-          id: 3,
-          name: "Kirsikka", 
-          src: "kirsikka.jpg"
-        },
-        {
-          id: 4,
-          name: "Persikka", 
-          src: "persikka.jpg"
-        },
-        {
-          id: 5,
-          name: "Omena", 
-          src: "omena.jpg"
-        }
-      ]
+      images: props.location.state.images
     };
 
     this.handleChange = this.handleChange.bind(this)
@@ -102,6 +77,7 @@ class WritingGame extends React.Component {
 		
     return (
       <div className="App">
+      <p>{this.state.testiviesti}</p>
         <div class="container">
           <div>
             <WGMessage ref={instance => this.wgmessage = instance}/>

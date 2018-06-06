@@ -22,11 +22,40 @@ class GameSettings extends React.Component {
 					checked: false
 				}
 			],
-			redirect: false
+			redirect: false,
+			testiviesti: 'Lällälläääääh',
+			images:  [
+				{
+				  id: 1,
+				  name: "Mansikka", 
+				  src: "mansikka.jpg"
+				},
+				{
+				  id: 2,
+				  name: "Mustikka", 
+				  src: "mustikka.jpg"
+				},
+				{
+				  id: 3,
+				  name: "Kirsikka", 
+				  src: "kirsikka.jpg"
+				},
+				{
+				  id: 4,
+				  name: "Persikka", 
+				  src: "persikka.jpg"
+				},
+				{
+				  id: 5,
+				  name: "Omena", 
+				  src: "omena.jpg"
+				}
+			  ]
 		};
 
 		this.toggleCheck = this.toggleCheck.bind(this)
 		this.atLeastOneBodyPartIsChecked = this.atLeastOneBodyPartIsChecked.bind(this)
+		this.initializeGame = this.initializeGame.bind(this)
 	}
 
 	//if the id of the calling event is 1, change the boolean value
@@ -38,7 +67,7 @@ class GameSettings extends React.Component {
 		console.log(event)
 
 		const bodyParts = this.state.bodyParts
-
+		console.log(event.target.id)
 		if (bodyParts[event.target.id].checked)
 			bodyParts[event.target.id].checked = false
 		else {
@@ -50,21 +79,32 @@ class GameSettings extends React.Component {
 	//at least one body part needs to be selected, so here
 	//we check if none is.
 	atLeastOneBodyPartIsChecked() {
-
 		if (!this.state.bodyParts[0].checked && !this.state.bodyParts[1].checked
 			&& !this.state.bodyParts[2].checked && !this.state.bodyParts[3].checked) {
 			this.wgmessage.mountTimer()
 			this.wgmessage.setMessage('Valitse ainakin yksi ruumiinosa.')
 		} else {
-			this.setState({ redirect: true })
+			this.initializeGame()
 		}
+	}
+
+	//this starts the game
+	initializeGame() {
+		const allImages = 
+		this.setState({ redirect: true })
 	}
 
 	render() {
 
 		if (this.state.redirect) {
 			return (
-				<Redirect to='/writinggame' />
+				<Redirect to={{
+					pathname: '/writinggame',
+					state: {
+						testiviesti: this.state.testiviesti,
+						images: this.state.images
+					}
+				 }} />
 			)
 		}
 		return (
@@ -73,6 +113,7 @@ class GameSettings extends React.Component {
 					<div>
 						<WGMessage ref={instance => this.wgmessage = instance} />
 					</div>
+					{/*Maybe fix h1 and its classname "H2"?*/}
 					<h1 className="h2">Valitse eläin:</h1>
 					<form>
 						<label className="radio-inline"><input type="radio" name="name" defaultChecked></input>Koira</label>
