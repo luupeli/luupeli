@@ -60,6 +60,11 @@ class GameSettings extends React.Component {
 		}
 	}
 
+	//returns the state
+	state() {
+		return this.state
+	}
+
 	render() {
 
 		if (this.state.redirect) {
@@ -99,7 +104,7 @@ class GameSettings extends React.Component {
 						<label className="radio-inline"><input type="radio" name="1"></input>Keskivaikea</label>
 						<label className="radio-inline"><input type="radio" name="1"></input>Vaikea</label>
 					</form>
-					<div className="btn-group settingspage">
+					<div className="btn-group settingspage GameButton">
 						<button onClick={this.atLeastOneBodyPartIsChecked}>Peliin >></button>
 					</div>
 				</div>

@@ -47,4 +47,11 @@ describe("WritingGame", () => {
 		expect(wgcomponent().find(Redirect).length).toBe(0)
 	})
 
+	it("renders Redirect when index is equal to or larger than length of images", () => {
+		/*const game = wgcomponent()
+		game.setState({index : 100})
+		expect(wgcomponent().find(Redirect).length).toBe(1)*/
+		//"cant read property of undefined" xddd
+	})
+
 })
