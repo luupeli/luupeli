@@ -85,6 +85,11 @@ class WritingGame extends React.Component {
     return this.state.counter - 1
   }
 
+  //Returns the state
+  state() {
+    return this.state
+  }
+
 	//If all images have been cycled through, redirect to endscreen, otherwise render quiz page
   render() {
 		if (this.state.index >= this.state.images.length) {
@@ -115,7 +120,7 @@ class WritingGame extends React.Component {
           </div>
           <div class="row">
             <div class="col-md-12">
-              <form id='gameForm' onSubmit={this.handleSubmit}>
+              <form className="input" id='gameForm' onSubmit={this.handleSubmit}>
                 <input class="form-control" type="text" onChange={this.handleChange} />
                 <input type="submit" value="Vastaa" />
                 <p>{this.state.index + 1}/{this.state.images.length}</p>
