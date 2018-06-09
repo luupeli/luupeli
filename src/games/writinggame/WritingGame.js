@@ -1,7 +1,6 @@
 import { Redirect } from 'react-router-dom'
 import React from 'react'
 import WGMessage from './WGMessage'
-//import { compareTwoStrings } from 'string-similarity'
 import StringSimilarity from 'string-similarity'
 
 
