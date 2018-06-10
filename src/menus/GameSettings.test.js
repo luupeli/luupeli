@@ -6,20 +6,20 @@ import WGMessage from '../games/writinggame/WGMessage'
 import GameSettings from './GameSettings'
 
 describe("GameSettings", () => {
-	const settings = () => {
-		const settings = shallow(<GameSettings />)
-		return settings;
-	}
+    const settings = () => {
+        const settings = shallow(<GameSettings />)
+        return settings;
+    }
 
-	it("always renders a div", () => {
-        const stngs = settings()
-		const divs = stngs.find("div")
+    it("always renders a div", () => {
+        const sttngs = settings()
+        const divs = sttngs.find("div")
         expect(divs.length).toBeGreaterThan(0)
 
-        stngs.setState({redirect: true})
+        sttngs.setState({ redirect: true })
         expect(divs.length).toBeGreaterThan(0)
     })
-    
+
     it("starts with everything set to false", () => {
         expect(settings().state().bodyParts[0].checked).toBe(false)
         expect(settings().state().bodyParts[1].checked).toBe(false)
@@ -33,9 +33,9 @@ describe("GameSettings", () => {
     })
 
     it("renders Redirect when variable redirect is set to true", () => {
-        const stngs = settings()
-        stngs.setState({redirect : true})
-        expect(stngs.find(Redirect).length).toBe(1)
+        const sttngs = settings()
+        sttngs.setState({ redirect: true })
+        expect(sttngs.find(Redirect).length).toBe(1)
     })
 
     it("renders WGMessage when not redirecting", () => {
@@ -50,5 +50,34 @@ describe("GameSettings", () => {
         const checkboxes = settings().find('.checkbox-inline')
         expect(checkboxes.length).toBe(4)
     })
+
+    //redirect is set to false by default and one of the tests above checks that
+    it("changes variable redirect to true if one body part has been selected", () => {
+        changeBooleanValueInArrayBodyParts(0)
+    })
+
+    it("changes variable redirect to true if two body parts have been selected", () => {
+        changeBooleanValueInArrayBodyParts(1)
+    })
+
+    it("changes variable redirect to true if all body parts have been selected", () => {
+        changeBooleanValueInArrayBodyParts(3)
+    })
+
+    //used for changing the values in the array. Argument 0 = change index 0,
+    //argument 2 = change indices 0, 1 and 2...
+    function changeBooleanValueInArrayBodyParts() {
+        const sttngs = settings()
+        var bodyParts = sttngs.state().bodyParts
+
+        var i
+        for (i = 0; i <= arguments[0]; i++) {
+            bodyParts[i].checked = true
+        }
+
+        sttngs.setState({ bodyParts })
+        sttngs.instance().atLeastOneBodyPartIsChecked()
+        expect(sttngs.state().redirect).toBe(true)
+    }
 
 })

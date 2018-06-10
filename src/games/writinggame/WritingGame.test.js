@@ -54,4 +54,14 @@ describe("WritingGame", () => {
 		//"cant read property of undefined" xddd
 	})
 
+	//index is 0 at first, there are more images than that
+	it("increases index when it's less than length of images", () => {
+		const game = wgcomponent()
+		const instance = game.instance()
+		instance.changeCounter()
+		expect(game.state().index).toBe(1)
+		instance.changeCounter()
+		expect(game.state().index).toBe(2)
+	})
+
 })
