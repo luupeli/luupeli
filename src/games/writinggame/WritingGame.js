@@ -1,6 +1,9 @@
 import { Redirect } from 'react-router-dom'
 import React from 'react'
 import WGMessage from './WGMessage'
+import StringSimilarity from 'string-similarity'
+
+
 
 class WritingGame extends React.Component {
 
@@ -57,13 +60,26 @@ class WritingGame extends React.Component {
   }
 
   //Checks if the answer is correct, increments correct counter if needed and shows&hides the proper message after that.
+  //If the answer is close enough, then a point (or perhaps a fraction of a point?) will be awarded.
+
+  //https://www.npmjs.com/package/string-similarity ---- To install string-similarity:
+  //npm install string-similarity --save 
+
+  //Note for further development: the 'string-similarity' could also be used to gauge case-correctiveness of Latin names. Case is NOT irrelevant!
+
   checkCorrectness() {
+
+    var similarity = StringSimilarity.compareTwoStrings(this.state.images[this.state.index].name.toLowerCase(), this.state.value.toLowerCase()); // calculate similarity
+
     if (this.state.images[this.state.index].name.toLowerCase() === this.state.value.toLowerCase()) {
       //copypaste..
       this.wgmessage.setMessage('Oikein!')
       this.setState({ correct: this.state.correct + 1 })
+    } else if (similarity>0.8) {    // if answer is similar enough 
+      this.wgmessage.setMessage('Melkein oikein (similarity: ' + similarity.toPrecision(2) + '). Vastasit: ' +this.state.value.toLowerCase()+'. Oikea vastaus oli ' + this.state.images[this.state.index].name.toLowerCase())
+      this.setState({ correct: this.state.correct + 1 })
     } else {
-      this.wgmessage.setMessage('Väärin! Oikea vastaus oli ' + this.state.images[this.state.index].name.toLowerCase())
+      this.wgmessage.setMessage('Väärin! Vastasit: ' +this.state.value.toLowerCase()+' (similarity: ' + similarity.toPrecision(2) + '). Oikea vastaus oli ' + this.state.images[this.state.index].name.toLowerCase())
     }
   }
   
