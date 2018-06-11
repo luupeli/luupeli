@@ -52,6 +52,10 @@ class AddBone extends React.Component {
 		super(props);
 
 		this.state = {
+			nameLatin: "",
+			name: "",
+			animal: "",
+			bodypart: "",
 			files: [
 			{
 				filename: "",
@@ -61,6 +65,7 @@ class AddBone extends React.Component {
 		};
 
 		this.handleClick = this.handleClick.bind(this)
+		this.handleChange = this.handleChange.bind(this)
 	}
 	
 	handleClick(event) {
@@ -68,15 +73,19 @@ class AddBone extends React.Component {
 		this.setState({ files: expandList})
 	}
 	
+	handleChange(event) {
+		this.setState({ [event.target.name]: event.target.value })
+	}
+	
 	render() {
 		return (
 		<div classname="App">
 		<Link to='/listing'><button className="btn btn-default pull-right">Takaisin listaukseen</button></Link><br/>
 			<form method="POST" action="/submit">
-				<TextInputWithFeedback label="Virallinen nimi" id="nameLatin"/>
-				<TextInputWithoutFeedback label="Suomenkielinen nimi" id="name"/>
-				<DropdownInput label="Eläin" id="animal" values={[['ca', 'Koira'], ['fe', 'Kissa'], ['eq', 'Hevonen'], ['bo', 'Nauta']]}/>
-				<DropdownInput label="Ruumiinosa" id="bodypart" values={[['frontleg', 'Eturaaja'], ['backleg', 'Takaraaja'], ['body', 'Vartalo'], ['head', 'Pää']]}/>
+				<TextInputWithFeedback label="Virallinen nimi" name="nameLatin"/>
+				<TextInputWithoutFeedback label="Suomenkielinen nimi" name="name"/>
+				<DropdownInput label="Eläin" name="animal" values={[['ca', 'Koira'], ['fe', 'Kissa'], ['eq', 'Hevonen'], ['bo', 'Nauta']]}/>
+				<DropdownInput label="Ruumiinosa" name="bodypart" values={[['frontleg', 'Eturaaja'], ['backleg', 'Takaraaja'], ['body', 'Vartalo'], ['head', 'Pää']]}/>
 
 				<label>Kuvat</label>
 				<ul class="list-group">

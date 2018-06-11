@@ -14,12 +14,16 @@ class UpdateBone extends React.Component {
 			files: [
 			{
 				filename: "",
+				difficulty: "hard"
+			},
+			{
+				filename: "",
 				difficulty: "easy"
 			}
 			]
 		};
 		
-		this.onChange = this.onChange.bind(this)
+		this.handleChange = this.handleChange.bind(this)
 		this.handleAddImage = this.handleAddImage.bind(this)
 		this.handleRemoveImage = this.handleRemoveImage.bind(this)
 	}
@@ -35,8 +39,14 @@ class UpdateBone extends React.Component {
 		this.setState({ files: this.state.files.filter((s, sidx) => i !== sidx) })
 	}
 	
-	onChange(event) {
+	handleChange(event) {
 		this.setState({ [event.target.name]: event.target.value })
+	}
+	
+	handleFileChange(i, event) {
+		const modifiedList = this.state.files
+		modifiedList[i].difficulty = event.target.value
+		this.setState({ files: modifiedList })
 	}
 	
 	render() {
@@ -47,14 +57,14 @@ class UpdateBone extends React.Component {
 			
 				<div class="form-group has-feedback">
 					<label>Virallinen nimi </label>
-					<input type="text" name="nameLatin" value={this.state.nameLatin} class="form-control" onChange={this.onChange} /><span class="glyphicon glyphicon-asterisk form-control-feedback"></span>
+					<input type="text" name="nameLatin" value={this.state.nameLatin} class="form-control" onChange={this.handleChange} /><span class="glyphicon glyphicon-asterisk form-control-feedback"></span>
 				</div>
 				
 				<label>Suomenkielinen nimi</label>
-				<input type="text" name="name" value={this.state.name} class="form-control" onChange={this.onChange}/>
+				<input type="text" name="name" value={this.state.name} class="form-control" onChange={this.handleChange}/>
 				
 				<label>Eläin</label>
-				<select name="animal" class="form-control" value={this.state.animal} onChange={this.onChange}>
+				<select name="animal" class="form-control" value={this.state.animal} onChange={this.handleChange}>
 					<option value="ca">Koira</option>
 					<option value="fe">Kissa</option>
 					<option value="eq">Hevonen</option>
@@ -62,7 +72,7 @@ class UpdateBone extends React.Component {
 				</select>
 				
 				<label>Ruumiinosa</label>
-				<select name="bodypart" class="form-control" value={this.state.bodypart} onChange={this.onChange}>
+				<select name="bodypart" class="form-control" value={this.state.bodypart} onChange={this.handleChange}>
 					<option value="frontleg">Eturaaja</option>
 					<option value="backleg">Takaraaja</option>
 					<option value="body">Vartalo</option>
@@ -73,15 +83,9 @@ class UpdateBone extends React.Component {
 				<ul class="list-group">
 				{this.state.files.map((file, i) => <li key={file.id} class="list-group-item clearfix">
 				<input type="file" accept="image/x-png,image/jpeg" id="boneImage"/>
-				<select id="difficulty" class="form-control">
-				{file.difficulty === "easy" ? 
-					<option value="easy" selected="selected">Helppo</option> : 
+				<select name="difficulty" class="form-control" value={this.state.files[i].difficulty} onChange={this.handleFileChange.bind(this, i)}>
 					<option value="easy">Helppo</option>
-				}
-				{file.difficulty === "hard" ?
-					<option value="hard" selected="selected">Vaikea</option> :
 					<option value="hard">Vaikea</option>
-				}
 				</select>
 				<button type="button" class="btn btn-danger">Poista</button>
 				</li>)}
