@@ -7,20 +7,36 @@ class UpdateBone extends React.Component {
 		super(props);
 
 		this.state = {
+			nameLatin: this.props.location.state.nameLatin,
+			name: this.props.location.state.name,
+			animal: this.props.location.state.animal,
+			bodypart: this.props.location.state.bodypart,
 			files: [
 			{
 				filename: "",
 				difficulty: "easy"
-				}
+			}
 			]
 		};
-
-		this.handleClick = this.handleClick.bind(this)
+		
+		this.onChange = this.onChange.bind(this)
+		this.handleAddImage = this.handleAddImage.bind(this)
+		this.handleRemoveImage = this.handleRemoveImage.bind(this)
 	}
 	
-	handleClick(event) {
+	//Adds a new empty file to list of files when user clicks a button to add more images.
+	//File list is used to dynamically render correct amount of file input elements in the update form
+	handleAddImage(event) {
 		const expandList = this.state.files.concat({filename: "", difficulty: "easy"})
 		this.setState({ files: expandList})
+	}
+	
+	handleRemoveImage(i) {
+		this.setState({ files: this.state.files.filter((s, sidx) => i !== sidx) })
+	}
+	
+	onChange(event) {
+		this.setState({ [event.target.name]: event.target.value })
 	}
 	
 	render() {
@@ -31,31 +47,31 @@ class UpdateBone extends React.Component {
 			
 				<div class="form-group has-feedback">
 					<label>Virallinen nimi </label>
-					<input type="text" id="nameLatin" value={this.props.location.state.nameLatin} class="form-control"/><span class="glyphicon glyphicon-asterisk form-control-feedback"></span>
+					<input type="text" name="nameLatin" value={this.state.nameLatin} class="form-control" onChange={this.onChange} /><span class="glyphicon glyphicon-asterisk form-control-feedback"></span>
 				</div>
 				
 				<label>Suomenkielinen nimi</label>
-				<input type="text" id="name" value={this.props.location.state.name} class="form-control"/>
+				<input type="text" name="name" value={this.state.name} class="form-control" onChange={this.onChange}/>
 				
 				<label>Eläin</label>
-				<select id="animal" class="form-control">
-					{this.props.location.state.animal === "ca" ? <option value="ca" selected="selected">Koira</option> : <option value="ca">Koira</option>}
-					{this.props.location.state.animal === "fe" ? <option value="fe" selected="selected">Kissa</option> : <option value="fe">Kissa</option>}
-					{this.props.location.state.animal === "eq" ? <option value="eq" selected="selected">Hevonen</option> : <option value="eq">Hevonen</option>}
-					{this.props.location.state.animal === "bo" ? <option value="bo" selected="selected">Nauta</option> : <option value="bo">Nauta</option>}
+				<select name="animal" class="form-control" value={this.state.animal} onChange={this.onChange}>
+					<option value="ca">Koira</option>
+					<option value="fe">Kissa</option>
+					<option value="eq">Hevonen</option>
+					<option value="bo">Nauta</option>
 				</select>
 				
 				<label>Ruumiinosa</label>
-				<select id="bodyPart" class="form-control">
-					{this.props.location.state.bodypart === "frontleg" ? <option value="frontleg" selected="selected">Eturaaja</option> : <option value="frontleg">Eturaaja</option>}
-					{this.props.location.state.bodypart === "backleg" ? <option value="backleg" selected="selected">Takaraaja</option> : <option value="backleg">Takaraaja</option>}
-					{this.props.location.state.bodypart === "body" ? <option value="body" selected="selected">Vartalo</option> : <option value="body">Vartalo</option>}
-					{this.props.location.state.bodypart === "head" ? <option value="head" selected="selected">Pää</option> : <option value="head">Pää</option>}
+				<select name="bodypart" class="form-control" value={this.state.bodypart} onChange={this.onChange}>
+					<option value="frontleg">Eturaaja</option>
+					<option value="backleg">Takaraaja</option>
+					<option value="body">Vartalo</option>
+					<option value="head">Pää</option>
 				</select>
 				
 				<label>Kuvat</label>
 				<ul class="list-group">
-				{this.state.files.map(file => <li key={file.id} class="list-group-item clearfix">
+				{this.state.files.map((file, i) => <li key={file.id} class="list-group-item clearfix">
 				<input type="file" accept="image/x-png,image/jpeg" id="boneImage"/>
 				<select id="difficulty" class="form-control">
 				{file.difficulty === "easy" ? 
@@ -67,8 +83,9 @@ class UpdateBone extends React.Component {
 					<option value="hard">Vaikea</option>
 				}
 				</select>
+				<button type="button" class="btn btn-danger">Poista</button>
 				</li>)}
-				<li class="list-group-item clearfix"><button type="button" class="btn btn-default pull-right" onClick={this.handleClick}>Lisää uusi kuva</button></li>
+				<li class="list-group-item clearfix"><button type="button" class="btn btn-default pull-right" onClick={this.handleAddImage}>Lisää uusi kuva</button></li>
 				</ul>
 				
 				<div class="btn-toolbar">

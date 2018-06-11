@@ -55,38 +55,21 @@ class BoneListing extends React.Component {
 		return (
 			<div classname="App">
 			<div>
-				{/*<ul class="list-group">
-				<li class="list-group-item clearfix"><Link to='/add'><button class="btn btn-info pull-right">Lisää uusi</button></Link></li>
-					{this.state.bones.map(bone => 
-						<li key={bone.id} class="list-group-item list-group-item-action">
-						<Link to={{pathname: '/update/${bone.boneId}',
-						state: {
-							id: bone.id,
-							boneId: bone.boneId,
-							nameLatin: bone.nameLatin,
-							name: bone.name,
-							animal: bone.animal,
-							bodypart: bone.bodypart
-							}}
-							}>
-							<button type="button" class="list-group-item list-group-item-action">{bone.nameLatin}</button>
-							</Link></li>)}
-				</ul>*/}
 				<div class="list-group">
-				<span class="list-group-item clearfix"><Link to='/add'><button class="btn btn-info pull-right">Lisää uusi</button></Link></span>
+				<span class="list-group-item list-group-item-info clearfix"><Link to='/add'><button class="btn btn-info pull-right">Lisää uusi</button></Link></span>
 					{this.state.bones.map(bone => 
 						<Link key={bone.id} to={{pathname: '/update/${bone.boneId}',
-						state: {
-							id: bone.id,
-							boneId: bone.boneId,
-							nameLatin: bone.nameLatin,
-							name: bone.name,
-							animal: bone.animal,
-							bodypart: bone.bodypart
-							}}
-							}>
+							state: {
+								id: bone.id,
+								boneId: bone.boneId,
+								nameLatin: bone.nameLatin,
+								name: bone.name,
+								animal: bone.animal,
+								bodypart: bone.bodypart
+							}
+						}}>
 							<button type="button" class="list-group-item list-group-item-action">{bone.nameLatin}</button>
-							</Link>)}
+						</Link>)}
 				</div>
 				</div>
 			</div>
