@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios'
 import { Link } from 'react-router-dom'
 
 class BoneListing extends React.Component {
@@ -51,12 +52,35 @@ class BoneListing extends React.Component {
 		}
 	}
 	
+	
+	//Get list of bones from database and stuff it into state for rendering
+	componentDidMount() {
+		const url = 'http://luupeli-backend.herokuapp.com/api/bones/'
+		axios.get(url)
+		.then((response) => {
+			var newBones = []
+			for(var i = 0; i < response.data.length; i++) {
+				newBones = newBones.concat({id: response.data[i].id,
+					boneId: response.data[i].id,
+					nameLatin: response.data[i].nameLatin,
+					name: response.data[i].name,
+					animal: response.data[i].animal.name,
+					bodypart: response.data[i].bodypart.name})
+			}
+			
+			this.setState({ bones: newBones })
+		})
+		.catch((error) => {
+			console.log(error)
+		})
+	}
+	
 	render() {
 		return (
-			<div classname="App">
+			<div className="App">
 			<div>
-				<div class="list-group">
-				<span class="list-group-item list-group-item-info clearfix"><Link to='/add'><button class="btn btn-info pull-right">Lisää uusi</button></Link></span>
+				<div className="list-group">
+				<span className="list-group-item list-group-item-info clearfix"><Link to='/add'><button className="btn btn-info pull-right">Lisää uusi</button></Link></span>
 					{this.state.bones.map(bone => 
 						<Link key={bone.id} to={{pathname: '/update/${bone.boneId}',
 							state: {
@@ -68,7 +92,7 @@ class BoneListing extends React.Component {
 								bodypart: bone.bodypart
 							}
 						}}>
-							<button type="button" class="list-group-item list-group-item-action">{bone.nameLatin}</button>
+							<button type="button" className="list-group-item list-group-item-action">{bone.nameLatin}</button>
 						</Link>)}
 				</div>
 				</div>
