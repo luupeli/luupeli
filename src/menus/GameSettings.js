@@ -1,6 +1,7 @@
 import React from 'react'
 import { Redirect, Link } from 'react-router-dom'
 import WGMessage from '../games/writinggame/WGMessage'
+import axios from 'axios'
 
 class GameSettings extends React.Component {
 
@@ -24,6 +25,7 @@ class GameSettings extends React.Component {
 			],
 			redirect: false,
 			testiviesti: 'Lällälläääääh',
+			allImages: [],
 			images:  [
 				{
 				  id: 1,
@@ -90,19 +92,25 @@ class GameSettings extends React.Component {
 
 	//this starts the game
 	initializeGame() {
-		const allImages = 
-		this.setState({ redirect: true })
+		axios.get("http://luupeli-backend.herokuapp.com/api/images")
+			.then(response => {
+				console.log(response.data)
+				console.log(response.status)
+				console.log(this.state.images)
+				this.setState({allImages: response.data})
+				this.setState({ redirect: true })
+			})
 	}
 
 	render() {
-
 		if (this.state.redirect) {
+			console.log(this.state.allImages)
 			return (
 				<Redirect to={{
 					pathname: '/writinggame',
 					state: {
 						testiviesti: this.state.testiviesti,
-						images: this.state.images
+						images: this.state.allImages
 					}
 				 }} />
 			)

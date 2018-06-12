@@ -13,7 +13,8 @@ class WritingGame extends React.Component {
       correct: 0,
       images: props.location.state.images
     };
-
+    console.log(this.state.testiviesti)
+    console.log(this.state.images)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
@@ -33,12 +34,12 @@ class WritingGame extends React.Component {
 
   //Checks if the answer is correct, increments correct counter if needed and shows&hides the proper message after that.
   checkCorrectness() {
-    if (this.state.images[this.state.index].name.toLowerCase() === this.state.value.toLowerCase()) {
+    if (this.state.images[this.state.index].url.toLowerCase() === this.state.value.toLowerCase()) {
       //copypaste..
       this.wgmessage.setMessage('Oikein!')
       this.setState({ correct: this.state.correct + 1 })
     } else {
-      this.wgmessage.setMessage('Väärin! Oikea vastaus oli ' + this.state.images[this.state.index].name.toLowerCase())
+      this.wgmessage.setMessage('Väärin! Oikea vastaus oli ' + this.state.images[this.state.index].url.toLowerCase())
     }
   }
   
@@ -84,7 +85,7 @@ class WritingGame extends React.Component {
           </div>
           <div class="row">
             <div class="col-md-12">
-              <img id="question-image" alt='Pelottava luuranko' src={this.state.images[this.state.index].src} /></div>
+              <img id="question-image" alt='Pelottava luuranko' src={this.state.images[this.state.index].url} /></div>
             </div>
           <div className="title">
             <p>Syötä luun nimi</p>
