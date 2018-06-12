@@ -11,16 +11,20 @@ class GameSettings extends React.Component {
 		this.state = {
 			bodyParts: [
 				{
-					checked: false
+					checked: false,
+					id: "5b169f116dc0ce0014e657d3"
 				},
 				{
-					checked: false
+					checked: false,
+					id: "5b169f166dc0ce0014e657d4"
 				},
 				{
-					checked: false
+					checked: false,
+					id: "5b169f166dc0ce0014e657d5"
 				},
 				{
-					checked: false
+					checked: false,
+					id: "5b169f166dc0ce0014e657d"
 				}
 			],
 			animals: [
@@ -44,6 +48,7 @@ class GameSettings extends React.Component {
 			redirect: false,
 			testiviesti: 'Lällälläääääh',
 			allImages: [],
+			chosenBodypartIds: [],
 			images:  [
 				{
 				  id: 1,
@@ -122,15 +127,24 @@ class GameSettings extends React.Component {
 
 				//const pics = this.state.allImages.filter(image => image.bone.name === "lantioluu")
 				var chosenAnimalId = 0
+				let chosenBodypartIds = []
 				this.state.animals.map(function(animal, i) {
 					if (animal.selected) {
 						chosenAnimalId = animal.id
 					}
 				})
+				this.state.bodyParts.map(function(bodypart, i) {
+					if (bodypart.checked) {
+						chosenBodypartIds.push(bodypart.id)
+					}
+				})
+				console.log(chosenBodypartIds)
+				this.setState({ chosenBodypartIds })
+				console.log(this.state.chosenBodypartIds)
 				console.log(chosenAnimalId)
 				console.log(this.state.allImages)
-				const pics = this.state.allImages.filter(image => image.bone.animal === chosenAnimalId)
-
+				const apics = this.state.allImages.filter(image => image.bone.animal === chosenAnimalId)
+				const pics = apics.filter(apic => apic.bone.bodypart === this.state.bodyParts[1].id)
 				if (pics.length === 0) {
 					this.wgmessage.mountTimer()
 					this.wgmessage.setMessage('Peliä ei voitu luoda halutuilla asetuksilla')
@@ -185,8 +199,8 @@ class GameSettings extends React.Component {
 					<h1 className="h2">Vaikeusaste:</h1>
 					<form>
 						<label className="radio-inline"><input type="radio" name="0" defaultChecked></input>Helppo</label>
-						<label className="radio-inline"><input type="radio" name="2"></input>Keskivaikea</label>
-						<label className="radio-inline"><input type="radio" name="3"></input>Vaikea</label>
+						<label className="radio-inline"><input type="radio" name="1"></input>Keskivaikea</label>
+						<label className="radio-inline"><input type="radio" name="2"></input>Vaikea</label>
 					</form>
 					<div className="btn-group settingspage">
 						<button onClick={this.atLeastOneBodyPartIsChecked}>Peliin >></button>
