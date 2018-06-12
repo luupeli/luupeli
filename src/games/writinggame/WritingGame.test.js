@@ -50,7 +50,7 @@ describe("WritingGame", () => {
 	it("renders Redirect when index is equal to or larger than length of images", () => {
 		/*const game = wgcomponent()
 		game.setState({index : 100})
-		expect(wgcomponent().find(Redirect).length).toBe(1)*/
+		expect(game.find(Redirect).length).toBe(1)*/
 		//"cant read property of undefined" xddd
 	})
 
@@ -62,6 +62,24 @@ describe("WritingGame", () => {
 		expect(game.state().index).toBe(1)
 		instance.changeCounter()
 		expect(game.state().index).toBe(2)
+	})
+
+	//setting index to be larger than length of images by 1, changeCounter should do nothing
+	it("doesn't increase index when it's larger than length of images", () => {
+		const game = wgcomponent()
+		const instance = game.instance()
+		game.setState({index : game.state().images.length + 1})
+		instance.changeCounter()
+		expect(game.state().index).toBe(game.state().images.length + 1)
+	})
+
+	//setting index to be equal to length of images, changeCounter should increase it
+	it("increases index when it's equal to length of images", () => {
+		const game = wgcomponent()
+		const instance = game.instance()
+		game.setState({index : game.state().images.length})
+		instance.changeCounter()
+		expect(game.state().index).toBe(game.state().images.length + 1)
 	})
 
 })

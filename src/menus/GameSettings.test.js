@@ -52,19 +52,27 @@ describe("GameSettings", () => {
     })
 
     //redirect is set to false by default and one of the tests above checks that
-    it("changes variable redirect to true if one body part has been selected", () => {
+    it("changes variable redirect to 'true' if one body part has been selected", () => {
         changeBooleanValueInArrayBodyParts(0)
     })
 
-    it("changes variable redirect to true if two body parts have been selected", () => {
+    it("changes variable redirect to 'true' if two body parts have been selected", () => {
         changeBooleanValueInArrayBodyParts(1)
     })
 
-    it("changes variable redirect to true if all body parts have been selected", () => {
+    it("changes variable redirect to 'true' if all body parts have been selected", () => {
         changeBooleanValueInArrayBodyParts(3)
     })
 
-    //used for changing the values in the array. Argument 0 = change index 0,
+    it("doesn't change variable redirect to 'true' if no body part has been selected", () => {
+        /*const sttngs = settings()
+        const instance = sttngs.instance()
+        instance.atLeastOneBodyPartIsChecked()
+        expect(instance.state.redirect).toBe(false)*/
+        //this doesn't reeeeaally work yet (cannot read property of undefined blahblah)
+    })
+
+    //used for changing the values in the array to 'true'. Argument 0 = change index 0,
     //argument 2 = change indices 0, 1 and 2...
     function changeBooleanValueInArrayBodyParts() {
         const sttngs = settings()

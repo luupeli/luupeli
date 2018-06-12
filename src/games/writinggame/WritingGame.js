@@ -13,30 +13,30 @@ class WritingGame extends React.Component {
       value: '',
       index: 0,
       correct: 0,
-      images:  [
+      images: [
         {
           id: 1,
-          name: "Mansikka", 
+          name: "Mansikka",
           src: "mansikka.jpg"
         },
         {
           id: 2,
-          name: "Mustikka", 
+          name: "Mustikka",
           src: "mustikka.jpg"
         },
         {
           id: 3,
-          name: "Kirsikka", 
+          name: "Kirsikka",
           src: "kirsikka.jpg"
         },
         {
           id: 4,
-          name: "Persikka", 
+          name: "Persikka",
           src: "persikka.jpg"
         },
         {
           id: 5,
-          name: "Omena", 
+          name: "Omena",
           src: "omena.jpg"
         }
       ]
@@ -75,18 +75,18 @@ class WritingGame extends React.Component {
       //copypaste..
       this.wgmessage.setMessage('Oikein!')
       this.setState({ correct: this.state.correct + 1 })
-    } else if (similarity>0.8) {    // if answer is similar enough 
-      this.wgmessage.setMessage('Melkein oikein (similarity: ' + similarity.toPrecision(2) + '). Vastasit: ' +this.state.value.toLowerCase()+'. Oikea vastaus oli ' + this.state.images[this.state.index].name.toLowerCase())
+    } else if (similarity > 0.8) {    // if answer is similar enough 
+      this.wgmessage.setMessage('Melkein oikein (similarity: ' + similarity.toPrecision(2) + '). Vastasit: ' + this.state.value.toLowerCase() + '. Oikea vastaus oli ' + this.state.images[this.state.index].name.toLowerCase())
       this.setState({ correct: this.state.correct + 1 })
     } else {
-      this.wgmessage.setMessage('Väärin! Vastasit: ' +this.state.value.toLowerCase()+' (similarity: ' + similarity.toPrecision(2) + '). Oikea vastaus oli ' + this.state.images[this.state.index].name.toLowerCase())
+      this.wgmessage.setMessage('Väärin! Vastasit: ' + this.state.value.toLowerCase() + ' (similarity: ' + similarity.toPrecision(2) + '). Oikea vastaus oli ' + this.state.images[this.state.index].name.toLowerCase())
     }
   }
-  
+
   //If all images have not yet been cycled through, increment counter by 1
   changeCounter() {
     if (this.state.index <= this.state.images.length) {
-      this.setState({ index: this.state.index + 1})
+      this.setState({ index: this.state.index + 1 })
     }
   }
 
@@ -106,31 +106,33 @@ class WritingGame extends React.Component {
     return this.state
   }
 
-	//If all images have been cycled through, redirect to endscreen, otherwise render quiz page
+  //If all images have been cycled through, redirect to endscreen, otherwise render quiz page
   render() {
-		if (this.state.index >= this.state.images.length) {
-			this.wgmessage.componentWillUnmount()
-			return (
-				<Redirect to={{
-					pathname: "/endscreen",
-					state: {
-						correct: this.state.correct,
-						total: this.state.images.length
-					}
-				}} />
-			)
-		}
-		
+    if (this.state.index >= this.state.images.length) {
+      return (
+        <div>
+          <Redirect to={{
+            pathname: "/endscreen",
+            state: {
+              correct: this.state.correct,
+              total: this.state.images.length
+            }
+          }} />
+        </div>
+      )
+      this.wgmessage.componentWillUnmount()
+    }
+
     return (
       <div className="App">
         <div class="container">
           <div>
-            <WGMessage ref={instance => this.wgmessage = instance}/>
+            <WGMessage ref={instance => this.wgmessage = instance} />
           </div>
           <div class="row">
             <div class="col-md-12">
               <img id="question-image" alt='Pelottava luuranko' src={this.state.images[this.state.index].src} /></div>
-            </div>
+          </div>
           <div className="title">
             <p>Syötä luun nimi</p>
           </div>
@@ -144,7 +146,7 @@ class WritingGame extends React.Component {
             </div>
           </div>
         </div>
-      </div>  
+      </div>
     );
   }
 }
