@@ -40,8 +40,8 @@ class UpdateBone extends React.Component {
 		this.handleDelete = this.handleDelete.bind(this)
 	}
 	
-	//GET images related to this bone from DB
-	//GET animals and bodyparts
+	//GET images related to this bone from DB.
+	//GET animals and bodyparts.
 	componentDidMount() {
 		const url = 'http://luupeli-backend.herokuapp.com/api/bones/' + this.state.boneId
 		axios.get(url)
@@ -93,11 +93,13 @@ class UpdateBone extends React.Component {
 	*/
 	
 	//When user changes the value of a field in the form, reflect that change in state.
-	//[event.target.name] must correspond both to a input field name and a state variable name.
+	//event.target.name must correspond both to a input field name and a state variable name.
 	handleChange(event) {
 		this.setState({ [event.target.name]: event.target.value })
 	}
 	
+	//Send updated values from this.state to DB.
+	//Set this.state.submitted to true in preparation for redirect to listing.
 	handleSubmit(event) {
 		const url = "http://luupeli-backend.herokuapp.com/api/bones/" + this.state.boneId
 		const animalObj = this.state.animals.filter((animal) => animal.name === this.state.animal)
@@ -119,26 +121,38 @@ class UpdateBone extends React.Component {
 		this.setState({ submitted: true })
 	}
 	
+	//Delete this bone from DB.
+	//Set this.state.submitted to true in preparation for redirect to listing.
 	handleDelete(event) {
-		//TODO
+		console.log("handling delete")
+		const url = "http://luupeli-backend.herokuapp.com/api/bones/" + this.state.boneId
+		axios.delete(url)
+		.catch((error) => {
+			console.log(error)
+		})
+		this.setState({ submitted: true })
+		console.log("delete handled")
 	}
 	
 	//When user changes image difficulty in form, reflect that change in state.
-	//i: index of the image where difficulty was changed
+	//i: list index of the image where difficulty was changed
 	handleFileChange(i, event) {
 		const modifiedList = this.state.images
 		modifiedList[i].difficulty = event.target.value
 		this.setState({ images: modifiedList })
 	}
 	
-	//When user changes newImage difficulty in form, reflect that change in state
-	//i: index of the newImage where difficulty was changed
+	//When user changes newImage difficulty in form, reflect that change in state.
+	//i: list index of the newImage where difficulty was changed
 	handleNewFileChange(i, event) {
 		const modifiedList = this.state.newImages
 		modifiedList[i].difficulty = event.target.value
 		this.setState({ newImages: modifiedList })
 	}
 	
+	
+	//If this.state.submitted is true (i.e. bone data has been updated or deleted), redirect to listing.
+	//Otherwise render bone update form.
 	render() {
 		if (this.state.submitted) {
 			return (

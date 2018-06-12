@@ -53,7 +53,7 @@ class BoneListing extends React.Component {
 	}
 	
 	
-	//GET list of bones from database and stuff it into state for rendering
+	//GET list of bones from database and stuff it into this.state.bones for rendering
 	componentDidMount() {
 		const url = 'http://luupeli-backend.herokuapp.com/api/bones/'
 		axios.get(url)
@@ -75,6 +75,7 @@ class BoneListing extends React.Component {
 		})
 	}
 	
+	//Render bone listing by .mapping bones from this.state.bones array to Link elements.
 	render() {
 		return (
 			<div className="App">
