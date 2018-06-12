@@ -53,11 +53,12 @@ class BoneListing extends React.Component {
 	}
 	
 	
-	//Get list of bones from database and stuff it into state for rendering
+	//GET list of bones from database and stuff it into state for rendering
 	componentDidMount() {
 		const url = 'http://luupeli-backend.herokuapp.com/api/bones/'
 		axios.get(url)
 		.then((response) => {
+			console.log(response)
 			var newBones = []
 			for(var i = 0; i < response.data.length; i++) {
 				newBones = newBones.concat({id: response.data[i].id,

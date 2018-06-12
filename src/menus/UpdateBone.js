@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 
 class UpdateBone extends React.Component {
 	
@@ -7,43 +8,64 @@ class UpdateBone extends React.Component {
 		super(props);
 
 		this.state = {
+			boneId: this.props.location.state.boneId,
 			nameLatin: this.props.location.state.nameLatin,
 			name: this.props.location.state.name,
 			animal: this.props.location.state.animal,
 			bodypart: this.props.location.state.bodypart,
-			files: [
+			images: [
 			{
-				filename: "",
-				difficulty: "hard"
+				url: "",
+				difficulty: "100"
 			},
 			{
-				filename: "",
-				difficulty: "easy"
+				url: "",
+				difficulty: "1"
 			}
 			]
 		};
 		
 		this.handleChange = this.handleChange.bind(this)
 		this.handleAddImage = this.handleAddImage.bind(this)
-		this.handleRemoveImage = this.handleRemoveImage.bind(this)
+		//this.handleRemoveImage = this.handleRemoveImage.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
 	}
 	
-	//Adds a new empty file to list of files when user clicks a button to add more images.
+	//GET images related to this bone from DB
+	componentDidMount() {
+		const url = 'http://luupeli-backend.herokuapp.com/api/bones/' + this.state.boneId
+		axios.get(url)
+			.then((response) => {
+				console.log(response)
+				var boneImages = []
+				for(var i = 0; i < response.data.images.length; i++) {
+					boneImages = boneImages.concat({
+						url: response.data.images[i].url,
+						difficulty: response.data.images[i].difficulty
+					})
+				}
+				this.setState({ images: boneImages })
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+	}
+	
+	//Adds a new empty file to list of images when user clicks a button to add more images.
 	//File list is used to dynamically render correct amount of file input elements in the update form
 	handleAddImage(event) {
-		const expandList = this.state.files.concat({filename: "", difficulty: "easy"})
-		this.setState({ files: expandList})
+		const expandList = this.state.images.concat({url: "", difficulty: "1"})
+		this.setState({ images: expandList})
 	}
 	
 	/*TODO button to remove a file input field from form. Also remove the image selected in said input field, if it exists.
 	handleRemoveImage(i) {
-		this.setState({ files: this.state.files.filter((s, sidx) => i !== sidx) })
+		this.setState({ images: this.state.images.filter((s, sidx) => i !== sidx) })
 	}
 	*/
 	
 	//When user changes the value of a field in the form, reflect that change in state.
-	//[event.target.name] must corresponds both to a form field name and a state variable name.
+	//[event.target.name] must correspond both to a input field name and a state variable name.
 	handleChange(event) {
 		this.setState({ [event.target.name]: event.target.value })
 	}
@@ -53,11 +75,11 @@ class UpdateBone extends React.Component {
 	}
 	
 	//When user changes image difficulty in form, reflect that change in state.
-	//i: image index in list of files
+	//i: image index in list of images
 	handleFileChange(i, event) {
-		const modifiedList = this.state.files
+		const modifiedList = this.state.images
 		modifiedList[i].difficulty = event.target.value
-		this.setState({ files: modifiedList })
+		this.setState({ images: modifiedList })
 	}
 	
 	render() {
@@ -92,11 +114,11 @@ class UpdateBone extends React.Component {
 				
 				<label className="pull-left">Kuvat</label>
 				<ul className="list-group">
-				{this.state.files.map((file, i) => <li key={file.id} className="list-group-item clearfix">
+				{this.state.images.map((file, i) => <li key={file.id} className="list-group-item clearfix">
 				<input type="file" accept="image/x-png,image/jpeg" id="boneImage" ref={input => {this.fileInput = input}}/>
-				<select name="difficulty" className="form-control" value={this.state.files[i].difficulty} onChange={this.handleFileChange.bind(this, i)}>
-					<option value="easy">Helppo</option>
-					<option value="hard">Vaikea</option>
+				<select name="difficulty" className="form-control" value={this.state.images[i].difficulty} onChange={this.handleFileChange.bind(this, i)}>
+					<option value={1}>Helppo</option>
+					<option value={100}>Vaikea</option>
 				</select>
 				<button type="button" className="btn btn-danger pull-right">Poista</button>
 				</li>)}

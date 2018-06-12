@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 const TextInputWithFeedback = (props) => {
 	return(
 		<div className="form-group has-feedback">
-			<label>{props.label}</label>
+			<label className="pull-left">{props.label}</label>
 			<input type="text" id={props.id} className="form-control"/><span className="glyphicon glyphicon-asterisk form-control-feedback"></span>
 		</div>
 	)
@@ -15,7 +15,7 @@ const TextInputWithFeedback = (props) => {
 const TextInputWithoutFeedback = (props) => {
 	return(
 		<div className="form-group">
-			<label>{props.label}</label>
+			<label className="pull-left">{props.label}</label>
 			<input type="text" id={props.id} className="form-control"/>
 		</div>
 	)
@@ -25,7 +25,7 @@ const TextInputWithoutFeedback = (props) => {
 const DropdownInput = (props) => {
 	return(
 		<div className="form-group">
-			<label>{props.label}</label>
+			<label className="pull-left">{props.label}</label>
 			<select id={props.id} className="form-control">
 			{props.values.map(value => <option key={value.id} value={value[0]}>{value[1]}</option>)}
 			</select>
@@ -37,7 +37,7 @@ const DropdownInput = (props) => {
 const ImageInput = (props) => {
 	return(
 		<div className="form-group">
-			<label>Kuva</label>
+			<label className="pull-left">Kuva</label>
 				<input type="file" accept="image/x-png,image/jpeg,image/gif" id={props.id} multiple="multiple"/>
 				<span className="help-block">Voit valita useamman kuvan painamalla Ctrl-näppäintä ja klikkaamalla haluamiasi kuvia.</span>
 				<label>Kuvan vaikeustaso</label>
@@ -87,7 +87,7 @@ class AddBone extends React.Component {
 				<DropdownInput label="Eläin" name="animal" values={[['ca', 'Koira'], ['fe', 'Kissa'], ['eq', 'Hevonen'], ['bo', 'Nauta']]}/>
 				<DropdownInput label="Ruumiinosa" name="bodypart" values={[['frontleg', 'Eturaaja'], ['backleg', 'Takaraaja'], ['body', 'Vartalo'], ['head', 'Pää']]}/>
 
-				<label>Kuvat</label>
+				<label className="pull-left">Kuvat</label>
 				<ul className="list-group">
 				{this.state.files.map(file => <li key={file.id} className="list-group-item clearfix">
 				<input type="file" accept="image/x-png,image/jpeg" id="boneImage"/>
