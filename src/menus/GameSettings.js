@@ -128,11 +128,13 @@ class GameSettings extends React.Component {
 				//const pics = this.state.allImages.filter(image => image.bone.name === "lantioluu")
 				var chosenAnimalId = 0
 				let chosenBodypartIds = []
+				//pics animal
 				this.state.animals.map(function(animal, i) {
 					if (animal.selected) {
 						chosenAnimalId = animal.id
 					}
 				})
+				//pics bodypart id's
 				this.state.bodyParts.map(function(bodypart, i) {
 					if (bodypart.checked) {
 						chosenBodypartIds.push(bodypart.id)
@@ -143,15 +145,17 @@ class GameSettings extends React.Component {
 				console.log(this.state.chosenBodypartIds)
 				console.log(chosenAnimalId)
 				console.log(this.state.allImages)
+
+				//filters specific animal
 				const apics = this.state.allImages.filter(image => image.bone.animal === chosenAnimalId)
+				//filters bodyparts, doesn't work properly currently
 				const pics = apics.filter(apic => apic.bone.bodypart === this.state.bodyParts[1].id)
+				//if criteria doesn't fulfill the game won't launch
 				if (pics.length === 0) {
 					this.wgmessage.mountTimer()
 					this.wgmessage.setMessage('Peliä ei voitu luoda halutuilla asetuksilla')
 				} else {
-					console.log(pics)
 					this.setState({ images: pics })
-	
 					this.setState({ redirect: true })
 				}
 			})
@@ -165,7 +169,7 @@ class GameSettings extends React.Component {
 					state: {
 						testiviesti: this.state.testiviesti,
 						images: this.state.images
-					}
+					} 
 				 }} />
 			)
 		}
