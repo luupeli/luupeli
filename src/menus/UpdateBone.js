@@ -24,6 +24,11 @@ class UpdateBone extends React.Component {
 				difficulty: "1"
 			}
 			],
+			newImages: [
+			{
+				url: "",
+				difficulty: "100"
+			}],
 			animals: [],
 			bodyparts: []
 		};
@@ -77,7 +82,7 @@ class UpdateBone extends React.Component {
 	//Adds a new empty file to list of images when user clicks a button to add more images.
 	//File list is used to dynamically render correct amount of file input elements in the update form
 	handleAddImage(event) {
-		const expandList = this.state.images.concat({url: "", difficulty: "1"})
+		const expandList = this.state.images.concat({url: "", difficulty: 1})
 		this.setState({ images: expandList})
 	}
 	
@@ -126,6 +131,14 @@ class UpdateBone extends React.Component {
 		this.setState({ images: modifiedList })
 	}
 	
+	//When user changes newImage difficulty in form, reflect that change in state
+	//i: index of the newImage where difficulty was changed
+	handleNewFileChange(i, event) {
+		const modifiedList = this.state.newImages
+		modifiedList[i].difficulty = event.target.value
+		this.setState({ newImages: modifiedList })
+	}
+	
 	render() {
 		if (this.state.submitted) {
 			return (
@@ -161,11 +174,20 @@ class UpdateBone extends React.Component {
 					<option value="pää">Pää</option>
 				</select>
 				
-				<label className="pull-left">Kuvat</label>
 				<ul className="list-group">
 				{this.state.images.map((file, i) => <li key={file.id} className="list-group-item clearfix">
-				<input type="file" accept="image/x-png,image/jpeg" id="boneImage" ref={input => {this.fileInput = input}}/>
+				{file.url}
 				<select name="difficulty" className="form-control" value={this.state.images[i].difficulty} onChange={this.handleFileChange.bind(this, i)}>
+					<option value={1}>Helppo</option>
+					<option value={100}>Vaikea</option>
+				</select>
+				<button type="button" className="btn btn-danger pull-right">Poista</button>
+				</li>)}
+				</ul>
+				<ul className="list-group">
+				{this.state.newImages.map((file, i) => <li key={file.id} className="list-group-item clearfix">
+				<input type="file" accept="image/x-png,image/jpeg" id="boneImage" ref={input => {this.fileInput = input}}/>
+				<select name="difficulty" className="form-control" value={this.state.newImages[i].difficulty} onChange={this.handleNewFileChange.bind(this, i)}>
 					<option value={1}>Helppo</option>
 					<option value={100}>Vaikea</option>
 				</select>
