@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import axios from 'axios'
 
 class UpdateBone extends React.Component {
@@ -8,6 +8,7 @@ class UpdateBone extends React.Component {
 		super(props);
 
 		this.state = {
+			submitted: false,
 			boneId: this.props.location.state.boneId,
 			nameLatin: this.props.location.state.nameLatin,
 			name: this.props.location.state.name,
@@ -22,16 +23,20 @@ class UpdateBone extends React.Component {
 				url: "",
 				difficulty: "1"
 			}
-			]
+			],
+			animals: [],
+			bodyparts: []
 		};
 		
 		this.handleChange = this.handleChange.bind(this)
 		this.handleAddImage = this.handleAddImage.bind(this)
 		//this.handleRemoveImage = this.handleRemoveImage.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
+		this.handleDelete = this.handleDelete.bind(this)
 	}
 	
 	//GET images related to this bone from DB
+	//GET animals and bodyparts
 	componentDidMount() {
 		const url = 'http://luupeli-backend.herokuapp.com/api/bones/' + this.state.boneId
 		axios.get(url)
@@ -45,6 +50,24 @@ class UpdateBone extends React.Component {
 					})
 				}
 				this.setState({ images: boneImages })
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+			
+		axios.get('http://luupeli-backend.herokuapp.com/api/animals/')
+			.then((response) => {
+				var animals = response.data
+				this.setState({ animals: animals })
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+			
+		axios.get('http://luupeli-backend.herokuapp.com/api/bodyparts/')
+			.then((response) => {
+				var bodyparts = response.data
+				this.setState({ bodyparts: bodyparts })
 			})
 			.catch((error) => {
 				console.log(error)
@@ -71,11 +94,32 @@ class UpdateBone extends React.Component {
 	}
 	
 	handleSubmit(event) {
+		const url = "http://luupeli-backend.herokuapp.com/api/bones/" + this.state.boneId
+		const animalObj = this.state.animals.filter((animal) => animal.name === this.state.animal)
+		console.log(animalObj)
+		const bodypartObj = this.state.bodyparts.filter((bodypart) => bodypart.name === this.state.bodypart)
+		console.log(bodypartObj)
+		axios.put(url, {
+			nameLatin: this.state.nameLatin,
+			name: this.state.name,
+			animal: animalObj,
+			bodypart: bodypartObj
+		})
+		.then((response) => {
+			console.log(response)
+		})
+		.catch((error) => {
+			console.log(error)
+		})
+		this.setState({ submitted: true })
+	}
+	
+	handleDelete(event) {
 		//TODO
 	}
 	
 	//When user changes image difficulty in form, reflect that change in state.
-	//i: image index in list of images
+	//i: index of the image where difficulty was changed
 	handleFileChange(i, event) {
 		const modifiedList = this.state.images
 		modifiedList[i].difficulty = event.target.value
@@ -83,10 +127,15 @@ class UpdateBone extends React.Component {
 	}
 	
 	render() {
+		if (this.state.submitted) {
+			return (
+				<Redirect to="/listing" />
+			)
+		} else {
 		return (
 		<div className="App">
 		<Link to='/listing'><button className="btn btn-default pull-right">Takaisin listaukseen</button></Link><br/>
-			<form method="POST" action="/submit" onSubmit={this.handleSubmit}>
+			<form onSubmit={this.handleSubmit}>
 			
 				<div className="form-group has-feedback">
 					<label className="pull-left">Virallinen nimi </label>
@@ -126,12 +175,13 @@ class UpdateBone extends React.Component {
 				</ul>
 				
 				<div className="btn-toolbar">
-					<input type="submit" name="save" value="Tallenna muutokset" className="btn btn-info pull-right" />
-					<input type="submit" name="delete" value="Poista luu" className="btn btn-danger pull-right" />
+					<button type="submit" className="btn btn-info pull-right">Tallenna muutokset</button>
+					<button type="button" onClick={this.handleDelete} className="btn btn-danger pull-right">Poista luu</button>
 				</div>
 			</form>
 		</div>
 	)
+}
 }
 }
 
