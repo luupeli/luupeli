@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import axios from 'axios'
+import WGMessage from '../games/writinggame/WGMessage'
 
 class UpdateBone extends React.Component {
 	
@@ -44,6 +45,18 @@ class UpdateBone extends React.Component {
 	//GET animals and bodyparts.
 	componentDidMount() {
 		const url = 'http://luupeli-backend.herokuapp.com/api/bones/' + this.state.boneId
+		/*axios.get(url)
+		.then((response) => {
+			this.setState({ nameLatin: response.data.nameLatin,
+				name: response.data.name,
+				animal: response.data.animal.name,
+				bodypart: response.data.bodypart.name
+		})
+		})
+		.catch((error) => {
+			console.log(error)
+		})*/
+		
 		axios.get(url)
 			.then((response) => {
 				console.log(response)
@@ -101,6 +114,7 @@ class UpdateBone extends React.Component {
 	//Send updated values from this.state to DB.
 	//Set this.state.submitted to true in preparation for redirect to listing.
 	handleSubmit(event) {
+		event.preventDefault()
 		const url = "http://luupeli-backend.herokuapp.com/api/bones/" + this.state.boneId
 		const animalObj = this.state.animals.filter((animal) => animal.name === this.state.animal)
 		console.log(animalObj)
@@ -109,8 +123,8 @@ class UpdateBone extends React.Component {
 		axios.put(url, {
 			nameLatin: this.state.nameLatin,
 			name: this.state.name,
-			animal: animalObj,
-			bodypart: bodypartObj
+			animal: animalObj[0].id,
+			bodypart: bodypartObj[0].id
 		})
 		.then((response) => {
 			console.log(response)
@@ -118,20 +132,23 @@ class UpdateBone extends React.Component {
 		.catch((error) => {
 			console.log(error)
 		})
-		this.setState({ submitted: true })
+		this.wgmessage.mountTimer()
+		this.wgmessage.setMessage('Muutokset tallennettu!')
 	}
 	
 	//Delete this bone from DB.
 	//Set this.state.submitted to true in preparation for redirect to listing.
 	handleDelete(event) {
-		console.log("handling delete")
 		const url = "http://luupeli-backend.herokuapp.com/api/bones/" + this.state.boneId
-		axios.delete(url)
+		console.log(url)
+		axios.delete(url, {id: this.state.boneId})
+		.then((response) => {
+			console.log(response)
+		})
 		.catch((error) => {
 			console.log(error)
 		})
 		this.setState({ submitted: true })
-		console.log("delete handled")
 	}
 	
 	//When user changes image difficulty in form, reflect that change in state.
@@ -158,9 +175,13 @@ class UpdateBone extends React.Component {
 			return (
 				<Redirect to="/listing" />
 			)
-		} else {
+		}
+		
 		return (
 		<div className="App">
+		<div>
+			<WGMessage ref={instance => this.wgmessage = instance} />
+		</div>
 		<Link to='/listing'><button className="btn btn-default pull-right">Takaisin listaukseen</button></Link><br/>
 			<form onSubmit={this.handleSubmit}>
 			
@@ -217,7 +238,7 @@ class UpdateBone extends React.Component {
 			</form>
 		</div>
 	)
-}
+
 }
 }
 

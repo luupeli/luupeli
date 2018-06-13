@@ -1,5 +1,6 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
+import axios from 'axios'
 
 //Creates a text input with label text and feedback symbol
 const TextInputWithFeedback = (props) => {
@@ -52,24 +53,52 @@ class AddBone extends React.Component {
 		super(props);
 
 		this.state = {
+			submitted: false,
 			nameLatin: "",
 			name: "",
-			animal: "",
-			bodypart: "",
-			files: [
+			animal: "koira",
+			bodypart: "eturaaja",
+			newImages: [
 			{
 				filename: "",
-				difficulty: "easy"
+				difficulty: 1
 				}
-			]
+			],
+			animals: [],
+			bodyparts: []
 		};
 
 		this.handleClick = this.handleClick.bind(this)
 		this.handleChange = this.handleChange.bind(this)
+		this.handleSubmit = this.handleSubmit.bind(this)
+		this.handleNewFileChange = this.handleNewFileChange.bind(this)
+	}
+	
+	//GET animals and bodyparts
+	componentDidMount() {
+		axios.get('http://luupeli-backend.herokuapp.com/api/animals/')
+			.then((response) => {
+				var animals = response.data
+				console.log(response.data)
+				this.setState({ animals: animals })
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+			
+		axios.get('http://luupeli-backend.herokuapp.com/api/bodyparts/')
+			.then((response) => {
+				var bodyparts = response.data
+				console.log(response.data)
+				this.setState({ bodyparts: bodyparts })
+			})
+			.catch((error) => {
+				console.log(error)
+			})
 	}
 	
 	handleClick(event) {
-		const expandList = this.state.files.concat({filename: "", difficulty: "easy"})
+		const expandList = this.state.files.concat({filename: "", difficulty: 1})
 		this.setState({ files: expandList})
 	}
 	
@@ -77,37 +106,89 @@ class AddBone extends React.Component {
 		this.setState({ [event.target.name]: event.target.value })
 	}
 	
+	handleNewFileChange(i, event) {
+		const modifiedList = this.state.newImages
+		modifiedList[i].difficulty = event.target.value
+		this.setState({ newImages: modifiedList })
+	}
+	
+	handleSubmit(event) {
+		event.preventDefault()
+		const url = "http://luupeli-backend.herokuapp.com/api/bones/"
+		const animalObj = this.state.animals.filter((animal) => animal.name === this.state.animal)
+		console.log(this.state.animal)
+		console.log(animalObj)
+		const bodypartObj = this.state.bodyparts.filter((bodypart) => bodypart.name === this.state.bodypart)
+		console.log(bodypartObj)
+		axios.post(url, {
+			nameLatin: this.state.nameLatin,
+			name: this.state.name,
+			animal: animalObj[0].id,
+			bodypart: bodypartObj[0].id
+		})
+		.then((response) => {
+			console.log(response)
+		})
+		.catch((error) => {
+			console.log(error)
+		})
+		this.setState({ submitted: true })
+	}
+	
 	render() {
+		if (this.state.submitted) {
+			return (
+				<Redirect to="/listing" />
+			)
+		}
+		
 		return (
-		<div className="App">
-		<Link to='/listing'><button className="btn btn-default pull-right">Takaisin listaukseen</button></Link><br/>
-			<form method="POST" action="/submit">
-				<TextInputWithFeedback label="Virallinen nimi" name="nameLatin"/>
-				<TextInputWithoutFeedback label="Suomenkielinen nimi" name="name"/>
-				<DropdownInput label="Eläin" name="animal" values={[['ca', 'Koira'], ['fe', 'Kissa'], ['eq', 'Hevonen'], ['bo', 'Nauta']]}/>
-				<DropdownInput label="Ruumiinosa" name="bodypart" values={[['frontleg', 'Eturaaja'], ['backleg', 'Takaraaja'], ['body', 'Vartalo'], ['head', 'Pää']]}/>
-
-				<label className="pull-left">Kuvat</label>
-				<ul className="list-group">
-				{this.state.files.map(file => <li key={file.id} className="list-group-item clearfix">
-				<input type="file" accept="image/x-png,image/jpeg" id="boneImage"/>
-				<select id="difficulty" className="form-control">
-				{file.difficulty === "easy" ? 
-					<option value="easy" selected="selected">Helppo</option> : 
-					<option value="easy">Helppo</option>
-				}
-				{file.difficulty === "hard" ?
-					<option value="hard" selected="selected">Vaikea</option> :
-					<option value="hard">Vaikea</option>
-				}
-				</select>
-				</li>)}
-				<li className="list-group-item clearfix"><button type="button" className="btn btn-default pull-right" onClick={this.handleClick}>Lisää uusi kuva</button></li>
-				</ul>
-				<input type="submit" value="Tallenna" className="btn btn-info pull-right" />
-			</form>
-		</div>
-	)
+			<div className="App">
+			<Link to='/listing'><button className="btn btn-default pull-right">Takaisin listaukseen</button></Link><br/>
+				<form onSubmit={this.handleSubmit}>
+			
+					<div className="form-group has-feedback">
+						<label className="pull-left">Virallinen nimi </label>
+						<input type="text" name="nameLatin" value={this.state.nameLatin} className="form-control" onChange={this.handleChange} /><span className="glyphicon glyphicon-asterisk form-control-feedback"></span>
+					</div>
+				
+					<label className="pull-left">Suomenkielinen nimi</label>
+					<input type="text" name="name" value={this.state.name} className="form-control" onChange={this.handleChange}/>
+				
+					<label className="pull-left">Eläin</label>
+					<select name="animal" className="form-control" value={this.state.animal} onChange={this.handleChange}>
+						<option value="koira">Koira</option>
+						<option value="kissa">Kissa</option>
+						<option value="hevonen">Hevonen</option>
+						<option value="nauta">Nauta</option>
+					</select>
+				
+					<label className="pull-left">Ruumiinosa</label>
+					<select name="bodypart" className="form-control" value={this.state.bodypart} onChange={this.handleChange}>
+						<option value="eturaaja">Eturaaja</option>
+						<option value="takaraaja">Takaraaja</option>
+						<option value="keho">Vartalo</option>
+						<option value="pää">Pää</option>
+					</select>
+				
+					<ul className="list-group">
+						{this.state.newImages.map((file, i) => <li key={file.id} className="list-group-item clearfix">
+						<input type="file" accept="image/x-png,image/jpeg" id="boneImage" ref={input => {this.fileInput = input}}/>
+						<select name="difficulty" className="form-control" value={this.state.newImages[i].difficulty} onChange={this.handleNewFileChange.bind(this, i)}>
+							<option value={1}>Helppo</option>
+							<option value={100}>Vaikea</option>
+						</select>
+						<button type="button" className="btn btn-danger pull-right">Poista</button>
+						</li>)}
+						<li className="list-group-item clearfix"><button type="button" className="btn btn-default pull-right" onClick={this.handleAddImage}>Lisää uusi kuva</button></li>
+					</ul>
+				
+					<div className="btn-toolbar">
+						<button type="submit" className="btn btn-info pull-right">Lisää luu</button>
+					</div>
+				</form>
+			</div>
+		)
 }
 }
 
