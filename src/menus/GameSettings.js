@@ -12,42 +12,59 @@ class GameSettings extends React.Component {
 			bodyParts: [
 				{
 					checked: false,
-					id: "5b169f116dc0ce0014e657d3"
+					id: "5b169f116dc0ce0014e657d3",
+					name: "pää"
+					
 				},
 				{
 					checked: false,
-					id: "5b169f166dc0ce0014e657d4"
+					id: "5b169f166dc0ce0014e657d4",
+					name: "keho"
+
 				},
 				{
 					checked: false,
-					id: "5b169f166dc0ce0014e657d5"
+					id: "5b169f166dc0ce0014e657d5",
+					name: "eturaaja"
+
 				},
 				{
 					checked: false,
-					id: "5b169f166dc0ce0014e657d"
+					id: "5b169f166dc0ce0014e657d",
+					name: "takaraaja"
 				}
 			],
 			animals: [
 				{
 					selected: true,
-					id: "5b169ea96dc0ce0014e657cf"
+					id: "5b169ea96dc0ce0014e657cf",
+					name: "koira"
 				},
 				{
 					selected: false,
-					id: "5b169eb66dc0ce0014e657d0"
+					id: "5b169eb66dc0ce0014e657d0",
+					name: "kissa"
 				},
 				{
 					selected: false,
-					id: "5b169eba6dc0ce0014e657d1"
+					id: "5b169eba6dc0ce0014e657d1",
+					name: "nauta"
 				},
 				{
 					selected: false,
-					id: "5b169ebe6dc0ce0014e657d2"
+					id: "5b169ebe6dc0ce0014e657d2",
+					name: "hevonen"
 				}
 			],
 			redirect: false,
 			testiviesti: 'Lällälläääääh',
 			allImages: [],
+			allAnimals: [],
+			allBodyparts: [
+					//{id: "1", name: "xyz"}
+
+				   ],
+				   
 			chosenBodypartIds: [],
 			images:  [
 				{
@@ -82,6 +99,22 @@ class GameSettings extends React.Component {
 		this.toggleCheck = this.toggleCheck.bind(this)
 		this.atLeastOneBodyPartIsChecked = this.atLeastOneBodyPartIsChecked.bind(this)
 		this.initializeGame = this.initializeGame.bind(this)
+
+		axios.get("http://luupeli-backend.herokuapp.com/api/animals")
+		.then(response => {
+			this.setState({ allAnimals: response.data })
+			console.log(this.state.allAnimals)
+			console.log(this.state.allAnimals[1]);
+		
+		})
+
+		axios.get("http://luupeli-backend.herokuapp.com/api/bodyparts")
+		.then(response => {
+			this.setState({ allBodyparts: response.data })
+			console.log(this.state.allBodyparts)
+			console.log(this.state.allBodyparts[1]);
+		
+		})
 	}
 
 	changeAnimal(event) {
@@ -121,25 +154,63 @@ class GameSettings extends React.Component {
 
 	//this starts the game
 	initializeGame() {
+
+
+		
+
+	//	if (this.state.allBodyparts.length>0 && this.state.allAnimals.length>0) 
 		axios.get("http://luupeli-backend.herokuapp.com/api/images")
 			.then(response => {
 				this.setState({ allImages: response.data })
 
 				//const pics = this.state.allImages.filter(image => image.bone.name === "lantioluu")
 				var chosenAnimalId = 0
+
+				let chosenAnimalName = ''
+				let animalIndex=0;
+
 				let chosenBodypartIds = []
+				let chosenBodypartNames = []
 				//pics animal
 				this.state.animals.map(function(animal, i) {
 					if (animal.selected) {
 						chosenAnimalId = animal.id
-					}
+						chosenAnimalName = animal.name
+					
+				  }
 				})
+				//console.log('eläimeksi valittu: '+animal.name);
+				console.log(this.state.allAnimals)
+				for(var j = 0; j < this.state.allAnimals.length;j++){
+					if (this.state.allAnimals[j].name===chosenAnimalName) {
+					  console.log("löytyi!");
+					  animalIndex=j;
+					}
+			   }
+
 				//pics bodypart id's
 				this.state.bodyParts.map(function(bodypart, i) {
 					if (bodypart.checked) {
-						chosenBodypartIds.push(bodypart.id)
+						
+
+						chosenBodypartNames.push(bodypart.name)
+						 console.log('esi-pushattiin '+bodypart.name)
 					}
 				})
+				
+				console.log(chosenBodypartNames)
+
+		for (var key in chosenBodypartNames) {
+            console.log('l-loop, key '+key )
+				for(var subkey in this.state.allBodyparts){
+					console.log('k-loop, subkey: '+subkey)
+					if (chosenBodypartNames[key]===this.state.allBodyparts[subkey].name) {
+					  console.log("osa löytyi!");
+					  chosenBodypartIds.push(this.state.allBodyparts[subkey].id)
+					  console.log('pushattiin '+chosenBodypartNames[key]+' id:llä '+this.state.allBodyparts[subkey].id)
+					}
+			   }
+			}
 				console.log(chosenBodypartIds)
 				this.setState({ chosenBodypartIds })
 				console.log(this.state.chosenBodypartIds)
@@ -147,8 +218,16 @@ class GameSettings extends React.Component {
 				console.log(this.state.allImages)
 
 				//filters specific animal
-				const apics = this.state.allImages.filter(image => image.bone.animal === chosenAnimalId)
+				const apics = this.state.allImages.filter(image => image.bone.animal === this.state.allAnimals[animalIndex].id)
 				//filters bodyparts, doesn't work properly currently
+
+				var filtered = [1, 2, 3, 4].filter(
+					function(e) {
+					  return this.indexOf(e) < 0;
+					},
+					[2, 4]
+				  );
+
 				const pics = apics.filter(apic => apic.bone.bodypart === this.state.bodyParts[1].id)
 				//if criteria doesn't fulfill the game won't launch
 				if (pics.length === 0) {
@@ -159,7 +238,10 @@ class GameSettings extends React.Component {
 					this.setState({ redirect: true })
 				}
 			})
-	}
+
+		
+	
+}
 
 	render() {
 		if (this.state.redirect) {
@@ -168,7 +250,9 @@ class GameSettings extends React.Component {
 					pathname: '/writinggame',
 					state: {
 						testiviesti: this.state.testiviesti,
-						images: this.state.images
+						images: this.state.images,
+						allBodyparts: this.state.allBodyparts,
+						allAnimals: this.state.allAnimals
 					} 
 				 }} />
 			)

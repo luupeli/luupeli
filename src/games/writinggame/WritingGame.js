@@ -11,10 +11,14 @@ class WritingGame extends React.Component {
       value: '',
       index: 0,
       correct: 0,
-      images: props.location.state.images
+      images: props.location.state.images,
+      allBodyparts: props.location.state.allBodyparts,
+      allAnimals: props.location.state.allAnimals
     };
     console.log(this.state.testiviesti)
     console.log(this.state.images)
+    console.log(this.state.allBodyparts)
+    console.log(this.state.allAnimals)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
@@ -34,12 +38,12 @@ class WritingGame extends React.Component {
 
   //Checks if the answer is correct, increments correct counter if needed and shows&hides the proper message after that.
   checkCorrectness() {
-    if (this.state.images[this.state.index].url.toLowerCase() === this.state.value.toLowerCase()) {
+    if (this.state.images[this.state.index].bone.nameLatin.toLowerCase() === this.state.value.toLowerCase()) {
       //copypaste..
       this.wgmessage.setMessage('Oikein!')
       this.setState({ correct: this.state.correct + 1 })
     } else {
-      this.wgmessage.setMessage('Väärin! Oikea vastaus oli ' + this.state.images[this.state.index].url.toLowerCase())
+      this.wgmessage.setMessage('Väärin! Oikea vastaus oli ' + this.state.images[this.state.index].bone.nameLatin.toLowerCase())
     }
   }
   
@@ -75,7 +79,18 @@ class WritingGame extends React.Component {
 				}} />
 			)
 		}
-		
+    let bp = this.state.images[this.state.index].bone.bodypart;
+    let bpname="jotain";   
+    
+    for(var i = 0; i < this.state.allBodyparts.length;i++){
+     if (this.state.allBodyparts[i].id===bp) {
+       console.log("löytyi!");
+       bpname=this.state.allBodyparts[i].name;
+     }
+  
+     }
+ 
+  
     return (
       <div className="App">
       <p>{this.state.testiviesti}</p>
@@ -85,7 +100,7 @@ class WritingGame extends React.Component {
           </div>
           <div class="row">
             <div class="col-md-12">
-              <img id="question-image" alt='Pelottava luuranko' src={this.state.images[this.state.index].url} /></div>
+              <img id="question-image" alt={this.state.images[this.state.index].bone.nameLatin+' osasta '+bpname+' kuvan url: http://localhost:3000/'+this.state.images[this.state.index].url} src={'http://localhost:3000/'+this.state.images[this.state.index].url} /></div>
             </div>
           <div className="title">
             <p>Syötä luun nimi</p>
