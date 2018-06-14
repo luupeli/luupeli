@@ -44,6 +44,10 @@ class WGMessage extends React.Component {
 			this.setState({ style: "alert alert-success" })
 		}
 	}
+	
+	setStyle(style) {
+		this.setState({ style: style })
+	}
 
 	render() {
 		return (
