@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import axios from 'axios'
+import WGMessage from '../games/writinggame/WGMessage'
 
 //Creates a text input with label text and feedback symbol
 const TextInputWithFeedback = (props) => {
@@ -72,6 +73,7 @@ class AddBone extends React.Component {
 		this.handleChange = this.handleChange.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.handleNewFileChange = this.handleNewFileChange.bind(this)
+		this.resetFields = this.resetFields.bind(this)
 	}
 	
 	//GET animals and bodyparts
@@ -132,7 +134,24 @@ class AddBone extends React.Component {
 		.catch((error) => {
 			console.log(error)
 		})
-		this.setState({ submitted: true })
+		this.wgmessage.mountTimer()
+		this.wgmessage.setMessage('Uusi luu lisätty! Voit nyt lisätä toisenkin luun tai palata nappulasta takaisin listausnäkymään.')
+		this.wgmessage.setStyle("alert alert-success")
+		this.resetFields()
+	}
+	
+	resetFields() {
+		this.setState({ nameLatin: "",
+			name: "",
+			animal: "koira",
+			bodypart: "eturaaja",
+			newImages: [
+			{
+				filename: "",
+				difficulty: 1
+				}
+			]
+			})
 	}
 	
 	render() {
@@ -144,6 +163,9 @@ class AddBone extends React.Component {
 		
 		return (
 			<div className="App">
+			<div>
+				<WGMessage ref={instance => this.wgmessage = instance} />
+			</div>
 			<Link to='/listing'><button className="btn btn-default pull-right">Takaisin listaukseen</button></Link><br/>
 				<form onSubmit={this.handleSubmit}>
 			

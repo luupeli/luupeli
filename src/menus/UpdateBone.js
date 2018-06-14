@@ -134,6 +134,7 @@ class UpdateBone extends React.Component {
 		})
 		this.wgmessage.mountTimer()
 		this.wgmessage.setMessage('Muutokset tallennettu!')
+		this.wgmessage.setStyle("alert alert-success")
 	}
 	
 	//Delete this bone from DB.
@@ -148,7 +149,6 @@ class UpdateBone extends React.Component {
 		.catch((error) => {
 			console.log(error)
 		})
-		this.setState({ submitted: true })
 	}
 	
 	//When user changes image difficulty in form, reflect that change in state.
