@@ -3,10 +3,21 @@ import { Redirect, Link } from 'react-router-dom'
 import WGMessage from '../games/writinggame/WGMessage'
 import axios from 'axios'
 
+/**
+ * GameSettings is the menu directly prior to a WritingGame session.
+ * A game session will be based on the selections made by user in the GameSettings menu.
+ * Quite a lot of objects/arrays will be passed on using this.state.
+ */
 class GameSettings extends React.Component {
 
 	constructor(props) {
 		super(props);
+
+		// The hardcoded database id's for bodyparts, animals etc. should
+		// be considered as a temporary solution only. In the final product
+		// bodyparts, animals etc. should be referenced by their actual
+		// names, with the actual id's fetched as required using database
+		// queries.
 
 		this.state = {
 			bodyParts: [
@@ -59,13 +70,9 @@ class GameSettings extends React.Component {
 			redirect: false,
 			testiviesti: 'Lällälläääääh',
 			allImages: [],
-			allAnimals: [],
-			allBodyparts: [
-					//{id: "1", name: "xyz"}
-
-				   ],
-				   
-			chosenBodypartIds: [],
+			allAnimals: [],        // used to store an array of all known animals
+			allBodyparts: [],      // used to store an array of all known bodyparts
+			chosenBodypartIds: [], // used to store database id's for the user chosen bodyparts (for a game session)
 			images:  [
 				{
 				  id: 1,
@@ -100,7 +107,7 @@ class GameSettings extends React.Component {
 		this.atLeastOneBodyPartIsChecked = this.atLeastOneBodyPartIsChecked.bind(this)
 		this.initializeGame = this.initializeGame.bind(this)
 
-		axios.get("http://luupeli-backend.herokuapp.com/api/animals")
+		axios.get("http://luupeli-backend.herokuapp.com/api/animals")      // here we fill the allAnimals array with all the animals found in the database
 		.then(response => {
 			this.setState({ allAnimals: response.data })
 			console.log(this.state.allAnimals)
@@ -108,7 +115,7 @@ class GameSettings extends React.Component {
 		
 		})
 
-		axios.get("http://luupeli-backend.herokuapp.com/api/bodyparts")
+		axios.get("http://luupeli-backend.herokuapp.com/api/bodyparts")    // here we fill the allBodyparts array with all the bodyparts found in the database
 		.then(response => {
 			this.setState({ allBodyparts: response.data })
 			console.log(this.state.allBodyparts)
@@ -163,9 +170,7 @@ class GameSettings extends React.Component {
 			.then(response => {
 				this.setState({ allImages: response.data })
 
-				//const pics = this.state.allImages.filter(image => image.bone.name === "lantioluu")
-				var chosenAnimalId = 0
-
+				
 				let chosenAnimalName = ''
 				let animalIndex=0;
 
@@ -174,61 +179,70 @@ class GameSettings extends React.Component {
 				//pics animal
 				this.state.animals.map(function(animal, i) {
 					if (animal.selected) {
-						chosenAnimalId = animal.id
+						//chosenAnimalId = animal.id
+					    // The above has been commented out in order to avoid reliance to the hardcoded database id's.
+						// The actual id for the animal will be quaried in the for-loop below.
 						chosenAnimalName = animal.name
 					
 				  }
 				})
-				//console.log('eläimeksi valittu: '+animal.name);
+
 				console.log(this.state.allAnimals)
-				for(var j = 0; j < this.state.allAnimals.length;j++){
-					if (this.state.allAnimals[j].name===chosenAnimalName) {
-					  console.log("löytyi!");
-					  animalIndex=j;
+				
+
+				// here we query the database id for the animal chosen by the user
+				for (var key in this.state.allAnimals) { 
+					if (this.state.allAnimals[key].name===chosenAnimalName) {
+					  console.log("animal id löytyi!");
+					  animalIndex=key;
 					}
 			   }
 
-				//pics bodypart id's
+				// here we store the user chosen bodypart names as an array
 				this.state.bodyParts.map(function(bodypart, i) {
 					if (bodypart.checked) {
-						
-
 						chosenBodypartNames.push(bodypart.name)
-						 console.log('esi-pushattiin '+bodypart.name)
+   					 console.log('chosenBodypartNamesiin pushattiin '+bodypart.name)
 					}
 				})
 				
 				console.log(chosenBodypartNames)
 
-		for (var key in chosenBodypartNames) {
+
+		 // Here we convert the user chosen bodypart names into an array of bodypart database id's
+		 //  Not pretty, but it does the job... :)
+  		for (var key in chosenBodypartNames) {
             console.log('l-loop, key '+key )
 				for(var subkey in this.state.allBodyparts){
 					console.log('k-loop, subkey: '+subkey)
 					if (chosenBodypartNames[key]===this.state.allBodyparts[subkey].name) {
-					  console.log("osa löytyi!");
+					  console.log("bodypart matched!");
 					  chosenBodypartIds.push(this.state.allBodyparts[subkey].id)
-					  console.log('pushattiin '+chosenBodypartNames[key]+' id:llä '+this.state.allBodyparts[subkey].id)
+					  console.log('pushattiin chosenBodypart nimeltä '+chosenBodypartNames[key]+' id-array:hyn id:llä '+this.state.allBodyparts[subkey].id)
 					}
 			   }
 			}
 				console.log(chosenBodypartIds)
-				this.setState({ chosenBodypartIds })
 				console.log(this.state.chosenBodypartIds)
 				console.log(chosenAnimalId)
 				console.log(this.state.allImages)
 
-				//filters specific animal
+				this.setState({ chosenBodypartIds })
+				
+				//filters the image array into containing only the images of the user chosen animal
+				//NOTE: While the use of filter here is very clever, I think the number of images 
+				//should be actually matched with the number of questions chosen by the user.
+				//In a situation where there's not enough distinct bones to fill up a questionnaire,
+				//then bones should be repeated (using alt images when possible).
+				//
+				//But for the time being, the implementation here is more than adequate.
 				const apics = this.state.allImages.filter(image => image.bone.animal === this.state.allAnimals[animalIndex].id)
+				
 				//filters bodyparts, doesn't work properly currently
-
-				var filtered = [1, 2, 3, 4].filter(
-					function(e) {
-					  return this.indexOf(e) < 0;
-					},
-					[2, 4]
-				  );
-
+				//WILL BE FIXED SOON!
 				const pics = apics.filter(apic => apic.bone.bodypart === this.state.bodyParts[1].id)
+				
+				
 				//if criteria doesn't fulfill the game won't launch
 				if (pics.length === 0) {
 					this.wgmessage.mountTimer()
@@ -251,8 +265,8 @@ class GameSettings extends React.Component {
 					state: {
 						testiviesti: this.state.testiviesti,
 						images: this.state.images,
-						allBodyparts: this.state.allBodyparts,
-						allAnimals: this.state.allAnimals
+						allBodyparts: this.state.allBodyparts,   // Note here that the WritingGame will be provided with the full arrays of both all the bodyparts
+						allAnimals: this.state.allAnimals        // ... and all the animals known in the database.
 					} 
 				 }} />
 			)
