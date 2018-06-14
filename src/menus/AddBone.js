@@ -74,6 +74,7 @@ class AddBone extends React.Component {
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.handleNewFileChange = this.handleNewFileChange.bind(this)
 		this.resetFields = this.resetFields.bind(this)
+		this.validateNameLatin = this.validateNameLatin.bind(this)
 	}
 	
 	//GET animals and bodyparts
@@ -116,6 +117,11 @@ class AddBone extends React.Component {
 	
 	handleSubmit(event) {
 		event.preventDefault()
+		
+		if (!this.validateNameLatin()) {
+			return
+		}
+		
 		const url = "http://luupeli-backend.herokuapp.com/api/bones/"
 		const animalObj = this.state.animals.filter((animal) => animal.name === this.state.animal)
 		console.log(this.state.animal)
@@ -138,6 +144,16 @@ class AddBone extends React.Component {
 		this.wgmessage.setMessage('Uusi luu lisätty! Voit nyt lisätä toisenkin luun tai palata nappulasta takaisin listausnäkymään.')
 		this.wgmessage.setStyle("alert alert-success")
 		this.resetFields()
+	}
+	
+	validateNameLatin() {
+		if (this.state.nameLatin.length >= 1) {
+			return true
+		}
+		this.wgmessage.mountTimer()
+		this.wgmessage.setMessage('Anna latinankielinen nimi.')
+		this.wgmessage.setStyle("alert alert-danger")
+		return false
 	}
 	
 	resetFields() {
