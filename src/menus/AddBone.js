@@ -59,7 +59,12 @@ class AddBone extends React.Component {
 			name: "",
 			animal: "koira",
 			bodypart: "eturaaja",
-			newImages: [],
+			newImages: [
+			{
+				filename: "",
+				difficulty: 1
+				}
+			],
 			animals: [],
 			bodyparts: []
 		};
@@ -70,10 +75,9 @@ class AddBone extends React.Component {
 		this.handleNewFileChange = this.handleNewFileChange.bind(this)
 		this.resetFields = this.resetFields.bind(this)
 		this.validateNameLatin = this.validateNameLatin.bind(this)
-		this.handleAddImage = this.handleAddImage.bind(this)
 	}
 	
-	//GET animals and bodyparts and store them in state for later use
+	//GET animals and bodyparts
 	componentDidMount() {
 		axios.get('http://luupeli-backend.herokuapp.com/api/animals/')
 			.then((response) => {
@@ -103,13 +107,6 @@ class AddBone extends React.Component {
 	
 	handleChange(event) {
 		this.setState({ [event.target.name]: event.target.value })
-	}
-	
-	//Adds a new empty file to list of images when user clicks a button to add more images.
-	//File list is used to dynamically render correct amount of file input elements in the update form
-	handleAddImage(event) {
-		const expandList = this.state.newImages.concat({url: "", difficulty: 1})
-		this.setState({ newImages: expandList})
 	}
 	
 	handleNewFileChange(i, event) {

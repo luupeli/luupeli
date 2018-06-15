@@ -7,7 +7,48 @@ class BoneListing extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			bones:  []
+			bones:  [
+        {
+          id: 1,
+          boneId: 1,
+          nameLatin: "Lorem ipsum", 
+          name: "luupää",
+          animal: "eq",
+          bodypart: "frontleg"
+        },
+        {
+          id: 2,
+          boneId: 2,
+          nameLatin: "dolor sit", 
+          name: "luunkova",
+          animal: "eq",
+          bodypart: "backleg"
+        },
+        {
+          id: 3,
+          boneId: 3,
+          nameLatin: "amet", 
+          name: "luuvalo",
+          animal: "fe",
+          bodypart: "head"
+        },
+        {
+          id: 4,
+          boneId: 4,
+          nameLatin: "consectetur", 
+          name: "luunappi",
+          animal: "bo",
+          bodypart: "body"
+        },
+        {
+          id: 5,
+          boneId: 5,
+          nameLatin: "adipiscing elit", 
+          name: "luuvitonen",
+          animal: "ca",
+          bodypart: "body"
+        }
+      ]
 		}
 	}
 	
@@ -52,7 +93,7 @@ class BoneListing extends React.Component {
 								bodypart: bone.bodypart
 							}
 						}}>
-							<button type="button" className="list-group-item list-group-item-action">{bone.nameLatin} ({bone.animal})</button>
+							<button type="button" className="list-group-item list-group-item-action">{bone.nameLatin}</button>
 						</Link>)}
 				</div>
 				</div>
