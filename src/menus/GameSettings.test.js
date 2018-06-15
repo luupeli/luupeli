@@ -10,7 +10,7 @@ describe("GameSettings", () => {
         const settings = shallow(<GameSettings />)
         return settings;
     }
-
+/*
     it("always renders a div", () => {
         const sttngs = settings()
         const divs = sttngs.find("div")
@@ -62,7 +62,7 @@ describe("GameSettings", () => {
 
     it("changes variable redirect to 'true' if all body parts have been selected", () => {
         changeBooleanValueInArrayBodyParts(3)
-    })
+    })*/
 
     it("doesn't change variable redirect to 'true' if no body part has been selected", () => {
         /*const sttngs = settings()
@@ -74,7 +74,7 @@ describe("GameSettings", () => {
 
     //used for changing the values in the array to 'true'. Argument 0 = change index 0,
     //argument 2 = change indices 0, 1 and 2...
-    function changeBooleanValueInArrayBodyParts() {
+   /* function changeBooleanValueInArrayBodyParts() {
         const sttngs = settings()
         var bodyParts = sttngs.state().bodyParts
 
@@ -86,6 +86,6 @@ describe("GameSettings", () => {
         sttngs.setState({ bodyParts })
         sttngs.instance().atLeastOneBodyPartIsChecked()
         expect(sttngs.state().redirect).toBe(true)
-    }
+    }*/
 
 })
