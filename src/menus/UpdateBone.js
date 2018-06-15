@@ -15,21 +15,8 @@ class UpdateBone extends React.Component {
 			name: this.props.location.state.name,
 			animal: this.props.location.state.animal,
 			bodypart: this.props.location.state.bodypart,
-			images: [
-			{
-				url: "",
-				difficulty: "100"
-			},
-			{
-				url: "",
-				difficulty: "1"
-			}
-			],
-			newImages: [
-			{
-				url: "",
-				difficulty: "100"
-			}],
+			images: [],
+			newImages: [],
 			animals: [],
 			bodyparts: []
 		};
@@ -42,20 +29,9 @@ class UpdateBone extends React.Component {
 	}
 	
 	//GET images related to this bone from DB.
-	//GET animals and bodyparts.
+	//GET animals and bodyparts and store them in state for later use.
 	componentDidMount() {
 		const url = 'http://luupeli-backend.herokuapp.com/api/bones/' + this.state.boneId
-		/*axios.get(url)
-		.then((response) => {
-			this.setState({ nameLatin: response.data.nameLatin,
-				name: response.data.name,
-				animal: response.data.animal.name,
-				bodypart: response.data.bodypart.name
-		})
-		})
-		.catch((error) => {
-			console.log(error)
-		})*/
 		
 		axios.get(url)
 			.then((response) => {
@@ -140,6 +116,7 @@ class UpdateBone extends React.Component {
 	//Delete this bone from DB.
 	//Set this.state.submitted to true in preparation for redirect to listing.
 	handleDelete(event) {
+		event.preventDefault()
 		const url = "http://luupeli-backend.herokuapp.com/api/bones/" + this.state.boneId
 		console.log(url)
 		axios.delete(url, {id: this.state.boneId})
@@ -149,6 +126,7 @@ class UpdateBone extends React.Component {
 		.catch((error) => {
 			console.log(error)
 		})
+		this.setState({ submitted: true })
 	}
 	
 	//When user changes image difficulty in form, reflect that change in state.
@@ -211,7 +189,7 @@ class UpdateBone extends React.Component {
 				
 				<ul className="list-group">
 				{this.state.images.map((file, i) => <li key={file.id} className="list-group-item clearfix">
-				{file.url}
+				<span className="pull-left">{file.url}</span>
 				<select name="difficulty" className="form-control" value={this.state.images[i].difficulty} onChange={this.handleFileChange.bind(this, i)}>
 					<option value={1}>Helppo</option>
 					<option value={100}>Vaikea</option>
