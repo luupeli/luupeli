@@ -1,4 +1,0 @@
-DATABASE_URL=mongodb://luupeli:koiranluu@ds137600.mlab.com:37600/luupeli_dev
-PORT=3001
-TEST_DATABASE_URL=mongodb://luupeli:koiranluu@ds139890.mlab.com:39890/luupeli_dev_test
-TEST_PORT=3002

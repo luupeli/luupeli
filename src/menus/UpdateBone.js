@@ -15,21 +15,8 @@ class UpdateBone extends React.Component {
 			name: this.props.location.state.name,
 			animal: this.props.location.state.animal,
 			bodypart: this.props.location.state.bodypart,
-			images: [
-			{
-				url: "",
-				difficulty: "100"
-			},
-			{
-				url: "",
-				difficulty: "1"
-			}
-			],
-			newImages: [
-			{
-				url: "",
-				difficulty: "100"
-			}],
+			newImages: [],
+			images: [],
 			animals: [],
 			bodyparts: []
 		};
@@ -41,21 +28,10 @@ class UpdateBone extends React.Component {
 		this.handleDelete = this.handleDelete.bind(this)
 	}
 	
-	//GET images related to this bone from DB.
-	//GET animals and bodyparts.
+	//GET images related to this bone from DB and store them in state for rendering.
+	//GET animals and bodyparts and store them in state for later use.
 	componentDidMount() {
 		const url = 'http://luupeli-backend.herokuapp.com/api/bones/' + this.state.boneId
-		/*axios.get(url)
-		.then((response) => {
-			this.setState({ nameLatin: response.data.nameLatin,
-				name: response.data.name,
-				animal: response.data.animal.name,
-				bodypart: response.data.bodypart.name
-		})
-		})
-		.catch((error) => {
-			console.log(error)
-		})*/
 		
 		axios.get(url)
 			.then((response) => {
@@ -92,11 +68,11 @@ class UpdateBone extends React.Component {
 			})
 	}
 	
-	//Adds a new empty file to list of images when user clicks a button to add more images.
-	//File list is used to dynamically render correct amount of file input elements in the update form
+	//Adds a new "empty file" to newImages list when user clicks a button to add more images.
+	//newImages is used to dynamically render correct amount of file & difficulty input elements in the update form
 	handleAddImage(event) {
-		const expandList = this.state.images.concat({url: "", difficulty: 1})
-		this.setState({ images: expandList})
+		const expandList = this.state.newImages.concat({url: "", difficulty: 1})
+		this.setState({ newImages: expandList})
 	}
 	
 	/*TODO button to remove a file input field from form. Also remove the image selected in said input field, if it exists.
@@ -111,8 +87,9 @@ class UpdateBone extends React.Component {
 		this.setState({ [event.target.name]: event.target.value })
 	}
 	
-	//Send updated values from this.state to DB.
-	//Set this.state.submitted to true in preparation for redirect to listing.
+	//Send values from this.state to DB.
+	//Prepare a WGMessage to notify user of a successful save.
+	//TODO: prepare an error message to notify user of a failed save
 	handleSubmit(event) {
 		event.preventDefault()
 		const url = "http://luupeli-backend.herokuapp.com/api/bones/" + this.state.boneId
@@ -139,6 +116,7 @@ class UpdateBone extends React.Component {
 	
 	//Delete this bone from DB.
 	//Set this.state.submitted to true in preparation for redirect to listing.
+	//TODO: prepare a message to notify user of the success/failure of the delete.
 	handleDelete(event) {
 		const url = "http://luupeli-backend.herokuapp.com/api/bones/" + this.state.boneId
 		console.log(url)
@@ -153,6 +131,7 @@ class UpdateBone extends React.Component {
 	
 	//When user changes image difficulty in form, reflect that change in state.
 	//i: list index of the image where difficulty was changed
+	//TODO: write a generalised function to consolidate this and handleNewFileChange()
 	handleFileChange(i, event) {
 		const modifiedList = this.state.images
 		modifiedList[i].difficulty = event.target.value
@@ -161,6 +140,7 @@ class UpdateBone extends React.Component {
 	
 	//When user changes newImage difficulty in form, reflect that change in state.
 	//i: list index of the newImage where difficulty was changed
+	//TODO: write a generalised function to consolidate this and handleFileChange()
 	handleNewFileChange(i, event) {
 		const modifiedList = this.state.newImages
 		modifiedList[i].difficulty = event.target.value
@@ -168,7 +148,7 @@ class UpdateBone extends React.Component {
 	}
 	
 	
-	//If this.state.submitted is true (i.e. bone data has been updated or deleted), redirect to listing.
+	//If this.state.submitted is true (i.e. bone data has been deleted), redirect to listing.
 	//Otherwise render bone update form.
 	render() {
 		if (this.state.submitted) {
@@ -209,24 +189,35 @@ class UpdateBone extends React.Component {
 					<option value="pää">Pää</option>
 				</select>
 				
+				<span className="clearfix"><label className="pull-left">Ladatut kuvat</label></span>
 				<ul className="list-group">
 				{this.state.images.map((file, i) => <li key={file.id} className="list-group-item clearfix">
-				{file.url}
-				<select name="difficulty" className="form-control" value={this.state.images[i].difficulty} onChange={this.handleFileChange.bind(this, i)}>
-					<option value={1}>Helppo</option>
-					<option value={100}>Vaikea</option>
-				</select>
-				<button type="button" className="btn btn-danger pull-right">Poista</button>
+				<span className="pull-left">{file.url}</span><br />
+				<div className="input-group">
+					<select name="difficulty" className="form-control" value={this.state.images[i].difficulty} onChange={this.handleFileChange.bind(this, i)}>
+						<option value={1}>Helppo</option>
+						<option value={100}>Vaikea</option>
+					</select>
+					<span className="input-group-btn">
+						<button type="button" className="btn btn-danger pull-right">Poista</button>
+					</span>
+				</div>
 				</li>)}
 				</ul>
+				
+				<span className="clearfix"><label className="pull-left">Uudet kuvat</label></span>
 				<ul className="list-group">
 				{this.state.newImages.map((file, i) => <li key={file.id} className="list-group-item clearfix">
 				<input type="file" accept="image/x-png,image/jpeg" id="boneImage" ref={input => {this.fileInput = input}}/>
-				<select name="difficulty" className="form-control" value={this.state.newImages[i].difficulty} onChange={this.handleNewFileChange.bind(this, i)}>
-					<option value={1}>Helppo</option>
-					<option value={100}>Vaikea</option>
-				</select>
-				<button type="button" className="btn btn-danger pull-right">Poista</button>
+				<div className="input-group">
+					<select name="difficulty" className="form-control" value={this.state.newImages[i].difficulty} onChange={this.handleNewFileChange.bind(this, i)}>
+						<option value={1}>Helppo</option>
+						<option value={100}>Vaikea</option>
+					</select>
+					<span className="input-group-btn">
+						<button type="button" className="btn btn-danger pull-right">Poista</button>
+					</span>
+				</div>
 				</li>)}
 				<li className="list-group-item clearfix"><button type="button" className="btn btn-default pull-right" onClick={this.handleAddImage}>Lisää uusi kuva</button></li>
 				</ul>

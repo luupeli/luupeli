@@ -59,12 +59,7 @@ class AddBone extends React.Component {
 			name: "",
 			animal: "koira",
 			bodypart: "eturaaja",
-			newImages: [
-			{
-				filename: "",
-				difficulty: 1
-				}
-			],
+			newImages: [],
 			animals: [],
 			bodyparts: []
 		};
