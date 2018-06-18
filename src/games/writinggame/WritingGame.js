@@ -119,29 +119,57 @@ class WritingGame extends React.Component {
   
     return (
       <div className="App">
-      <p>{this.state.testiviesti}</p>
+        <p>{this.state.testiviesti}</p>
+        <div>
+          <div class="container">
+            <div class="row">
+              <div class="col-md-6"></div>
+              <div class="col-md-6">
+                <div class="progress">
+                  <div class="progress-bar" id="progbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" styles="width: 50%;"><p id="proglabel">{this.state.index + 1}/{this.state.images.length}</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <div class="dual-layout">
         <div class="container">
           <div>
             <WGMessage ref={instance => this.wgmessage = instance} />
           </div>
           <div class="row">
-            <div class="col-md-12">
-              <img id="question-image" alt={this.state.images[this.state.index].bone.nameLatin+' osasta '+bpname+' kuvan url: http://localhost:3000/'+this.state.images[this.state.index].url} src={'http://localhost:3000/'+this.state.images[this.state.index].url} /></div>
+            <div class="col-md-10 offset-md-1">
+              <div class="intro">
+                <img id="question-image" class="img-fluid" alt={this.state.images[this.state.index].bone.nameLatin+' osasta '+bpname+' kuvan url: http://localhost:3000/'+this.state.images[this.state.index].url} src={'http://localhost:3000/'+this.state.images[this.state.index].url} />
+              </div>
             </div>
-          <div className="title">
-            <p>Syötä luun nimi</p>
           </div>
           <div class="row">
-            <div class="col-md-12">
-              <form className="input" id='gameForm' onSubmit={this.handleSubmit}>
-                <input class="form-control" type="text" onChange={this.handleChange} />
-                <input type="submit" value="Vastaa" />
-                <p>{this.state.index + 1}/{this.state.images.length}</p>
+            <div class="col-md-10 col-lg-7 offset-md-1 offset-lg-0">
+              <h1 id="heading">{this.state.images[this.state.index].bone.name}</h1>
+            </div>
+            <div class="col-md-10 col-lg-3 offset-md-1" id="info-list">
+              <div class="toc">
+                <ul>
+                  <li>Pituus 10-20 cm</li>
+                  <li>Infoa</li>
+                  <li>Lisää infoa</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="answer-input">
+            <div class="container">
+              <div class="intro"/>
+              <form className="input" class="form-inline" id='gameForm' onSubmit={this.handleSubmit}>
+                <div class="form-group"><input class="form-control" type="text" onChange={this.handleChange} /></div>
+                <div class="form-group"><input type="submit" class="btn btn-primary" value="Vastaa" /></div>
               </form>
             </div>
           </div>
         </div>
       </div>
+    </div>
     );
   }
 }

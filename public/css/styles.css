@@ -9,3 +9,14 @@
 #wr-message {
     height: 60px;
 }
+
+#progbar {
+    color: black;
+}
+
+#proglabel {
+    line-height: 200%;
+    width: 100%;
+    float: left;
+    position: absolute;
+}
