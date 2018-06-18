@@ -121,7 +121,7 @@ class GameSettings extends React.Component {
 		})
 		console.log(apics)
 
-		apics.filter(image => {
+		apics = apics.filter(image => {
 			const bodyPartIds = chosenBodyParts.map(chosenBodyPart => chosenBodyPart.id)
 			return bodyPartIds.includes(image.bone.bodypart)
 		})
