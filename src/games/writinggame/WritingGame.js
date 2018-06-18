@@ -15,12 +15,12 @@ class WritingGame extends React.Component {
       index: 0,
       correct: 0,
       images: props.location.state.images,
-      allBodyparts: props.location.state.allBodyparts,  // This is an array of all the known bodyparts.
+      allBodyParts: props.location.state.allBodyParts,  // This is an array of all the known bodyparts.
       allAnimals: props.location.state.allAnimals       // This is an array of all the known animals.
     };
     console.log(this.state.testiviesti)
     console.log(this.state.images)
-    console.log(this.state.allBodyparts)
+    console.log(this.state.allBodyParts)
     console.log(this.state.allAnimals)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -39,16 +39,14 @@ class WritingGame extends React.Component {
     event.preventDefault()
   }
 
- 
-/**
-  * Checks if the answer is correct, increments correct counter if needed and shows&hides the proper message after that.
-  * If the answer is close enough, then a point (or perhaps a fraction of a point?) will be awarded.
 
-  * https://www.npmjs.com/package/string-similarity ---- To install string-similarity:
-  * npm install string-similarity --save 
-
-  * Note for further development: the 'string-similarity' could also be used to gauge case-correctiveness of Latin names. Case is NOT irrelevant! 
- */
+  /**
+    * Checks if the answer is correct, increments correct counter if needed and shows&hides the proper message after that.
+    * If the answer is close enough, then a point (or perhaps a fraction of a point?) will be awarded.
+    * https://www.npmjs.com/package/string-similarity ---- To install string-similarity:
+    * npm install string-similarity --save 
+    * Note for further development: the 'string-similarity' could also be used to gauge case-correctiveness of Latin names. Case is NOT irrelevant! 
+   */
   checkCorrectness() {
 
     var similarity = StringSimilarity.compareTwoStrings(this.state.images[this.state.index].bone.nameLatin.toLowerCase(), this.state.value.toLowerCase()); // calculate similarity
@@ -90,44 +88,44 @@ class WritingGame extends React.Component {
 
   //If all images have been cycled through, redirect to endscreen, otherwise render quiz page
   render() {
-		if (this.state.index >= this.state.images.length) {
-			this.wgmessage.componentWillUnmount()
-			return (
-				<Redirect to={{
-					pathname: "/endscreen",
-					state: {
-						correct: this.state.correct,
-						total: this.state.images.length
-					}
-				}} />
-			)
+    if (this.state.index >= this.state.images.length) {
+      this.wgmessage.componentWillUnmount()
+      return (
+        <Redirect to={{
+          pathname: "/endscreen",
+          state: {
+            correct: this.state.correct,
+            total: this.state.images.length
+          }
+        }} />
+      )
     }
-    
+
     let bp = this.state.images[this.state.index].bone.bodypart; // The database id of the bodypart to which he bone in question is related to. 
-    let bpname="jotain";   
-    
+    let bpname = "jotain";
+
     // Here we simply fetch the name of the bodypart to which the bone in question is related to. 
     // The for-loop should probably be converted into a key-loop (.length style loops seem to work a bit unrealiably, when dealing with strings...)
-    for(var i = 0; i < this.state.allBodyparts.length;i++){
-     if (this.state.allBodyparts[i].id===bp) {
-       console.log("bodypart match found!");
-       bpname=this.state.allBodyparts[i].name;
-     }
-  
-     }
- 
-  
+    for (var i = 0; i < this.state.allBodyParts.length; i++) {
+      if (this.state.allBodyParts[i].id === bp) {
+        console.log("bodypart match found!");
+        bpname = this.state.allBodyParts[i].name;
+      }
+
+    }
+
+
     return (
       <div className="App">
-      <p>{this.state.testiviesti}</p>
+        <p>{this.state.testiviesti}</p>
         <div class="container">
           <div>
             <WGMessage ref={instance => this.wgmessage = instance} />
           </div>
           <div class="row">
             <div class="col-md-12">
-              <img id="question-image" alt={this.state.images[this.state.index].bone.nameLatin+' osasta '+bpname+' kuvan url: http://localhost:3000/'+this.state.images[this.state.index].url} src={'http://localhost:3000/'+this.state.images[this.state.index].url} /></div>
-            </div>
+              <img id="question-image" alt={this.state.images[this.state.index].bone.nameLatin + ' osasta ' + bpname + ' kuvan url: http://localhost:3000/' + this.state.images[this.state.index].url} src={'http://localhost:3000/' + this.state.images[this.state.index].url} /></div>
+          </div>
           <div className="title">
             <p>Syötä luun nimi</p>
           </div>
