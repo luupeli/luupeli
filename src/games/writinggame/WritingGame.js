@@ -124,7 +124,7 @@ class WritingGame extends React.Component {
           </div>
           <div class="row">
             <div class="col-md-12">
-              <img id="question-image" alt={this.state.images[this.state.index].bone.nameLatin + ' osasta ' + bpname + ' kuvan url: http://localhost:3000/' + this.state.images[this.state.index].url} src={'http://localhost:3000/' + this.state.images[this.state.index].url} /></div>
+              <img id="question-image" alt={this.state.images[this.state.index].bone.nameLatin + ' osasta ' + bpname + ' kuvan url: http://luupeli-backend.herokuapp.com/images/' + this.state.images[this.state.index].url} src={'http://luupeli-backend.herokuapp.com/images/' + this.state.images[this.state.index].url} /></div>
           </div>
           <div className="title">
             <p>Syötä luun nimi</p>
