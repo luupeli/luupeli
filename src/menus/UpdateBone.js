@@ -87,7 +87,7 @@ class UpdateBone extends React.Component {
 	
 	//Removes element at index i from this.state.images and deletes it from the database.
 	handleRemoveImage(i, event) {
-		const url = 'http://luupeli-backend.herokuapp.com/api/images/' + this.state.images[i].id
+		const url = 'http://luupeli-backend.herokuapp.com/api/images/' + this.state.images[i]._id
 		axios.delete(url)
 		.then((response) => {
 			console.log(response)
@@ -349,7 +349,7 @@ class UpdateBone extends React.Component {
 						<option value={100}>Vaikea</option>
 					</select>
 					<span className="input-group-btn">
-						<button type="button" className="btn btn-danger pull-right">Poista</button>
+						<button type="button" className="btn btn-danger pull-right" onClick={this.handleRemoveImage.bind(this, i)}>Poista</button>
 					</span>
 				</div>
 				</li>)}
