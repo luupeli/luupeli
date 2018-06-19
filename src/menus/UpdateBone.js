@@ -15,7 +15,13 @@ class UpdateBone extends React.Component {
 			name: this.props.location.state.name,
 			animal: this.props.location.state.animal,
 			bodypart: this.props.location.state.bodypart,
-			newImages: [],
+			newImages: [
+				{
+					url: "", 
+					difficulty: 1, 
+					file: []
+				}
+			],
 			images: [],
 			animals: [],
 			bodyparts: []
@@ -31,6 +37,13 @@ class UpdateBone extends React.Component {
 		this.handleImageChange = this.handleImageChange.bind(this)
 		this.validateNameLatin = this.validateNameLatin.bind(this)
 		this.validateImages = this.validateImages.bind(this)
+		this.updateFile = this.updateFile.bind(this)
+		this.fetchAnimals = this.fetchAnimals.bind(this)
+		this.fetchBodyparts = this.fetchBodyparts.bind(this)
+		this.uploadImage = this.uploadImage.bind(this)
+		this.updateImage = this.updateImage.bind(this)
+		this.postImage = this.postImage.bind(this)
+		this.updateBone = this.updateBone.bind(this)
 	}
 	
 	//GET images related to this bone from DB and store them in state for rendering.
@@ -55,35 +68,21 @@ class UpdateBone extends React.Component {
 				console.log(error)
 			})
 			
-		axios.get('http://luupeli-backend.herokuapp.com/api/animals/')
-			.then((response) => {
-				var animals = response.data
-				this.setState({ animals: animals })
-			})
-			.catch((error) => {
-				console.log(error)
-			})
-			
-		axios.get('http://luupeli-backend.herokuapp.com/api/bodyparts/')
-			.then((response) => {
-				var bodyparts = response.data
-				this.setState({ bodyparts: bodyparts })
-			})
-			.catch((error) => {
-				console.log(error)
-			})
+		this.fetchAnimals()
+		this.fetchBodyparts()
 	}
 	
 	//Adds a new "empty file" to newImages list when user clicks a button to add more images.
 	//newImages is used to dynamically render correct amount of file & difficulty input elements in the update form
 	handleAddImage(event) {
-		const expandList = this.state.newImages.concat({url: "", difficulty: 1})
+		const expandList = this.state.newImages.concat({url: "", difficulty: 1, file: []})
 		this.setState({ newImages: expandList})
 	}
 	
 	//Removes element at index i from this.state.newImages (and thus the corresponding file input element from the form)
 	handleRemoveNewImage(i, event) {
-		this.setState({ newImages: this.state.newImages.filter((element, index) => {return index !== i}) })
+		//this.setState({ newImages: this.state.newImages.filter((element, index) => {return index !== i}) })
+		this.setState({ newImages: this.state.newImages.splice(0, (this.state.newImages.length - 1)) })
 	}
 	
 	//Removes element at index i from this.state.images and deletes it from the database.
@@ -105,25 +104,62 @@ class UpdateBone extends React.Component {
 		this.setState({ [event.target.name]: event.target.value })
 	}
 	
-	//Sends bone-related values from this.state to the database.
-	//Updates difficulties for all images already in the database.
-	//TODO: Posts new images to the database.
-	//Prepare a WGMessage to notify user of a failed or successful save.
-	handleSubmit(event) {
-		event.preventDefault()
+	fetchAnimals() {
+		axios.get('http://luupeli-backend.herokuapp.com/api/animals/')
+			.then((response) => {
+				this.setState({ animals: response.data })
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+	}
+	
+	fetchBodyparts() {
+		axios.get('http://luupeli-backend.herokuapp.com/api/bodyparts/')
+			.then((response) => {
+				this.setState({ bodyparts: response.data })
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+	}
+	
+	fetchImages() {
 		
-		if (!this.validateNameLatin() || !this.validateImages()) {
-			return
-		}
+	}
+	
+	async uploadImage(i) {
+		var imageUrl = ""
 		
-		const url = "http://luupeli-backend.herokuapp.com/api/bones/" + this.state.boneId
-		var errored = false
+		let data = new FormData()
+		data.append('image', this[`fileInput${i}`].files[0])
+		data.append('name', this[`fileInput${i}`].files[0].name)
 		
-		const animalObj = this.state.animals.filter((animal) => animal.name === this.state.animal)
-		const bodypartObj = this.state.bodyparts.filter((bodypart) => bodypart.name === this.state.bodypart)
-		
-		for (var i = 0; i < this.state.images.length; i++) {
-			axios.put("http://luupeli-backend.herokuapp.com/api/images/" + this.state.images[i]._id, {
+		return await axios.post("http://luupeli-backend.herokuapp.com/api/images/upload", data, {headers: {enctype: "multipart/form-data"}})
+			.then((response) => {
+				return response.data.url
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+	}
+	
+	postImage(i, imageUrl, bone) {
+		axios.post("http://luupeli-backend.herokuapp.com/api/images/", {
+				difficulty: this.state.newImages[i].difficulty,
+				bone: bone,
+				url: imageUrl
+			})
+			.then((response) => {
+				console.log(response)
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+	}
+	
+	updateImage(i) {
+		axios.put("http://luupeli-backend.herokuapp.com/api/images/" + this.state.images[i]._id, {
 				difficulty: this.state.images[i].difficulty
 			})
 			.then((response) => {
@@ -132,24 +168,61 @@ class UpdateBone extends React.Component {
 			.catch((error) => {
 				console.log(error)
 			})
-		}
+	}
+	
+	async updateBone() {
+		const url = "http://luupeli-backend.herokuapp.com/api/bones/" + this.state.boneId
+		const animalObj = this.state.animals.filter((animal) => animal.name === this.state.animal)
+		const bodypartObj = this.state.bodyparts.filter((bodypart) => bodypart.name === this.state.bodypart)
+		var boneResponse = "";
 		
-		axios.put(url, {
+		return await axios.put(url, {
 			nameLatin: this.state.nameLatin,
 			name: this.state.name,
 			animal: animalObj[0].id,
 			bodypart: bodypartObj[0].id
 		})
 		.then((response) => {
-			console.log(response)
+			return response.data
 		})
 		.catch((error) => {
 			console.log(error)
-			errored = true
 			this.wgmessage.mountTimer()
 			this.wgmessage.setMessage('Tallentaminen epäonnistui :(')
 			this.wgmessage.setStyle("alert alert-danger")
 		})
+	}
+	
+	//Sends bone-related values from this.state to the database.
+	//Updates difficulties for all images already in the database.
+	//TODO: Posts new images to the database.
+	//Prepare a WGMessage to notify user of a failed or successful save.
+	async handleSubmit(event) {
+		event.preventDefault()
+		
+		if (!this.validateNameLatin() || !this.validateImages()) {
+			return
+		}
+		
+		var errored = false
+		var bone = {};
+		var imageUrl = "";
+		
+		bone = await this.updateBone()
+		
+		for (var i = 0; i < this.state.images.length; i++) {
+			this.updateImage(i)
+		}
+		
+		for (var j = 0; j < this.state.newImages.length; j++) {
+			console.log("for-loop")
+			console.log(this[`fileInput${j}`].files)
+			console.log(this[`fileInput${j}`].files[0])
+			if (this[`fileInput${j}`].files.length > 0) {
+				imageUrl = await this.uploadImage(j)
+				this.postImage(j, imageUrl, bone.id)
+			}
+		}
 		
 		if (!errored) {
 			this.wgmessage.mountTimer()
@@ -199,6 +272,7 @@ class UpdateBone extends React.Component {
 	handleNewImageChange(i, event) {
 		const modifiedList = this.state.newImages
 		modifiedList[i].difficulty = event.target.value
+		modifiedList[i].file = this[`fileInput${i}`].files
 		this.setState({ newImages: modifiedList })
 	}
 	
@@ -218,6 +292,12 @@ class UpdateBone extends React.Component {
 		return true
 	}
 	
+	updateFile(i, event) {
+		const modifiedImages = this.state.newImages
+		modifiedImages[i].file = this[`fileInput${i}`].files
+		this.setState({ newImages: modifiedImages })
+	}
+	
 	//If this.state.submitted is true (i.e. bone data has been deleted), redirect to listing.
 	//Otherwise render bone update form.
 	render() {
@@ -233,7 +313,7 @@ class UpdateBone extends React.Component {
 			<WGMessage ref={instance => this.wgmessage = instance} />
 		</div>
 		<Link to='/listing'><button className="btn btn-default pull-right">Takaisin listaukseen</button></Link><br/>
-			<form onSubmit={this.handleSubmit}>
+			<form onSubmit={this.handleSubmit} enctype="multipart/form-data">
 			
 				<div className="form-group has-feedback">
 					<label className="pull-left">Latinankielinen nimi </label>
@@ -278,18 +358,18 @@ class UpdateBone extends React.Component {
 				<span className="clearfix"><label className="pull-left">Uudet kuvat</label></span>
 				<ul className="list-group">
 				{this.state.newImages.map((file, i) => <li key={file.id} className="list-group-item clearfix">
-				<input type="file" accept="image/x-png,image/jpeg" id="boneImage" ref={input => {this.fileInput = input}}/>
+				<input type="file" accept="image/x-png,image/jpeg" id="boneImage" ref={input => {this[`fileInput${i}`] = input}} onChange={this.updateFile.bind(this, i)}/>
 				<div className="input-group">
 					<select name="difficulty" className="form-control" value={this.state.newImages[i].difficulty} onChange={this.handleNewImageChange.bind(this, i)}>
 						<option value="1">Helppo</option>
 						<option value="100">Vaikea</option>
 					</select>
-					<span className="input-group-btn">
-						<button type="button" className="btn btn-danger pull-right" onClick={this.handleRemoveNewImage.bind(this, i)}>Poista</button>
-					</span>
 				</div>
 				</li>)}
-				<li className="list-group-item clearfix"><button type="button" className="btn btn-default pull-right" onClick={this.handleAddImage}>Lisää uusi kuva</button></li>
+				<li className="list-group-item clearfix"><span className="btn-toolbar">
+					<button type="button" className="btn btn-info pull-right" onClick={this.handleAddImage}>Lisää kuvakenttä</button>
+					<button type="button" className="btn btn-danger pull-right" onClick={this.handleRemoveNewImage}>Poista kuvakenttä</button>
+				</span></li>
 				</ul>
 				
 				<div className="btn-toolbar">
