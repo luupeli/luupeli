@@ -45,7 +45,9 @@ class GameSettings extends React.Component {
 
 		axios.get("http://luupeli-backend.herokuapp.com/api/images")  // here we fill the image array
 			.then(response => {
-				this.setState({ allImages: response.data })
+				const imagesWithBone = response.data.filter(image => image.bone !== undefined)
+				console.log(imagesWithBone)
+				this.setState({ allImages: imagesWithBone })
 			})
 		console.log(this.state.allImages)
 	}
