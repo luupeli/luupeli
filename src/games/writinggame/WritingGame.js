@@ -147,7 +147,7 @@ class WritingGame extends React.Component {
           </div>
           <div class="row">
             <div class="col-md-6 col-md-offset-3">
-              <h1 id="heading">{this.correctBoneNameCase(this.state.images[this.state.index].bone.name)}</h1>
+              <h1 id="heading">{this.state.images[this.state.index].bone.name}</h1>
             </div>
           </div>
           <div class="container">
