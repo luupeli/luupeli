@@ -37,6 +37,7 @@ class WritingGame extends React.Component {
     this.changeCounter()
     this.clearTextField()
     event.preventDefault()
+    document.getElementById("progbar").style.width = (this.state.index+1)/this.state.images.length*100 + "%";
   }
 
 
@@ -123,7 +124,7 @@ class WritingGame extends React.Component {
             <div class="row">
               <div class="col-md-6 col-md-offset-3">
                 <div class="progress">
-                  <div class="progress-bar" id="progbar" aria-valuenow={this.state.index} aria-valuemin="0" aria-valuemax={this.state.images.length} styles="width: 50%;"><p id="proglabel">{this.state.index + 1}/{this.state.images.length}</p></div>
+                  <div class="progress-bar" id="progbar" aria-valuenow={this.state.index} aria-valuemin="0" aria-valuemax={this.state.images.length}><p id="proglabel">{this.state.index + 1}/{this.state.images.length}</p></div>
                 </div>
               </div>
             </div>
