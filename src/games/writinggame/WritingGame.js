@@ -36,6 +36,7 @@ class WritingGame extends React.Component {
     this.checkCorrectness()
     this.changeCounter()
     this.clearTextField()
+    this.updateProgressBar()
     event.preventDefault()
   }
 
@@ -81,6 +82,11 @@ class WritingGame extends React.Component {
     return this.state.counter - 1
   }
 
+  // Updates progress bar according to the game's phase using state.index and images.length and converts the result to a percentage
+  updateProgressBar() {
+    document.getElementById("progbar").style.width = (this.state.index+1)/this.state.images.length*100 + "%"; 
+  }
+
   //Returns the state
   state() {
     return this.state
@@ -118,28 +124,49 @@ class WritingGame extends React.Component {
     return (
       <div className="App">
         <p>{this.state.testiviesti}</p>
+        <div>
+          <div class="container">
+            <div class="row">
+              <div class="col-md-6 col-md-offset-3">
+                <div class="progress">
+                  <div class="progress-bar" id="progbar" aria-valuenow={this.state.index} aria-valuemin="0" aria-valuemax={this.state.images.length}><p id="proglabel">{this.state.index + 1}/{this.state.images.length}</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <div class="dual-layout">
         <div class="container">
           <div>
             <WGMessage ref={instance => this.wgmessage = instance} />
           </div>
-          <div class="row">
-            <div class="col-md-12">
-              <img id="question-image" alt={this.state.images[this.state.index].bone.nameLatin + ' osasta ' + bpname + ' kuvan url: http://luupeli-backend.herokuapp.com/images/' + this.state.images[this.state.index].url} src={'http://luupeli-backend.herokuapp.com/images/' + this.state.images[this.state.index].url} /></div>
-          </div>
-          <div className="title">
-            <p>Syötä luun nimi</p>
+          <div class="row" id="image-holder">
+            <div class="intro">
+                <img id="question-image" class="img-fluid" alt={this.state.images[this.state.index].bone.nameLatin+' osasta '+bpname+' kuvan url: http://luupeli-backend.herokuapp.com/images/' + this.state.images[this.state.index].url} src={'http://luupeli-backend.herokuapp.com/images/' + this.state.images[this.state.index].url} />
+            </div>
           </div>
           <div class="row">
-            <div class="col-md-12">
-              <form className="input" id='gameForm' onSubmit={this.handleSubmit}>
-                <input class="form-control" type="text" onChange={this.handleChange} />
-                <input type="submit" value="Vastaa" />
-                <p>{this.state.index + 1}/{this.state.images.length}</p>
+            <div class="col-md-6 col-md-offset-3">
+              <h1 id="heading">{this.state.images[this.state.index].bone.name}</h1>
+            </div>
+          </div>
+          <div class="container">
+            <div class="col-md-6 col-md-offset-3" id="info">   
+              <p>Tähän tulee lisätietoa luusta</p> 
+            </div>
+          </div>
+          <div class="answer-input">
+            <div class="container">
+              <div class="intro"/>
+              <form className="input" class="form-inline" id='gameForm' onSubmit={this.handleSubmit}>
+                <div class="form-group"><input class="form-control" type="text" onChange={this.handleChange} /></div>
+                <div class="form-group"><input type="submit" class="btn btn-primary" value="Vastaa" /></div>
               </form>
             </div>
           </div>
         </div>
       </div>
+    </div>
     );
   }
 }
