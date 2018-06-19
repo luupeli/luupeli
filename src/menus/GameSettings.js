@@ -198,7 +198,7 @@ class GameSettings extends React.Component {
 					</div>
 					<div class="container">	
 						<div class="col-md-12">
-							<h1 className="form-headers">Valitse eläin:</h1>
+							<h1 className="form-header">Valitse eläin:</h1>
 							<form>
 								{selectAnimal}
 							</form>
@@ -206,7 +206,7 @@ class GameSettings extends React.Component {
 					</div>
 					<div class="container">
 						<div class="col-md-12">
-							<h1 className="form-headers">Valitse ruumiinosa:</h1>
+							<h1 className="form-header">Valitse ruumiinosa:</h1>
 							<form>
 								{selectBodyPart}
 							</form>
@@ -214,7 +214,7 @@ class GameSettings extends React.Component {
 					</div>
 					<div class="container">
 						<div class="col-md-12">	
-							<h1 className="form-headers">Pelin pituus:</h1>
+							<h1 className="form-header">Pelin pituus:</h1>
 							<form>
 								<label className="radio-inline"><input type="radio" value="3" onClick={this.changeGameLength.bind(this)} name="length" defaultChecked></input>3</label>
 								<label className="radio-inline"><input type="radio" value="5" onClick={this.changeGameLength.bind(this)} name="length"></input>5</label>
@@ -224,7 +224,7 @@ class GameSettings extends React.Component {
 					</div>
 					<div class="container">
 						<div class="col-md-12">
-							<h1 className="form-headers">Vaikeusaste:</h1>
+							<h1 className="form-header">Vaikeusaste:</h1>
 							<form>
 								<label className="radio-inline"><input type="radio" value="easy" name="difficultylevel" defaultChecked></input>Helppo</label>
 								<label className="radio-inline"><input type="radio" value="medium" name="difficultylevel"></input>Keskivaikea</label>
