@@ -119,14 +119,16 @@ class GameSettings extends React.Component {
 		// Filtering the approved images on animals
 		let apics = this.state.allImages.filter(image => {
 			const animalIds = chosenAnimals.map(chosenAnimal => chosenAnimal.id)
-			return animalIds.includes(image.bone.animal)
+			if(image.animal !== undefined) {
+			return animalIds.includes(image.animal._id)
+			}
 		})
 		console.log(apics)
 
 		// Filtering the approved images on body parts
 		apics = apics.filter(image => {
 			const bodyPartIds = chosenBodyParts.map(chosenBodyPart => chosenBodyPart.id)
-			return bodyPartIds.includes(image.bone.bodypart)
+			return bodyPartIds.includes(image.bone.bodyPart)
 		})
 		console.log(apics)
 
