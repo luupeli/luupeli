@@ -26,16 +26,16 @@
     background-color: #292cff;
     box-shadow: 0 5px #666;
     transform: translateY(3px);
-  }
+}
 
-  .gobackbutton {
+.gobackbutton {
     float: left;
     position: fixed;
     top: 10% !important;
     left: 0.8% !important;
     background-color: rgb(5, 163, 255);
     color: white;
-  }
+}
 
 .h1 {
     text-align: center;
@@ -44,9 +44,9 @@
     margin-bottom: 40px;
 }
 
-.h2 {
+.form-header {
     color: rgb(38, 0, 255);
-    font-size: 50px;
+    font-size: 40px;
     margin-bottom: 30px;
 }
 
@@ -58,8 +58,4 @@
 body {
     margin: 0;
     padding: 0;
-}
-
-#info-list {
-    text-align: justify;
 }

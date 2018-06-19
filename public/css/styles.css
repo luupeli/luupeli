@@ -4,6 +4,7 @@
     margin-right: auto;
     max-height: 460px;
     width: auto;
+    max-width: 100%;
 }
 
 #wr-message {
@@ -12,6 +13,7 @@
 
 #progbar {
     color: black;
+    width: 50px;
 }
 
 #proglabel {
@@ -19,4 +21,12 @@
     width: 100%;
     float: left;
     position: absolute;
+}
+
+#image-holder {
+    align-content: center;
+}
+
+#info {
+    text-align: center;
 }
