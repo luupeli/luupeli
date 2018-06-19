@@ -36,8 +36,8 @@ class WritingGame extends React.Component {
     this.checkCorrectness()
     this.changeCounter()
     this.clearTextField()
+    this.updateProgressBar()
     event.preventDefault()
-    document.getElementById("progbar").style.width = (this.state.index+1)/this.state.images.length*100 + "%";
   }
 
 
@@ -80,6 +80,11 @@ class WritingGame extends React.Component {
   //Method returns the index of previous image.
   previousIndex() {
     return this.state.counter - 1
+  }
+
+  // Updates progress bar according to the game's phase using state.index and images.length and converts the result to a percentage
+  updateProgressBar() {
+    document.getElementById("progbar").style.width = (this.state.index+1)/this.state.images.length*100 + "%"; 
   }
 
   //Returns the state
@@ -142,7 +147,7 @@ class WritingGame extends React.Component {
           </div>
           <div class="row">
             <div class="col-md-6 col-md-offset-3">
-              <h1 id="heading">{this.state.images[this.state.index].bone.name}</h1>
+              <h1 id="heading">{this.correctBoneNameCase(this.state.images[this.state.index].bone.name)}</h1>
             </div>
           </div>
           <div class="container">
