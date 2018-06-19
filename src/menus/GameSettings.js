@@ -16,10 +16,10 @@ class GameSettings extends React.Component {
 			gameLength: 3,
 			redirect: false,
 			testiviesti: 'Lällälläääääh',
-			allImages: [],
+			allImages: [],		   // used to store an array of alla known images
 			allAnimals: [],        // used to store an array of all known animals
 			allBodyParts: [],      // used to store an array of all known bodyparts
-			images: []
+			images: []			   // used to store an array of images which meet the selection criteria
 		};
 
 		this.changeAnimal = this.changeAnimal.bind(this)
@@ -27,7 +27,7 @@ class GameSettings extends React.Component {
 		this.atLeastOneBodyPartIsSelected = this.atLeastOneBodyPartIsSelected.bind(this)
 		this.initializeGame = this.initializeGame.bind(this)
 
-		axios.get("http://luupeli-backend.herokuapp.com/api/animals")
+		axios.get("http://luupeli-backend.herokuapp.com/api/animals")  // here we fill the allAnimals array and connect selected-attribute for each row 
 			.then(response => {
 				const animals = response.data.map(animal => {
 					return { ...animal, selected: false }
@@ -35,7 +35,7 @@ class GameSettings extends React.Component {
 				this.setState({ allAnimals: animals })
 			})
 
-		axios.get("http://luupeli-backend.herokuapp.com/api/bodyparts")    // here we fill the allBodyParts array with all the bodyparts found in the database
+		axios.get("http://luupeli-backend.herokuapp.com/api/bodyparts")    // here we fill the allBodyParts array and connect selected-attribute for each row 
 			.then(response => {
 				const bodyParts = response.data.map(bodyPart => {
 					return { ...bodyPart, selected: false }
@@ -43,7 +43,7 @@ class GameSettings extends React.Component {
 				this.setState({ allBodyParts: bodyParts })
 			})
 
-		axios.get("http://luupeli-backend.herokuapp.com/api/images")
+		axios.get("http://luupeli-backend.herokuapp.com/api/images")  // here we fill the image array
 			.then(response => {
 				this.setState({ allImages: response.data })
 			})
@@ -100,6 +100,7 @@ class GameSettings extends React.Component {
 
 
 	initializeGame() {
+		// Filtering selected animals and body parts
 		let chosenAnimals = this.state.allAnimals.filter(animal => animal.selected === true)
 		let chosenBodyParts = this.state.allBodyParts.filter(bodyPart => bodyPart.selected === true)
 
@@ -112,15 +113,15 @@ class GameSettings extends React.Component {
 		//should be actually matched with the number of questions chosen by the user.
 		//In a situation where there's not enough distinct bones to fill up a questionnaire,
 		//then bones should be repeated (using alt images when possible).
-		//
-		//But for the time being, the implementation here is more than adequate.
 
+		// Filtering the approved images on animals
 		let apics = this.state.allImages.filter(image => {
 			const animalIds = chosenAnimals.map(chosenAnimal => chosenAnimal.id)
 			return animalIds.includes(image.bone.animal)
 		})
 		console.log(apics)
 
+		// Filtering the approved images on body parts
 		apics = apics.filter(image => {
 			const bodyPartIds = chosenBodyParts.map(chosenBodyPart => chosenBodyPart.id)
 			return bodyPartIds.includes(image.bone.bodypart)
@@ -172,12 +173,14 @@ class GameSettings extends React.Component {
 			)
 		}
 
+		// Creating an animal menu
 		let id = -1
 		const selectAnimal = this.state.allAnimals.map(animal => {
 			id++
 			return <label className="radio-inline"><input type="radio" id={id} name="animal" onClick={this.changeAnimal}></input>{animal.name}</label>
 		})
 
+		// Creating a body part menu
 		id = -1
 		const selectBodyPart = this.state.allBodyParts.map(bodyPart => {
 			id++
