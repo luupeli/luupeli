@@ -196,29 +196,45 @@ class GameSettings extends React.Component {
 					<div>
 						<WGMessage ref={instance => this.wgmessage = instance} />
 					</div>
-					{/*Maybe fix h1 and its classname "H2"?*/}
-					<h1 className="h2">Valitse eläin:</h1>
-					<form>
-						{selectAnimal}
-					</form>
-					<h1 className="h2">Valitse ruumiinosa:</h1>
-					<form>
-						{selectBodyPart}
-					</form>
-					<h1 className="h2">Pelin pituus:</h1>
-					<form>
-						<label className="radio-inline"><input type="radio" value="3" onClick={this.changeGameLength.bind(this)} name="length" defaultChecked></input>3</label>
-						<label className="radio-inline"><input type="radio" value="5" onClick={this.changeGameLength.bind(this)} name="length"></input>5</label>
-						<label className="radio-inline"><input type="radio" value="7" onClick={this.changeGameLength.bind(this)} name="length"></input>7</label>
-					</form>
-					<h1 className="h2">Vaikeusaste:</h1>
-					<form>
-						<label className="radio-inline"><input type="radio" value="easy" name="difficultylevel" defaultChecked></input>Helppo</label>
-						<label className="radio-inline"><input type="radio" value="medium" name="difficultylevel"></input>Keskivaikea</label>
-						<label className="radio-inline"><input type="radio" value="hard" name="difficultylevel"></input>Vaikea</label>
-					</form>
-					<div className="btn-group settingspage GameButton">
-						<button onClick={this.atLeastOneBodyPartIsSelected}>Peliin >></button>
+					<div class="container">	
+						<div class="col-md-12">
+							<h1 className="form-header">Valitse eläin:</h1>
+							<form>
+								{selectAnimal}
+							</form>
+						</div>
+					</div>
+					<div class="container">
+						<div class="col-md-12">
+							<h1 className="form-header">Valitse ruumiinosa:</h1>
+							<form>
+								{selectBodyPart}
+							</form>
+						</div>
+					</div>
+					<div class="container">
+						<div class="col-md-12">	
+							<h1 className="form-header">Pelin pituus:</h1>
+							<form>
+								<label className="radio-inline"><input type="radio" value="3" onClick={this.changeGameLength.bind(this)} name="length" defaultChecked></input>3</label>
+								<label className="radio-inline"><input type="radio" value="5" onClick={this.changeGameLength.bind(this)} name="length"></input>5</label>
+								<label className="radio-inline"><input type="radio" value="7" onClick={this.changeGameLength.bind(this)} name="length"></input>7</label>
+							</form>
+						</div>
+					</div>
+					<div class="container">
+						<div class="col-md-12">
+							<h1 className="form-header">Vaikeusaste:</h1>
+							<form>
+								<label className="radio-inline"><input type="radio" value="easy" name="difficultylevel" defaultChecked></input>Helppo</label>
+								<label className="radio-inline"><input type="radio" value="medium" name="difficultylevel"></input>Keskivaikea</label>
+								<label className="radio-inline"><input type="radio" value="hard" name="difficultylevel"></input>Vaikea</label>
+							</form>
+							<div className="btn-group settingspage GameButton">
+								<button onClick={this.atLeastOneBodyPartIsSelected}>Peliin >>
+								</button>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div className="App">
