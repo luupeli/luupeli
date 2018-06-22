@@ -6,10 +6,12 @@ const Home = () => (
   
   <div className="App">
   
-  <div className="wrapper">
-  <div className="grid">
   
+  <div className="grid-sub">
+  </div> 
+    <div className="grid">
   </div>
+  <div className="blinder">
   </div>
     <h1 className="h1 gametitle">Luupeli</h1>
     <div className="btn-group">

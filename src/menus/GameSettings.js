@@ -195,9 +195,11 @@ class GameSettings extends React.Component {
 		return (
 			<div>
 				<div className="App settingspage">
+				<div className="grid-sub-fastest"></div>
 				<div className="grid-fastest">
   </div>
-
+  <div className="blinder">
+  </div>
 					<div>
 						<WGMessage ref={instance => this.wgmessage = instance} />
 					</div>
