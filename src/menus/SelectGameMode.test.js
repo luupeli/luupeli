@@ -9,7 +9,7 @@ describe("SelectGameMode", () => {
         return component;
     }
 
-    it('has the text "Valitse peli:"', () => {
+    it('has the text "Valitse Luupelimuoto:"', () => {
         const res = gamemode().find('.h2')
         expect(res.text()).toContain('Valitse peli:')
     })
