@@ -195,9 +195,13 @@ class GameSettings extends React.Component {
 		return (
 			<div>
 				<div className="App settingspage">
+				<div className="grid">
+  </div>
+
 					<div>
 						<WGMessage ref={instance => this.wgmessage = instance} />
 					</div>
+					<div class="transbox">
 					<div class="container">	
 						<div class="col-md-12">
 							<h1 className="form-header">Valitse eläin:</h1>
@@ -238,6 +242,7 @@ class GameSettings extends React.Component {
 							</div>
 						</div>
 					</div>
+				</div>
 				</div>
 				<div className="App">
 					<Link to='/game'><button className="gobackbutton">Takaisin</button></Link>

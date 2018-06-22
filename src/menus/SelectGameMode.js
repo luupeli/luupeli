@@ -4,7 +4,10 @@ import { Link } from 'react-router-dom'
 const SelectGameMode = () => (
 	<div>
 		<div className="App">
-			<h1 className="h1">Valitse peli:</h1>
+		<div className="grid">
+  </div>
+
+			<h2 className="h2">Valitse Luupelimuoto:</h2>
 			<div className="btn-group">
 				<Link to='/settings'><button className="writinggame">Kirjoituspeli</button></Link>
 				<button>...</button>

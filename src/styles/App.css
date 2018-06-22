@@ -1,11 +1,17 @@
+@import 'https://fonts.googleapis.com/css?family=Press+Start+2P';
+@import 'https://fonts.googleapis.com/css?family=Changa+One';
+
 .App {
-    font-family: "Verdana";
+    /*font-family: "Verdana";*/
+    font-family: 'Changa One', cursive;
     text-align: center;
+    
 }
 
 .btn-group button {
     background-color: rgb(5, 163, 255);
-    color: #fff;
+    
+    color: rgb(236, 209, 228);
     padding: 20px 24px;
     cursor: pointer;
     width: 100%;
@@ -37,18 +43,82 @@
     color: white;
 }
 
+ 
+
+/*
+Logo gradient modified from:
+https://codepen.io/M4TERIAL/pen/gavvQL
+*/
 .h1 {
-    text-align: center;
-    color: rgb(38, 0, 255);
-    font-size: 80px;
+    color: #C6CBF5;
+    font-family: 'Press start 2p', sans-serif;
+    font-size: 120px;
+    font-weight: 1000;
+    line-height: 1.2;
+    left: 50%;
+    margin: 0;
     margin-bottom: 40px;
+    text-align: center;
+    text-transform: uppercase;
+    top: 80px;
+    width: 852px;
+    z-index: 11;
+    background: -webkit-linear-gradient(top, rgb(141, 61, 233), #C6CBF5 40%, black 40%, #E1A0CE 57%, white 77%, #663333 89%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: white;
+
 }
 
+.h2 {
+    color: #C6CBF5;
+    font-family: 'Press start 2p', sans-serif;
+    font-size: 60px;
+    font-weight: 700;
+    line-height: 1.2;
+    left: 50%;
+    margin: 0;
+    margin-bottom: 40px;
+    text-align: center;
+    text-transform: uppercase;
+    top: 80px;
+    width: 852px;
+    z-index: 11;
+    background: -webkit-linear-gradient(top, rgb(141, 61, 233), #C6CBF5 40%, black 40%, #E1A0CE 57%, white 77%, #663333 89%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: white;
+
+}
+
+div.transbox {
+    margin: 30px;
+    background-color: #33192f;
+    border: 1px solid #E1A0CE;
+    opacity: 0.9;
+    border-radius: 15px;
+    filter: alpha(opacity=60); 
+  }
+  
+  div.transbox p {
+    margin: 5%;
+    font-weight: bold;
+    color: #000000;
+  }
+form {
+    color: #C6CBF5;
+    text-shadow: 3px 3px 0px rgba(173, 78, 165, 0.5);
+    /*ext-shadow: 4px 4px;*/
+}
 .form-header {
-    color: rgb(38, 0, 255);
+    color:  rgb(235, 137, 183);
     font-size: 40px;
     margin-bottom: 30px;
 }
+
+
 
 .settingspage {
     font-size: 20px;
@@ -58,4 +128,61 @@
 body {
     margin: 0;
     padding: 0;
+    background: #000;
+    background-image:
+      linear-gradient(
+        to bottom, 
+        #6A0275 10%, 
+        #040C4A 43%,
+        #FF99FF 44%,
+        #FFFFFF 45%,
+        #FF99FF 46%,
+        #040C4A 49%,
+        #000000 80%
+      );
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
 }
+
+
+
+/* 
+CSS grid animation modified from:
+https://codepen.io/George-Payne/pen/qOrxao
+*/
+.grid{
+    top: -400px;
+    bottom: -400px;
+    left: -400px;
+    right: -400px;
+    position: absolute;
+    opacity: 0.25;
+
+  
+    background-image: 
+    linear-gradient(transparent 0px, #FF0092 1px, #FF99FF 2px, #FF0092 3px, transparent 4px),
+    linear-gradient(90deg, transparent 0px, #FF0092 1px, #FF99FF 2px, #FF0092 3px, transparent 4px); 
+
+    background-size:2% 2%, 2% 2%;
+    background-position:0 0, 0 0;
+    
+    transform: perspective(500px) rotateX(80deg);
+    animation: throughSpace-bottom 3s linear;
+    animation-iteration-count: infinite;
+    
+  }
+
+ 
+  
+ 
+ 
+  @keyframes throughSpace-bottom{
+    0%{
+      transform: perspective(500px) rotateX(80deg) translateY(0%);
+    }
+    100%{
+      transform: perspective(500px) rotateX(80deg) translateY(5.8%);
+    }
+  }
+  
