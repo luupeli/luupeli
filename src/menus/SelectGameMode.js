@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const SelectGameMode = () => (
 	<div>
 		<div className="App">
-		<div className="grid">
+		<div className="grid-faster">
   </div>
 
 			<h2 className="h2">Valitse Luupelimuoto:</h2>

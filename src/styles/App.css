@@ -9,7 +9,7 @@
 }
 
 .btn-group button {
-    background-color: rgb(5, 163, 255);
+    background-color: rgb(241, 64, 203);
     
     color: rgb(236, 209, 228);
     padding: 20px 24px;
@@ -25,11 +25,11 @@
 }
 
 .btn-group button:hover {
-    background-color: #292cff;
+    background-color: #b60d6a;
 }
 
 .btn-group button:active {
-    background-color: #292cff;
+    background-color: #b60d6a;
     box-shadow: 0 5px #666;
     transform: translateY(3px);
 }
@@ -125,6 +125,8 @@ form {
     margin-top: 60px;
 }
 
+/*
+ORIGINAL BODY
 body {
     margin: 0;
     padding: 0;
@@ -140,12 +142,34 @@ body {
         #040C4A 49%,
         #000000 80%
       );
+
+   
     height: 100vh;
     width: 100vw;
     overflow: hidden;
 }
+*/
 
-
+body {
+    width: 100wh;
+    height: 100vh;
+    color: #fff;
+    background: linear-gradient(
+      180deg,
+        #6A0275 10%, 
+        #040C4A 43%,
+        #CC66CC 44%,
+        #FFFFFF 45%,
+        #FF99FF 47%,
+        #040C4A 51%,
+        #000000 80%);
+    
+    background-size: 103% 103%;
+    -webkit-animation: Gradient 2.23s ease infinite;
+    -moz-animation: Gradient 2.23s ease infinite;
+    animation: Gradient 2.23s ease infinite;
+    overflow: hidden;
+}
 
 /* 
 CSS grid animation modified from:
@@ -173,6 +197,55 @@ https://codepen.io/George-Payne/pen/qOrxao
     
   }
 
+  /*
+  A repeat of .grid but with faster grid scroll speed.
+  */
+  .grid-faster{
+    top: -400px;
+    bottom: -400px;
+    left: -400px;
+    right: -400px;
+    position: absolute;
+    opacity: 0.25;
+
+  
+    background-image: 
+    linear-gradient(transparent 0px, #FF0092 1px, #FF99FF 2px, #FF0092 3px, transparent 4px),
+    linear-gradient(90deg, transparent 0px, #FF0092 1px, #FF99FF 2px, #FF0092 3px, transparent 4px); 
+
+    background-size:2% 2%, 2% 2%;
+    background-position:0 0, 0 0;
+    
+    transform: perspective(500px) rotateX(80deg);
+    animation: throughSpace-bottom 1.5s linear;
+    animation-iteration-count: infinite;
+    
+  }
+
+  /*
+  A repeat of .grid but with super fast grid scroll speed.
+  */
+  .grid-fastest{
+    top: -400px;
+    bottom: -400px;
+    left: -400px;
+    right: -400px;
+    position: absolute;
+    opacity: 0.25;
+
+  
+    background-image: 
+    linear-gradient(transparent 0px, #FF0092 1px, #FF99FF 2px, #FF0092 3px, transparent 4px),
+    linear-gradient(90deg, transparent 0px, #FF0092 1px, #FF99FF 2px, #FF0092 3px, transparent 4px); 
+
+    background-size:2% 2%, 2% 2%;
+    background-position:0 0, 0 0;
+    
+    transform: perspective(500px) rotateX(80deg);
+    animation: throughSpace-bottom 0.5s linear;
+    animation-iteration-count: infinite;
+    
+  }
  
   
  
@@ -185,4 +258,94 @@ https://codepen.io/George-Payne/pen/qOrxao
       transform: perspective(500px) rotateX(80deg) translateY(5.8%);
     }
   }
+  @-webkit-keyframes Gradient {
+	0% {
+		background-position: 0% 100%
+    }
+    4% {
+		background-position: 0% 97%
+	}
+	8% {
+		background-position: 0% 103%
+    }
+    15% {
+		background-position: 0% 100%
+	}
+	25% {
+		background-position: 0% 102%
+    }
+    44% {
+		background-position: 0% 97%
+	}
+	57% {
+		background-position: 0% 101%
+	}
+	88% {
+		background-position: 0% 98%
+	}
+	100% {
+		background-position: 0% 102%
+	}
+}
+
+@-moz-keyframes Gradient {
+	0% {
+		background-position: 0% 100%
+    }
+    4% {
+		background-position: 0% 97%
+	}
+	8% {
+		background-position: 0% 103%
+    }
+    15% {
+		background-position: 0% 100%
+	}
+	25% {
+		background-position: 0% 102%
+    }
+    44% {
+		background-position: 0% 97%
+	}
+	57% {
+		background-position: 0% 101%
+	}
+	88% {
+		background-position: 0% 98%
+	}
+	100% {
+		background-position: 0% 102%
+	}
+}
+
+@keyframes Gradient {
+	0% {
+		background-position: 0% 100%
+    }
+    4% {
+		background-position: 0% 97%
+	}
+	8% {
+		background-position: 0% 103%
+    }
+    15% {
+		background-position: 0% 100%
+	}
+	25% {
+		background-position: 0% 102%
+    }
+    44% {
+		background-position: 0% 97%
+	}
+	57% {
+		background-position: 0% 101%
+	}
+	88% {
+		background-position: 0% 98%
+	}
+	100% {
+		background-position: 0% 102%
+	}
+}
+
   

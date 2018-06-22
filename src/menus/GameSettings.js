@@ -195,7 +195,7 @@ class GameSettings extends React.Component {
 		return (
 			<div>
 				<div className="App settingspage">
-				<div className="grid">
+				<div className="grid-fastest">
   </div>
 
 					<div>
