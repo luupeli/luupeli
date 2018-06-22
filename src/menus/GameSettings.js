@@ -7,6 +7,10 @@ import axios from 'axios'
  * GameSettings is the menu directly prior to a WritingGame session.
  * A game session will be based on the selections made by user in the GameSettings menu.
  * Quite a lot of objects/arrays will be passed on using this.state.
+ * 
+ * To install mode-emoji-support for NodeJS
+ * npm install --save node-emoji
+ * 
  */
 class GameSettings extends React.Component {
 
@@ -32,6 +36,40 @@ class GameSettings extends React.Component {
 				const animals = response.data.map(animal => {
 					return { ...animal, selected: false }
 				})
+				
+
+				/*
+				Here we try to fetch emojis for the animals.
+				*/
+				for (var key in animals) {
+					
+					if (animals[key].name.toLowerCase()==='kissa') {
+						var emo = require('node-emoji')
+						emo=emo.get('cat') 
+						console.log(emo)
+						animals[key].emoji= emo;
+					}
+					if (animals[key].name.toLowerCase()==='koira') {
+						var emo = require('node-emoji')
+						emo=emo.get('dog') 
+						console.log(emo)
+						animals[key].emoji= emo;
+					}
+					if (animals[key].name.toLowerCase()==='hevonen') {
+						var emo = require('node-emoji')
+						emo=emo.get('horse') 
+						console.log(emo)
+						animals[key].emoji= emo;
+					}
+
+					if (animals[key].name.toLowerCase()==='nauta') {
+						var emo = require('node-emoji')
+						emo=emo.get('cow') 
+						console.log(emo)
+						animals[key].emoji= emo;
+					}
+
+				}
 				this.setState({ allAnimals: animals })
 			})
 
@@ -181,7 +219,7 @@ class GameSettings extends React.Component {
 		let id = -1
 		const selectAnimal = this.state.allAnimals.map(animal => {
 			id++
-			return <label className="radio-inline"><input type="radio" id={id} name="animal" onClick={this.changeAnimal}></input>{animal.name}</label>
+			return <label className="radio-inline"><input type="radio" id={id} name="animal" onClick={this.changeAnimal}></input>{animal.emoji}{animal.name}</label>
 		})
 
 		// Creating a body part menu
@@ -195,11 +233,13 @@ class GameSettings extends React.Component {
 		return (
 			<div>
 				<div className="App settingspage">
-				<div className="grid-sub-fastest"></div>
+				<div className="grid-sub-fastest">
+				  </div>
 				<div className="grid-fastest">
-  </div>
-  <div className="blinder">
-  </div>
+				  </div>
+			  <div className="blinder">
+  				</div>
+				    <h2 className="h2">Luupelivalinnat:</h2>
 					<div>
 						<WGMessage ref={instance => this.wgmessage = instance} />
 					</div>
@@ -222,7 +262,7 @@ class GameSettings extends React.Component {
 					</div>
 					<div class="container">
 						<div class="col-md-12">	
-							<h1 className="form-header">Pelin pituus:</h1>
+							<h1 className="form-header">Luupelin pituus:</h1>
 							<form>
 								<label className="radio-inline"><input type="radio" value="3" onClick={this.changeGameLength.bind(this)} name="length" defaultChecked></input>3</label>
 								<label className="radio-inline"><input type="radio" value="5" onClick={this.changeGameLength.bind(this)} name="length"></input>5</label>
@@ -238,14 +278,15 @@ class GameSettings extends React.Component {
 								<label className="radio-inline"><input type="radio" value="medium" name="difficultylevel"></input>Keskivaikea</label>
 								<label className="radio-inline"><input type="radio" value="hard" name="difficultylevel"></input>Vaikea</label>
 							</form>
-							<div className="btn-group settingspage GameButton">
-								<button onClick={this.atLeastOneBodyPartIsSelected}>Peliin >>
+							<div className="btn-group wide settingspage GameButton">
+								<button onClick={this.atLeastOneBodyPartIsSelected}>Luupeliin >>
 								</button>
 							</div>
 						</div>
 					</div>
 				</div>
 				</div>
+				
 				<div className="App">
 					<Link to='/game'><button className="gobackbutton">Takaisin</button></Link>
 				</div>

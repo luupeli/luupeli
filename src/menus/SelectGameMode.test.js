@@ -9,9 +9,14 @@ describe("SelectGameMode", () => {
         return component;
     }
 
-    it('has the text "Valitse Luupelimuoto:"', () => {
-        const res = gamemode().find('.h2')
-        expect(res.text()).toContain('Valitse Luupelimuoto:')
+    it('has the text "Valitse"', () => {
+        const res = gamemode().find('.toprow')
+        expect(res.text()).toContain('Valitse')
+    })
+
+    it('has the text "Luupelimuoto:"', () => {
+        const res = gamemode().find('.secondrow')
+        expect(res.text()).toContain('Luupelimuoto:')
     })
 
     it('has "Kirjoituspeli" (writing game) as one of the game modes', () => {

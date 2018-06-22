@@ -9,7 +9,8 @@ const SelectGameMode = () => (
   </div>
   <div className="blinder">
   </div>
-			<h2 className="h2">Valitse Luupelimuoto:</h2>
+			<h2 className="h2 toprow">Valitse</h2>
+			<h2 className="h2 secondrow">Luupelimuoto:</h2>
 			<div className="btn-group">
 				<Link to='/settings'><button className="writinggame">Kirjoituspeli</button></Link>
 				<button>...</button>
