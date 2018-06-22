@@ -191,8 +191,8 @@ CSS grid animation modified from:
 https://codepen.io/George-Payne/pen/qOrxao
 */
 .grid{
-    top: -400px;
-    bottom: -400px;
+    top: -386px;
+    bottom: -386px;
     left: -400px;
     right: -400px;
     position: absolute;
@@ -239,8 +239,8 @@ https://codepen.io/George-Payne/pen/qOrxao
   A repeat of .grid but with faster grid scroll speed.
   */
   .grid-faster{
-    top: -400px;
-    bottom: -400px;
+    top: -386px;
+    bottom: -386px;
     left: -400px;
     right: -400px;
     position: absolute;
@@ -264,8 +264,8 @@ https://codepen.io/George-Payne/pen/qOrxao
   A repeat of .grid but with super fast grid scroll speed.
   */
   .grid-fastest{
-    top: -400px;
-    bottom: -400px;
+    top: -386px;
+    bottom: -386px;
     left: -400px;
     right: -400px;
     position: absolute;
