@@ -213,8 +213,8 @@ https://codepen.io/George-Payne/pen/qOrxao
   }
 
   .grid-sub{
-    top: -460px;
-    bottom: -460px;
+    top: -440px;
+    bottom: -440px;
     left: -450px;
     right: -450px;
     position: absolute;
@@ -289,8 +289,8 @@ https://codepen.io/George-Payne/pen/qOrxao
   A repeat of .grid-sub but with faster grid scroll speed.
   */
   .grid-sub-faster{
-    top: -460px;
-    bottom: -460px;
+    top: -440px;
+    bottom: -440px;
     left: -450px;
     right: -450px;
     position: absolute;
@@ -314,8 +314,8 @@ https://codepen.io/George-Payne/pen/qOrxao
   A repeat of .grid-sub but with super fast grid scroll speed.
   */
   .grid-sub-fastest{
-    top: -460px;
-    bottom: -460px;
+    top: -440px;
+    bottom: -440px;
     left: -450px;
     right: -450px;
     position: absolute;
