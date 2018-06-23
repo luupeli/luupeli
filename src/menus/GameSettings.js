@@ -237,6 +237,8 @@ class GameSettings extends React.Component {
 				  </div>
 				<div className="grid-fastest">
 				  </div>
+				  <div className="grid-flair">
+  				</div>
 			  <div className="blinder">
   				</div>
 				    <h2 className="h2">Luupelivalinnat:</h2>

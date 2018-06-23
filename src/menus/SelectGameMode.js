@@ -4,9 +4,13 @@ import { Link } from 'react-router-dom'
 const SelectGameMode = () => (
 	<div>
 		<div className="App">
-		<div className="grid-sub-faster"></div>
+		<div className="grid-sub-faster"
+		></div>
 		<div className="grid-faster">
-  </div>
+		</div>
+		<div className="grid-flair">
+      </div>
+  
   <div className="blinder">
   </div>
 			<h2 className="h2 toprow">Valitse</h2>
