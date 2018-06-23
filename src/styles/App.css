@@ -18,11 +18,11 @@
       -moz-border-radius: 9px;
     margin-bottom: 15px;
     border-radius: 15px;
-    font-size:24px;
+    font-size:calc(0.9vw + 0.9vh + .5vmin);/*10vh;/*24px;*/
     cursor: pointer;
     width: 100%;
     display: block;
-    padding: 20px 24px;
+    padding: 1.0vh 1.25vw;/*20px 24px;*/
     text-decoration:none;
     text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
     color: rgb(236, 209, 228);
@@ -84,11 +84,11 @@
       -moz-border-radius: 9px;
     margin-bottom: 5px;
     border-radius: 5px;
-    font-size:14px;
+    font-size:calc(.79vw + .79vh + .75vmin);/*font-size:14px;*/
     cursor: pointer;
     /*width: 100%;*/
     display: block;
-    padding: 10px 12px;
+    padding: 0.7vh 0.89vw;/*padding: 10px 12px;*/
     text-decoration:none;
     text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
     color: rgb(236, 209, 228);
@@ -122,16 +122,17 @@ https://codepen.io/M4TERIAL/pen/gavvQL
 .h1 {
     color: #C6CBF5;
     font-family: 'Press start 2p', sans-serif;
-    font-size: 120px;
+   /* font-size: 120px;*/
+    font-size:calc(4vw + 4vh + 2.5vmin);
     font-weight: 1000;
     line-height: 1.2;
     left: 50%;
-    margin: 0;
-    margin-bottom: 40px;
+/*    margin-bottom: 40px;*/
+    margin-bottom:calc(1.25vw + 1.25vh + 0.65vmin);
     text-align: center;
     text-transform: uppercase;
     top: 80px;
-    width: 852px;
+   /* width: 852px;*/
     z-index: 11;
     background: -webkit-linear-gradient(top, rgb(141, 61, 233), #C6CBF5 40%, black 40%, #E1A0CE 57%, white 77%, #663333 89%);
     -webkit-background-clip: text;
@@ -144,16 +145,18 @@ https://codepen.io/M4TERIAL/pen/gavvQL
 .h2 {
     color: #C6CBF5;
     font-family: 'Press start 2p', sans-serif;
-    font-size: 60px;
+    /*font-size: 60px;*/
+    font-size:calc(2vw + 2vh + 1vmin);
     font-weight: 700;
     line-height: 1.2;
     left: 50%;
     margin: 0;
-    margin-bottom: 40px;
+    /*margin-bottom: 40px;*/
+    margin-bottom:calc(1.25vw + 1.25vh + 0.65vmin);
     text-align: center;
     text-transform: uppercase;
     top: 80px;
-    width: 852px;
+    /*width: 852px;*/
     z-index: 11;
     background: -webkit-linear-gradient(top, rgb(141, 61, 233), #C6CBF5 40%, black 40%, #E1A0CE 57%, white 77%, #CC5555 89%);
     -webkit-background-clip: text;
@@ -167,8 +170,8 @@ div.blinder {
     position: absolute;
     width: 16%;
     height: 12%;
-    margin-left: 42%; 
-    margin-top: 15%;
+    margin-left: 42vw; 
+    margin-top: 25vh;
     border-radius: 50%;
     background-color: #fff;
     box-shadow:
@@ -179,7 +182,8 @@ div.blinder {
 }
 
 div.transbox {
-    margin: 30px;
+    /*margin: 30px;*/
+    margin:calc(1.1vw + 1.1vh + 0.55vmin);
     background-color: #33192f;
     border: 1px solid #E1A0CE;
     opacity: 0.9;
@@ -201,15 +205,19 @@ form {
 }
 .form-header {
     color:  rgb(235, 137, 183);
-    font-size: 40px;
-    margin-bottom: 30px;
+    /*font-size: 40px;*/
+    font-size:calc(1.4vw + 1.4vh + 0.7vmin);
+    margin-bottom:calc(1.1vw + 1.1vh + 0.5vmin);
+    /*margin-bottom: 30px;*/
 }
 
 
 
 .settingspage {
-    font-size: 20px;
-    margin-top: 60px;
+    font-size:calc(0.7vw + 0.7vh + 0.5vmin);
+    margin-top:calc(1.3vw + 1.3vh + 0.7vmin);
+    /*font-size: 20px;
+    margin-top: 60px;*/
 }
 
 /*
@@ -243,13 +251,13 @@ body {
     color: #fff;
     background: linear-gradient(
       180deg,
-        #6A0275 10%, 
-        #040C4A 43%,
-        #CC66CC 44%,
-        #FFFFFF 45%,
-        #FF99FF 47%,
-        #040C4A 51%,
-        #000000 80%);
+        #6A0275 10vh, 
+        #040C4A 43vh,
+        #CC66CC 44vh,
+        #FFFFFF 45vh,
+        #FF99FF 47vh,
+        #040C4A 51vh,
+        #000000 80vh);
     
     background-size: 103% 103%;
     -webkit-animation: Gradient 2.23s ease infinite;
@@ -263,10 +271,14 @@ CSS grid animation modified from:
 https://codepen.io/George-Payne/pen/qOrxao
 */
 .grid{
-    top: -386px;
+    /* top: -386px;
     bottom: -386px;
     left: -400px;
-    right: -400px;
+    right: -400px; */
+    top: -50vh;
+    bottom: -50vh;
+    left: -25vw;
+    right: -25vw;
     position: absolute;
     opacity: 0.25;
 
@@ -284,11 +296,47 @@ https://codepen.io/George-Payne/pen/qOrxao
     
   }
 
-  .grid-sub{
-    top: -440px;
+  .grid-flair{
+    /*top: -440px;
     bottom: -440px;
     left: -450px;
     right: -450px;
+         */
+    top: -55vh;
+    bottom: -55vh;
+    left: -27.5vw;
+    right: -27.5vw;
+    position: absolute;
+    opacity: 0.47;
+
+  
+    background-image: 
+    linear-gradient(91deg,transparent 0px, #FF99CC 1px, #FFFFFF 2px, #FF99CC 3px, transparent 4px),
+    linear-gradient(93deg,transparent 0px, #FF99CC 1px, #FFFFFF 2px, #FF99CC 3px, transparent 4px),
+    linear-gradient(87deg,transparent 0px, #FF99CC 1px, #FFFFFF 2px, #FF99CC 3px, transparent 4px),
+    linear-gradient(89deg, transparent 0px, #FF99CC 1px, #FFFFFF 2px, #FF99CC 3px, transparent 4px);
+    /* linear-gradient(1deg, transparent 0px, #FF99CC 1px, #FFFFFF 2px, #FF99CC 3px, transparent 4px),
+    linear-gradient(-1deg, transparent 0px, #FF99CC 1px, #FFFFFF 2px, #FF99CC 3px, transparent 4px);  */
+
+    background-size:4% 4%, 4% 4%;
+    background-position:0 0, 0 0;
+    
+    transform: perspective(500px) rotateX(80deg);
+    animation: throughSpace-bottom 0.5s linear;
+    animation-iteration-count: infinite;
+    
+  }
+
+ 
+  .grid-sub{
+    /*top: -440px;
+    bottom: -440px;
+    left: -450px;
+    right: -450px;*/
+    top: -55vh;
+    bottom: -55vh;
+    left: -27.5vw;
+    right: -27.5vw;
     position: absolute;
     opacity: 0.07;
 
@@ -411,10 +459,10 @@ https://codepen.io/George-Payne/pen/qOrxao
  
   @keyframes throughSpace-bottom{
     0%{
-      transform: perspective(500px) rotateX(80deg) translateY(0%);
+      transform: perspective(calc(25.5vh + 25.5vw)) rotateX(80deg) translateY(0%); /*persp: 500px -> calc(12.5vh + 12.5vw) */
     }
     100%{
-      transform: perspective(500px) rotateX(80deg) translateY(5.8%);
+      transform: perspective(calc(25.5vh + 25.5vw)) rotateX(80deg) translateY(5.8%); /*persp: 500px -> calc(12.5vh + 12.5vw) */
     }
   }
 
@@ -521,3 +569,4 @@ https://codepen.io/George-Payne/pen/qOrxao
 		background-position: 0% 0%
 	}
 }
+

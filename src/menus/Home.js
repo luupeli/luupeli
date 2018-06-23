@@ -11,6 +11,8 @@ const Home = () => (
   </div> 
     <div className="grid">
   </div>
+  <div className="grid-flair">
+  </div>
   <div className="blinder">
   </div>
     <h1 className="h1 gametitle">Luupeli</h1>
