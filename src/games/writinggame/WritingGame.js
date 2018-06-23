@@ -14,7 +14,7 @@ class WritingGame extends React.Component {
       value: '',
       index: 0,
       correct: 0,
-      endReached: false,
+      endCounter: 0,
       redirectToEndPage: false,
       images: props.location.state.images,
       allBodyParts: props.location.state.allBodyParts,  // This is an array of all the known bodyparts.
@@ -67,11 +67,13 @@ class WritingGame extends React.Component {
     }
   }
 
-  //If all images have not yet been cycled through, increment counter by 1
+  //If all images have not yet been cycled through, increment counter by 1.
+  //----endCounter---- is a separate counter because index is needed for plenty of functionality
   changeCounter() {
-    if (this.state.index <= this.state.images.length) {
+    if (this.state.index < this.state.images.length - 1) {
       this.setState({ index: this.state.index + 1 })
     }
+    this.setState({ endCounter: this.state.endCounter + 1 })
   }
 
   //clears text field, sets text field value to empty string
@@ -95,44 +97,52 @@ class WritingGame extends React.Component {
     return this.state
   }
 
-  bottomBar() {
-    return (
-      <div class="bottom">
-        <div class="row" id="image-holder">
-          <div class="intro">
-              <img id="question-image" class="img-fluid" alt={this.state.images[this.state.index].bone.nameLatin+' osasta '+ this.state.bpname+' kuvan url: http://luupeli-backend.herokuapp.com/images/' + this.state.images[this.state.index].url} src={'http://luupeli-backend.herokuapp.com/images/' + this.state.images[this.state.index].url} />
+  //returns the form of the game, or a message if the end has been reached
+  bottomPage() {
+    if (this.state.endCounter < this.state.images.length) {
+      return (
+        <div class="bottom">
+          <div class="row" id="image-holder">
+            <div class="intro">
+                <img id="question-image" class="img-fluid" alt={this.state.images[this.state.index].bone.nameLatin+' osasta '+ this.state.bpname+' kuvan url: http://luupeli-backend.herokuapp.com/images/' + this.state.images[this.state.index].url} src={'http://luupeli-backend.herokuapp.com/images/' + this.state.images[this.state.index].url} />
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6 col-md-offset-3">
-            <h1 id="heading">{this.state.images[this.state.index].bone.name}</h1>
+          <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+              <h1 id="heading">{this.state.images[this.state.index].bone.name}</h1>
+            </div>
           </div>
-        </div>
-        <div class="container">
-          <div class="col-md-6 col-md-offset-3" id="info">   
-            <p>Tähän tulee lisätietoa luusta</p> 
-          </div>
-        </div>
-        <div class="answer-input">
           <div class="container">
-            <div class="intro"/>
-            <form className="input" class="form-inline" id='gameForm' onSubmit={this.handleSubmit}>
-              <div class="form-group"><input class="form-control" type="text" onChange={this.handleChange} /></div>
-              <div class="form-group"><input type="submit" class="btn btn-primary" value="Vastaa" /></div>
-            </form>
+            <div class="col-md-6 col-md-offset-3" id="info">   
+              <p>Tähän tulee lisätietoa luusta</p> 
+            </div>
+          </div>
+          <div class="answer-input">
+            <div class="container">
+              <div class="intro"/>
+              <form className="input" class="form-inline" id='gameForm' onSubmit={this.handleSubmit}>
+                <div class="form-group"><input class="form-control" type="text" onChange={this.handleChange} /></div>
+                <div class="form-group"><input type="submit" class="btn btn-primary" value="Vastaa" /></div>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
-    )
+      )
+    } else {
+      return (
+        <div>
+          <p>Ohjataan lopputulokseen..</p>
+        </div>
+      )
+    }
   }
 
   //If all images have been cycled through, redirect to endscreen, otherwise render quiz page
   render() {
+    console.log("endcounter",this.state.endCounter)
+    console.log("index",this.state.index)
     //this.wgmessage.componentWillUnmount()
-    if (this.state.index >= this.state.images.length) {
-      if (!this.state.endReached) {
-        this.setState({endReached: true})
-      }
+    if (this.state.endCounter >= this.state.images.length) {
       setTimeout(function() {
         this.setState({redirectToEndPage: true})
       }.bind(this), 3000);
@@ -147,36 +157,10 @@ class WritingGame extends React.Component {
             }
           }} />
         )
-      } else {
-        return (
-          <div className="App">
-            <p>{this.state.testiviesti}</p>
-            <div>
-              <div class="container">
-                <div class="row">
-                  <div class="col-md-6 col-md-offset-3">
-                    <div class="progress">
-                      <div class="progress-bar" id="progbar" aria-valuenow={this.state.index} aria-valuemin="0" aria-valuemax={this.state.images.length}><p id="proglabel">{this.state.index + 1}/{this.state.images.length}</p></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          <div class="dual-layout">
-            <div class="container">
-              <div>
-                <WGMessage ref={instance => this.wgmessage = instance} />
-              </div>
-            </div>
-          </div>
-        </div>
-        )
       }
-    } else {
-
+    }
     
-    
-
+    console.log(this.state.index)
     let bp = this.state.images[this.state.index].bone.bodypart; // The database id of the bodypart to which he bone in question is related to.
 
     // Here we simply fetch the name of the bodypart to which the bone in question is related to. 
@@ -186,9 +170,7 @@ class WritingGame extends React.Component {
         console.log("bodypart match found!");
         this.setState({ bpname: this.state.allBodyParts[i].name })
       }
-
     }
-
 
     return (
       <div className="App">
@@ -209,13 +191,13 @@ class WritingGame extends React.Component {
           <div>
             <WGMessage ref={instance => this.wgmessage = instance} />
           </div>
-          {this.bottomBar()}
+          {this.bottomPage()}
         </div>
       </div>
     </div>
     );
   }
-  }
+  
 }
 
 export default WritingGame
