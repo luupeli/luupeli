@@ -14,6 +14,8 @@ class WritingGame extends React.Component {
       value: '',
       index: 0,
       correct: 0,
+      endReached: false,
+      redirectToEndPage: false,
       images: props.location.state.images,
       allBodyParts: props.location.state.allBodyParts,  // This is an array of all the known bodyparts.
       allAnimals: props.location.state.allAnimals       // This is an array of all the known animals.
@@ -94,18 +96,54 @@ class WritingGame extends React.Component {
 
   //If all images have been cycled through, redirect to endscreen, otherwise render quiz page
   render() {
+    //this.wgmessage.componentWillUnmount()
     if (this.state.index >= this.state.images.length) {
-      this.wgmessage.componentWillUnmount()
-      return (
-        <Redirect to={{
-          pathname: "/endscreen",
-          state: {
-            correct: this.state.correct,
-            total: this.state.images.length
-          }
-        }} />
-      )
-    }
+      if (!this.state.endReached) {
+        this.setState({endReached: true})
+      }
+      setTimeout(function() {
+        this.setState({redirectToEndPage: true})
+      }.bind(this), 3000);
+
+      if (this.state.redirectToEndPage) {
+        return (
+          <Redirect to={{
+            pathname: "/endscreen",
+            state: {
+              correct: this.state.correct,
+              total: this.state.images.length
+            }
+          }} />
+        )
+      } else {
+        return (
+          <div className="App">
+            <p>{this.state.testiviesti}</p>
+            <div>
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-6 col-md-offset-3">
+                    <div class="progress">
+                      <div class="progress-bar" id="progbar" aria-valuenow={this.state.index} aria-valuemin="0" aria-valuemax={this.state.images.length}><p id="proglabel">{this.state.index + 1}/{this.state.images.length}</p></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <div class="dual-layout">
+            <div class="container">
+              <div>
+                <WGMessage ref={instance => this.wgmessage = instance} />
+              </div>
+            </div>
+          </div>
+        </div>
+        )
+      }
+    } else {
+
+    
+    
 
     let bp = this.state.images[this.state.index].bone.bodypart; // The database id of the bodypart to which he bone in question is related to. 
     let bpname = "jotain";
@@ -168,6 +206,7 @@ class WritingGame extends React.Component {
       </div>
     </div>
     );
+  }
   }
 }
 
