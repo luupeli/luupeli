@@ -18,7 +18,8 @@ class WritingGame extends React.Component {
       redirectToEndPage: false,
       images: props.location.state.images,
       allBodyParts: props.location.state.allBodyParts,  // This is an array of all the known bodyparts.
-      allAnimals: props.location.state.allAnimals       // This is an array of all the known animals.
+      allAnimals: props.location.state.allAnimals,       // This is an array of all the known animals.
+      bpname: 'jotain'
     };
     console.log(this.state.testiviesti)
     console.log(this.state.images)
@@ -94,6 +95,37 @@ class WritingGame extends React.Component {
     return this.state
   }
 
+  bottomBar() {
+    return (
+      <div class="bottom">
+        <div class="row" id="image-holder">
+          <div class="intro">
+              <img id="question-image" class="img-fluid" alt={this.state.images[this.state.index].bone.nameLatin+' osasta '+ this.state.bpname+' kuvan url: http://luupeli-backend.herokuapp.com/images/' + this.state.images[this.state.index].url} src={'http://luupeli-backend.herokuapp.com/images/' + this.state.images[this.state.index].url} />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-md-offset-3">
+            <h1 id="heading">{this.state.images[this.state.index].bone.name}</h1>
+          </div>
+        </div>
+        <div class="container">
+          <div class="col-md-6 col-md-offset-3" id="info">   
+            <p>Tähän tulee lisätietoa luusta</p> 
+          </div>
+        </div>
+        <div class="answer-input">
+          <div class="container">
+            <div class="intro"/>
+            <form className="input" class="form-inline" id='gameForm' onSubmit={this.handleSubmit}>
+              <div class="form-group"><input class="form-control" type="text" onChange={this.handleChange} /></div>
+              <div class="form-group"><input type="submit" class="btn btn-primary" value="Vastaa" /></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   //If all images have been cycled through, redirect to endscreen, otherwise render quiz page
   render() {
     //this.wgmessage.componentWillUnmount()
@@ -145,15 +177,14 @@ class WritingGame extends React.Component {
     
     
 
-    let bp = this.state.images[this.state.index].bone.bodypart; // The database id of the bodypart to which he bone in question is related to. 
-    let bpname = "jotain";
+    let bp = this.state.images[this.state.index].bone.bodypart; // The database id of the bodypart to which he bone in question is related to.
 
     // Here we simply fetch the name of the bodypart to which the bone in question is related to. 
     // The for-loop should probably be converted into a key-loop (.length style loops seem to work a bit unrealiably, when dealing with strings...)
     for (var i = 0; i < this.state.allBodyParts.length; i++) {
       if (this.state.allBodyParts[i].id === bp) {
         console.log("bodypart match found!");
-        bpname = this.state.allBodyParts[i].name;
+        this.setState({ bpname: this.state.allBodyParts[i].name })
       }
 
     }
@@ -178,30 +209,7 @@ class WritingGame extends React.Component {
           <div>
             <WGMessage ref={instance => this.wgmessage = instance} />
           </div>
-          <div class="row" id="image-holder">
-            <div class="intro">
-                <img id="question-image" class="img-fluid" alt={this.state.images[this.state.index].bone.nameLatin+' osasta '+bpname+' kuvan url: http://luupeli-backend.herokuapp.com/images/' + this.state.images[this.state.index].url} src={'http://luupeli-backend.herokuapp.com/images/' + this.state.images[this.state.index].url} />
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 col-md-offset-3">
-              <h1 id="heading">{this.state.images[this.state.index].bone.name}</h1>
-            </div>
-          </div>
-          <div class="container">
-            <div class="col-md-6 col-md-offset-3" id="info">   
-              <p>Tähän tulee lisätietoa luusta</p> 
-            </div>
-          </div>
-          <div class="answer-input">
-            <div class="container">
-              <div class="intro"/>
-              <form className="input" class="form-inline" id='gameForm' onSubmit={this.handleSubmit}>
-                <div class="form-group"><input class="form-control" type="text" onChange={this.handleChange} /></div>
-                <div class="form-group"><input type="submit" class="btn btn-primary" value="Vastaa" /></div>
-              </form>
-            </div>
-          </div>
+          {this.bottomBar()}
         </div>
       </div>
     </div>
