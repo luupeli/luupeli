@@ -243,7 +243,7 @@ body {
    
     height: 100vh;
     width: 100vw;
-    overflow: hidden;
+    overflow: scroll;
 }
 */
 
@@ -467,9 +467,7 @@ https://codepen.io/George-Payne/pen/qOrxao
       transform: perspective(calc(25.5vh + 25.5vw)) rotateX(80deg) translateY(5.8%); /*persp: 500px -> calc(12.5vh + 12.5vw) */
     }
   }
-
-
-
+  
   @-webkit-keyframes Gradient {
 	0% {
 		background-position: 0% 100%
@@ -571,4 +569,3 @@ https://codepen.io/George-Payne/pen/qOrxao
 		background-position: 0% 0%
 	}
 }
-
