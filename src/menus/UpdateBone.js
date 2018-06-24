@@ -13,18 +13,16 @@ class UpdateBone extends React.Component {
 			boneId: this.props.location.state.boneId,
 			nameLatin: this.props.location.state.nameLatin,
 			name: this.props.location.state.name,
+			altNameLatin: this.props.location.state.altNameLatin,
+			description: this.props.location.state.description,
+			attempts: this.props.location.state.attempts,
+			correctAttempts: this.props.location.state.correctAttempts,
 			animal: this.props.location.state.animal,
-			bodypart: this.props.location.state.bodypart,
-			newImages: [
-				{
-					url: "", 
-					difficulty: 1, 
-					file: []
-				}
-			],
+			bodyPart: this.props.location.state.bodyPart,
+			newImages: [],
 			images: [],
 			animals: [],
-			bodyparts: []
+			bodyParts: []
 		};
 		
 		this.handleChange = this.handleChange.bind(this)
@@ -47,21 +45,13 @@ class UpdateBone extends React.Component {
 	}
 	
 	//GET images related to this bone from DB and store them in state for rendering.
-	//GET animals and bodyparts and store them in state for later use.
+	//GET animals and bodyParts and store them in state for later use.
 	componentDidMount() {
 		const url = 'http://luupeli-backend.herokuapp.com/api/bones/' + this.state.boneId
 		
 		axios.get(url)
 			.then((response) => {
 				console.log(response)
-				var boneImages = []
-				for(var i = 0; i < response.data.images.length; i++) {
-					boneImages = boneImages.concat({
-						id: response.data.images[i].id,
-						url: response.data.images[i].url,
-						difficulty: response.data.images[i].difficulty
-					})
-				}
 				this.setState({ images: response.data.images })
 			})
 			.catch((error) => {
@@ -115,9 +105,9 @@ class UpdateBone extends React.Component {
 	}
 	
 	fetchBodyparts() {
-		axios.get('http://luupeli-backend.herokuapp.com/api/bodyparts/')
+		axios.get('http://luupeli-backend.herokuapp.com/api/bodyParts/')
 			.then((response) => {
-				this.setState({ bodyparts: response.data })
+				this.setState({ bodyParts: response.data })
 			})
 			.catch((error) => {
 				console.log(error)
@@ -173,14 +163,14 @@ class UpdateBone extends React.Component {
 	async updateBone() {
 		const url = "http://luupeli-backend.herokuapp.com/api/bones/" + this.state.boneId
 		const animalObj = this.state.animals.filter((animal) => animal.name === this.state.animal)
-		const bodypartObj = this.state.bodyparts.filter((bodypart) => bodypart.name === this.state.bodypart)
+		const bodyPartObj = this.state.bodyParts.filter((bodyPart) => bodyPart.name === this.state.bodyPart)
 		var boneResponse = "";
 		
 		return await axios.put(url, {
 			nameLatin: this.state.nameLatin,
 			name: this.state.name,
 			animal: animalObj[0].id,
-			bodypart: bodypartObj[0].id
+			bodyPart: bodyPartObj[0].id
 		})
 		.then((response) => {
 			return response.data
@@ -323,20 +313,12 @@ class UpdateBone extends React.Component {
 				<label className="pull-left">Suomenkielinen nimi</label>
 				<input type="text" name="name" value={this.state.name} className="form-control" onChange={this.handleChange}/>
 				
-				<label className="pull-left">Eläin</label>
-				<select name="animal" className="form-control" value={this.state.animal} onChange={this.handleChange}>
-					<option value="koira">Koira</option>
-					<option value="kissa">Kissa</option>
-					<option value="hevonen">Hevonen</option>
-					<option value="nauta">Nauta</option>
-				</select>
-				
 				<label className="pull-left">Ruumiinosa</label>
-				<select name="bodypart" className="form-control" value={this.state.bodypart} onChange={this.handleChange}>
-					<option value="eturaaja">Eturaaja</option>
-					<option value="takaraaja">Takaraaja</option>
-					<option value="keho">Vartalo</option>
-					<option value="pää">Pää</option>
+				<select name="bodyPart" className="form-control" value={this.state.bodyPart} onChange={this.handleChange}>
+					<option value="Eturaaja">Eturaaja</option>
+					<option value="Takaraaja">Takaraaja</option>
+					<option value="Keho">Vartalo</option>
+					<option value="Pää">Pää</option>
 				</select>
 				
 				<span className="clearfix"><label className="pull-left">Ladatut kuvat</label></span>
@@ -348,6 +330,9 @@ class UpdateBone extends React.Component {
 						<option value={1}>Helppo</option>
 						<option value={100}>Vaikea</option>
 					</select>
+					<select name="animal" className="form-control" value={this.state.images[i].animal} onChange={this.handleChange}>
+					{this.state.animals.map((animal, i) => <option value={animal.id}>{animal.name}</option>)}
+				</select>
 					<span className="input-group-btn">
 						<button type="button" className="btn btn-danger pull-right" onClick={this.handleRemoveImage.bind(this, i)}>Poista</button>
 					</span>
@@ -364,6 +349,9 @@ class UpdateBone extends React.Component {
 						<option value="1">Helppo</option>
 						<option value="100">Vaikea</option>
 					</select>
+					<select name="animal" className="form-control" value={this.state.newImages[i].animal} onChange={this.handleChange}>
+					{this.state.animals.map((animal, i) => <option value={animal.id}>{animal.name}</option>)}
+				</select>
 				</div>
 				</li>)}
 				<li className="list-group-item clearfix"><span className="btn-toolbar">
