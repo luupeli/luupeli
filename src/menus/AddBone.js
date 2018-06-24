@@ -285,7 +285,7 @@ class AddBone extends React.Component {
 					<select name="bodyPart" className="form-control" value={this.state.bodyPart} onChange={this.handleChange}>
 						<option value="Eturaaja">Eturaaja</option>
 						<option value="Takaraaja">Takaraaja</option>
-						<option value="Keho">Vartalo</option>
+						<option value="Vartalo">Vartalo</option>
 						<option value="Pää">Pää</option>
 					</select>
 				

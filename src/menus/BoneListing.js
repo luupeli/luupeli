@@ -40,7 +40,7 @@ class BoneListing extends React.Component {
 								altNameLatin: bone.altNameLatin,
 								description: bone.description,
 								name: bone.name,
-								bodypart: bone.bodypart,
+								bodyPart: bone.bodyPart,
 								attempts: bone.attempts,
 								correctAttempts: bone.correctAttempts
 							}

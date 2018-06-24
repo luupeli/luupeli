@@ -35,7 +35,6 @@ class UpdateBone extends React.Component {
 		this.handleImageChange = this.handleImageChange.bind(this)
 		this.validateNameLatin = this.validateNameLatin.bind(this)
 		this.validateImages = this.validateImages.bind(this)
-		this.updateFile = this.updateFile.bind(this)
 		this.fetchAnimals = this.fetchAnimals.bind(this)
 		this.fetchBodyparts = this.fetchBodyparts.bind(this)
 		this.uploadImage = this.uploadImage.bind(this)
@@ -65,7 +64,8 @@ class UpdateBone extends React.Component {
 	//Adds a new "empty file" to newImages list when user clicks a button to add more images.
 	//newImages is used to dynamically render correct amount of file & difficulty input elements in the update form
 	handleAddImage(event) {
-		const expandList = this.state.newImages.concat({url: "", difficulty: 1, file: []})
+		const animal = this.state.animals.filter((animal) => animal.name === "Koira")[0]
+		const expandList = this.state.newImages.concat({difficulty: "1", description: "", photographer: "", copyright: "", attempts: 0, correctAttempts: 0, handedness: "", animal: animal.id})
 		this.setState({ newImages: expandList})
 	}
 	
@@ -107,6 +107,7 @@ class UpdateBone extends React.Component {
 	fetchBodyparts() {
 		axios.get('http://luupeli-backend.herokuapp.com/api/bodyParts/')
 			.then((response) => {
+				console.log(response)
 				this.setState({ bodyParts: response.data })
 			})
 			.catch((error) => {
@@ -137,8 +138,14 @@ class UpdateBone extends React.Component {
 	postImage(i, imageUrl, bone) {
 		axios.post("http://luupeli-backend.herokuapp.com/api/images/", {
 				difficulty: this.state.newImages[i].difficulty,
-				bone: bone,
-				url: imageUrl
+				bone: bone.id,
+				url: imageUrl,
+				photographer: this.state.newImages[i].photographer,
+				description: this.state.newImages[i].description,
+				attempts: this.state.newImages[i].attempts,
+				correctAttempts: this.state.newImages[i].correctAttempts,
+				handedness: this.state.newImages[i].handedness,
+				animal: this.state.newImages[i].animal
 			})
 			.then((response) => {
 				console.log(response)
@@ -150,7 +157,13 @@ class UpdateBone extends React.Component {
 	
 	updateImage(i) {
 		axios.put("http://luupeli-backend.herokuapp.com/api/images/" + this.state.images[i]._id, {
-				difficulty: this.state.images[i].difficulty
+				difficulty: this.state.images[i].difficulty,
+				photographer: this.state.images[i].photographer,
+				description: this.state.images[i].description,
+				attempts: this.state.images[i].attempts,
+				correctAttempts: this.state.images[i].correctAttempts,
+				handedness: this.state.images[i].handedness,
+				animal: this.state.images[i].animal
 			})
 			.then((response) => {
 				console.log(response)
@@ -160,17 +173,18 @@ class UpdateBone extends React.Component {
 			})
 	}
 	
-	async updateBone() {
+	async updateBone(boneAnimals) {
 		const url = "http://luupeli-backend.herokuapp.com/api/bones/" + this.state.boneId
-		const animalObj = this.state.animals.filter((animal) => animal.name === this.state.animal)
-		const bodyPartObj = this.state.bodyParts.filter((bodyPart) => bodyPart.name === this.state.bodyPart)
+		const bodyPartObj = this.state.bodyParts.filter((bodyPart) => bodyPart.name === this.state.bodyPart.name)[0]
 		var boneResponse = "";
 		
 		return await axios.put(url, {
 			nameLatin: this.state.nameLatin,
 			name: this.state.name,
-			animal: animalObj[0].id,
-			bodyPart: bodyPartObj[0].id
+			bodyPart: bodyPartObj.id,
+			altNameLatin: this.state.altNameLatin,
+			description: this.state.description,
+			animals: boneAnimals
 		})
 		.then((response) => {
 			return response.data
@@ -198,19 +212,39 @@ class UpdateBone extends React.Component {
 		var bone = {};
 		var imageUrl = "";
 		
-		bone = await this.updateBone()
+		var boneAnimals = []
+		var animalTally = this.state.animals
+		animalTally.forEach((animal) => animal.exists = false)
 		
 		for (var i = 0; i < this.state.images.length; i++) {
+			const currAnimal = animalTally.filter((animal) => animal.id === this.state.images[i].animal)
+				
+				if (!currAnimal.exists) {
+					animalTally.map((animal) => {if (animal.name === currAnimal.name){ animal.exists = true }})
+					boneAnimals = boneAnimals.concat(currAnimal.id)
+				}
+			
 			this.updateImage(i)
 		}
 		
+		for (var k = 0; k < this.state.newImages.length; k++) {
+			if (this[`fileInput${k}`].files.length > 0) {
+				
+				const currAnimal = animalTally.filter((animal) => animal.id === this.state.newImages[k].animal)
+				
+				if (!currAnimal.exists) {
+					animalTally.map((animal) => {if (animal.name === currAnimal.name){ animal.exists = true }})
+					boneAnimals = boneAnimals.concat(currAnimal.id)
+				}
+			}
+		}
+		
+		bone = await this.updateBone(boneAnimals)
+		
 		for (var j = 0; j < this.state.newImages.length; j++) {
-			console.log("for-loop")
-			console.log(this[`fileInput${j}`].files)
-			console.log(this[`fileInput${j}`].files[0])
 			if (this[`fileInput${j}`].files.length > 0) {
 				imageUrl = await this.uploadImage(j)
-				this.postImage(j, imageUrl, bone.id)
+				this.postImage(j, imageUrl, bone)
 			}
 		}
 		
@@ -252,7 +286,7 @@ class UpdateBone extends React.Component {
 	//TODO: write a generalised function to consolidate this and handleNewFileChange()
 	handleImageChange(i, event) {
 		const modifiedList = this.state.images
-		modifiedList[i].difficulty = event.target.value
+		modifiedList[i][event.target.name] = event.target.value
 		this.setState({ images: modifiedList })
 	}
 	
@@ -261,8 +295,7 @@ class UpdateBone extends React.Component {
 	//TODO: write a generalised function to consolidate this and handleFileChange()
 	handleNewImageChange(i, event) {
 		const modifiedList = this.state.newImages
-		modifiedList[i].difficulty = event.target.value
-		modifiedList[i].file = this[`fileInput${i}`].files
+		modifiedList[i][event.target.name] = event.target.value
 		this.setState({ newImages: modifiedList })
 	}
 	
@@ -280,12 +313,6 @@ class UpdateBone extends React.Component {
 	//TODO: check that the bone has at least one image
 	validateImages() {
 		return true
-	}
-	
-	updateFile(i, event) {
-		const modifiedImages = this.state.newImages
-		modifiedImages[i].file = this[`fileInput${i}`].files
-		this.setState({ newImages: modifiedImages })
 	}
 	
 	//If this.state.submitted is true (i.e. bone data has been deleted), redirect to listing.
@@ -317,7 +344,7 @@ class UpdateBone extends React.Component {
 				<select name="bodyPart" className="form-control" value={this.state.bodyPart} onChange={this.handleChange}>
 					<option value="Eturaaja">Eturaaja</option>
 					<option value="Takaraaja">Takaraaja</option>
-					<option value="Keho">Vartalo</option>
+					<option value="Vartalo">Vartalo</option>
 					<option value="Pää">Pää</option>
 				</select>
 				
@@ -330,7 +357,7 @@ class UpdateBone extends React.Component {
 						<option value={1}>Helppo</option>
 						<option value={100}>Vaikea</option>
 					</select>
-					<select name="animal" className="form-control" value={this.state.images[i].animal} onChange={this.handleChange}>
+					<select name="animal" className="form-control" value={this.state.images[i].animal} onChange={this.handleImageChange.bind(this, i)}>
 					{this.state.animals.map((animal, i) => <option value={animal.id}>{animal.name}</option>)}
 				</select>
 					<span className="input-group-btn">
@@ -343,13 +370,13 @@ class UpdateBone extends React.Component {
 				<span className="clearfix"><label className="pull-left">Uudet kuvat</label></span>
 				<ul className="list-group">
 				{this.state.newImages.map((file, i) => <li key={file.id} className="list-group-item clearfix">
-				<input type="file" accept="image/x-png,image/jpeg" id="boneImage" ref={input => {this[`fileInput${i}`] = input}} onChange={this.updateFile.bind(this, i)}/>
+				<input type="file" accept="image/x-png,image/jpeg" id="boneImage" ref={input => {this[`fileInput${i}`] = input}}/>
 				<div className="input-group">
 					<select name="difficulty" className="form-control" value={this.state.newImages[i].difficulty} onChange={this.handleNewImageChange.bind(this, i)}>
 						<option value="1">Helppo</option>
 						<option value="100">Vaikea</option>
 					</select>
-					<select name="animal" className="form-control" value={this.state.newImages[i].animal} onChange={this.handleChange}>
+					<select name="animal" className="form-control" value={this.state.newImages[i].animal} onChange={this.handleNewImageChange.bind(this, i)}>
 					{this.state.animals.map((animal, i) => <option value={animal.id}>{animal.name}</option>)}
 				</select>
 				</div>
