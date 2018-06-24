@@ -32,7 +32,7 @@ class BoneListing extends React.Component {
 				<div className="list-group">
 				<span className="list-group-item list-group-item-info clearfix"><Link to='/add'><button className="btn btn-info pull-right">Lisää uusi</button></Link></span>
 					{this.state.bones.map(bone => 
-						<Link key={bone.id} to={{pathname: '/update/' + bone.boneId,
+						<Link key={bone.id} to={{pathname: '/update/' + bone.id,
 							state: {
 								id: bone.id,
 								boneId: bone.id,
@@ -40,7 +40,7 @@ class BoneListing extends React.Component {
 								altNameLatin: bone.altNameLatin,
 								description: bone.description,
 								name: bone.name,
-								bodyPart: bone.bodyPart,
+								bodyPart: bone.bodyPart.name,
 								attempts: bone.attempts,
 								correctAttempts: bone.correctAttempts
 							}

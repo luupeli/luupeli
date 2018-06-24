@@ -175,7 +175,8 @@ class UpdateBone extends React.Component {
 	
 	async updateBone(boneAnimals) {
 		const url = "http://luupeli-backend.herokuapp.com/api/bones/" + this.state.boneId
-		const bodyPartObj = this.state.bodyParts.filter((bodyPart) => bodyPart.name === this.state.bodyPart.name)[0]
+		const bodyPartObj = this.state.bodyParts.filter((bodyPart) => bodyPart.name === this.state.bodyPart)[0]
+		console.log(bodyPartObj)
 		var boneResponse = "";
 		
 		return await axios.put(url, {
