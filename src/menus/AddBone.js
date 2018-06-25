@@ -60,6 +60,7 @@ class AddBone extends React.Component {
 			bodyPart: "Eturaaja",
 			description: "",
 			altNameLatin: "",
+			images: [],
 			newImages: [],
 			animals: [],
 			bodyParts: []
@@ -77,6 +78,7 @@ class AddBone extends React.Component {
 		this.postBone = this.postBone.bind(this)
 		this.handleAddImage = this.handleAddImage.bind(this)
 		this.handleRemoveNewImage = this.handleRemoveNewImage.bind(this)
+		this.getBoneAnimals = this.getBoneAnimals.bind(this)
 	}
 	
 	//GET animals and bodyParts
@@ -132,6 +134,37 @@ class AddBone extends React.Component {
 		const modifiedList = this.state.newImages
 		modifiedList[i][event.target.name] = event.target.value
 		this.setState({ newImages: modifiedList })
+	}
+	
+	getBoneAnimals() {
+		var boneAnimals = []
+		var animalTally = this.state.animals
+		animalTally.forEach((animal) => animal.exists = false)
+		
+		for (var i = 0; i < this.state.images.length; i++) {
+			const currAnimal = animalTally.filter((animal) => animal.id === this.state.images[i].animal)[0]
+				
+				if (!currAnimal.exists) {
+					animalTally.map((animal) => {if (animal.name === currAnimal.name){ animal.exists = true }})
+					boneAnimals = boneAnimals.concat(currAnimal.id)
+				}
+			
+			this.updateImage(i)
+		}
+		
+		for (var k = 0; k < this.state.newImages.length; k++) {
+			if (this[`fileInput${k}`].files.length > 0) {
+				
+				const currAnimal = animalTally.filter((animal) => animal.id === this.state.newImages[k].animal)[0]
+				
+				if (!currAnimal.exists) {
+					animalTally.map((animal) => {if (animal.name === currAnimal.name){ animal.exists = true }})
+					boneAnimals = boneAnimals.concat(currAnimal.id)
+				}
+			}
+		}
+		
+		return boneAnimals
 	}
 	
 	async uploadImage(i) {
@@ -202,25 +235,11 @@ class AddBone extends React.Component {
 		}
 		
 		var errored = false
-		var bone = {};
-		var imageUrl = "";
+		var bone = {}
+		var imageUrl = ""
 		
 		
-		var boneAnimals = []
-		var animalTally = this.state.animals
-		animalTally.forEach((animal) => animal.exists = false)
-		
-		for (var k = 0; k < this.state.newImages.length; k++) {
-			if (this[`fileInput${k}`].files.length > 0) {
-				
-				const currAnimal = animalTally.filter((animal) => animal.id === this.state.newImages[k].animal)
-				
-				if (!currAnimal.exists) {
-					animalTally.map((animal) => {if (animal.name === currAnimal.name){ animal.exists = true }})
-					boneAnimals = boneAnimals.concat(currAnimal.id)
-				}
-			}
-		}
+		var boneAnimals = this.getBoneAnimals
 		
 		bone = await this.postBone(boneAnimals)
 		

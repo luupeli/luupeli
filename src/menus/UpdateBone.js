@@ -17,8 +17,8 @@ class UpdateBone extends React.Component {
 			description: this.props.location.state.description,
 			attempts: this.props.location.state.attempts,
 			correctAttempts: this.props.location.state.correctAttempts,
-			animal: this.props.location.state.animal,
 			bodyPart: this.props.location.state.bodyPart,
+			boneAnimals: this.props.location.state.boneAnimals,
 			newImages: [],
 			images: [],
 			animals: [],
@@ -41,13 +41,14 @@ class UpdateBone extends React.Component {
 		this.updateImage = this.updateImage.bind(this)
 		this.postImage = this.postImage.bind(this)
 		this.updateBone = this.updateBone.bind(this)
+		this.getBoneAnimals = this.getBoneAnimals.bind(this)
 	}
 	
 	//GET images related to this bone from DB and store them in state for rendering.
 	//GET animals and bodyParts and store them in state for later use.
 	componentDidMount() {
 		const url = 'http://luupeli-backend.herokuapp.com/api/bones/' + this.state.boneId
-		
+		console.log(this.state.boneAnimals)
 		axios.get(url)
 			.then((response) => {
 				console.log(response)
@@ -120,8 +121,6 @@ class UpdateBone extends React.Component {
 	}
 	
 	async uploadImage(i) {
-		var imageUrl = ""
-		
 		let data = new FormData()
 		data.append('image', this[`fileInput${i}`].files[0])
 		data.append('name', this[`fileInput${i}`].files[0].name)
@@ -176,8 +175,6 @@ class UpdateBone extends React.Component {
 	async updateBone(boneAnimals) {
 		const url = "http://luupeli-backend.herokuapp.com/api/bones/" + this.state.boneId
 		const bodyPartObj = this.state.bodyParts.filter((bodyPart) => bodyPart.name === this.state.bodyPart)[0]
-		console.log(bodyPartObj)
-		var boneResponse = "";
 		
 		return await axios.put(url, {
 			nameLatin: this.state.nameLatin,
@@ -198,27 +195,13 @@ class UpdateBone extends React.Component {
 		})
 	}
 	
-	//Sends bone-related values from this.state to the database.
-	//Updates difficulties for all images already in the database.
-	//TODO: Posts new images to the database.
-	//Prepare a WGMessage to notify user of a failed or successful save.
-	async handleSubmit(event) {
-		event.preventDefault()
-		
-		if (!this.validateNameLatin() || !this.validateImages()) {
-			return
-		}
-		
-		var errored = false
-		var bone = {};
-		var imageUrl = "";
-		
+	getBoneAnimals() {
 		var boneAnimals = []
 		var animalTally = this.state.animals
 		animalTally.forEach((animal) => animal.exists = false)
 		
 		for (var i = 0; i < this.state.images.length; i++) {
-			const currAnimal = animalTally.filter((animal) => animal.id === this.state.images[i].animal)
+			const currAnimal = animalTally.filter((animal) => animal.id === this.state.images[i].animal)[0]
 				
 				if (!currAnimal.exists) {
 					animalTally.map((animal) => {if (animal.name === currAnimal.name){ animal.exists = true }})
@@ -231,7 +214,7 @@ class UpdateBone extends React.Component {
 		for (var k = 0; k < this.state.newImages.length; k++) {
 			if (this[`fileInput${k}`].files.length > 0) {
 				
-				const currAnimal = animalTally.filter((animal) => animal.id === this.state.newImages[k].animal)
+				const currAnimal = animalTally.filter((animal) => animal.id === this.state.newImages[k].animal)[0]
 				
 				if (!currAnimal.exists) {
 					animalTally.map((animal) => {if (animal.name === currAnimal.name){ animal.exists = true }})
@@ -239,6 +222,26 @@ class UpdateBone extends React.Component {
 				}
 			}
 		}
+		
+		return boneAnimals
+	}
+	
+	//Sends bone-related values from this.state to the database.
+	//Updates difficulties for all images already in the database.
+	////TODO: FIX POSTING BONEANIMALS, currently db shows null for bone animals....
+	//Prepare a WGMessage to notify user of a failed or successful save.
+	async handleSubmit(event) {
+		event.preventDefault()
+		
+		if (!this.validateNameLatin() || !this.validateImages()) {
+			return
+		}
+		
+		var errored = false
+		var bone = {};
+		var imageUrl = "";
+		
+		var boneAnimals = this.getBoneAnimals()
 		
 		bone = await this.updateBone(boneAnimals)
 		

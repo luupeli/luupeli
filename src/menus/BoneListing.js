@@ -42,7 +42,9 @@ class BoneListing extends React.Component {
 								name: bone.name,
 								bodyPart: bone.bodyPart.name,
 								attempts: bone.attempts,
-								correctAttempts: bone.correctAttempts
+								correctAttempts: bone.correctAttempts,
+								boneAnimals: bone.animals
+								
 							}
 						}}>
 							<button type="button" className="list-group-item list-group-item-action">{bone.nameLatin} ({bone.animal})</button>

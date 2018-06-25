@@ -265,7 +265,7 @@ body {
     -webkit-animation: Gradient 2.23s ease infinite;
     -moz-animation: Gradient 2.23s ease infinite;
     animation: Gradient 2.23s ease infinite;
-    overflow: hidden;
+    overflow: auto;
 }
 
 /* 
