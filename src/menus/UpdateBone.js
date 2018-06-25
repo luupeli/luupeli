@@ -42,6 +42,7 @@ class UpdateBone extends React.Component {
 		this.postImage = this.postImage.bind(this)
 		this.updateBone = this.updateBone.bind(this)
 		this.getBoneAnimals = this.getBoneAnimals.bind(this)
+		this.failureMessage = this.failureMessage.bind(this)
 	}
 	
 	//GET images related to this bone from DB and store them in state for rendering.
@@ -81,7 +82,9 @@ class UpdateBone extends React.Component {
 		const url = 'http://luupeli-backend.herokuapp.com/api/images/' + this.state.images[i]._id
 		axios.delete(url)
 		.then((response) => {
-			console.log(response)
+			if (response.status !== 200) {
+				this.failureMessage()
+			}
 		})
 		.catch((error) => {
 			console.log(error)
@@ -95,6 +98,8 @@ class UpdateBone extends React.Component {
 		this.setState({ [event.target.name]: event.target.value })
 	}
 	
+	
+	//GET all animals from database for later use
 	fetchAnimals() {
 		axios.get('http://luupeli-backend.herokuapp.com/api/animals/')
 			.then((response) => {
@@ -105,6 +110,7 @@ class UpdateBone extends React.Component {
 			})
 	}
 	
+	//GET all bodyParts from database for later use
 	fetchBodyparts() {
 		axios.get('http://luupeli-backend.herokuapp.com/api/bodyParts/')
 			.then((response) => {
@@ -116,10 +122,7 @@ class UpdateBone extends React.Component {
 			})
 	}
 	
-	fetchImages() {
-		
-	}
-	
+	//Upload a new image to server via database
 	async uploadImage(i) {
 		let data = new FormData()
 		data.append('image', this[`fileInput${i}`].files[0])
@@ -128,12 +131,16 @@ class UpdateBone extends React.Component {
 		return await axios.post("http://luupeli-backend.herokuapp.com/api/images/upload", data, {headers: {enctype: "multipart/form-data"}})
 			.then((response) => {
 				return response.data.url
+				if (response.status !== 200) {
+					this.failureMessage()
+				}
 			})
 			.catch((error) => {
 				console.log(error)
 			})
 	}
 	
+	//POST an uploaded new image to database
 	postImage(i, imageUrl, bone) {
 		axios.post("http://luupeli-backend.herokuapp.com/api/images/", {
 				difficulty: this.state.newImages[i].difficulty,
@@ -147,13 +154,16 @@ class UpdateBone extends React.Component {
 				animal: this.state.newImages[i].animal
 			})
 			.then((response) => {
-				console.log(response)
+				if (response.status !== 200) {
+					this.failureMessage()
+				}
 			})
 			.catch((error) => {
 				console.log(error)
 			})
 	}
 	
+	//PUT updated fields of an existing image to database
 	updateImage(i) {
 		axios.put("http://luupeli-backend.herokuapp.com/api/images/" + this.state.images[i]._id, {
 				difficulty: this.state.images[i].difficulty,
@@ -165,13 +175,23 @@ class UpdateBone extends React.Component {
 				animal: this.state.images[i].animal
 			})
 			.then((response) => {
-				console.log(response)
+				if (response.status !== 200) {
+					this.failureMessage()
+				}
 			})
 			.catch((error) => {
 				console.log(error)
 			})
 	}
 	
+	//Display an error message to the user
+	failureMessage() {
+			this.wgmessage.mountTimer()
+			this.wgmessage.setMessage('Jokin meni pieleen.')
+			this.wgmessage.setStyle("alert alert-danger")
+	}
+	
+	//PUT updated fields of the bone to database
 	async updateBone(boneAnimals) {
 		const url = "http://luupeli-backend.herokuapp.com/api/bones/" + this.state.boneId
 		const bodyPartObj = this.state.bodyParts.filter((bodyPart) => bodyPart.name === this.state.bodyPart)[0]
@@ -186,15 +206,17 @@ class UpdateBone extends React.Component {
 		})
 		.then((response) => {
 			return response.data
+			
+			if (response.status !== 200) {
+				this.failureMessage()
+			}
 		})
 		.catch((error) => {
 			console.log(error)
-			this.wgmessage.mountTimer()
-			this.wgmessage.setMessage('Tallentaminen epäonnistui :(')
-			this.wgmessage.setStyle("alert alert-danger")
 		})
 	}
 	
+	//Generate and return a list of all animals related to this bone, with no duplicate animals
 	getBoneAnimals() {
 		var boneAnimals = []
 		var animalTally = this.state.animals
@@ -228,7 +250,7 @@ class UpdateBone extends React.Component {
 	
 	//Sends bone-related values from this.state to the database.
 	//Updates difficulties for all images already in the database.
-	////TODO: FIX POSTING BONEANIMALS, currently db shows null for bone animals....
+	//Uploads and posts any new images to the database.
 	//Prepare a WGMessage to notify user of a failed or successful save.
 	async handleSubmit(event) {
 		event.preventDefault()
@@ -237,7 +259,6 @@ class UpdateBone extends React.Component {
 			return
 		}
 		
-		var errored = false
 		var bone = {};
 		var imageUrl = "";
 		
@@ -252,11 +273,11 @@ class UpdateBone extends React.Component {
 			}
 		}
 		
-		if (!errored) {
-			this.wgmessage.mountTimer()
-			this.wgmessage.setMessage('Muutokset tallennettu!')
-			this.wgmessage.setStyle("alert alert-success")
-		}
+		
+		//TODO: only show this message if there is no existing failure message
+		this.wgmessage.mountTimer()
+		this.wgmessage.setMessage('Muutokset tallennettu!')
+		this.wgmessage.setStyle("alert alert-success")
 	}
 	
 	//Delete this bone from DB.
@@ -264,11 +285,15 @@ class UpdateBone extends React.Component {
 	//Prepare a message to notify user of the success/failure of the delete.
 	handleDelete(event) {
 		const url = "http://luupeli-backend.herokuapp.com/api/bones/" + this.state.boneId
-		var errored = false
+		
 		console.log(url)
 		axios.delete(url, {id: this.state.boneId})
 		.then((response) => {
-			console.log(response)
+			if (response.status !== 200) {
+				this.failureMessage()
+			} else {
+				this.setState({ submitted: true })
+			}
 		})
 		.catch((error) => {
 			console.log(error)
@@ -278,25 +303,22 @@ class UpdateBone extends React.Component {
 			this.wgmessage.setStyle("alert alert-danger")
 		})
 		
-		if(!errored) {
-			this.wgmessage.mountTimer()
-			this.wgmessage.setMessage('Poistettu!')
-			this.wgmessage.setStyle("alert alert-success")
-		}
+		//TODO: only show this message if there is no existing failure message
+		this.wgmessage.mountTimer()
+		this.wgmessage.setMessage('Poistettu!')
+		this.wgmessage.setStyle("alert alert-success")
 	}
 	
-	//When user changes image difficulty in form, reflect that change in state.
-	//i: list index of the image where difficulty was changed
-	//TODO: write a generalised function to consolidate this and handleNewFileChange()
+	//When user changes a field related to image i in the form, reflect that change in state.
+	//i: list index of the image where a field was changed
 	handleImageChange(i, event) {
 		const modifiedList = this.state.images
 		modifiedList[i][event.target.name] = event.target.value
 		this.setState({ images: modifiedList })
 	}
 	
-	//When user changes newImage difficulty in form, reflect that change in state.
-	//i: list index of the newImage where difficulty was changed
-	//TODO: write a generalised function to consolidate this and handleFileChange()
+	//When user changes a field relatod to newImage i in the form, reflect that change in state.
+	//i: list index of the newImage where a field was changed
 	handleNewImageChange(i, event) {
 		const modifiedList = this.state.newImages
 		modifiedList[i][event.target.name] = event.target.value
@@ -315,6 +337,7 @@ class UpdateBone extends React.Component {
 	}
 	
 	//TODO: check that the bone has at least one image
+	//Is this even needed?
 	validateImages() {
 		return true
 	}
