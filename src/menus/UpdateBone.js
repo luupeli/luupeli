@@ -27,8 +27,8 @@ class UpdateBone extends React.Component {
 		
 		this.handleChange = this.handleChange.bind(this)
 		this.handleAddImage = this.handleAddImage.bind(this)
-		this.handleRemoveNewImage = this.handleRemoveNewImage.bind(this)
-		this.handleRemoveImage = this.handleRemoveImage.bind(this)
+		this.handleDeleteNewImage = this.handleDeleteNewImage.bind(this)
+		this.handleDeleteImage = this.handleDeleteImage.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.handleDelete = this.handleDelete.bind(this)
 		this.handleNewImageChange = this.handleNewImageChange.bind(this)
@@ -42,17 +42,20 @@ class UpdateBone extends React.Component {
 		this.postImage = this.postImage.bind(this)
 		this.updateBone = this.updateBone.bind(this)
 		this.getBoneAnimals = this.getBoneAnimals.bind(this)
+		this.failureMessage = this.failureMessage.bind(this)
+		this.markForDelete = this.markForDelete.bind(this)
 	}
 	
 	//GET images related to this bone from DB and store them in state for rendering.
+	//Add a deleted flag to each image to mark images the user wants to delete.
 	//GET animals and bodyParts and store them in state for later use.
 	componentDidMount() {
 		const url = 'http://luupeli-backend.herokuapp.com/api/bones/' + this.state.boneId
-		console.log(this.state.boneAnimals)
 		axios.get(url)
 			.then((response) => {
-				console.log(response)
-				this.setState({ images: response.data.images })
+				const imagesWithDeletionFlag = response.data.images
+				imagesWithDeletionFlag.forEach((image) => image.deleted = false)
+				this.setState({ images: imagesWithDeletionFlag })
 			})
 			.catch((error) => {
 				console.log(error)
@@ -71,17 +74,24 @@ class UpdateBone extends React.Component {
 	}
 	
 	//Removes element at index i from this.state.newImages (and thus the corresponding file input element from the form)
-	handleRemoveNewImage(i, event) {
+	handleDeleteNewImage(i, event) {
 		//this.setState({ newImages: this.state.newImages.filter((element, index) => {return index !== i}) })
 		this.setState({ newImages: this.state.newImages.splice(0, (this.state.newImages.length - 1)) })
 	}
 	
-	//Removes element at index i from this.state.images and deletes it from the database.
-	handleRemoveImage(i, event) {
+	//Removes element at index i from this.state.images and deletes the corresponding image from the database.
+	handleDeleteImage(i) {
+		console.log(i)
+		console.log(this.state.images)
+		console.log(this.state.images[i])
+		console.log(this.state.images[i]._id)
 		const url = 'http://luupeli-backend.herokuapp.com/api/images/' + this.state.images[i]._id
 		axios.delete(url)
 		.then((response) => {
 			console.log(response)
+			if (response.status !== 200) {
+				this.failureMessage()
+			}
 		})
 		.catch((error) => {
 			console.log(error)
@@ -95,6 +105,8 @@ class UpdateBone extends React.Component {
 		this.setState({ [event.target.name]: event.target.value })
 	}
 	
+	
+	//GET all animals from database for later use
 	fetchAnimals() {
 		axios.get('http://luupeli-backend.herokuapp.com/api/animals/')
 			.then((response) => {
@@ -105,6 +117,7 @@ class UpdateBone extends React.Component {
 			})
 	}
 	
+	//GET all bodyParts from database for later use
 	fetchBodyparts() {
 		axios.get('http://luupeli-backend.herokuapp.com/api/bodyParts/')
 			.then((response) => {
@@ -116,10 +129,18 @@ class UpdateBone extends React.Component {
 			})
 	}
 	
-	fetchImages() {
-		
+	//Marks or unmarks an image for deletion, depending on the previous state of deleted flag
+	markForDelete(i, event) {
+		const modifiedImages = this.state.images
+		if (modifiedImages[i].deleted) {
+			modifiedImages[i].deleted = false
+		} else {
+			modifiedImages[i].deleted = true
+		}
+		this.setState({ images: modifiedImages })
 	}
 	
+	//Upload a new image to server via database
 	async uploadImage(i) {
 		let data = new FormData()
 		data.append('image', this[`fileInput${i}`].files[0])
@@ -128,12 +149,16 @@ class UpdateBone extends React.Component {
 		return await axios.post("http://luupeli-backend.herokuapp.com/api/images/upload", data, {headers: {enctype: "multipart/form-data"}})
 			.then((response) => {
 				return response.data.url
+				if (response.status !== 200) {
+					this.failureMessage()
+				}
 			})
 			.catch((error) => {
 				console.log(error)
 			})
 	}
 	
+	//POST an uploaded new image to database
 	postImage(i, imageUrl, bone) {
 		axios.post("http://luupeli-backend.herokuapp.com/api/images/", {
 				difficulty: this.state.newImages[i].difficulty,
@@ -147,13 +172,16 @@ class UpdateBone extends React.Component {
 				animal: this.state.newImages[i].animal
 			})
 			.then((response) => {
-				console.log(response)
+				if (response.status !== 200) {
+					this.failureMessage()
+				}
 			})
 			.catch((error) => {
 				console.log(error)
 			})
 	}
 	
+	//PUT updated fields of an existing image to database
 	updateImage(i) {
 		axios.put("http://luupeli-backend.herokuapp.com/api/images/" + this.state.images[i]._id, {
 				difficulty: this.state.images[i].difficulty,
@@ -165,13 +193,23 @@ class UpdateBone extends React.Component {
 				animal: this.state.images[i].animal
 			})
 			.then((response) => {
-				console.log(response)
+				if (response.status !== 200) {
+					this.failureMessage()
+				}
 			})
 			.catch((error) => {
 				console.log(error)
 			})
 	}
 	
+	//Display an error message to the user
+	failureMessage() {
+			this.wgmessage.mountTimer()
+			this.wgmessage.setMessage('Jokin meni pieleen.')
+			this.wgmessage.setStyle("alert alert-danger")
+	}
+	
+	//PUT updated fields of the bone to database
 	async updateBone(boneAnimals) {
 		const url = "http://luupeli-backend.herokuapp.com/api/bones/" + this.state.boneId
 		const bodyPartObj = this.state.bodyParts.filter((bodyPart) => bodyPart.name === this.state.bodyPart)[0]
@@ -186,15 +224,17 @@ class UpdateBone extends React.Component {
 		})
 		.then((response) => {
 			return response.data
+			
+			if (response.status !== 200) {
+				this.failureMessage()
+			}
 		})
 		.catch((error) => {
 			console.log(error)
-			this.wgmessage.mountTimer()
-			this.wgmessage.setMessage('Tallentaminen epäonnistui :(')
-			this.wgmessage.setStyle("alert alert-danger")
 		})
 	}
 	
+	//Generate and return a list of all animals related to this bone, with no duplicate animals
 	getBoneAnimals() {
 		var boneAnimals = []
 		var animalTally = this.state.animals
@@ -207,8 +247,6 @@ class UpdateBone extends React.Component {
 					animalTally.map((animal) => {if (animal.name === currAnimal.name){ animal.exists = true }})
 					boneAnimals = boneAnimals.concat(currAnimal.id)
 				}
-			
-			this.updateImage(i)
 		}
 		
 		for (var k = 0; k < this.state.newImages.length; k++) {
@@ -228,7 +266,7 @@ class UpdateBone extends React.Component {
 	
 	//Sends bone-related values from this.state to the database.
 	//Updates difficulties for all images already in the database.
-	////TODO: FIX POSTING BONEANIMALS, currently db shows null for bone animals....
+	//Uploads and posts any new images to the database.
 	//Prepare a WGMessage to notify user of a failed or successful save.
 	async handleSubmit(event) {
 		event.preventDefault()
@@ -237,7 +275,14 @@ class UpdateBone extends React.Component {
 			return
 		}
 		
-		var errored = false
+		for (var i = 0; i < this.state.images.length; i++) {
+			if (!this.state.images[i].deleted) {
+				this.updateImage(i)
+			} else {
+				this.handleDeleteImage(i)
+			}
+		}
+		
 		var bone = {};
 		var imageUrl = "";
 		
@@ -252,11 +297,11 @@ class UpdateBone extends React.Component {
 			}
 		}
 		
-		if (!errored) {
-			this.wgmessage.mountTimer()
-			this.wgmessage.setMessage('Muutokset tallennettu!')
-			this.wgmessage.setStyle("alert alert-success")
-		}
+		
+		//TODO: only show this message if there is no existing failure message
+		this.wgmessage.mountTimer()
+		this.wgmessage.setMessage('Muutokset tallennettu!')
+		this.wgmessage.setStyle("alert alert-success")
 	}
 	
 	//Delete this bone from DB.
@@ -264,39 +309,39 @@ class UpdateBone extends React.Component {
 	//Prepare a message to notify user of the success/failure of the delete.
 	handleDelete(event) {
 		const url = "http://luupeli-backend.herokuapp.com/api/bones/" + this.state.boneId
-		var errored = false
+		
 		console.log(url)
 		axios.delete(url, {id: this.state.boneId})
 		.then((response) => {
-			console.log(response)
+			if (response.status !== 200) {
+				this.failureMessage()
+			} else {
+				this.setState({ submitted: true })
+			}
 		})
 		.catch((error) => {
 			console.log(error)
-			errored = true
 			this.wgmessage.mountTimer()
 			this.wgmessage.setMessage('Poisto epäonnistui :(')
 			this.wgmessage.setStyle("alert alert-danger")
 		})
 		
-		if(!errored) {
-			this.wgmessage.mountTimer()
-			this.wgmessage.setMessage('Poistettu!')
-			this.wgmessage.setStyle("alert alert-success")
-		}
+		//TODO: only show this message if there is no existing failure message
+		this.wgmessage.mountTimer()
+		this.wgmessage.setMessage('Poistettu!')
+		this.wgmessage.setStyle("alert alert-success")
 	}
 	
-	//When user changes image difficulty in form, reflect that change in state.
-	//i: list index of the image where difficulty was changed
-	//TODO: write a generalised function to consolidate this and handleNewFileChange()
+	//When user changes a field related to image i in the form, reflect that change in state.
+	//i: list index of the image where a field was changed
 	handleImageChange(i, event) {
 		const modifiedList = this.state.images
 		modifiedList[i][event.target.name] = event.target.value
 		this.setState({ images: modifiedList })
 	}
 	
-	//When user changes newImage difficulty in form, reflect that change in state.
-	//i: list index of the newImage where difficulty was changed
-	//TODO: write a generalised function to consolidate this and handleFileChange()
+	//When user changes a field relatod to newImage i in the form, reflect that change in state.
+	//i: list index of the newImage where a field was changed
 	handleNewImageChange(i, event) {
 		const modifiedList = this.state.newImages
 		modifiedList[i][event.target.name] = event.target.value
@@ -315,6 +360,7 @@ class UpdateBone extends React.Component {
 	}
 	
 	//TODO: check that the bone has at least one image
+	//Is this even needed?
 	validateImages() {
 		return true
 	}
@@ -341,8 +387,14 @@ class UpdateBone extends React.Component {
 					<input type="text" name="nameLatin" value={this.state.nameLatin} className="form-control" onChange={this.handleChange} /><span className="glyphicon glyphicon-asterisk form-control-feedback"></span>
 				</div>
 				
+				<label className="pull-left">Vaihtoehtoinen latinankielinen nimi</label>
+				<input type="text" name="altNameLatin" value={this.state.altNameLatin} className="form-control" onChange={this.handleChange}/>
+				
 				<label className="pull-left">Suomenkielinen nimi</label>
 				<input type="text" name="name" value={this.state.name} className="form-control" onChange={this.handleChange}/>
+				
+				<label className="pull-left">Kuvaus</label>
+				<input type="text" name="description" value={this.state.description} className="form-control" onChange={this.handleChange}/>
 				
 				<label className="pull-left">Ruumiinosa</label>
 				<select name="bodyPart" className="form-control" value={this.state.bodyPart} onChange={this.handleChange}>
@@ -355,19 +407,39 @@ class UpdateBone extends React.Component {
 				<span className="clearfix"><label className="pull-left">Ladatut kuvat</label></span>
 				<ul className="list-group">
 				{this.state.images.map((file, i) => <li key={file.id} className="list-group-item clearfix">
-				<span className="pull-left">{file.url}</span><br />
-				<div className="input-group">
+				<span className="pull-left">{file.url + (this.state.images[i].deleted ? " (Poistetaan tallennuksen yhteydessä)" : "")}</span><br />
+				
+				<div className={"input-group " + (this.state.images[i].deleted ? 'hidden' : 'show')}>
+				
+					<label className="pull-left">Vaikeustaso</label>
 					<select name="difficulty" className="form-control" value={this.state.images[i].difficulty} onChange={this.handleImageChange.bind(this, i)}>
 						<option value={1}>Helppo</option>
 						<option value={100}>Vaikea</option>
 					</select>
+					
+					<label className="pull-left">Puoli</label>
+					<select name="handedness" className="form-control" value={this.state.images[i].handedness} onChange={this.handleImageChange.bind(this, i)}>
+						<option value="">Ei valintaa</option>
+						<option value="dex">dex</option>
+						<option value="sin">sin</option>
+					</select>
+					
+					<label className="pull-left">Eläin</label>
 					<select name="animal" className="form-control" value={this.state.images[i].animal} onChange={this.handleImageChange.bind(this, i)}>
-					{this.state.animals.map((animal, i) => <option value={animal.id}>{animal.name}</option>)}
-				</select>
-					<span className="input-group-btn">
-						<button type="button" className="btn btn-danger pull-right" onClick={this.handleRemoveImage.bind(this, i)}>Poista</button>
-					</span>
+						{this.state.animals.map((animal, i) => <option key={animal.id} value={animal.id}>{animal.name}</option>)}
+					</select>
+					
+					<label className="pull-left">Kuvaus</label>
+					<input type="text" name="description" value={this.state.images[i].description} className="form-control" onChange={this.handleImageChange.bind(this, i)}/>
+					
+					<label className="pull-left">Valokuvaaja</label>
+					<input type="text" name="photographer" value={this.state.images[i].photographer} className="form-control" onChange={this.handleImageChange.bind(this, i)}/>
+					
+					<label className="pull-left">Tekijänoikeus</label>
+					<input type="text" name="copyright" value={this.state.images[i].copyright} className="form-control" onChange={this.handleImageChange.bind(this, i)}/>
+					
 				</div>
+				<button type="button" className="btn btn-danger pull-right" onClick={this.markForDelete.bind(this, i)}>{(this.state.images[i].deleted ? "Peruuta poisto" : "Poista")}</button>
 				</li>)}
 				</ul>
 				
@@ -375,20 +447,44 @@ class UpdateBone extends React.Component {
 				<ul className="list-group">
 				{this.state.newImages.map((file, i) => <li key={file.id} className="list-group-item clearfix">
 				<input type="file" accept="image/x-png,image/jpeg" id="boneImage" ref={input => {this[`fileInput${i}`] = input}}/>
+				
 				<div className="input-group">
+				
+					<label className="pull-left">Vaikeustaso</label>
 					<select name="difficulty" className="form-control" value={this.state.newImages[i].difficulty} onChange={this.handleNewImageChange.bind(this, i)}>
 						<option value="1">Helppo</option>
 						<option value="100">Vaikea</option>
 					</select>
+					
+					<label className="pull-left">Puoli</label>
+					<select name="handedness" className="form-control" value={this.state.newImages[i].handedness} onChange={this.handleNewImageChange.bind(this, i)}>
+						<option value="">Ei valintaa</option>
+						<option value="dex">dex</option>
+						<option value="sin">sin</option>
+					</select>
+					
+					<label className="pull-left">Eläin</label>
 					<select name="animal" className="form-control" value={this.state.newImages[i].animal} onChange={this.handleNewImageChange.bind(this, i)}>
-					{this.state.animals.map((animal, i) => <option value={animal.id}>{animal.name}</option>)}
-				</select>
+						{this.state.animals.map((animal, i) => <option key={animal.id} value={animal.id}>{animal.name}</option>)}
+					</select>
+					
+					<label className="pull-left">Kuvaus</label>
+					<input type="text" name="description" value={this.state.newImages[i].description} className="form-control" onChange={this.handleNewImageChange.bind(this, i)}/>
+					
+					<label className="pull-left">Valokuvaaja</label>
+					<input type="text" name="photographer" value={this.state.newImages[i].photographer} className="form-control" onChange={this.handleNewImageChange.bind(this, i)}/>
+					
+					<label className="pull-left">Tekijänoikeus</label>
+					<input type="text" name="copyright" value={this.state.newImages[i].copyright} className="form-control" onChange={this.handleNewImageChange.bind(this, i)}/>
+					
 				</div>
 				</li>)}
-				<li className="list-group-item clearfix"><span className="btn-toolbar">
-					<button type="button" className="btn btn-info pull-right" onClick={this.handleAddImage}>Lisää kuvakenttä</button>
-					<button type="button" className="btn btn-danger pull-right" onClick={this.handleRemoveNewImage}>Poista kuvakenttä</button>
-				</span></li>
+				<li className="list-group-item clearfix">
+					<span className="btn-toolbar">
+						<button type="button" className="btn btn-info pull-right" onClick={this.handleAddImage}>Lisää kuvakenttä</button>
+						<button type="button" className="btn btn-danger pull-right" onClick={this.handleDeleteNewImage}>Poista kuvakenttä</button>
+					</span>
+				</li>
 				</ul>
 				
 				<div className="btn-toolbar">
