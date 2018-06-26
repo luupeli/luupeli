@@ -96,6 +96,25 @@ class WritingGame extends React.Component {
   state() {
     return this.state
   }
+  
+  topPage() {
+    return (
+      <div>
+        <p>{this.state.testiviesti}</p>
+        <div>
+          <div class="container">
+            <div class="row">
+              <div class="col-md-6 col-md-offset-3">
+                <div class="progress">
+                  <div class="progress-bar" id="progbar" aria-valuenow={this.state.index} aria-valuemin="0" aria-valuemax={this.state.images.length}><p id="proglabel">{this.state.index + 1}/{this.state.images.length}</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   //returns the form of the game, or a message if the end has been reached
   bottomPage() {
@@ -174,18 +193,7 @@ class WritingGame extends React.Component {
 
     return (
       <div className="App">
-        <p>{this.state.testiviesti}</p>
-        <div>
-          <div class="container">
-            <div class="row">
-              <div class="col-md-6 col-md-offset-3">
-                <div class="progress">
-                  <div class="progress-bar" id="progbar" aria-valuenow={this.state.index} aria-valuemin="0" aria-valuemax={this.state.images.length}><p id="proglabel">{this.state.index + 1}/{this.state.images.length}</p></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        {this.topPage()}
       <div class="dual-layout">
         <div class="container">
           <div>
@@ -197,7 +205,7 @@ class WritingGame extends React.Component {
     </div>
     );
   }
-  
+    
 }
 
 export default WritingGame
