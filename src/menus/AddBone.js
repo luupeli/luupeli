@@ -342,7 +342,7 @@ class AddBone extends React.Component {
 					
 								<label className="pull-left">Eläin</label>
 								<select name="animal" className="form-control" value={this.state.newImages[i].animal} onChange={this.handleNewImageChange.bind(this, i)}>
-									{this.state.animals.map((animal, i) => <option value={animal.id}>{animal.name}</option>)}
+									{this.state.animals.map((animal, i) => <option key={animal.id} value={animal.id}>{animal.name}</option>)}
 								</select>
 					
 								<label className="pull-left">Kuvaus</label>
