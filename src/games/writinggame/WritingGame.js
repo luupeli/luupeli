@@ -10,7 +10,6 @@ class WritingGame extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      testiviesti: props.location.state.testiviesti,
       value: '',
       index: 0,
       correct: 0,
@@ -21,7 +20,6 @@ class WritingGame extends React.Component {
       allAnimals: props.location.state.allAnimals,       // This is an array of all the known animals.
       bpname: 'jotain'
     };
-    console.log(this.state.testiviesti)
     console.log(this.state.images)
     console.log(this.state.allBodyParts)
     console.log(this.state.allAnimals)
@@ -100,7 +98,6 @@ class WritingGame extends React.Component {
   topPage() {
     return (
       <div>
-        <p>{this.state.testiviesti}</p>
         <div>
           <div class="container">
             <div class="row">
@@ -205,7 +202,7 @@ class WritingGame extends React.Component {
     </div>
     );
   }
-    
+
 }
 
 export default WritingGame

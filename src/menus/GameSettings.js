@@ -19,7 +19,7 @@ class GameSettings extends React.Component {
 		this.state = {
 			gameLength: 3,
 			redirect: false,
-			testiviesti: 'Lällälläääääh',
+			testiviesti: 'Ladataan...',
 			allImages: [],		   // used to store an array of alla known images
 			allAnimals: [],        // used to store an array of all known animals
 			allBodyParts: [],      // used to store an array of all known bodyparts
@@ -206,7 +206,6 @@ class GameSettings extends React.Component {
 				<Redirect to={{
 					pathname: '/writinggame',
 					state: {
-						testiviesti: this.state.testiviesti,
 						images: this.state.images,
 						allBodyParts: this.state.allBodyParts,   // Note here that the WritingGame will be provided with the full arrays of both all the bodyparts
 						allAnimals: this.state.allAnimals        // ... and all the animals known in the database.
