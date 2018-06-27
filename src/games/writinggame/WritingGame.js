@@ -191,15 +191,15 @@ class WritingGame extends React.Component {
     return (
       <div className="App">
         {this.topPage()}
-      <div class="dual-layout">
-        <div class="container">
-          <div>
-            <WGMessage ref={instance => this.wgmessage = instance} />
+        <div class="dual-layout">
+          <div class="container">
+            <div>
+              <WGMessage ref={instance => this.wgmessage = instance} />
+            </div>
+            {this.bottomPage()}
           </div>
-          {this.bottomPage()}
         </div>
       </div>
-    </div>
     );
   }
 
