@@ -1,28 +1,8 @@
 .answer-input {
+  font-family: 'Changa One', cursive;
   color:#313437;
   background-color:#fff;
   padding:5px;
-}
-
-.answer-input p {
-  color:#7d8285;
-  line-height:1.5;
-}
-
-.answer-input h2 {
-  font-size:24px;
-  font-weight:bold;
-  margin-bottom:25px;
-  line-height:1.5;
-  padding-top:0;
-  margin-top:0;
-  color:inherit;
-}
-
-.answer-input .intro {
-  font-size:16px;
-  max-width:500px;
-  margin:0 auto 25px;
 }
 
 .answer-input .intro p {
@@ -39,38 +19,17 @@
   border-radius:3px;
   box-shadow:none;
   outline:none;
-  color:inherit;
+  color: #313437;
+  font-family: monospace;
   text-indent:9px;
-  height:45px;
+  height:55px;
   margin-right:10px;
+  margin-bottom: 10px;
   min-width:250px;
 }
 
-.answer-input form .btn {
-  padding:16px 32px;
-  border:none;
-  background:none;
-  box-shadow:none;
-  text-shadow:none;
-  opacity:0.9;
-  text-transform:uppercase;
-  font-weight:bold;
-  font-size:13px;
-  letter-spacing:0.4px;
-  line-height:1;
+#submitButton {
+  width: auto;
+  height: 55px;
+  padding: 0px;
 }
-
-.answer-input form .btn:hover {
-  opacity:1;
-}
-
-.answer-input form .btn:active {
-  transform:translateY(1px);
-}
-
-.answer-input form .btn-primary {
-  background-color:#055ada !important;
-  color:#fff;
-  outline:none !important;
-}
-

@@ -130,7 +130,7 @@ class WritingGame extends React.Component {
           </div>
           <div class="container">
             <div class="col-md-6 col-md-offset-3" id="info">   
-              <p>Tähän tulee lisätietoa luusta</p> 
+              <p>{this.state.images[this.state.index].bone.description}</p> 
             </div>
           </div>
           <div class="answer-input">
@@ -138,7 +138,7 @@ class WritingGame extends React.Component {
               <div class="intro"/>
               <form className="input" class="form-inline" id='gameForm' onSubmit={this.handleSubmit}>
                 <div class="form-group"><input class="form-control" type="text" onChange={this.handleChange} /></div>
-                <div class="form-group"><input type="submit" class="btn btn-primary" value="Vastaa" /></div>
+                <div class="form-group"><div class="btn-group GameButton"><button type="submit" id="submitButton">Vastaa</button></div></div>
               </form>
             </div>
           </div>
