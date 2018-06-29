@@ -6,7 +6,8 @@ const Home = () => (
   
   <div className="App">
   
-  
+
+
   <div className="grid-sub">
   </div> 
     <div className="grid">
