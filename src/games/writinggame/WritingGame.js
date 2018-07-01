@@ -18,7 +18,8 @@ class WritingGame extends React.Component {
       images: props.location.state.images,
       allBodyParts: props.location.state.allBodyParts,  // This is an array of all the known bodyparts.
       allAnimals: props.location.state.allAnimals,       // This is an array of all the known animals.
-      bpname: 'jotain'
+      bpname: 'jotain',
+      style: localStorage.getItem('style')
     };
     console.log(this.state.images)
     console.log(this.state.allBodyParts)
@@ -137,8 +138,12 @@ class WritingGame extends React.Component {
             <div class="container">
               <div class="intro"/>
               <form className="input" class="form-inline" id='gameForm' onSubmit={this.handleSubmit}>
-                <div class="form-group"><input class="form-control" type="text" onChange={this.handleChange} /></div>
-                <div class="form-group"><div class="btn-group GameButton"><button type="submit" id="submitButton">Vastaa</button></div></div>
+                <div class="form-groupbd"><input class="form-control" type="text" onChange={this.handleChange} />
+
+                </div>
+                <div className={"btn-group" + this.state.style + " GameButton"}>
+                  <button type="submit" id="submitButton">Vastaa</button>
+                </div>
               </form>
             </div>
           </div>

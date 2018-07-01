@@ -23,7 +23,8 @@ class GameSettings extends React.Component {
 			allImages: [],		   // used to store an array of alla known images
 			allAnimals: [],        // used to store an array of all known animals
 			allBodyParts: [],      // used to store an array of all known bodyparts
-			images: []			   // used to store an array of images which meet the selection criteria
+      images: [],			   // used to store an array of images which meet the selection criteria
+      style: localStorage.getItem('style')
 		};
 
 		this.changeAnimal = this.changeAnimal.bind(this)
@@ -231,23 +232,23 @@ class GameSettings extends React.Component {
 		// As a general note about using forms w/ NodeJS... A single grouping of radio buttons (single choice) is identified by identical "name" parameter. Separate values within such a grouping are marked with distinct "value" parameters.
 		return (
 			<div>
-				<div className="App settingspage">
-				<div className="grid-sub-fastest">
+				<div className={"App" + this.state.style + " settingspage"}>
+				<div className={"grid-sub-fastest" + this.state.style}>
 				  </div>
-				<div className="grid-fastest">
+				<div className={"grid-fastest" + this.state.style}>
 				  </div>
-				  <div className="grid-flair">
+				  <div className={"grid-flair" + this.state.style}>
   				</div>
-			  <div className="blinder">
+			  <div className={"blinder" + this.state.style}>
   				</div>
-				    <h2 className="h2">Luupelivalinnat:</h2>
+				    <h2 className={"h2" + this.state.style}>Luupelivalinnat:</h2>
 					<div>
 						<WGMessage ref={instance => this.wgmessage = instance} />
 					</div>
-					<div class="transbox">
+					<div class={"transbox" + this.state.style}>
 					<div class="container">	
 						<div class="col-md-12">
-							<h1 className="form-header">Valitse eläin:</h1>
+							<h1 className={"form-header" + this.state.style}>Valitse eläin:</h1>
 							<form>
 								{selectAnimal}
 							</form>
@@ -255,7 +256,7 @@ class GameSettings extends React.Component {
 					</div>
 					<div class="container">
 						<div class="col-md-12">
-							<h1 className="form-header">Valitse ruumiinosa:</h1>
+							<h1 className={"form-header" + this.state.style}>Valitse ruumiinosa:</h1>
 							<form>
 								{selectBodyPart}
 							</form>
@@ -263,7 +264,7 @@ class GameSettings extends React.Component {
 					</div>
 					<div class="container">
 						<div class="col-md-12">	
-							<h1 className="form-header">Luupelin pituus:</h1>
+							<h1 className={"form-header" + this.state.style}>Luupelin pituus:</h1>
 							<form>
 								<label className="radio-inline"><input type="radio" value="3" onClick={this.changeGameLength.bind(this)} name="length" defaultChecked></input>3</label>
 								<label className="radio-inline"><input type="radio" value="5" onClick={this.changeGameLength.bind(this)} name="length"></input>5</label>
@@ -273,7 +274,7 @@ class GameSettings extends React.Component {
 					</div>
 					<div class="container">
 						<div class="col-md-12">
-							<h1 className="form-header">Vaikeusaste:</h1>
+							<h1 className={"form-header" + this.state.style}>Vaikeusaste:</h1>
 							<form>
 								<label className="radio-inline"><input type="radio" value="easy" name="difficultylevel" defaultChecked></input>Helppo</label>
 								<label className="radio-inline"><input type="radio" value="medium" name="difficultylevel"></input>Keskivaikea</label>
@@ -288,7 +289,7 @@ class GameSettings extends React.Component {
 				</div>
 				</div>
 				
-				<div className="App">
+				<div className={"App" + this.state.style}>
 					<Link to='/game'><button className="gobackbutton">Takaisin</button></Link>
 				</div>
 			</div>

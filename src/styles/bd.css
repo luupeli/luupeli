@@ -1,14 +1,14 @@
 @import 'https://fonts.googleapis.com/css?family=Press+Start+2P';
 @import 'https://fonts.googleapis.com/css?family=Changa+One';
 
-.Appbd {
+.App {
     /*font-family: "Verdana";*/
     font-family: 'Changa One', cursive;
     text-align: center;
     
 }
 
-.btn-groupbd button {
+.btn-group button {
     border:4px solid #ff2596;
     -webkit-box-shadow: #B4B5B5 2px 2px 2px  ;
     -moz-box-shadow: #B4B5B5 2px 2px 2px ;
@@ -40,7 +40,7 @@
  animation: Button-Gradient 3.23s ease infinite;
 }
 
-.btn-groupbd button:hover {
+.btn-group button:hover {
     border:4px solid #f60080;
     background-color: #ff2a98; background-image: -webkit-gradient(linear, left top, left bottom, from(#ff2a98), to(#bc0062));
     background-image: -webkit-linear-gradient(top, #ff2a98, #bc0062);
@@ -53,7 +53,7 @@
     /*background-color: #b60d6a;*/
 }
 
-.btn-groupbd button:active {
+.btn-group button:active {
     /*background-color: #b60d6a;
     box-shadow: 0 5px #666;*/
     border:4px solid #f60080;
@@ -68,7 +68,7 @@
     transform: translateY(3px);
 }
 
-.gobackbuttonbd {
+.gobackbutton {
     float: left;
     position: fixed;
     bottom: 5vh !important;
@@ -117,7 +117,7 @@
 Logo gradient modified from:
 https://codepen.io/M4TERIAL/pen/gavvQL
 */
-.h1bd {
+.h1 {
     color: #C6CBF5;
     font-family: 'Press start 2p', sans-serif;
    /* font-size: 120px;*/
@@ -141,7 +141,7 @@ https://codepen.io/M4TERIAL/pen/gavvQL
 
 }
 
-.h2bd {
+.h2 {
     color: #C6CBF5;
     font-family: 'Press start 2p', sans-serif;
     /*font-size: 60px;*/
@@ -166,7 +166,7 @@ https://codepen.io/M4TERIAL/pen/gavvQL
 
 }
 
-div.blinderbd {
+div.blinder {
     position: absolute;
     width: 16vw;
     height: 12vh;
@@ -181,7 +181,7 @@ div.blinderbd {
         0 0 240px 120px transparent;
 }
 
-div.transboxbd {
+div.transbox {
     /*margin: 30px;*/
     margin:calc(1.1vw + 1.1vh + 0.55vmin);
     background-color: #33192f;
@@ -203,7 +203,7 @@ form {
     text-shadow: 3px 3px 0px rgba(173, 78, 165, 0.5);
     /*ext-shadow: 4px 4px;*/
 }
-.form-headerbd {
+.form-header {
     color:  rgb(235, 137, 183);
     /*font-size: 40px;*/
     font-size:calc(1.4vw + 1.4vh + 0.7vmin);
@@ -269,7 +269,7 @@ body {
 CSS grid animation modified from:
 https://codepen.io/George-Payne/pen/qOrxao
 */
-.gridbd{
+.grid{
     /* top: -386px;
     bottom: -386px;
     left: -400px;
@@ -295,7 +295,7 @@ https://codepen.io/George-Payne/pen/qOrxao
     
   }
 
-  .grid-flairbd{
+  .grid-flair{
     /*top: -440px;
     bottom: -440px;
     left: -450px;
@@ -327,7 +327,7 @@ https://codepen.io/George-Payne/pen/qOrxao
   }
 
  
-  .grid-subbd{
+  .grid-sub{
     /*top: -440px;
     bottom: -440px;
     left: -450px;
@@ -357,7 +357,7 @@ https://codepen.io/George-Payne/pen/qOrxao
   /*
   A repeat of .grid but with faster grid scroll speed.
   */
-  .grid-fasterbd{
+  .grid-faster{
     top: -386px;
     bottom: -386px;
     left: -400px;
@@ -382,7 +382,7 @@ https://codepen.io/George-Payne/pen/qOrxao
   /*
   A repeat of .grid but with super fast grid scroll speed.
   */
-  .grid-fastestbd{
+  .grid-fastest{
     top: -386px;
     bottom: -386px;
     left: -400px;
@@ -407,7 +407,7 @@ https://codepen.io/George-Payne/pen/qOrxao
   /*
   A repeat of .grid-sub but with faster grid scroll speed.
   */
-  .grid-sub-fasterbd{
+  .grid-sub-faster{
     top: -440px;
     bottom: -440px;
     left: -450px;
@@ -432,7 +432,7 @@ https://codepen.io/George-Payne/pen/qOrxao
   /*
   A repeat of .grid-sub but with super fast grid scroll speed.
   */
-  .grid-sub-fastestbd{
+  .grid-sub-fastest{
     top: -440px;
     bottom: -440px;
     left: -450px;
