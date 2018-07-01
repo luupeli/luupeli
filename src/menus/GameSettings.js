@@ -232,62 +232,60 @@ class GameSettings extends React.Component {
 		return (
 			<div>
 				<div className="App settingspage">
-				<div className="grid-sub-fastest">
-				  </div>
-				<div className="grid-fastest">
-				  </div>
-				  <div className="grid-flair">
+					<div className="grid-sub-fastest">
+					</div>
+					<div className="grid-fastest">
+					</div>
+					<div className="grid-flair">
   				</div>
-			  <div className="blinder">
+			 		<div className="blinder">
   				</div>
-				    <h2 className="h2">Luupelivalinnat:</h2>
+					<h2 className="h2">Luupelivalinnat:</h2>
 					<div>
 						<WGMessage ref={instance => this.wgmessage = instance} />
 					</div>
 					<div class="transbox">
-					<div class="container">	
-						<div class="col-md-12">
-							<h1 className="form-header">Valitse eläin:</h1>
-							<form>
-								{selectAnimal}
-							</form>
+						<div class="container">	
+							<div class="col-md-12">
+								<h1 className="form-header">Valitse eläin:</h1>
+								<form>
+									{selectAnimal}
+								</form>
+							</div>
 						</div>
-					</div>
-					<div class="container">
-						<div class="col-md-12">
-							<h1 className="form-header">Valitse ruumiinosa:</h1>
-							<form>
-								{selectBodyPart}
-							</form>
+						<div class="container">
+							<div class="col-md-12">
+								<h1 className="form-header">Valitse ruumiinosa:</h1>
+								<form>
+									{selectBodyPart}
+								</form>
+							</div>
 						</div>
-					</div>
-					<div class="container">
-						<div class="col-md-12">	
-							<h1 className="form-header">Luupelin pituus:</h1>
-							<form>
-								<label className="radio-inline"><input type="radio" value="3" onClick={this.changeGameLength.bind(this)} name="length" defaultChecked></input>3</label>
-								<label className="radio-inline"><input type="radio" value="5" onClick={this.changeGameLength.bind(this)} name="length"></input>5</label>
-								<label className="radio-inline"><input type="radio" value="7" onClick={this.changeGameLength.bind(this)} name="length"></input>7</label>
-							</form>
+						<div class="container">
+							<div class="col-md-12">	
+								<h1 className="form-header">Luupelin pituus:</h1>
+								<form>
+									<label className="radio-inline"><input type="radio" value="3" onClick={this.changeGameLength.bind(this)} name="length" defaultChecked></input>3</label>
+									<label className="radio-inline"><input type="radio" value="5" onClick={this.changeGameLength.bind(this)} name="length"></input>5</label>
+									<label className="radio-inline"><input type="radio" value="7" onClick={this.changeGameLength.bind(this)} name="length"></input>7</label>
+								</form>
+							</div>
 						</div>
-					</div>
-					<div class="container">
-						<div class="col-md-12">
-							<h1 className="form-header">Vaikeusaste:</h1>
-							<form>
-								<label className="radio-inline"><input type="radio" value="easy" name="difficultylevel" defaultChecked></input>Helppo</label>
-								<label className="radio-inline"><input type="radio" value="medium" name="difficultylevel"></input>Keskivaikea</label>
-								<label className="radio-inline"><input type="radio" value="hard" name="difficultylevel"></input>Vaikea</label>
-							</form>
-							<div className="btn-group wide settingspage GameButton">
-								<button onClick={this.atLeastOneBodyPartIsSelected}>Luupeliin >>
-								</button>
+						<div class="container">
+							<div class="col-md-12">
+								<h1 className="form-header">Vaikeusaste:</h1>
+								<form>
+									<label className="radio-inline"><input type="radio" value="easy" name="difficultylevel" defaultChecked></input>Helppo</label>
+									<label className="radio-inline"><input type="radio" value="medium" name="difficultylevel"></input>Keskivaikea</label>
+									<label className="radio-inline"><input type="radio" value="hard" name="difficultylevel"></input>Vaikea</label>
+								</form>
+								<div className="btn-group wide settingspage GameButton">
+									<button onClick={this.atLeastOneBodyPartIsSelected}>Luupeliin >></button>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				</div>
-				
 				<div className="App">
 					<Link to='/game'><button className="gobackbutton">Takaisin</button></Link>
 				</div>

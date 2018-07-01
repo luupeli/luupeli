@@ -8,7 +8,8 @@ const TextInputWithFeedback = (props) => {
 	return(
 		<div className="form-group has-feedback">
 			<label className="pull-left">{props.label}</label>
-			<input type="text" id={props.id} className="form-control"/><span className="glyphicon glyphicon-asterisk form-control-feedback"></span>
+			<input type="text" id={props.id} className="form-control"/>
+			<span className="glyphicon glyphicon-asterisk form-control-feedback"></span>
 		</div>
 	)
 }
@@ -29,7 +30,7 @@ const DropdownInput = (props) => {
 		<div className="form-group">
 			<label className="pull-left">{props.label}</label>
 			<select id={props.id} className="form-control">
-			{props.values.map(value => <option key={value.id} value={value[0]}>{value[1]}</option>)}
+				{props.values.map(value => <option key={value.id} value={value[0]}>{value[1]}</option>)}
 			</select>
 		</div>
 	)
@@ -40,10 +41,10 @@ const ImageInput = (props) => {
 	return(
 		<div className="form-group">
 			<label className="pull-left">Kuva</label>
-				<input type="file" accept="image/x-png,image/jpeg,image/gif" id={props.id} multiple="multiple"/>
-				<span className="help-block">Voit valita useamman kuvan painamalla Ctrl-näppäintä ja klikkaamalla haluamiasi kuvia.</span>
-				<label>Kuvan vaikeustaso</label>
-			<input type="submit" value="Tallenna" className="btn btn-info" />
+			<input type="file" accept="image/x-png,image/jpeg,image/gif" id={props.id} multiple="multiple"/>
+			<span className="help-block">Voit valita useamman kuvan painamalla Ctrl-näppäintä ja klikkaamalla haluamiasi kuvia.</span>
+			<label>Kuvan vaikeustaso</label>
+			<input type="submit" value="Tallenna" className="btn btn-info"/>
 		</div>
 	)
 }
@@ -294,85 +295,71 @@ class AddBone extends React.Component {
 		
 		return (
 			<div className="scrolling-menu">
-			<div className="App">
-			<div>
-				<WGMessage ref={instance => this.wgmessage = instance} />
-			</div>
-			<Link to='/listing'><button className="btn btn-default pull-right">Takaisin listaukseen</button></Link><br/>
-				<form enctype="multipart/form-data" onSubmit={this.handleSubmit}>
-			
-					<div className="form-group has-feedback">
-						<label className="pull-left">Latinankielinen nimi </label>
-						<input type="text" name="nameLatin" value={this.state.nameLatin} className="form-control" onChange={this.handleChange} /><span className="glyphicon glyphicon-asterisk form-control-feedback"></span>
+				<div className="App">
+					<div>
+						<WGMessage ref={instance => this.wgmessage = instance} />
 					</div>
-				
-					<label className="pull-left">Vaihtoehtoinen latinankielinen nimi</label>
-					<input type="text" name="altNameLatin" value={this.state.altNameLatin} className="form-control" onChange={this.handleChange}/>
-				
-					<label className="pull-left">Suomenkielinen nimi</label>
-					<input type="text" name="name" value={this.state.name} className="form-control" onChange={this.handleChange}/>
-				
-					<label className="pull-left">Kuvaus</label>
-					<input type="text" name="description" value={this.state.description} className="form-control" onChange={this.handleChange}/>
-				
-					<label className="pull-left">Ruumiinosa</label>
-					<select name="bodyPart" className="form-control" value={this.state.bodyPart} onChange={this.handleChange}>
-						<option value="Eturaaja">Eturaaja</option>
-						<option value="Takaraaja">Takaraaja</option>
-						<option value="Vartalo">Vartalo</option>
-						<option value="Pää">Pää</option>
-					</select>
-				
-					<ul className="list-group">
-						{this.state.newImages.map((file, i) => <li key={file.id} className="list-group-item clearfix">
-							<input type="file" accept="image/x-png,image/jpeg" id="boneImage" ref={input => {this[`fileInput${i}`] = input}}/>
-							<div className="input-group">
-				
-								<label className="pull-left">Vaikeustaso</label>
-								<select name="difficulty" className="form-control" value={this.state.newImages[i].difficulty} onChange={this.handleNewImageChange.bind(this, i)}>
-									<option value="1">Helppo</option>
-									<option value="100">Vaikea</option>
-								</select>
-					
-								<label className="pull-left">Puoli</label>
-								<select name="handedness" className="form-control" value={this.state.newImages[i].handedness} onChange={this.handleNewImageChange.bind(this, i)}>
-									<option value="">Ei valintaa</option>
-									<option value="dex">dex</option>
-									<option value="sin">sin</option>
-								</select>
-					
-								<label className="pull-left">Eläin</label>
-								<select name="animal" className="form-control" value={this.state.newImages[i].animal} onChange={this.handleNewImageChange.bind(this, i)}>
-									{this.state.animals.map((animal, i) => <option key={animal.id} value={animal.id}>{animal.name}</option>)}
-								</select>
-					
-								<label className="pull-left">Kuvaus</label>
-								<input type="text" name="description" value={this.state.newImages[i].description} className="form-control" onChange={this.handleNewImageChange.bind(this, i)}/>
-					
-								<label className="pull-left">Valokuvaaja</label>
-								<input type="text" name="photographer" value={this.state.newImages[i].photographer} className="form-control" onChange={this.handleNewImageChange.bind(this, i)}/>
-						
-								<label className="pull-left">Tekijänoikeus</label>
-								<input type="text" name="copyright" value={this.state.newImages[i].copyright} className="form-control" onChange={this.handleNewImageChange.bind(this, i)}/>
-					
-							</div>
-						</li>)}
-						<li className="list-group-item clearfix">
-							<span className="btn-toolbar">
-								<button type="button" className="btn btn-info pull-right" onClick={this.handleAddImage}>Lisää kuvakenttä</button>
-								<button type="button" className="btn btn-danger pull-right" onClick={this.handleRemoveNewImage}>Poista kuvakenttä</button>
-							</span>
-						</li>
-					</ul>
-				
-					<div className="btn-toolbar">
-						<button type="submit" className="btn btn-info pull-right">Lisää luu</button>
-					</div>
-				</form>
-			</div>
+					<Link to='/listing'><button className="btn btn-default pull-right">Takaisin listaukseen</button></Link><br/>
+					<form enctype="multipart/form-data" onSubmit={this.handleSubmit}>
+						<div className="form-group has-feedback">
+							<label className="pull-left">Latinankielinen nimi </label>
+							<input type="text" name="nameLatin" value={this.state.nameLatin} className="form-control" onChange={this.handleChange} /><span className="glyphicon glyphicon-asterisk form-control-feedback"></span>
+						</div>
+						<label className="pull-left">Vaihtoehtoinen latinankielinen nimi</label>
+						<input type="text" name="altNameLatin" value={this.state.altNameLatin} className="form-control" onChange={this.handleChange}/>
+						<label className="pull-left">Suomenkielinen nimi</label>
+						<input type="text" name="name" value={this.state.name} className="form-control" onChange={this.handleChange}/>
+						<label className="pull-left">Kuvaus</label>
+						<input type="text" name="description" value={this.state.description} className="form-control" onChange={this.handleChange}/>			
+						<label className="pull-left">Ruumiinosa</label>
+						<select name="bodyPart" className="form-control" value={this.state.bodyPart} onChange={this.handleChange}>
+							<option value="Eturaaja">Eturaaja</option>
+							<option value="Takaraaja">Takaraaja</option>
+							<option value="Vartalo">Vartalo</option>
+							<option value="Pää">Pää</option>
+						</select>
+						<ul className="list-group">
+							{this.state.newImages.map((file, i) => <li key={file.id} className="list-group-item clearfix">
+								<input type="file" accept="image/x-png,image/jpeg" id="boneImage" ref={input => {this[`fileInput${i}`] = input}}/>
+								<div className="input-group">
+									<label className="pull-left">Vaikeustaso</label>
+									<select name="difficulty" className="form-control" value={this.state.newImages[i].difficulty} onChange={this.handleNewImageChange.bind(this, i)}>
+										<option value="1">Helppo</option>
+										<option value="100">Vaikea</option>
+									</select>
+									<label className="pull-left">Puoli</label>
+									<select name="handedness" className="form-control" value={this.state.newImages[i].handedness} onChange={this.handleNewImageChange.bind(this, i)}>
+										<option value="">Ei valintaa</option>
+										<option value="dex">dex</option>
+										<option value="sin">sin</option>
+									</select>
+									<label className="pull-left">Eläin</label>
+									<select name="animal" className="form-control" value={this.state.newImages[i].animal} onChange={this.handleNewImageChange.bind(this, i)}>
+										{this.state.animals.map((animal, i) => <option key={animal.id} value={animal.id}>{animal.name}</option>)}
+									</select>
+									<label className="pull-left">Kuvaus</label>
+									<input type="text" name="description" value={this.state.newImages[i].description} className="form-control" onChange={this.handleNewImageChange.bind(this, i)}/>
+									<label className="pull-left">Valokuvaaja</label>
+									<input type="text" name="photographer" value={this.state.newImages[i].photographer} className="form-control" onChange={this.handleNewImageChange.bind(this, i)}/>
+									<label className="pull-left">Tekijänoikeus</label>
+									<input type="text" name="copyright" value={this.state.newImages[i].copyright} className="form-control" onChange={this.handleNewImageChange.bind(this, i)}/>
+								</div>
+							</li>)}
+							<li className="list-group-item clearfix">
+								<span className="btn-toolbar">
+									<button type="button" className="btn btn-info pull-right" onClick={this.handleAddImage}>Lisää kuvakenttä</button>
+									<button type="button" className="btn btn-danger pull-right" onClick={this.handleRemoveNewImage}>Poista kuvakenttä</button>
+								</span>
+							</li>
+						</ul>
+						<div className="btn-toolbar">
+							<button type="submit" className="btn btn-info pull-right">Lisää luu</button>
+						</div>
+					</form>
+				</div>
 			</div>
 		)
-}
+	}
 }
 
 export default AddBone
