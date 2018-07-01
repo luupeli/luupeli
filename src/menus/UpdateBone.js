@@ -375,6 +375,7 @@ class UpdateBone extends React.Component {
 		}
 		
 		return (
+			<div className="scrolling-menu">
 		<div className="App">
 		<div>
 			<WGMessage ref={instance => this.wgmessage = instance} />
@@ -492,6 +493,7 @@ class UpdateBone extends React.Component {
 					<button type="button" onClick={this.handleDelete} className="btn btn-danger pull-right">Poista luu</button>
 				</div>
 			</form>
+		</div>
 		</div>
 	)
 

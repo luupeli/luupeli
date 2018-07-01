@@ -27,6 +27,8 @@ class BoneListing extends React.Component {
 	//Render bone listing by .mapping bones from this.state.bones array to Link elements.
 	render() {
 		return (
+			<div className="scrolling-menu">
+			   
 			<div className="App">
 			<div>
 				<div className="list-group">
@@ -51,6 +53,7 @@ class BoneListing extends React.Component {
 						</Link>)}
 				</div>
 				</div>
+			</div>
 			</div>
 		);
 	}

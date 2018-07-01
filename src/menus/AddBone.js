@@ -293,6 +293,7 @@ class AddBone extends React.Component {
 		}
 		
 		return (
+			<div className="scrolling-menu">
 			<div className="App">
 			<div>
 				<WGMessage ref={instance => this.wgmessage = instance} />
@@ -368,6 +369,7 @@ class AddBone extends React.Component {
 						<button type="submit" className="btn btn-info pull-right">Lisää luu</button>
 					</div>
 				</form>
+			</div>
 			</div>
 		)
 }
