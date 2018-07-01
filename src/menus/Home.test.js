@@ -4,6 +4,26 @@ import { Link } from 'react-router-dom'
 import Home from './Home'
 
 describe("Home", () => {
+
+    var localStorageMock = (function() {
+      var store = {};
+      return {
+        getItem: function(key) {
+          return store[key];
+        },
+        setItem: function(key, value) {
+          store[key] = value.toString();
+        },
+        clear: function() {
+          store = {};
+        },
+        removeItem: function(key) {
+          delete store[key];
+        }
+      };
+    })();
+    Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+
     const home = () => {
         const component = shallow(<Home />)
         return component;
