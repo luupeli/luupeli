@@ -56,7 +56,6 @@ class WGMessage extends React.Component {
 					<p>{this.state.message}</p>
 				</div>}
 			</div>
-
 		);
 	}
 }

@@ -1,7 +1,9 @@
 import React from 'react'
 import { Redirect, Link } from 'react-router-dom'
 import WGMessage from '../games/writinggame/WGMessage'
-import axios from 'axios'
+import imageService from '../services/images'
+import bodyPartService from '../services/bodyParts'
+import animalService from '../services/animals'
 
 /**
  * GameSettings is the menu directly prior to a WritingGame session.
@@ -31,7 +33,7 @@ class GameSettings extends React.Component {
 		this.atLeastOneBodyPartIsSelected = this.atLeastOneBodyPartIsSelected.bind(this)
 		this.initializeGame = this.initializeGame.bind(this)
 
-		axios.get("http://luupeli-backend.herokuapp.com/api/animals")  // here we fill the allAnimals array and connect selected-attribute for each row 
+		animalService.getAll()  // here we fill the allAnimals array and connect selected-attribute for each row 
 			.then(response => {
 				const animals = response.data.map(animal => {
 					return { ...animal, selected: false }
@@ -73,7 +75,7 @@ class GameSettings extends React.Component {
 				this.setState({ allAnimals: animals })
 			})
 
-		axios.get("http://luupeli-backend.herokuapp.com/api/bodyparts")    // here we fill the allBodyParts array and connect selected-attribute for each row 
+		bodyPartService.getAll()    // here we fill the allBodyParts array and connect selected-attribute for each row 
 			.then(response => {
 				const bodyParts = response.data.map(bodyPart => {
 					return { ...bodyPart, selected: false }
@@ -81,7 +83,7 @@ class GameSettings extends React.Component {
 				this.setState({ allBodyParts: bodyParts })
 			})
 
-		axios.get("http://luupeli-backend.herokuapp.com/api/images")  // here we fill the image array
+		imageService.getAll()  // here we fill the image array
 			.then(response => {
 				const imagesWithBone = response.data.filter(image => image.bone !== undefined)
 				console.log(imagesWithBone)

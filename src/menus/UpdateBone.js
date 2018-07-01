@@ -1,6 +1,9 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import axios from 'axios'
+import boneService from '../services/bones'
+import imageService from '../services/images'
+import bodyPartService from '../services/bodyParts'
+import animalService from '../services/animals'
 import WGMessage from '../games/writinggame/WGMessage'
 
 class UpdateBone extends React.Component {
@@ -50,8 +53,7 @@ class UpdateBone extends React.Component {
 	//Add a deleted flag to each image to mark images the user wants to delete.
 	//GET animals and bodyParts and store them in state for later use.
 	componentDidMount() {
-		const url = 'http://luupeli-backend.herokuapp.com/api/bones/' + this.state.boneId
-		axios.get(url)
+		boneService.get(this.state.boneId)
 			.then((response) => {
 				const imagesWithDeletionFlag = response.data.images
 				imagesWithDeletionFlag.forEach((image) => image.deleted = false)
@@ -60,7 +62,6 @@ class UpdateBone extends React.Component {
 			.catch((error) => {
 				console.log(error)
 			})
-			
 		this.fetchAnimals()
 		this.fetchBodyparts()
 	}
@@ -85,17 +86,16 @@ class UpdateBone extends React.Component {
 		console.log(this.state.images)
 		console.log(this.state.images[i])
 		console.log(this.state.images[i]._id)
-		const url = 'http://luupeli-backend.herokuapp.com/api/images/' + this.state.images[i]._id
-		axios.delete(url)
-		.then((response) => {
-			console.log(response)
-			if (response.status !== 200) {
-				this.failureMessage()
-			}
-		})
-		.catch((error) => {
-			console.log(error)
-		})
+		imageService.remove(this.state.images[i]._id)
+			.then((response) => {
+				console.log(response)
+				if (response.status !== 200) {
+					this.failureMessage()
+				}
+			})
+			.catch((error) => {
+				console.log(error)
+			})
 		this.setState({ images: this.state.images.filter((element, index) => {return index !== i}) })
 	}
 	
@@ -108,7 +108,7 @@ class UpdateBone extends React.Component {
 	
 	//GET all animals from database for later use
 	fetchAnimals() {
-		axios.get('http://luupeli-backend.herokuapp.com/api/animals/')
+		animalService.getAll()
 			.then((response) => {
 				this.setState({ animals: response.data })
 			})
@@ -119,7 +119,7 @@ class UpdateBone extends React.Component {
 	
 	//GET all bodyParts from database for later use
 	fetchBodyparts() {
-		axios.get('http://luupeli-backend.herokuapp.com/api/bodyParts/')
+		bodyPartService.getAll()
 			.then((response) => {
 				console.log(response)
 				this.setState({ bodyParts: response.data })
@@ -146,7 +146,7 @@ class UpdateBone extends React.Component {
 		data.append('image', this[`fileInput${i}`].files[0])
 		data.append('name', this[`fileInput${i}`].files[0].name)
 		
-		return await axios.post("http://luupeli-backend.herokuapp.com/api/images/upload", data, {headers: {enctype: "multipart/form-data"}})
+		return await imageService.upload(data)
 			.then((response) => {
 				return response.data.url
 				if (response.status !== 200) {
@@ -160,7 +160,7 @@ class UpdateBone extends React.Component {
 	
 	//POST an uploaded new image to database
 	postImage(i, imageUrl, bone) {
-		axios.post("http://luupeli-backend.herokuapp.com/api/images/", {
+		imageService.create({
 				difficulty: this.state.newImages[i].difficulty,
 				bone: bone.id,
 				url: imageUrl,
@@ -183,7 +183,7 @@ class UpdateBone extends React.Component {
 	
 	//PUT updated fields of an existing image to database
 	updateImage(i) {
-		axios.put("http://luupeli-backend.herokuapp.com/api/images/" + this.state.images[i]._id, {
+		imageService.update(this.state.images[i]._id, {
 				difficulty: this.state.images[i].difficulty,
 				photographer: this.state.images[i].photographer,
 				description: this.state.images[i].description,
@@ -211,10 +211,9 @@ class UpdateBone extends React.Component {
 	
 	//PUT updated fields of the bone to database
 	async updateBone(boneAnimals) {
-		const url = "http://luupeli-backend.herokuapp.com/api/bones/" + this.state.boneId
 		const bodyPartObj = this.state.bodyParts.filter((bodyPart) => bodyPart.name === this.state.bodyPart)[0]
-		
-		return await axios.put(url, {
+
+		return await boneService.update(this.state.boneId ,{
 			nameLatin: this.state.nameLatin,
 			name: this.state.name,
 			bodyPart: bodyPartObj.id,
@@ -307,11 +306,8 @@ class UpdateBone extends React.Component {
 	//Delete this bone from DB.
 	//Set this.state.submitted to true in preparation for redirect to listing.
 	//Prepare a message to notify user of the success/failure of the delete.
-	handleDelete(event) {
-		const url = "http://luupeli-backend.herokuapp.com/api/bones/" + this.state.boneId
-		
-		console.log(url)
-		axios.delete(url, {id: this.state.boneId})
+	handleDelete(event) {	
+		boneService.remove(this.state.boneId)
 		.then((response) => {
 			if (response.status !== 200) {
 				this.failureMessage()

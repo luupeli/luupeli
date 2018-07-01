@@ -1,6 +1,9 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import axios from 'axios'
+import boneService from '../services/bones'
+import imageService from '../services/images'
+import bodyPartService from '../services/bodyParts'
+import animalService from '../services/animals'
 import WGMessage from '../games/writinggame/WGMessage'
 
 //Creates a text input with label text and feedback symbol
@@ -35,7 +38,6 @@ const DropdownInput = (props) => {
 		</div>
 	)
 }
-
 
 const ImageInput = (props) => {
 	return(
@@ -83,7 +85,7 @@ class AddBone extends React.Component {
 	
 	//GET animals and bodyParts
 	componentDidMount() {
-		axios.get('http://luupeli-backend.herokuapp.com/api/animals/')
+		animalService.getAll()
 			.then((response) => {
 				this.setState({ animals: response.data })
 			})
@@ -91,7 +93,7 @@ class AddBone extends React.Component {
 				console.log(error)
 			})
 			
-		axios.get('http://luupeli-backend.herokuapp.com/api/bodyParts/')
+		bodyPartService.getAll()
 			.then((response) => {
 				var bodyParts = response.data
 				console.log(response.data)
@@ -174,7 +176,7 @@ class AddBone extends React.Component {
 		data.append('image', this[`fileInput${i}`].files[0])
 		data.append('name', this[`fileInput${i}`].files[0].name)
 		
-		return await axios.post("http://luupeli-backend.herokuapp.com/api/images/upload", data, {headers: {enctype: "multipart/form-data"}})
+		return await imageService.upload(data)
 			.then((response) => {
 				return response.data.url
 			})
@@ -185,7 +187,7 @@ class AddBone extends React.Component {
 	
 	//POST an uploaded new image to database
 	postImage(i, imageUrl, bone) {
-		axios.post("http://luupeli-backend.herokuapp.com/api/images/", {
+		imageService.create({
 				difficulty: this.state.newImages[i].difficulty,
 				bone: bone.id,
 				url: imageUrl,
@@ -206,11 +208,10 @@ class AddBone extends React.Component {
 	
 	//POST this bone to database
 	async postBone(boneAnimals) {
-		const url = "http://luupeli-backend.herokuapp.com/api/bones/"
 		const bodyPartObj = this.state.bodyParts.filter((bodyPart) => bodyPart.name === this.state.bodyPart)[0]
 		var boneResponse = "";
 		
-		return await axios.post(url, {
+		return await boneService.create({
 			nameLatin: this.state.nameLatin,
 			name: this.state.name,
 			altNameLatin: this.state.altNameLatin,
@@ -242,8 +243,6 @@ class AddBone extends React.Component {
 		var errored = false
 		var bone = {}
 		var imageUrl = ""
-		
-		
 		var boneAnimals = this.getBoneAnimals
 		
 		bone = await this.postBone(boneAnimals)

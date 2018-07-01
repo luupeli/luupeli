@@ -1,5 +1,5 @@
 import React from 'react'
-import axios from 'axios'
+import boneService from '../services/bones'
 import { Link } from 'react-router-dom'
 
 class BoneListing extends React.Component {
@@ -14,8 +14,7 @@ class BoneListing extends React.Component {
 	
 	//GET list of bones from database and stuff it into this.state.bones for rendering
 	componentDidMount() {
-		const url = 'http://luupeli-backend.herokuapp.com/api/bones/'
-		axios.get(url)
+		boneService.getAll()
 		.then((response) => {
 			this.setState({ bones: response.data })
 		})
