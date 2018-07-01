@@ -8,7 +8,15 @@
     
 }
 
+<<<<<<< HEAD
 .btn-groupbd button {
+=======
+.background-content{
+    height: 100%;
+    overflow: auto;
+}
+.btn-group button {
+>>>>>>> ccb6db5cec753ddced59e7dc8121f91da453c3a6
     border:4px solid #ff2596;
     -webkit-box-shadow: #B4B5B5 2px 2px 2px  ;
     -moz-box-shadow: #B4B5B5 2px 2px 2px ;
@@ -244,6 +252,22 @@ body {
 }
 */
 
+.scrolling-menu {
+  overflow: scroll;
+  opacity:1.0;
+  background: linear-gradient(
+    180deg,
+      #6A0275 10vh, 
+      #040C4A 73vh,
+      #000000 100vh);
+  position:fixed;
+  width:100%;
+  height:100%;
+  top:50px;
+  left:0px;
+  z-index:1000;
+}
+
 body {
     width: 100wh;
     height: 100vh;
@@ -262,7 +286,10 @@ body {
     -webkit-animation: Gradient 2.23s ease infinite;
     -moz-animation: Gradient 2.23s ease infinite;
     animation: Gradient 2.23s ease infinite;
-    overflow: auto;
+    /*overflow: auto;*/
+    overflow-x: hidden;
+    overflow-y: hidden;
+    overflow: hidden;
 }
 
 /* 
@@ -289,7 +316,7 @@ https://codepen.io/George-Payne/pen/qOrxao
     background-size:2% 2%, 2% 2%;
     background-position:0 0, 0 0;
     
-    transform: perspective(500px) rotateX(80deg);
+    transform: perspective(calc(25.5vh + 25.5vw)) rotateX(80deg);
     animation: throughSpace-bottom 3s linear;
     animation-iteration-count: infinite;
     
@@ -320,7 +347,7 @@ https://codepen.io/George-Payne/pen/qOrxao
     background-size:4% 4%, 4% 4%;
     background-position:0 0, 0 0;
     
-    transform: perspective(500px) rotateX(80deg);
+    transform: perspective(calc(25.5vh + 25.5vw)) rotateX(80deg);
     animation: throughSpace-bottom 0.5s linear;
     animation-iteration-count: infinite;
     
@@ -347,7 +374,7 @@ https://codepen.io/George-Payne/pen/qOrxao
     background-size:0.66% 0.66%, 0.66% 0.66%;
     background-position:0 0, 0 0;
     
-    transform: perspective(500px) rotateX(80deg);
+    transform: perspective(calc(25.5vh + 25.5vw)) rotateX(80deg);
     animation: throughSpace-bottom 6s linear;
     animation-iteration-count: infinite;
     
@@ -373,7 +400,7 @@ https://codepen.io/George-Payne/pen/qOrxao
     background-size:2% 2%, 2% 2%;
     background-position:0 0, 0 0;
     
-    transform: perspective(500px) rotateX(80deg);
+    transform: perspective(calc(25.5vh + 25.5vw)) rotateX(80deg);
     animation: throughSpace-bottom 1.5s linear;
     animation-iteration-count: infinite;
     
@@ -398,7 +425,7 @@ https://codepen.io/George-Payne/pen/qOrxao
     background-size:2% 2%, 2% 2%;
     background-position:0 0, 0 0;
     
-    transform: perspective(500px) rotateX(80deg);
+    transform: perspective(calc(25.5vh + 25.5vw)) rotateX(80deg);
     animation: throughSpace-bottom 0.5s linear;
     animation-iteration-count: infinite;
     
@@ -423,7 +450,7 @@ https://codepen.io/George-Payne/pen/qOrxao
     background-size:0.66% 0.66%, 0.66% 0.66%;
     background-position:0 0, 0 0;
     
-    transform: perspective(500px) rotateX(80deg);
+    transform: perspective(calc(25.5vh + 25.5vw)) rotateX(80deg);
     animation: throughSpace-bottom 3.0s linear;
     animation-iteration-count: infinite;
     
@@ -448,7 +475,7 @@ https://codepen.io/George-Payne/pen/qOrxao
     background-size:0.66% 0.66%, 0.66% 0.66%;
     background-position:0 0, 0 0;
     
-    transform: perspective(500px) rotateX(80deg);
+    transform: perspective(calc(25.5vh + 25.5vw)) rotateX(80deg);
     animation: throughSpace-bottom 1.0s linear;
     animation-iteration-count: infinite;
     
@@ -458,10 +485,10 @@ https://codepen.io/George-Payne/pen/qOrxao
  
   @keyframes throughSpace-bottom{
     0%{
-      transform: perspective(calc(25.5vh + 25.5vw)) rotateX(80deg) translateY(0%); /*persp: 500px -> calc(12.5vh + 12.5vw) */
+      transform: perspective(calc(25.5vh + 25.5vw)) rotateX(80deg) translateY(0%); /*persp: (calc(25.5vh + 25.5vw)) -> calc(12.5vh + 12.5vw) */
     }
     100%{
-      transform: perspective(calc(25.5vh + 25.5vw)) rotateX(80deg) translateY(5.8%); /*persp: 500px -> calc(12.5vh + 12.5vw) */
+      transform: perspective(calc(25.5vh + 25.5vw)) rotateX(80deg) translateY(5.8%); /*persp: (calc(25.5vh + 25.5vw)) -> calc(12.5vh + 12.5vw) */
     }
   }
   

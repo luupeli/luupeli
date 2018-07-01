@@ -207,7 +207,6 @@ class WritingGame extends React.Component {
       </div>
     );
   }
-
 }
 
 export default WritingGame

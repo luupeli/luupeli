@@ -1,7 +1,9 @@
 import React from 'react'
 import { Redirect, Link } from 'react-router-dom'
 import WGMessage from '../games/writinggame/WGMessage'
-import axios from 'axios'
+import imageService from '../services/images'
+import bodyPartService from '../services/bodyParts'
+import animalService from '../services/animals'
 
 /**
  * GameSettings is the menu directly prior to a WritingGame session.
@@ -32,7 +34,7 @@ class GameSettings extends React.Component {
 		this.atLeastOneBodyPartIsSelected = this.atLeastOneBodyPartIsSelected.bind(this)
 		this.initializeGame = this.initializeGame.bind(this)
 
-		axios.get("http://luupeli-backend.herokuapp.com/api/animals")  // here we fill the allAnimals array and connect selected-attribute for each row 
+		animalService.getAll()  // here we fill the allAnimals array and connect selected-attribute for each row 
 			.then(response => {
 				const animals = response.data.map(animal => {
 					return { ...animal, selected: false }
@@ -74,7 +76,7 @@ class GameSettings extends React.Component {
 				this.setState({ allAnimals: animals })
 			})
 
-		axios.get("http://luupeli-backend.herokuapp.com/api/bodyparts")    // here we fill the allBodyParts array and connect selected-attribute for each row 
+		bodyPartService.getAll()    // here we fill the allBodyParts array and connect selected-attribute for each row 
 			.then(response => {
 				const bodyParts = response.data.map(bodyPart => {
 					return { ...bodyPart, selected: false }
@@ -82,7 +84,7 @@ class GameSettings extends React.Component {
 				this.setState({ allBodyParts: bodyParts })
 			})
 
-		axios.get("http://luupeli-backend.herokuapp.com/api/images")  // here we fill the image array
+		imageService.getAll()  // here we fill the image array
 			.then(response => {
 				const imagesWithBone = response.data.filter(image => image.bone !== undefined)
 				console.log(imagesWithBone)
@@ -232,6 +234,7 @@ class GameSettings extends React.Component {
 		// As a general note about using forms w/ NodeJS... A single grouping of radio buttons (single choice) is identified by identical "name" parameter. Separate values within such a grouping are marked with distinct "value" parameters.
 		return (
 			<div>
+<<<<<<< HEAD
 				<div className={"App" + this.state.style + " settingspage"}>
 				<div className={"grid-sub-fastest" + this.state.style}>
 				  </div>
@@ -283,13 +286,70 @@ class GameSettings extends React.Component {
 							<div className="btn-group wide settingspage GameButton">
 								<button onClick={this.atLeastOneBodyPartIsSelected}>Luupeliin >>
 								</button>
+=======
+				<div className="App settingspage">
+					<div className="grid-sub-fastest">
+					</div>
+					<div className="grid-fastest">
+					</div>
+					<div className="grid-flair">
+  				</div>
+			 		<div className="blinder">
+  				</div>
+					<h2 className="h2">Luupelivalinnat:</h2>
+					<div>
+						<WGMessage ref={instance => this.wgmessage = instance} />
+					</div>
+					<div class="transbox">
+						<div class="container">	
+							<div class="col-md-12">
+								<h1 className="form-header">Valitse eläin:</h1>
+								<form>
+									{selectAnimal}
+								</form>
+							</div>
+						</div>
+						<div class="container">
+							<div class="col-md-12">
+								<h1 className="form-header">Valitse ruumiinosa:</h1>
+								<form>
+									{selectBodyPart}
+								</form>
+							</div>
+						</div>
+						<div class="container">
+							<div class="col-md-12">	
+								<h1 className="form-header">Luupelin pituus:</h1>
+								<form>
+									<label className="radio-inline"><input type="radio" value="3" onClick={this.changeGameLength.bind(this)} name="length" defaultChecked></input>3</label>
+									<label className="radio-inline"><input type="radio" value="5" onClick={this.changeGameLength.bind(this)} name="length"></input>5</label>
+									<label className="radio-inline"><input type="radio" value="7" onClick={this.changeGameLength.bind(this)} name="length"></input>7</label>
+								</form>
+							</div>
+						</div>
+						<div class="container">
+							<div class="col-md-12">
+								<h1 className="form-header">Vaikeusaste:</h1>
+								<form>
+									<label className="radio-inline"><input type="radio" value="easy" name="difficultylevel" defaultChecked></input>Helppo</label>
+									<label className="radio-inline"><input type="radio" value="medium" name="difficultylevel"></input>Keskivaikea</label>
+									<label className="radio-inline"><input type="radio" value="hard" name="difficultylevel"></input>Vaikea</label>
+								</form>
+								<div className="btn-group wide settingspage GameButton">
+									<button onClick={this.atLeastOneBodyPartIsSelected}>Luupeliin >></button>
+								</div>
+>>>>>>> ccb6db5cec753ddced59e7dc8121f91da453c3a6
 							</div>
 						</div>
 					</div>
 				</div>
+<<<<<<< HEAD
 				</div>
 				
 				<div className={"App" + this.state.style}>
+=======
+				<div className="App">
+>>>>>>> ccb6db5cec753ddced59e7dc8121f91da453c3a6
 					<Link to='/game'><button className="gobackbutton">Takaisin</button></Link>
 				</div>
 			</div>

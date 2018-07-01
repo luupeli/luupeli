@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import '../styles/App.css';
 
+<<<<<<< HEAD
 
 class Home extends React.Component {
 
@@ -45,6 +46,26 @@ class Home extends React.Component {
 
         </div> 
         <div className={"grid" + this.state.style}>
+=======
+const Home = () => (
+  <div className="App">
+    <div className="grid-sub">
+    </div> 
+    <div className="grid">
+    </div>
+    <div className="grid-flair">
+    </div>
+    <div className="blinder">
+    </div>
+    <h1 className="h1 gametitle">Luupeli</h1>
+    <div className="btn-group">
+      <Link className="gamelink" to='/game'><button>Pelaa</button></Link>
+      <button>Kirjaudu sisään</button>
+      <button>Luo käyttäjätili</button>
+    </div>
+  </div>  
+)
+>>>>>>> ccb6db5cec753ddced59e7dc8121f91da453c3a6
 
         </div>
         <div className={"grid-flair" + this.state.style}>
