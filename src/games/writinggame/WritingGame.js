@@ -88,14 +88,14 @@ class WritingGame extends React.Component {
 
   // Updates progress bar according to the game's phase using state.index and images.length and converts the result to a percentage
   updateProgressBar() {
-    document.getElementById("progbar").style.width = (this.state.index+1)/this.state.images.length*100 + "%"; 
+    document.getElementById("progbar").style.width = (this.state.index + 1) / this.state.images.length * 100 + "%";
   }
 
   //Returns the state
   state() {
     return this.state
   }
-  
+
   topPage() {
     return (
       <div>
@@ -121,7 +121,7 @@ class WritingGame extends React.Component {
         <div class="bottom">
           <div class="row" id="image-holder">
             <div class="intro">
-                <img id="question-image" class="img-fluid" alt={this.state.images[this.state.index].bone.nameLatin+' osasta '+ this.state.bpname+' kuvan url: http://luupeli-backend.herokuapp.com/images/' + this.state.images[this.state.index].url} src={'http://luupeli-backend.herokuapp.com/images/' + this.state.images[this.state.index].url} />
+              <img id="question-image" class="img-fluid" alt={this.state.images[this.state.index].bone.nameLatin + ' osasta ' + this.state.bpname + ' kuvan url: http://luupeli-backend.herokuapp.com/images/' + this.state.images[this.state.index].url} src={'http://luupeli-backend.herokuapp.com/images/' + this.state.images[this.state.index].url} />
             </div>
           </div>
           <div class="row">
@@ -130,13 +130,13 @@ class WritingGame extends React.Component {
             </div>
           </div>
           <div class="container">
-            <div class="col-md-6 col-md-offset-3" id="info">   
-              <p>{this.state.images[this.state.index].bone.description}</p> 
+            <div class="col-md-6 col-md-offset-3" id="info">
+              <p>{this.state.images[this.state.index].bone.description}</p>
             </div>
           </div>
           <div class="answer-input">
             <div class="container">
-              <div class="intro"/>
+              <div class="intro" />
               <form className="input" class="form-inline" id='gameForm' onSubmit={this.handleSubmit}>
                 <div class="form-groupbd"><input class="form-control" type="text" onChange={this.handleChange} />
 
@@ -160,12 +160,12 @@ class WritingGame extends React.Component {
 
   //If all images have been cycled through, redirect to endscreen, otherwise render quiz page
   render() {
-    console.log("endcounter",this.state.endCounter)
-    console.log("index",this.state.index)
+    console.log("endcounter", this.state.endCounter)
+    console.log("index", this.state.index)
     //this.wgmessage.componentWillUnmount()
     if (this.state.endCounter >= this.state.images.length) {
-      setTimeout(function() {
-        this.setState({redirectToEndPage: true})
+      setTimeout(function () {
+        this.setState({ redirectToEndPage: true })
       }.bind(this), 3000);
 
       if (this.state.redirectToEndPage) {
@@ -180,7 +180,7 @@ class WritingGame extends React.Component {
         )
       }
     }
-    
+
     console.log(this.state.index)
     let bp = this.state.images[this.state.index].bone.bodypart; // The database id of the bodypart to which he bone in question is related to.
 

@@ -17,7 +17,7 @@ const create = (newObject) => {
 }
 
 const upload = (newObject) => {
-  const request = axios.post(baseUrl+'/upload', newObject, {headers: {enctype: "multipart/form-data"}})
+  const request = axios.post(baseUrl + '/upload', newObject, { headers: { enctype: "multipart/form-data" } })
   return request.then(response => { return response })
 }
 

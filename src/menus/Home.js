@@ -38,7 +38,6 @@ class Home extends React.Component {
     window.location.reload();
   }
 
-
   render() {
 
     return (
