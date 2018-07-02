@@ -21,12 +21,13 @@ class EndScreen extends React.Component {
           <p>Oikeita vastauksia: {this.state.correct}/{this.state.total}</p><br />
         </div>
         <div>
-          <Link to='/'><button className='gobackbutton'>Etusivulle</button></Link>
+          <Link to='/'>
+            <button className='gobackbutton'>Etusivulle</button>
+          </Link>
         </div>
       </div>
     )
   }
-
 }
 
 export default EndScreen

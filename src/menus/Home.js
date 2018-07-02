@@ -12,7 +12,7 @@ class Home extends React.Component {
     }
     this.state = {
       //style is fetched from localstorage
-      style: localStorage.getItem('style') 
+      style: localStorage.getItem('style')
     }
     this.changeCss = this.changeCss.bind(this)
   }
@@ -40,28 +40,24 @@ class Home extends React.Component {
 
 
   render() {
-    
+
     return (
       <div>
         <div className={"App" + this.state.style}>
-        <div className={"grid-sub" + this.state.style}>
-
-        </div> 
-        <div className={"grid" + this.state.style}>
-
-        </div>
-        <div className={"grid-flair" + this.state.style}>
-
-        </div>
-        <div className={"blinder" + this.state.style}>
-
-        </div>
-        <h1 className={"h1" + this.state.style + " gametitle"}>Luupeli</h1>
-        <div className={"btn-group" + this.state.style}>
-          <Link className="gamelink" to='/game'><button>Pelaa</button></Link>
-          <button>Kirjaudu sisään</button>
-          <button>Luo käyttäjätili</button>
-          <button onClick={this.changeCss}>Vaihda css</button>
+          <div className={"grid-sub" + this.state.style}>
+          </div>
+          <div className={"grid" + this.state.style}>
+          </div>
+          <div className={"grid-flair" + this.state.style}>
+          </div>
+          <div className={"blinder" + this.state.style}>
+          </div>
+          <h1 className={"h1" + this.state.style + " gametitle"}>Luupeli</h1>
+          <div className={"btn-group" + this.state.style}>
+            <Link className="gamelink" to='/game'><button>Pelaa</button></Link>
+            <button>Kirjaudu sisään</button>
+            <button>Luo käyttäjätili</button>
+            <button onClick={this.changeCss}>Vaihda css</button>
           </div>
         </div>
       </div>

@@ -25,8 +25,8 @@ class GameSettings extends React.Component {
 			allImages: [],		   // used to store an array of alla known images
 			allAnimals: [],        // used to store an array of all known animals
 			allBodyParts: [],      // used to store an array of all known bodyparts
-      images: [],			   // used to store an array of images which meet the selection criteria
-      style: localStorage.getItem('style')
+			images: [],			   // used to store an array of images which meet the selection criteria
+			style: localStorage.getItem('style')
 		};
 
 		this.changeAnimal = this.changeAnimal.bind(this)
@@ -39,37 +39,37 @@ class GameSettings extends React.Component {
 				const animals = response.data.map(animal => {
 					return { ...animal, selected: false }
 				})
-				
+
 
 				/*
 				Here we try to fetch emojis for the animals.
 				*/
 				for (var key in animals) {
-					
-					if (animals[key].name.toLowerCase()==='kissa') {
+
+					if (animals[key].name.toLowerCase() === 'kissa') {
 						var emo = require('node-emoji')
-						emo=emo.get('cat') 
+						emo = emo.get('cat')
 						console.log(emo)
-						animals[key].emoji= emo;
+						animals[key].emoji = emo;
 					}
-					if (animals[key].name.toLowerCase()==='koira') {
+					if (animals[key].name.toLowerCase() === 'koira') {
 						var emo = require('node-emoji')
-						emo=emo.get('dog') 
+						emo = emo.get('dog')
 						console.log(emo)
-						animals[key].emoji= emo;
+						animals[key].emoji = emo;
 					}
-					if (animals[key].name.toLowerCase()==='hevonen') {
+					if (animals[key].name.toLowerCase() === 'hevonen') {
 						var emo = require('node-emoji')
-						emo=emo.get('horse') 
+						emo = emo.get('horse')
 						console.log(emo)
-						animals[key].emoji= emo;
+						animals[key].emoji = emo;
 					}
 
-					if (animals[key].name.toLowerCase()==='nauta') {
+					if (animals[key].name.toLowerCase() === 'nauta') {
 						var emo = require('node-emoji')
-						emo=emo.get('cow') 
+						emo = emo.get('cow')
 						console.log(emo)
-						animals[key].emoji= emo;
+						animals[key].emoji = emo;
 					}
 
 				}
@@ -160,8 +160,8 @@ class GameSettings extends React.Component {
 		// Filtering the approved images on animals
 		let apics = this.state.allImages.filter(image => {
 			const animalIds = chosenAnimals.map(chosenAnimal => chosenAnimal.id)
-			if(image.animal !== undefined) {
-			return animalIds.includes(image.animal._id)
+			if (image.animal !== undefined) {
+				return animalIds.includes(image.animal._id)
 			}
 		})
 		console.log(apics)
@@ -235,64 +235,65 @@ class GameSettings extends React.Component {
 		return (
 			<div>
 				<div className={"App" + this.state.style + " settingspage"}>
-				<div className={"grid-sub-fastest" + this.state.style}>
-				  </div>
-				<div className={"grid-fastest" + this.state.style}>
-				  </div>
-				  <div className={"grid-flair" + this.state.style}>
-  				</div>
-			  <div className={"blinder" + this.state.style}>
-  				</div>
-				    <h2 className={"h2" + this.state.style}>Luupelivalinnat:</h2>
+					<div className={"grid-sub-fastest" + this.state.style}>
+					</div>
+					<div className={"grid-fastest" + this.state.style}>
+					</div>
+					<div className={"grid-flair" + this.state.style}>
+					</div>
+					<div className={"blinder" + this.state.style}>
+					</div>
+					<h2 className={"h2" + this.state.style}>Luupelivalinnat:</h2>
 					<div>
 						<WGMessage ref={instance => this.wgmessage = instance} />
 					</div>
 					<div class={"transbox" + this.state.style}>
-					<div class="container">	
-						<div class="col-md-12">
-							<h1 className={"form-header" + this.state.style}>Valitse eläin:</h1>
-							<form>
-								{selectAnimal}
-							</form>
+						<div class="container">
+							<div class="col-md-12">
+								<h1 className={"form-header" + this.state.style}>Valitse eläin:</h1>
+								<form>
+									{selectAnimal}
+								</form>
+							</div>
 						</div>
-					</div>
-					<div class="container">
-						<div class="col-md-12">
-							<h1 className={"form-header" + this.state.style}>Valitse ruumiinosa:</h1>
-							<form>
-								{selectBodyPart}
-							</form>
+						<div class="container">
+							<div class="col-md-12">
+								<h1 className={"form-header" + this.state.style}>Valitse ruumiinosa:</h1>
+								<form>
+									{selectBodyPart}
+								</form>
+							</div>
 						</div>
-					</div>
-					<div class="container">
-						<div class="col-md-12">	
-							<h1 className={"form-header" + this.state.style}>Luupelin pituus:</h1>
-							<form>
-								<label className="radio-inline"><input type="radio" value="3" onClick={this.changeGameLength.bind(this)} name="length" defaultChecked></input>3</label>
-								<label className="radio-inline"><input type="radio" value="5" onClick={this.changeGameLength.bind(this)} name="length"></input>5</label>
-								<label className="radio-inline"><input type="radio" value="7" onClick={this.changeGameLength.bind(this)} name="length"></input>7</label>
-							</form>
+						<div class="container">
+							<div class="col-md-12">
+								<h1 className={"form-header" + this.state.style}>Luupelin pituus:</h1>
+								<form>
+									<label className="radio-inline"><input type="radio" value="3" onClick={this.changeGameLength.bind(this)} name="length" defaultChecked></input>3</label>
+									<label className="radio-inline"><input type="radio" value="5" onClick={this.changeGameLength.bind(this)} name="length"></input>5</label>
+									<label className="radio-inline"><input type="radio" value="7" onClick={this.changeGameLength.bind(this)} name="length"></input>7</label>
+								</form>
+							</div>
 						</div>
-					</div>
-					<div class="container">
-						<div class="col-md-12">
-							<h1 className={"form-header" + this.state.style}>Vaikeusaste:</h1>
-							<form>
-								<label className="radio-inline"><input type="radio" value="easy" name="difficultylevel" defaultChecked></input>Helppo</label>
-								<label className="radio-inline"><input type="radio" value="medium" name="difficultylevel"></input>Keskivaikea</label>
-								<label className="radio-inline"><input type="radio" value="hard" name="difficultylevel"></input>Vaikea</label>
-							</form>
-							<div className="btn-group wide settingspage GameButton">
-								<button onClick={this.atLeastOneBodyPartIsSelected}>Luupeliin >>
+						<div class="container">
+							<div class="col-md-12">
+								<h1 className={"form-header" + this.state.style}>Vaikeusaste:</h1>
+								<form>
+									<label className="radio-inline"><input type="radio" value="easy" name="difficultylevel" defaultChecked></input>Helppo</label>
+									<label className="radio-inline"><input type="radio" value="medium" name="difficultylevel"></input>Keskivaikea</label>
+									<label className="radio-inline"><input type="radio" value="hard" name="difficultylevel"></input>Vaikea</label>
+								</form>
+								<div className="btn-group wide settingspage GameButton">
+									<button onClick={this.atLeastOneBodyPartIsSelected}>Luupeliin >>
 								</button>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				</div>
-				
 				<div className={"App" + this.state.style}>
-					<Link to='/game'><button className="gobackbutton">Takaisin</button></Link>
+					<Link to='/game'>
+						<button className="gobackbutton">Takaisin</button>
+					</Link>
 				</div>
 			</div>
 		);
