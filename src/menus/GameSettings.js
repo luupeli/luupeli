@@ -4,6 +4,7 @@ import WGMessage from '../games/writinggame/WGMessage'
 import imageService from '../services/images'
 import bodyPartService from '../services/bodyParts'
 import animalService from '../services/animals'
+import { injectGlobal } from 'styled-components';
 
 /**
  * GameSettings is the menu directly prior to a WritingGame session.
@@ -26,9 +27,10 @@ class GameSettings extends React.Component {
 			allAnimals: [],        // used to store an array of all known animals
 			allBodyParts: [],      // used to store an array of all known bodyparts
 			images: [],			   // used to store an array of images which meet the selection criteria
-			style: localStorage.getItem('style')
+			allStyles: props.location.state.allStyles,
+			styleIndex: props.location.state.styleIndex
 		};
-
+	
 		this.changeAnimal = this.changeAnimal.bind(this)
 		this.toggleCheck = this.toggleCheck.bind(this)
 		this.atLeastOneBodyPartIsSelected = this.atLeastOneBodyPartIsSelected.bind(this)
@@ -204,6 +206,18 @@ class GameSettings extends React.Component {
 
 	//this starts the game
 	render() {
+
+		let i = parseInt(localStorage.getItem('styleIndex'));
+ 
+		injectGlobal`
+		:root {
+		  
+		  --primary: ${this.state.allStyles[i].primary};
+		  --secondary: ${this.state.allStyles[i].secondary};
+		  --tertiary: ${this.state.allStyles[i].tertiary};
+		  }
+		}`;
+	
 		if (this.state.redirect) {
 			return (
 				<Redirect to={{
@@ -234,23 +248,25 @@ class GameSettings extends React.Component {
 		// As a general note about using forms w/ NodeJS... A single grouping of radio buttons (single choice) is identified by identical "name" parameter. Separate values within such a grouping are marked with distinct "value" parameters.
 		return (
 			<div>
-				<div className={"App" + this.state.style + " settingspage"}>
-					<div className={"grid-sub-fastest" + this.state.style}>
-					</div>
-					<div className={"grid-fastest" + this.state.style}>
-					</div>
-					<div className={"grid-flair" + this.state.style}>
-					</div>
-					<div className={"blinder" + this.state.style}>
-					</div>
-					<h2 className={"h2" + this.state.style}>Luupelivalinnat:</h2>
+			      <div className={this.state.allStyles[i].background}>
+      <div className={this.state.allStyles[i].style}> 
+        <div className="App">
+          <div className={this.state.allStyles[i].flairLayerA}>
+          </div>
+          <div className={this.state.allStyles[i].flairLayerB}>
+          </div>
+          <div className={this.state.allStyles[i].flairLayerC}>
+          </div>
+          <div className={this.state.allStyles[i].flairLayerD}>
+          </div>
+					<h2>Luupelivalinnat:</h2>
 					<div>
 						<WGMessage ref={instance => this.wgmessage = instance} />
 					</div>
-					<div class={"transbox" + this.state.style}>
+					<div class="transbox">
 						<div class="container">
 							<div class="col-md-12">
-								<h1 className={"form-header" + this.state.style}>Valitse eläin:</h1>
+								<h3 className="form-header">Valitse eläin:</h3>
 								<form>
 									{selectAnimal}
 								</form>
@@ -258,7 +274,7 @@ class GameSettings extends React.Component {
 						</div>
 						<div class="container">
 							<div class="col-md-12">
-								<h1 className={"form-header" + this.state.style}>Valitse ruumiinosa:</h1>
+								<h3 className="form-header">Valitse ruumiinosa:</h3>
 								<form>
 									{selectBodyPart}
 								</form>
@@ -266,7 +282,7 @@ class GameSettings extends React.Component {
 						</div>
 						<div class="container">
 							<div class="col-md-12">
-								<h1 className={"form-header" + this.state.style}>Luupelin pituus:</h1>
+								<h3 className="form-header">Luupelin pituus:</h3>
 								<form>
 									<label className="radio-inline"><input type="radio" value="3" onClick={this.changeGameLength.bind(this)} name="length" defaultChecked></input>3</label>
 									<label className="radio-inline"><input type="radio" value="5" onClick={this.changeGameLength.bind(this)} name="length"></input>5</label>
@@ -276,7 +292,7 @@ class GameSettings extends React.Component {
 						</div>
 						<div class="container">
 							<div class="col-md-12">
-								<h1 className={"form-header" + this.state.style}>Vaikeusaste:</h1>
+								<h3 className="form-header">Vaikeusaste:</h3>
 								<form>
 									<label className="radio-inline"><input type="radio" value="easy" name="difficultylevel" defaultChecked></input>Helppo</label>
 									<label className="radio-inline"><input type="radio" value="medium" name="difficultylevel"></input>Keskivaikea</label>
@@ -290,11 +306,13 @@ class GameSettings extends React.Component {
 						</div>
 					</div>
 				</div>
-				<div className={"App" + this.state.style}>
-					<Link to='/game'>
+				<div className="btn-group">
+					<Link to='/'>
 						<button className="gobackbutton">Takaisin</button>
 					</Link>
 				</div>
+			</div>
+			</div>
 			</div>
 		);
 	}

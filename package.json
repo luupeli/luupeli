@@ -5,6 +5,7 @@
   "dependencies": {
     "ajv": "^6.5.1",
     "axios": "^0.18.0",
+    "chai": "^4.1.2",
     "express": "^4.16.3",
     "node-emoji": "^1.8.1",
     "pg": "^7.4.3",
@@ -16,19 +17,22 @@
     "react-scripts": "1.1.4",
     "sequelize": "^4.37.8",
     "shallow": "^1.0.0",
-    "string-similarity": "^1.2.0"
+    "string-similarity": "^1.2.0",
+    "styled-components": "^3.3.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "react-scripts test --env=jsdom --coverage --collectCoverageFrom=**/src/menus/*.js --collectCoverageFrom=**/src/games/*.js",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
-    "jest": "^23.1.0",
-    "jest-enzyme": "^6.0.1",
+    "jest": "^23.2.0",
+    "jest-enzyme": "^6.0.2",
+    "jsdom": "^11.11.0",
+    "puppeteer": "^1.5.0",
     "supertest": "^3.1.0"
   }
 }

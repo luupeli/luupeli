@@ -10,6 +10,9 @@ yarn-error.log*
 node_modules/
 jspm_packages/
 
+# Coverage directory used by tools like istanbul
+coverage
+
 # Optional npm cache directory
 .npm
 

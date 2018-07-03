@@ -1,39 +1,88 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 
 class SelectGameMode extends React.Component {
 
   constructor(props) {
     super(props);
+
+    
+
     this.state = {
-      style: localStorage.getItem('style')
+      redirect: false,
+       allStyles: props.location.state.allStyles,
+       styleIndex: props.location.state.styleIndex
+   
     }
+// this.setState({
+//   allStyles: props.location.state.allStyles,
+//   styleIndex: props.location.state.styleIndex
+// }
+// )
+
+
+    this.proceedToSettings=this.proceedToSettings.bind(this)
+    this.proceedToMain=this.proceedToMain.bind(this)
+
+  
+  }
+
+  proceedToSettings(event) {
+    this.setState({ redirect: true })
+    this.setState({ redirectTo: '/settings' })
+  }
+
+  
+  proceedToMain(event) {
+    this.setState({ redirect: true })
+    this.setState({ redirectTo: '/' })
   }
 
   render() {
 
+    if (this.state.redirect) {
+			return (
+				<Redirect to={{
+					pathname: this.state.redirectTo,
+					state: {
+            allStyles:this.state.allStyles,
+            styleIndex:this.state.styleIndex
+      		}
+				}} />
+			)
+		}
+    
+
+    let i = parseInt(localStorage.getItem('styleIndex'));
+ 
     return (
       <div>
-        <div className={"App" + this.state.style}>
-          <div className={"grid-sub-faster" + this.state.style}>
+         <div className={this.state.allStyles[i].background}>
+      <div className={this.state.allStyles[i].style}> 
+        <div className="App">
+          <div className={this.state.allStyles[i].flairLayerA}>
           </div>
-          <div className={"grid-faster" + this.state.style}>
+          <div className={this.state.allStyles[i].flairLayerB}>
           </div>
-          <div className={"grid-flair" + this.state.style}>
+          <div className={this.state.allStyles[i].flairLayerC}>
           </div>
-          <div className={"blinder" + this.state.style}>
+          <div className={this.state.allStyles[i].flairLayerD}>
           </div>
-          <h2 className={"h2" + this.state.style + " toprow"}>Valitse</h2>
-          <h2 className={"h2" + this.state.style + " secondrow"}>Luupelimuoto:</h2>
-          <div className={"btn-group" + this.state.style}>
-            <Link to='/settings'><button className="writinggame">Kirjoituspeli</button></Link>
-            <button>...</button>
-            <button>...</button>
+              <h2 className="toprow">Valitse</h2>
+              <h2 className="secondrow">Luupelimuoto:</h2>
+              <div className="btn-group">
+                <button className="writinggame" onClick={this.proceedToSettings}>Kirjoituspeli</button>
+                <button>...</button>
+                <button>...</button>
+              </div>
+              <div className="btn-group">
+              
+                <button className="gobackbutton"  onClick={this.proceedToMain}>Takaisin</button>
+              
+            </div>
           </div>
         </div>
-        <div className={"App" + this.state.style}>
-          <Link to='/'><button className={"gobackbutton" + this.state.style}>Takaisin</button></Link>
-        </div>
+      </div>
       </div>
     )
   }
