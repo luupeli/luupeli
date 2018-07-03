@@ -15,7 +15,8 @@
     "react-scripts": "1.1.4",
     "sequelize": "^4.37.8",
     "shallow": "^1.0.0",
-    "string-similarity": "^1.2.0"
+    "string-similarity": "^1.2.0",
+    "styled-components": "^3.3.3"
   },
   "scripts": {
     "start": "react-scripts start",
