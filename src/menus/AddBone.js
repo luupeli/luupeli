@@ -303,16 +303,16 @@ class AddBone extends React.Component {
 					<form enctype="multipart/form-data" onSubmit={this.handleSubmit}>
 						<div className="form-group has-feedback">
 							<label className="pull-left">Latinankielinen nimi </label>
-							<input type="text" name="nameLatin" value={this.state.nameLatin} className="form-control" onChange={this.handleChange} /><span className="glyphicon glyphicon-asterisk form-control-feedback"></span>
+							<input type="text" name="nameLatin" id="nameLatin" value={this.state.nameLatin} className="form-control" onChange={this.handleChange} /><span className="glyphicon glyphicon-asterisk form-control-feedback"></span>
 						</div>
 						<label className="pull-left">Vaihtoehtoinen latinankielinen nimi</label>
-						<input type="text" name="altNameLatin" value={this.state.altNameLatin} className="form-control" onChange={this.handleChange} />
+						<input type="text" name="altNameLatin" id="altNameLatin" value={this.state.altNameLatin} className="form-control" onChange={this.handleChange} />
 						<label className="pull-left">Suomenkielinen nimi</label>
-						<input type="text" name="name" value={this.state.name} className="form-control" onChange={this.handleChange} />
+						<input type="text" name="name" id ="name" value={this.state.name} className="form-control" onChange={this.handleChange} />
 						<label className="pull-left">Kuvaus</label>
-						<input type="text" name="description" value={this.state.description} className="form-control" onChange={this.handleChange} />
+						<input type="text" name="description" id ="description" value={this.state.description} className="form-control" onChange={this.handleChange} />
 						<label className="pull-left">Ruumiinosa</label>
-						<select name="bodyPart" className="form-control" value={this.state.bodyPart} onChange={this.handleChange}>
+						<select name="bodyPart" id="bodyPart" className="form-control" value={this.state.bodyPart} onChange={this.handleChange}>
 							<option value="Eturaaja">Eturaaja</option>
 							<option value="Takaraaja">Takaraaja</option>
 							<option value="Vartalo">Vartalo</option>
@@ -347,13 +347,13 @@ class AddBone extends React.Component {
 							</li>)}
 							<li className="list-group-item clearfix">
 								<span className="btn-toolbar">
-									<button type="button" className="btn btn-info pull-right" onClick={this.handleAddImage}>Lisää kuvakenttä</button>
-									<button type="button" className="btn btn-danger pull-right" onClick={this.handleRemoveNewImage}>Poista kuvakenttä</button>
+									<button type="button" id="addNewImageFieldButton" className="btn btn-info pull-right" onClick={this.handleAddImage}>Lisää kuvakenttä</button>
+									<button type="button" id="removeNewImageFieldButton" className="btn btn-danger pull-right" onClick={this.handleRemoveNewImage}>Poista kuvakenttä</button>
 								</span>
 							</li>
 						</ul>
 						<div className="btn-toolbar">
-							<button type="submit" className="btn btn-info pull-right">Lisää luu</button>
+							<button type="submit" id="submitNewBoneButton" className="btn btn-info pull-right">Lisää luu</button>
 						</div>
 					</form>
 				</div>
