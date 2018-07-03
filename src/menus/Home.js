@@ -1,19 +1,21 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import '../styles/App.css';
-import styled from 'styled-components';
+//import styled from 'styled-components';
+import { injectGlobal } from 'styled-components';
 
 class Home extends React.Component {
 
   constructor(props) {
     super(props);
 
-    this.state = { 
+ 
+  //   this.state = { 
       
-      primary:'#ff5db1',
-      secondary: '#ff2596',
-      tertiary: '#ef007c'
-  };
+  //     primary: '#DD9955',/*'#ff5db1',*/
+  //     secondary: '#ff2596',
+  //     tertiary: '#ef007c'
+  // };
 
     if (localStorage.getItem('style') === null) {
       localStorage.setItem('style', 'blood-dragon')
@@ -29,6 +31,9 @@ class Home extends React.Component {
     }
     this.state = {
       //style is fetched from localstorage
+      primary: '#DD9955',/*'#ff5db1',*/
+      secondary: '#ff2596',
+      tertiary: '#ef007c',
       style: localStorage.getItem('style'),
       background: localStorage.getItem('background'),
       flairLayerD: localStorage.getItem('flairLayerD'),
@@ -53,11 +58,26 @@ class Home extends React.Component {
       localStorage.setItem('flairLayerA', 'blinder')
       localStorage.setItem('primary', '#ff5db1')
       localStorage.setItem('secondary', '#ff2596')
-      localStorage.setItem('tertiary', '#ef007c')
+      localStorage.setItem('tertiary', '#33FF88')
+      /*localStorage.setItem('tertiary', '#ef007c')*/
       
+
       document.body.style.color = "#ffffff"
       document.body.style.background = "#000000"
-    } else {
+    } else if (this.state.style === 'blood-dragon') {
+      localStorage.setItem('style', 'fallout')
+      localStorage.setItem('background', 'background-fallout')
+      localStorage.setItem('flairLayerD', 'none')
+      localStorage.setItem('flairLayerC', 'none')
+      localStorage.setItem('flairLayerB', 'none')
+      localStorage.setItem('flairLayerA', 'none')
+      localStorage.setItem('primary', '#33BB33')
+      localStorage.setItem('secondary', '#229922')
+      localStorage.setItem('tertiary', '#115511')
+      
+      document.body.style.color = "#000000"
+      document.body.style.background = "#ffffff"
+    }  else  {
       localStorage.setItem('style', 'deep-blue')
       localStorage.setItem('background', 'background-deep-blue')
       localStorage.setItem('flairLayerD', 'none')
@@ -82,6 +102,7 @@ class Home extends React.Component {
       secondary: localStorage.getItem('secondary'),
       tertiary: localStorage.getItem('tertiary')
     })
+    
 
 
     console.log(this.state.style)
@@ -89,10 +110,24 @@ class Home extends React.Component {
     window.location.reload();
   }
 
+  /*? 'palevioletred' : 'white'};
+  ? 'white' : 'palevioletred'};
+  --primary: this.state.primary;
+  */
   render() {
+    injectGlobal`
+    :root {
+      
+      --primary: ${this.state.primary}
+      --secondary: ${this.state.secondary}
+      --tertiary: ${this.state.tertiary}
+      }
+    }`;
 
+  
     return (
       <div>
+        
       <div className={this.state.background}>
       <div className={this.state.style}> 
         <div className="App">
@@ -114,6 +149,7 @@ class Home extends React.Component {
         </div>
         </div>
       </div>
+      
       </div>
     )
   }

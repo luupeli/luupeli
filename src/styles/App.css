@@ -6,6 +6,7 @@
   --deep-blue-light: #113dBB;
   --deep-blue-medium: #002266;
   --deep-blue-dark: #001144;
+ /* --primary: #777777;*/
 } 
 
 .navbar { margin-bottom: 0 }
@@ -36,27 +37,40 @@
     padding: 1.0vh 1.25vw;/*20px 24px;*/
     text-decoration:none;
     text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
-    color: rgb(236, 209, 228);
+  /*  color: rgb(236, 209, 228);*/
  opacity: 0.68;
  background-size: 200% 200%;
+ border:4px solid var(--primary);
+   background-color: var(--tertiary); 
+  background-image: -webkit-gradient(linear, left top, left bottom, from(var(--primary)), to(var(--tertiary)));
+  background-image: -webkit-linear-gradient(top, var(--primary),var(--tertiary));
+  background-image: -moz-linear-gradient(top, var(--primary),var(--tertiary));
+  background-image: -ms-linear-gradient(top,  var(--primary),var(--tertiary));
+  background-image: -o-linear-gradient(top,  var(--primary),var(--tertiary));
+  background-image: linear-gradient(to bottom,  var(--primary),var(--tertiary));
+  filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=var(--primary), endColorstr=var(--tertiary));
  -webkit-animation: Button-Gradient 3.23s ease infinite;
  -moz-animation: Button-Gradient 3.23s ease infinite;
  animation: Button-Gradient 3.23s ease infinite;
+
 }
 .blood-dragon .btn-group button {
-  border:4px solid #ff2596;
-  background-color: #ff5db1; 
+  border: 8px solid var(--primary);
+  
+  /*border:4px solid #ff2596;
+   background-color: #ff5db1; 
   background-image: -webkit-gradient(linear, left top, left bottom, from(#ff5db1), to(#ef007c));
   background-image: -webkit-linear-gradient(top, #ff5db1, #ef007c);
   background-image: -moz-linear-gradient(top, #ff5db1, #ef007c);
   background-image: -ms-linear-gradient(top, #ff5db1, #ef007c);
   background-image: -o-linear-gradient(top, #ff5db1, #ef007c);
-  background-image: linear-gradient(to bottom, #ff5db1, #ef007c);
-  filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#ff5db1, endColorstr=#ef007c);
+  background-image: linear-gradient(to bottom, #ff5db1, #ef007c); 
+  filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#ff5db1, endColorstr=#ef007c);*/
 }
 
 .deep-blue .btn-group button {
-  border:4px solid #00BBFF;
+  border:4px solid var(--primary);
+  /* border:4px solid #00BBFF;
   background-color: #00DDEE; 
   background-image: -webkit-gradient(linear, left top, left bottom, from(#113dBB), to(#001155));
   background-image: -webkit-linear-gradient(top, #113dBB, #001155);
@@ -64,11 +78,16 @@
   background-image: -ms-linear-gradient(top, #113dBB, #001155);
   background-image: -o-linear-gradient(top, #113dBB, #001155);
   background-image: linear-gradient(to bottom, #113dBB, #001155);
-  filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#113dBB, endColorstr=#001155);
+  filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#113dBB, endColorstr=#001155); */
+}
+
+.btn-group button:hover {
+  filter:brightness(65%);
+  opacity: 0.88;
 }
 
 .blood-dragon .btn-group button:hover {
-  border:4px solid #f60080;
+  /* border:4px solid #f60080;
   background-color: #ff2a98; background-image: -webkit-gradient(linear, left top, left bottom, from(#ff2a98), to(#bc0062));
   background-image: -webkit-linear-gradient(top, #ff2a98, #bc0062);
   background-image: -moz-linear-gradient(top, #ff2a98, #bc0062);
@@ -76,12 +95,12 @@
   background-image: -o-linear-gradient(top, #ff2a98, #bc0062);
   background-image: linear-gradient(to bottom, #ff2a98, #bc0062);
   filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#ff2a98, endColorstr=#bc0062);
-  opacity: 0.88;
+  opacity: 0.88; */
   /*background-color: #b60d6a;*/
 }
 
 .deep-blue .btn-group button:hover {
-    border:4px solid #113dBB;
+    /* border:4px solid #113dBB;
     background-color: #113dBB; background-image: -webkit-gradient(linear, left top, left bottom, from(#001155), to(#000544));
     background-image: -webkit-linear-gradient(top, #001155, #000544);
     background-image: -moz-linear-gradient(top, #001155, #000544);
@@ -89,20 +108,21 @@
     background-image: -o-linear-gradient(top, #001155, #000544);
     background-image: linear-gradient(to bottom, #001155, #000544);
     filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#001155, endColorstr=#000544);
-    opacity: 0.88;
+    opacity: 0.88; */
 }
 
 .btn-group button:active {
     /*background-color: #b60d6a;
     box-shadow: 0 5px #666;*/
-    border:4px solid #f60080;
+    /* border:4px solid #f60080;
     background-color: #ff2a98; background-image: -webkit-gradient(linear, left top, left bottom, from(#ff2a98), to(#bc0062));
     background-image: -webkit-linear-gradient(top, #ff2a98, #bc0062);
     background-image: -moz-linear-gradient(top, #ff2a98, #bc0062);
     background-image: -ms-linear-gradient(top, #ff2a98, #bc0062);
     background-image: -o-linear-gradient(top, #ff2a98, #bc0062);
     background-image: linear-gradient(to bottom, #ff2a98, #bc0062);
-    filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#ff2a98, endColorstr=#bc0062);
+    filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#ff2a98, endColorstr=#bc0062); */
+    filter:brightness(33%);
     opacity: 0.97;
     transform: translateY(3px);
 }
@@ -345,6 +365,25 @@ body {
     overflow-x: hidden;
     overflow-y: hidden;
     overflow: hidden;
+}
+
+.background-fallout {
+  width: 100wh;
+  height: 100vh;
+  color: #fff;
+  background: linear-gradient(
+    180deg,
+      rgb(19, 196, 1) 0vh, 
+      rgb(5, 164, 0) 10vh, 
+      rgb(3, 65, 0) 35vh, 
+      #000000 80vh);
+  
+  background-size: 100% 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  overflow: hidden;
+ 
+
 }
 
 .background-deep-blue {
