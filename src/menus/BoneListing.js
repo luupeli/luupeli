@@ -1,16 +1,27 @@
 import React from 'react'
 import boneService from '../services/bones'
+import animalService from '../services/animals'
+import bodyPartService from '../services/bodyParts'
 import { Link } from 'react-router-dom'
+import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap'
 
 class BoneListing extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			bones: []
+			bones: [],
+			animals: [],
+			selectedAnimals: [],
+			bodyParts: [],
+			selectedBodyParts: [],
+			search: ''
 		}
-	}
 
+		this.handleAnimalChange = this.handleAnimalChange.bind(this);
+		this.handleBodyPartChange = this.handleBodyPartChange.bind(this);
+		this.handleChange = this.handleChange.bind(this);
+	}
 
 	//GET list of bones from database and stuff it into this.state.bones for rendering
 	componentDidMount() {
@@ -21,17 +32,127 @@ class BoneListing extends React.Component {
 			.catch((error) => {
 				console.log(error)
 			})
+
+		animalService.getAll()
+			.then((response) => {
+				this.setState({ animals: response.data })
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+
+		bodyPartService.getAll()
+			.then((response) => {
+				this.setState({ bodyParts: response.data })
+			})
+			.catch((error) => {
+				console.log(error)
+			})
 	}
 
-	//Render bone listing by .mapping bones from this.state.bones array to Link elements.
+	handleAnimalChange(event) {
+		let animals = this.state.selectedAnimals
+		if (animals.includes(event.target.id)) {
+			animals = animals.filter(a => a !== event.target.id)
+		} else {
+			animals.push(event.target.id)
+		}
+		this.setState({ selectedAnimals: animals })
+	}
+
+	handleBodyPartChange(event) {
+		let bodyParts = this.state.selectedBodyParts
+		if (bodyParts.includes(event.target.id)) {
+			bodyParts = bodyParts.filter(a => a !== event.target.id)
+		} else {
+			bodyParts.push(event.target.id)
+		}
+		this.setState({ selectedBodyParts: bodyParts })
+	}
+
+	handleChange(e) {
+		this.setState({ search: e.target.value });
+	}
+
+	//Filter and render bone listing by .mapping bones from this.state.bones array to Link elements.
 	render() {
+		let bonesToShow = this.state.bones
+
+		// Filter by body parts 
+		if (this.state.selectedBodyParts.length > 0) {
+			bonesToShow = bonesToShow.filter(bone => this.state.selectedBodyParts.includes(bone.bodyPart._id))
+		}
+
+		// Filter by animals
+		if (this.state.selectedAnimals.length > 0) {
+			bonesToShow = bonesToShow.filter(bone => bone.images.some(img => this.state.selectedAnimals.includes(img.animal)))
+		}
+
+		// Filter by search attribute (latin names and finnish name)
+		if (this.state.search.length > 0) {
+			bonesToShow = bonesToShow.filter(bone => {
+				return bone.nameLatin.toLowerCase().includes(this.state.search.toLowerCase()) || bone.altNameLatin.toLowerCase().includes(this.state.search.toLowerCase()) || bone.name.toLowerCase().includes(this.state.search.toLowerCase())
+			})
+		}
+
+		console.log(bonesToShow)
+
 		return (
-			<div className="scrolling-menu">
+			<div className="scrolling-menu" >
 				<div className="App">
-					<div>
+					<div class="container">
 						<div className="list-group">
-							<span className="list-group-item list-group-item-info clearfix"><Link to='/add'><button className="btn btn-info pull-right">Lisää uusi</button></Link></span>
-							{this.state.bones.map(bone =>
+							<span className="list-group-item list-group-item-info clearfix">
+								<div class="row">
+									<div class="col-sm-4">
+										<h5>Suodata lajin mukaan</h5>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="input-group" type="checkbox" data-toggle="buttons" onClick={this.handleAnimalChange}>
+											{this.state.animals.map(animal =>
+												<button className="btn btn-warning" type="button" id={animal.id} autocomplete="on">{animal.name}</button>
+											)}
+										</div>
+
+									</div>
+
+									<div class="col-sm-4">
+										<form>
+											<input
+												type="text"
+												class="form-control"
+												value={this.state.search}
+												placeholder="Hae latinan- tai suomenkielisen nimen perusteella"
+												onChange={this.handleChange}
+											/>
+										</form>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-6">
+										<h5>Suodata ruumiinosan mukaan</h5>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-6">
+										<ToggleButtonGroup
+											type="checkbox"
+											defaultValue={this.state.selectedBodyParts}
+											onClick={this.handleBodyPartChange}
+										>
+											{this.state.bodyParts.map(bodyPart =>
+												<ToggleButton bsStyle="warning" id={bodyPart.id} value={bodyPart.id}>{bodyPart.name} </ToggleButton>
+											)}
+										</ToggleButtonGroup>
+									</div>
+								</div>
+
+								<Link to='/add'><button className="btn btn-info pull-right">Lisää uusi</button></Link></span>
+
+							{bonesToShow.map(bone =>
 								<Link key={bone.id} to={{
 									pathname: '/update/' + bone.id,
 									state: {
