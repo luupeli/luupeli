@@ -47,17 +47,17 @@ describe("Home", () => {
       expect(title.text()).toContain('Luupeli')
     })
 
-    describe('home integral tests', () => {
-      let page
-      beforeEach(async () => {
-        page = await global.__BROWSER__.newPage()
-        await page.goto('http://localhost:3000')
-      })
+    // describe('home integral tests', () => {
+    //   let page
+    //   beforeEach(async () => {
+    //     page = await global.__BROWSER__.newPage()
+    //     await page.goto('http://localhost:3000')
+    //   })
 
-      it('goes to selectgamemode', async () => {
-        await page.waitForSelector('.btn-group')
-        const textContent = await page.$eval('body', el => el.textContent)
-        expect(textContent.includes('Kirjaudu sisään')).toBe(true)
-      })
-    })
+    //   it('goes to selectgamemode', async () => {
+    //     await page.waitForSelector('.btn-group')
+    //     const textContent = await page.$eval('body', el => el.textContent)
+    //     expect(textContent.includes('Kirjaudu sisään')).toBe(true)
+    //   })
+    // })
 })
