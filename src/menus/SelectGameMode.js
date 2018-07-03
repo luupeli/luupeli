@@ -1,52 +1,88 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 
 class SelectGameMode extends React.Component {
 
   constructor(props) {
     super(props);
+
+    
+
     this.state = {
-      style: localStorage.getItem('style'),
-      background: localStorage.getItem('background'),
-      flairLayerD: localStorage.getItem('flairLayerD'),
-      flairLayerC: localStorage.getItem('flairLayerC'),
-      flairLayerB: localStorage.getItem('flairLayerB'),
-      flairLayerA: localStorage.getItem('flairLayerA'),
-      primary: localStorage.getItem('primary'),
-      secondary: localStorage.getItem('secondary'),
-      tertiary: localStorage.getItem('tertiary')
+      redirect: false,
+       allStyles: props.location.state.allStyles,
+       styleIndex: props.location.state.styleIndex
+   
     }
+// this.setState({
+//   allStyles: props.location.state.allStyles,
+//   styleIndex: props.location.state.styleIndex
+// }
+// )
+
+
+    this.proceedToSettings=this.proceedToSettings.bind(this)
+    this.proceedToMain=this.proceedToMain.bind(this)
+
+  
+  }
+
+  proceedToSettings(event) {
+    this.setState({ redirect: true })
+    this.setState({ redirectTo: '/settings' })
+  }
+
+  
+  proceedToMain(event) {
+    this.setState({ redirect: true })
+    this.setState({ redirectTo: '/' })
   }
 
   render() {
 
+    if (this.state.redirect) {
+			return (
+				<Redirect to={{
+					pathname: this.state.redirectTo,
+					state: {
+            allStyles:this.state.allStyles,
+            styleIndex:this.state.styleIndex
+      		}
+				}} />
+			)
+		}
+    
+
+    let i = parseInt(localStorage.getItem('styleIndex'));
+ 
     return (
       <div>
-      <div className={this.state.background}>
-      <div className={this.state.style}> 
-
-   <div className="App">
-          <div className={this.state.flairLayerA}>
-          </div>
-          <div className={this.state.flairLayerB}>
-          </div>
-          <div className={this.state.flairLayerC}>
-          </div>
-          <div className={this.state.flairLayerD}>
-          </div>
-          <h2 className="toprow">Valitse</h2>
-          <h2 className="secondrow">Luupelimuoto:</h2>
-          <div className="btn-group">
-            <Link to='/settings'><button className="writinggame">Kirjoituspeli</button></Link>
-            <button>...</button>
-            <button>...</button>
-          </div>
-        </div>
+         <div className={this.state.allStyles[i].background}>
+      <div className={this.state.allStyles[i].style}> 
         <div className="App">
-          <Link to='/'><button className="gobackbutton">Takaisin</button></Link>
+          <div className={this.state.allStyles[i].flairLayerA}>
           </div>
+          <div className={this.state.allStyles[i].flairLayerB}>
+          </div>
+          <div className={this.state.allStyles[i].flairLayerC}>
+          </div>
+          <div className={this.state.allStyles[i].flairLayerD}>
+          </div>
+              <h2 className="toprow">Valitse</h2>
+              <h2 className="secondrow">Luupelimuoto:</h2>
+              <div className="btn-group">
+                <button className="writinggame" onClick={this.proceedToSettings}>Kirjoituspeli</button>
+                <button>...</button>
+                <button>...</button>
+              </div>
+              <div className="btn-group">
+              
+                <button className="gobackbutton"  onClick={this.proceedToMain}>Takaisin</button>
+              
+            </div>
           </div>
         </div>
+      </div>
       </div>
     )
   }

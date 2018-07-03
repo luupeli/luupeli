@@ -1,147 +1,181 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import '../styles/App.css';
 //import styled from 'styled-components';
 import { injectGlobal } from 'styled-components';
 
 class Home extends React.Component {
 
+
+  
   constructor(props) {
     super(props);
 
  
-  //   this.state = { 
-      
-  //     primary: '#DD9955',/*'#ff5db1',*/
-  //     secondary: '#ff2596',
-  //     tertiary: '#ef007c'
-  // };
 
-    if (localStorage.getItem('style') === null) {
-      localStorage.setItem('style', 'blood-dragon')
-      localStorage.setItem('background', 'background-blood-dragon')
-      localStorage.setItem('flairLayerD', 'grid-sub')
-      localStorage.setItem('flairLayerC', 'grid')
-      localStorage.setItem('flairLayerB', 'grid-flair')
-      localStorage.setItem('flairLayerA', 'blinder')
-      localStorage.setItem('primary', '#ff5db1')
-      localStorage.setItem('secondary', '#ff2596')
-      localStorage.setItem('tertiary', '#ef007c')
+  
 
-    }
-    this.state = {
-      //style is fetched from localstorage
-      primary: '#DD9955',/*'#ff5db1',*/
-      secondary: '#ff2596',
-      tertiary: '#ef007c',
-      style: localStorage.getItem('style'),
-      background: localStorage.getItem('background'),
-      flairLayerD: localStorage.getItem('flairLayerD'),
-      flairLayerC: localStorage.getItem('flairLayerC'),
-      flairLayerB: localStorage.getItem('flairLayerB'),
-      flairLayerA: localStorage.getItem('flairLayerA'),
-      primary: localStorage.getItem('primary'),
-      secondary: localStorage.getItem('secondary'),
-      tertiary: localStorage.getItem('tertiary')
-    }
-    this.changeCss = this.changeCss.bind(this)
+   if (localStorage.getItem('styleIndex') === null) {
+     localStorage.setItem('styleIndex', 0)
   }
 
-  //Temporary solution, changes css to "bl" (blank, doesn't exist), otherwise to "bd" (the main theme). Changing body doesn't work currently.
-  changeCss(event) {
-    if (this.state.style === 'deep-blue') {
-      localStorage.setItem('style', 'blood-dragon')
-      localStorage.setItem('background', 'background-blood-dragon')
-      localStorage.setItem('flairLayerD', 'grid-sub')
-      localStorage.setItem('flairLayerC', 'grid')
-      localStorage.setItem('flairLayerB', 'grid-flair')
-      localStorage.setItem('flairLayerA', 'blinder')
-      localStorage.setItem('primary', '#ff5db1')
-      localStorage.setItem('secondary', '#ff2596')
-      localStorage.setItem('tertiary', '#33FF88')
-      /*localStorage.setItem('tertiary', '#ef007c')*/
-      
-
-      document.body.style.color = "#ffffff"
-      document.body.style.background = "#000000"
-    } else if (this.state.style === 'blood-dragon') {
-      localStorage.setItem('style', 'fallout')
-      localStorage.setItem('background', 'background-fallout')
-      localStorage.setItem('flairLayerD', 'none')
-      localStorage.setItem('flairLayerC', 'none')
-      localStorage.setItem('flairLayerB', 'none')
-      localStorage.setItem('flairLayerA', 'none')
-      localStorage.setItem('primary', '#33BB33')
-      localStorage.setItem('secondary', '#229922')
-      localStorage.setItem('tertiary', '#115511')
-      
-      document.body.style.color = "#000000"
-      document.body.style.background = "#ffffff"
-    }  else  {
-      localStorage.setItem('style', 'deep-blue')
-      localStorage.setItem('background', 'background-deep-blue')
-      localStorage.setItem('flairLayerD', 'none')
-      localStorage.setItem('flairLayerC', 'none')
-      localStorage.setItem('flairLayerB', 'none')
-      localStorage.setItem('flairLayerA', 'none')
-      localStorage.setItem('primary', '#0033BB')
-      localStorage.setItem('secondary', '#002299')
-      localStorage.setItem('tertiary', '#000055')
-      
-      document.body.style.color = "#000000"
-      document.body.style.background = "#ffffff"
+    this.state = {
+      allStyles: [],
+      styleIndex:0,
+      background:'',
+      flairLayerD:'',
+      flairLayerC:'',
+      flairLayerB:'',
+      flairLayerA:'',
+      primary:'',
+      secondary:'',
+      tertiary:'',
+      style:'',
     }
-    this.setState({
-      style: localStorage.getItem('style'),
-      background: localStorage.getItem('background'),
-      flairLayerD: localStorage.getItem('flairLayerD'),
-      flairLayerC: localStorage.getItem('flairLayerC'),
-      flairLayerB: localStorage.getItem('flairLayerB'),
-      flairLayerA: localStorage.getItem('flairLayerA'),
-      primary: localStorage.getItem('primary'),
-      secondary: localStorage.getItem('secondary'),
-      tertiary: localStorage.getItem('tertiary')
-    })
+    // localStorage.setItem('allStyles','');
+
+    // localStorage.setItem('allStyles', JSON.stringify(this.state.allStyles));   // Array must be converted to JSON before storing it into localStorage!
+    
+    // this.setState({
+
+    //   styleIndex: 0,
+   
+      
+    // })
+    this.changeCss = this.changeCss.bind(this)
+    this.proceedToSelect = this.proceedToSelect.bind(this)
+  }
+
+  componentWillMount() {
+    const themeBloodDragon = {
+      style:'blood-dragon',
+      background:'background-blood-dragon',
+      flairLayerD:'grid-sub',
+      flairLayerC:'grid',
+      flairLayerB:'grid-flair',
+      flairLayerA:'blinder',
+      primary:'#ff5db1',
+      secondary:'#ff2596',
+      tertiary:'#ef007c'
+    };
+    const themeFallout = {
+      style: 'fallout',
+      background: 'background-fallout',
+      flairLayerD: 'none',
+      flairLayerC: 'none',
+      flairLayerB: 'none',
+      flairLayerA: 'none',
+      primary: '#33BB33',
+      secondary: '#229922',
+      tertiary: '#115511'
+    };
+    const themeDeepBlue = {
+      style: 'deep-blue',
+      background: 'background-deep-blue',
+      flairLayerD: 'none',
+      flairLayerC: 'none',
+      flairLayerB: 'none',
+      flairLayerA: 'none',
+      primary: '#0033BB',
+      secondary: '#002299',
+      tertiary: '#000055',
+    };
+    const themeSteel = {
+      style: 'steel',
+      background: 'background-steel',
+      flairLayerD: 'none',
+      flairLayerC: 'none',
+      flairLayerB: 'none',
+      flairLayerA: 'none',
+      primary: '#BBBBFF',
+      secondary: '9999DD',
+      tertiary: '#555599',
+    };
+  
+    this.setState({allStyles: [themeDeepBlue,themeFallout,themeBloodDragon,themeSteel],
+      styleIndex:0});
+  }
+  
+  changeCss(event) {
+   var next = parseInt(localStorage.getItem('styleIndex'))+1;
+    
+    
+    if (this.state.allStyles[next]!=null) {
+      localStorage.setItem('styleIndex', next);
+      this.setState({
+        styleIndex: next})
+        document.body.style.color = "#ffffff"
+        document.body.style.background = "#000000"
+      }
+      else {
+        localStorage.setItem('styleIndex', 0);
+        this.setState({
+          styleIndex: 0})
+          document.body.style.color = "#ffffff"
+          document.body.style.background = "#000000"
+        
+        }
+      
+     
     
 
 
-    console.log(this.state.style)
-    console.log(this.state)
+    
     window.location.reload();
   }
 
-  /*? 'palevioletred' : 'white'};
-  ? 'white' : 'palevioletred'};
-  --primary: this.state.primary;
-  */
+  proceedToSelect(event) {
+    this.setState({ redirect: true })
+    this.setState({ redirectTo: '/game' })
+  }
+
   render() {
+    if (this.state.redirect) {
+			return (
+				<Redirect to={{
+					pathname: this.state.redirectTo,
+					state: {
+            allStyles:this.state.allStyles,
+            styleIndex:this.state.styleIndex
+      		}
+				}} />
+			)
+		}
+    
+
+    let i = parseInt(localStorage.getItem('styleIndex'));
+ 
+    
     injectGlobal`
     :root {
       
-      --primary: ${this.state.primary}
-      --secondary: ${this.state.secondary}
-      --tertiary: ${this.state.tertiary}
+      --primary: ${this.state.allStyles[i].primary};
+      --secondary: ${this.state.allStyles[i].secondary};
+      --tertiary: ${this.state.allStyles[i].tertiary};
       }
     }`;
 
   
     return (
+
+
       <div>
         
-      <div className={this.state.background}>
-      <div className={this.state.style}> 
+      <div className={this.state.allStyles[i].background}>
+      <div className={this.state.allStyles[i].style}> 
         <div className="App">
-          <div className={this.state.flairLayerA}>
+          <div className={this.state.allStyles[i].flairLayerA}>
           </div>
-          <div className={this.state.flairLayerB}>
+          <div className={this.state.allStyles[i].flairLayerB}>
           </div>
-          <div className={this.state.flairLayerC}>
+          <div className={this.state.allStyles[i].flairLayerC}>
           </div>
-          <div className={this.state.flairLayerD}>
+          <div className={this.state.allStyles[i].flairLayerD}>
           </div>
           <h1 className="gametitle">Luupeli</h1>
           <div className="btn-group">
-            <Link className="gamelink" to='/game'><button>Pelaa</button></Link>
+            
+            <button className="gamelink" onClick={this.proceedToSelect}>Pelaa</button>
             <button >Kirjaudu sisään</button>
             <button>Luo käyttäjätili</button>
             <button onClick={this.changeCss}>Vaihda css</button>

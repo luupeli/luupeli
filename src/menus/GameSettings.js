@@ -4,6 +4,7 @@ import WGMessage from '../games/writinggame/WGMessage'
 import imageService from '../services/images'
 import bodyPartService from '../services/bodyParts'
 import animalService from '../services/animals'
+import { injectGlobal } from 'styled-components';
 
 /**
  * GameSettings is the menu directly prior to a WritingGame session.
@@ -26,17 +27,10 @@ class GameSettings extends React.Component {
 			allAnimals: [],        // used to store an array of all known animals
 			allBodyParts: [],      // used to store an array of all known bodyparts
 			images: [],			   // used to store an array of images which meet the selection criteria
-			style: localStorage.getItem('style'),
-			background: localStorage.getItem('background'),
-			flairLayerD: localStorage.getItem('flairLayerD'),
-			flairLayerC: localStorage.getItem('flairLayerC'),
-			flairLayerB: localStorage.getItem('flairLayerB'),
-			flairLayerA: localStorage.getItem('flairLayerA'),
-			primary: localStorage.getItem('primary'),
-			secondary: localStorage.getItem('secondary'),
-			tertiary: localStorage.getItem('tertiary')
+			allStyles: props.location.state.allStyles,
+			styleIndex: props.location.state.styleIndex
 		};
-
+	
 		this.changeAnimal = this.changeAnimal.bind(this)
 		this.toggleCheck = this.toggleCheck.bind(this)
 		this.atLeastOneBodyPartIsSelected = this.atLeastOneBodyPartIsSelected.bind(this)
@@ -212,6 +206,18 @@ class GameSettings extends React.Component {
 
 	//this starts the game
 	render() {
+
+		let i = parseInt(localStorage.getItem('styleIndex'));
+ 
+		injectGlobal`
+		:root {
+		  
+		  --primary: ${this.state.allStyles[i].primary};
+		  --secondary: ${this.state.allStyles[i].secondary};
+		  --tertiary: ${this.state.allStyles[i].tertiary};
+		  }
+		}`;
+	
 		if (this.state.redirect) {
 			return (
 				<Redirect to={{
@@ -242,18 +248,17 @@ class GameSettings extends React.Component {
 		// As a general note about using forms w/ NodeJS... A single grouping of radio buttons (single choice) is identified by identical "name" parameter. Separate values within such a grouping are marked with distinct "value" parameters.
 		return (
 			<div>
-			 <div className={this.state.background}>
-      		  <div className={this.state.style}> 
-
-   				<div className="App settingspage">
-					   <div className={this.state.flairLayerA}>
- 				         </div>
-  				        <div className={this.state.flairLayerB}>
- 				         </div>
-					<div className={this.state.flairLayerC}>
-					</div>
-					<div className={this.state.flairLayerD}>
-					</div>
+			      <div className={this.state.allStyles[i].background}>
+      <div className={this.state.allStyles[i].style}> 
+        <div className="App">
+          <div className={this.state.allStyles[i].flairLayerA}>
+          </div>
+          <div className={this.state.allStyles[i].flairLayerB}>
+          </div>
+          <div className={this.state.allStyles[i].flairLayerC}>
+          </div>
+          <div className={this.state.allStyles[i].flairLayerD}>
+          </div>
 					<h2>Luupelivalinnat:</h2>
 					<div>
 						<WGMessage ref={instance => this.wgmessage = instance} />
@@ -301,8 +306,8 @@ class GameSettings extends React.Component {
 						</div>
 					</div>
 				</div>
-				<div className="App">
-					<Link to='/game'>
+				<div className="btn-group">
+					<Link to='/'>
 						<button className="gobackbutton">Takaisin</button>
 					</Link>
 				</div>
