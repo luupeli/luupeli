@@ -6,7 +6,15 @@ class SelectGameMode extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      style: localStorage.getItem('style')
+      style: localStorage.getItem('style'),
+      background: localStorage.getItem('background'),
+      flairLayerD: localStorage.getItem('flairLayerD'),
+      flairLayerC: localStorage.getItem('flairLayerC'),
+      flairLayerB: localStorage.getItem('flairLayerB'),
+      flairLayerA: localStorage.getItem('flairLayerA'),
+      primary: localStorage.getItem('primary'),
+      secondary: localStorage.getItem('secondary'),
+      tertiary: localStorage.getItem('tertiary')
     }
   }
 
@@ -14,25 +22,30 @@ class SelectGameMode extends React.Component {
 
     return (
       <div>
-        <div className={"App" + this.state.style}>
-          <div className={"grid-sub-faster" + this.state.style}>
+      <div className={this.state.background}>
+      <div className={this.state.style}> 
+
+   <div className="App">
+          <div className={this.state.flairLayerA}>
           </div>
-          <div className={"grid-faster" + this.state.style}>
+          <div className={this.state.flairLayerB}>
           </div>
-          <div className={"grid-flair" + this.state.style}>
+          <div className={this.state.flairLayerC}>
           </div>
-          <div className={"blinder" + this.state.style}>
+          <div className={this.state.flairLayerD}>
           </div>
-          <h2 className={"h2" + this.state.style + " toprow"}>Valitse</h2>
-          <h2 className={"h2" + this.state.style + " secondrow"}>Luupelimuoto:</h2>
-          <div className={"btn-group" + this.state.style}>
+          <h2 className="toprow">Valitse</h2>
+          <h2 className="secondrow">Luupelimuoto:</h2>
+          <div className="btn-group">
             <Link to='/settings'><button className="writinggame">Kirjoituspeli</button></Link>
             <button>...</button>
             <button>...</button>
           </div>
         </div>
-        <div className={"App" + this.state.style}>
-          <Link to='/'><button className={"gobackbutton" + this.state.style}>Takaisin</button></Link>
+        <div className="App">
+          <Link to='/'><button className="gobackbutton">Takaisin</button></Link>
+          </div>
+          </div>
         </div>
       </div>
     )
