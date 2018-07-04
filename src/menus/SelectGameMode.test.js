@@ -30,8 +30,8 @@ describe("SelectGameMode", () => {
     }
 
     it('has the text "Valitse"', () => {
-        // const res = gamemode().find('.toprow')
-        // expect(res.text()).toContain('Valitse')
+        const res = gamemode().find('.toprow')
+        expect(res.text()).toContain('Valitse')
     })
 
     it('has the text "Luupelimuoto:"', () => {
