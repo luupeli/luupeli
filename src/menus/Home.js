@@ -143,7 +143,8 @@ class Home extends React.Component {
     if (this.state.allStyles[next]!=null) {
       localStorage.setItem('styleIndex', next);
       this.setState({
-        styleIndex: next
+        styleIndex: next,
+        style: 'placeholder-next-theme-name'
       })
         document.body.style.color = "#ffffff"
         document.body.style.background = "#000000"
@@ -151,7 +152,9 @@ class Home extends React.Component {
       else {
         localStorage.setItem('styleIndex', 0);
         this.setState({
-          styleIndex: 0})
+          styleIndex: 0,
+          style: 'placeholder-last-theme-name'
+        })
           document.body.style.color = "#ffffff"
           document.body.style.background = "#000000"
         next=0;
@@ -251,8 +254,9 @@ class Home extends React.Component {
             <button className="gamelink" onClick={this.proceedToSelect}>Pelaa</button>
             <button >Kirjaudu sisään</button>
             <button>Luo käyttäjätili</button>
-            <button onClick={this.changeCss}>Vaihda css</button>
+            <button className="theme" onClick={this.changeCss}>Vaihda css</button>
             <p>Teema: {this.state.style}</p>
+            <div className={this.state.style}/>
           </div>
         </div>
         </div>
