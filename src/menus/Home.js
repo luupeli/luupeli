@@ -12,7 +12,47 @@ class Home extends React.Component {
     super(props);
 
     this.state = {
-      allStyles: [],
+      allStyles: [  {
+        style:'blood-dragon',
+        background:'background-blood-dragon',
+        flairLayerD:'grid-sub',
+        flairLayerC:'grid',
+        flairLayerB:'grid-flair',
+        flairLayerA:'blinder',
+        primary:'#ff5db1',
+        secondary:'#ff2596',
+        tertiary:'#ef007c'
+      },{
+        style: 'fallout',
+        background: 'background-fallout',
+        flairLayerD: 'none',
+        flairLayerC: 'none',
+        flairLayerB: 'none',
+        flairLayerA: 'none',
+        primary: '#33BB33',
+        secondary: '#229922',
+        tertiary: '#115511'
+      },{
+        style: 'deep-blue',
+        background: 'background-deep-blue',
+        flairLayerD: 'none',
+        flairLayerC: 'none',
+        flairLayerB: 'none',
+        flairLayerA: 'none',
+        primary: '#0033BB',
+        secondary: '#002299',
+        tertiary: '#000055',
+      }, {
+        style: 'steel',
+        background: 'background-steel',
+        flairLayerD: 'none',
+        flairLayerC: 'none',
+        flairLayerB: 'none',
+        flairLayerA: 'none',
+        primary: '#BBBBFF',
+        secondary: '9999DD',
+        tertiary: '#555599',
+      }],
       styleIndex:0,
       style:'blood-dragon',
       background:'background-blood-dragon',
@@ -46,56 +86,55 @@ class Home extends React.Component {
     this.setThemeColors = this.setThemeColors.bind(this)
   }
 
-  componentWillMount() {
+  // componentWillMount() {
    
-    const themeBloodDragon = {
-      style:'blood-dragon',
-      background:'background-blood-dragon',
-      flairLayerD:'grid-sub',
-      flairLayerC:'grid',
-      flairLayerB:'grid-flair',
-      flairLayerA:'blinder',
-      primary:'#ff5db1',
-      secondary:'#ff2596',
-      tertiary:'#ef007c'
-    };
-    const themeFallout = {
-      style: 'fallout',
-      background: 'background-fallout',
-      flairLayerD: 'none',
-      flairLayerC: 'none',
-      flairLayerB: 'none',
-      flairLayerA: 'none',
-      primary: '#33BB33',
-      secondary: '#229922',
-      tertiary: '#115511'
-    };
-    const themeDeepBlue = {
-      style: 'deep-blue',
-      background: 'background-deep-blue',
-      flairLayerD: 'none',
-      flairLayerC: 'none',
-      flairLayerB: 'none',
-      flairLayerA: 'none',
-      primary: '#0033BB',
-      secondary: '#002299',
-      tertiary: '#000055',
-    };
-    const themeSteel = {
-      style: 'steel',
-      background: 'background-steel',
-      flairLayerD: 'none',
-      flairLayerC: 'none',
-      flairLayerB: 'none',
-      flairLayerA: 'none',
-      primary: '#BBBBFF',
-      secondary: '9999DD',
-      tertiary: '#555599',
-    };
+  //   const themeBloodDragon = {
+  //     style:'blood-dragon',
+  //     background:'background-blood-dragon',
+  //     flairLayerD:'grid-sub',
+  //     flairLayerC:'grid',
+  //     flairLayerB:'grid-flair',
+  //     flairLayerA:'blinder',
+  //     primary:'#ff5db1',
+  //     secondary:'#ff2596',
+  //     tertiary:'#ef007c'
+  //   };
+  //   const themeFallout = {
+  //     style: 'fallout',
+  //     background: 'background-fallout',
+  //     flairLayerD: 'none',
+  //     flairLayerC: 'none',
+  //     flairLayerB: 'none',
+  //     flairLayerA: 'none',
+  //     primary: '#33BB33',
+  //     secondary: '#229922',
+  //     tertiary: '#115511'
+  //   };
+  //   const themeDeepBlue = {
+  //     style: 'deep-blue',
+  //     background: 'background-deep-blue',
+  //     flairLayerD: 'none',
+  //     flairLayerC: 'none',
+  //     flairLayerB: 'none',
+  //     flairLayerA: 'none',
+  //     primary: '#0033BB',
+  //     secondary: '#002299',
+  //     tertiary: '#000055',
+  //   };
+  //   const themeSteel = {
+  //     style: 'steel',
+  //     background: 'background-steel',
+  //     flairLayerD: 'none',
+  //     flairLayerC: 'none',
+  //     flairLayerB: 'none',
+  //     flairLayerA: 'none',
+  //     primary: '#BBBBFF',
+  //     secondary: '9999DD',
+  //     tertiary: '#555599',
+  //   };
   
-    this.setState({allStyles: [themeDeepBlue,themeFallout,themeBloodDragon,themeSteel],
-      styleIndex:0});
-  }
+  //   this.setState({allStyles: [themeDeepBlue,themeFallout,themeBloodDragon,themeSteel]});
+  // }
   
   changeCss(event) {
    var next = parseInt(localStorage.getItem('styleIndex'))+1;
@@ -115,23 +154,23 @@ class Home extends React.Component {
           styleIndex: 0})
           document.body.style.color = "#ffffff"
           document.body.style.background = "#000000"
-        
+        next=0;
         }
-      
-        this.setState({
+      console.log('new style index is now: '+next)
+        // this.setState({
 
-          style: this.state.allStyles[this.state.styleIndex].style,
-          background: this.state.allStyles[this.state.styleIndex].background,
-          flairLayerD: this.state.allStyles[this.state.styleIndex].flairLayerD,
-          flairLayerC: this.state.allStyles[this.state.styleIndex].flairLayerC,
-          flairLayerB: this.state.allStyles[this.state.styleIndex].flairLayerB,
-          flairLayerA: this.state.allStyles[this.state.styleIndex].flairLayerA,
-          primary: this.state.allStyles[this.state.styleIndex].primary,
-          secondary: this.state.allStyles[this.state.styleIndex].secondary,
-          tertiary: this.state.allStyles[this.state.styleIndex].tertiary
-        })
+        //   style: this.state.allStyles[next].style,
+        //   background: this.state.allStyles[next].background,
+        //   flairLayerD: this.state.allStyles[next].flairLayerD,
+        //   flairLayerC: this.state.allStyles[next].flairLayerC,
+        //   flairLayerB: this.state.allStyles[next].flairLayerB,
+        //   flairLayerA: this.state.allStyles[next].flairLayerA,
+        //   primary: this.state.allStyles[next].primary,
+        //   secondary: this.state.allStyles[next].secondary,
+        //   tertiary: this.state.allStyles[next].tertiary
+        // })
     
-
+      
 
     
     window.location.reload();
@@ -154,6 +193,22 @@ class Home extends React.Component {
       --tertiary: ${this.state.tertiary};
       }
     }`;
+
+    if (this.state.styleIndex!=localStorage.styleIndex && this.state.allStyles[localStorage.styleIndex] !==undefined) {
+      this.setState({
+        styleIndex: localStorage.styleIndex,
+        style: this.state.allStyles[localStorage.styleIndex].style,
+        background: this.state.allStyles[localStorage.styleIndex].background,
+        flairLayerD: this.state.allStyles[localStorage.styleIndex].flairLayerD,
+        flairLayerC: this.state.allStyles[localStorage.styleIndex].flairLayerC,
+        flairLayerB: this.state.allStyles[localStorage.styleIndex].flairLayerB,
+        flairLayerA: this.state.allStyles[localStorage.styleIndex].flairLayerA,
+        primary: this.state.allStyles[localStorage.styleIndex].primary,
+        secondary: this.state.allStyles[localStorage.styleIndex].secondary,
+        tertiary: this.state.allStyles[localStorage.styleIndex].tertiary
+      })
+    }
+
 
   }
 
@@ -197,6 +252,7 @@ class Home extends React.Component {
             <button >Kirjaudu sisään</button>
             <button>Luo käyttäjätili</button>
             <button onClick={this.changeCss}>Vaihda css</button>
+            <p>Teema: {this.state.style}</p>
           </div>
         </div>
         </div>
