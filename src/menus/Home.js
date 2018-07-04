@@ -6,32 +6,31 @@ import { injectGlobal } from 'styled-components';
 
 class Home extends React.Component {
 
-
+ 
   
   constructor(props) {
     super(props);
 
- 
-
-  
-
-   if (localStorage.getItem('styleIndex') === null) {
-     localStorage.setItem('styleIndex', 0)
-  }
-
     this.state = {
       allStyles: [],
       styleIndex:0,
-      background:'',
-      flairLayerD:'',
-      flairLayerC:'',
-      flairLayerB:'',
-      flairLayerA:'',
-      primary:'',
-      secondary:'',
-      tertiary:'',
-      style:'',
+      style:'blood-dragon',
+      background:'background-blood-dragon',
+      flairLayerD:'grid-sub',
+      flairLayerC:'grid',
+      flairLayerB:'grid-flair',
+      flairLayerA:'blinder',
+      primary:'#ff5db1',
+      secondary:'#ff2596',
+      tertiary:'#ef007c'
     }
+
+    
+
+    
+   if (localStorage.getItem('styleIndex') === null) {
+    localStorage.setItem('styleIndex', 0)
+ }
     // localStorage.setItem('allStyles','');
 
     // localStorage.setItem('allStyles', JSON.stringify(this.state.allStyles));   // Array must be converted to JSON before storing it into localStorage!
@@ -44,9 +43,11 @@ class Home extends React.Component {
     // })
     this.changeCss = this.changeCss.bind(this)
     this.proceedToSelect = this.proceedToSelect.bind(this)
+    this.setThemeColors = this.setThemeColors.bind(this)
   }
 
   componentWillMount() {
+   
     const themeBloodDragon = {
       style:'blood-dragon',
       background:'background-blood-dragon',
@@ -103,7 +104,8 @@ class Home extends React.Component {
     if (this.state.allStyles[next]!=null) {
       localStorage.setItem('styleIndex', next);
       this.setState({
-        styleIndex: next})
+        styleIndex: next
+      })
         document.body.style.color = "#ffffff"
         document.body.style.background = "#000000"
       }
@@ -116,7 +118,18 @@ class Home extends React.Component {
         
         }
       
-     
+        this.setState({
+
+          style: this.state.allStyles[this.state.styleIndex].style,
+          background: this.state.allStyles[this.state.styleIndex].background,
+          flairLayerD: this.state.allStyles[this.state.styleIndex].flairLayerD,
+          flairLayerC: this.state.allStyles[this.state.styleIndex].flairLayerC,
+          flairLayerB: this.state.allStyles[this.state.styleIndex].flairLayerB,
+          flairLayerA: this.state.allStyles[this.state.styleIndex].flairLayerA,
+          primary: this.state.allStyles[this.state.styleIndex].primary,
+          secondary: this.state.allStyles[this.state.styleIndex].secondary,
+          tertiary: this.state.allStyles[this.state.styleIndex].tertiary
+        })
     
 
 
@@ -127,6 +140,21 @@ class Home extends React.Component {
   proceedToSelect(event) {
     this.setState({ redirect: true })
     this.setState({ redirectTo: '/game' })
+  }
+
+  setThemeColors(i) {
+    
+ 
+    
+    injectGlobal`
+    :root {
+      
+      --primary: ${this.state.primary};
+      --secondary: ${this.state.secondary};
+      --tertiary: ${this.state.tertiary};
+      }
+    }`;
+
   }
 
   render() {
@@ -140,20 +168,10 @@ class Home extends React.Component {
       		}
 				}} />
 			)
-		}
+    }
     
-
     let i = parseInt(localStorage.getItem('styleIndex'));
- 
-    
-    injectGlobal`
-    :root {
-      
-      --primary: ${this.state.allStyles[i].primary};
-      --secondary: ${this.state.allStyles[i].secondary};
-      --tertiary: ${this.state.allStyles[i].tertiary};
-      }
-    }`;
+    this.setThemeColors(i);
 
   
     return (
@@ -161,16 +179,16 @@ class Home extends React.Component {
 
       <div>
         
-      <div className={this.state.allStyles[i].background}>
-      <div className={this.state.allStyles[i].style}> 
+      <div className={this.state.background}>
+      <div className={this.state.style}> 
         <div className="App">
-          <div className={this.state.allStyles[i].flairLayerA}>
+          <div className={this.state.flairLayerA}>
           </div>
-          <div className={this.state.allStyles[i].flairLayerB}>
+          <div className={this.state.flairLayerB}>
           </div>
-          <div className={this.state.allStyles[i].flairLayerC}>
+          <div className={this.state.flairLayerC}>
           </div>
-          <div className={this.state.allStyles[i].flairLayerD}>
+          <div className={this.state.flairLayerD}>
           </div>
           <h1 className="gametitle">Luupeli</h1>
           <div className="btn-group">
