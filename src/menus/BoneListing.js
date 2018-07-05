@@ -103,7 +103,7 @@ class BoneListing extends React.Component {
 					<div class="container">
 						<div className="list-group">
 							<span className="list-group-item list-group-item-info clearfix">
-								<div class="row">
+								<div class="row species">
 									<div class="col-sm-4">
 										<h5>Suodata lajin mukaan</h5>
 									</div>
@@ -136,7 +136,7 @@ class BoneListing extends React.Component {
 										<h5>Suodata ruumiinosan mukaan</h5>
 									</div>
 								</div>
-								<div class="row">
+								<div class="row bodyparts">
 									<div class="col-sm-6">
 										<ToggleButtonGroup
 											type="checkbox"
