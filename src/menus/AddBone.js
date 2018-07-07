@@ -296,10 +296,10 @@ class AddBone extends React.Component {
 		return (
 			<div className="scrolling-menu">
 				<div className="App">
-					<div>
+					<div id="">
 						<WGMessage ref={instance => this.wgmessage = instance} />
 					</div>
-					<Link to='/listing'><button className="btn btn-default pull-right">Takaisin listaukseen</button></Link><br />
+					<Link to='/listing'><button id="backToListing"className="btn btn-default pull-right">Takaisin listaukseen</button></Link><br />
 					<form enctype="multipart/form-data" onSubmit={this.handleSubmit}>
 						<div className="form-group has-feedback">
 							<label className="pull-left">Latinankielinen nimi </label>
@@ -352,7 +352,7 @@ class AddBone extends React.Component {
 								</span>
 							</li>
 						</ul>
-						<div className="btn-toolbar">
+						<div id="addBone" className="btn-toolbar">
 							<button type="submit" id="submitNewBoneButton" className="btn btn-info pull-right">Lisää luu</button>
 						</div>
 					</form>

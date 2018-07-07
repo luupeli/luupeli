@@ -101,7 +101,7 @@ class BoneListing extends React.Component {
 			<div className="scrolling-menu" >
 				<div className="App">
 					<div class="container">
-						<div className="list-group">
+						<div id="listGroup" className="list-group">
 							<span className="list-group-item list-group-item-info clearfix">
 								<div class="row species">
 									<div class="col-sm-4">
@@ -110,7 +110,7 @@ class BoneListing extends React.Component {
 								</div>
 								<div class="row">
 									<div class="col-sm-6">
-										<div class="input-group" type="checkbox" data-toggle="buttons" onClick={this.handleAnimalChange}>
+										<div id="animals" class="input-group" type="checkbox" data-toggle="buttons" onClick={this.handleAnimalChange}>
 											{this.state.animals.map(animal =>
 												<button className="btn btn-warning" type="button" id={animal.id} autocomplete="on">{animal.name}</button>
 											)}
@@ -137,7 +137,7 @@ class BoneListing extends React.Component {
 									</div>
 								</div>
 								<div class="row bodyparts">
-									<div class="col-sm-6">
+									<div id="bodyparts" class="col-sm-6">
 										<ToggleButtonGroup
 											type="checkbox"
 											defaultValue={this.state.selectedBodyParts}
@@ -149,9 +149,9 @@ class BoneListing extends React.Component {
 										</ToggleButtonGroup>
 									</div>
 								</div>
-
-								<Link to='/add'><button className="btn btn-info pull-right">Lisää uusi</button></Link></span>
-
+                
+								<Link to='/add'><button id="addNewBoneButton" className="btn btn-info pull-right" >Lisää uusi</button></Link></span>
+                <div id="bones">
 							{bonesToShow.map(bone =>
 								<Link key={bone.id} to={{
 									pathname: '/update/' + bone.id,
@@ -169,7 +169,8 @@ class BoneListing extends React.Component {
 									}
 								}}>
 									<button type="button" className="list-group-item list-group-item-action">{bone.nameLatin} ({bone.animal})</button>
-								</Link>)}
+                </Link>)}
+                </div>
 						</div>
 					</div>
 				</div>
