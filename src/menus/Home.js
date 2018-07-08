@@ -69,18 +69,14 @@ class Home extends React.Component {
 
     
    if (localStorage.getItem('styleIndex') === null) {
-    localStorage.setItem('styleIndex', 0)
- }
+      localStorage.setItem('styleIndex', 0)
+  }
     // localStorage.setItem('allStyles','');
 
-    // localStorage.setItem('allStyles', JSON.stringify(this.state.allStyles));   // Array must be converted to JSON before storing it into localStorage!
-    
-    // this.setState({
-
-    //   styleIndex: 0,
-   
-      
-    // })
+    localStorage.setItem('allStyles', JSON.stringify(this.state.allStyles));   // Array must be converted to JSON before storing it into localStorage!
+    this.setState({
+      styleIndex: 0,
+    })
     this.changeCss = this.changeCss.bind(this)
     this.proceedToSelect = this.proceedToSelect.bind(this)
     this.setThemeColors = this.setThemeColors.bind(this)
@@ -216,6 +212,7 @@ class Home extends React.Component {
   }
 
   render() {
+    console.log(localStorage.getItem("allStyles"))
     if (this.state.redirect) {
 			return (
 				<Redirect to={{
@@ -249,7 +246,7 @@ class Home extends React.Component {
           <div className={this.state.flairLayerD}>
           </div>
           <h1 className="gametitle">Luupeli</h1>
-          <div className="btn-group">
+          <div id="btn-group" className="btn-group">
             
             <button className="gamelink" onClick={this.proceedToSelect}>Pelaa</button>
             <button >Kirjaudu sisään</button>

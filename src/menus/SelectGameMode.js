@@ -6,21 +6,12 @@ class SelectGameMode extends React.Component {
   constructor(props) {
     super(props);
 
-    
-
     this.state = {
       redirect: false,
-       allStyles: props.location.state.allStyles,
-       styleIndex: props.location.state.styleIndex
-   
+      allStyles: JSON.parse(localStorage.getItem("allStyles")),
+      styleIndex: localStorage.getItem('styleIndex')
     }
-// this.setState({
-//   allStyles: props.location.state.allStyles,
-//   styleIndex: props.location.state.styleIndex
-// }
-// )
-
-
+    
     this.proceedToSettings=this.proceedToSettings.bind(this)
     this.proceedToMain=this.proceedToMain.bind(this)
 
@@ -53,33 +44,37 @@ class SelectGameMode extends React.Component {
 		}
     
 
-    let i = parseInt(localStorage.getItem('styleIndex'));
+    let i = this.state.styleIndex
  
     return (
       <div>
          <div className={this.state.allStyles[i].background}>
       <div className={this.state.allStyles[i].style}> 
-        <div className="App">
+        <div id="gameBody" className="App">
           <div className={this.state.allStyles[i].flairLayerA}>
+
           </div>
           <div className={this.state.allStyles[i].flairLayerB}>
+
           </div>
           <div className={this.state.allStyles[i].flairLayerC}>
+
           </div>
           <div className={this.state.allStyles[i].flairLayerD}>
+
           </div>
-              <h2 className="toprow">Valitse</h2>
-              <h2 className="secondrow">Luupelimuoto:</h2>
-              <div className="btn-group">
-                <button className="writinggame" onClick={this.proceedToSettings}>Kirjoituspeli</button>
-                <button>...</button>
-                <button>...</button>
-              </div>
-              <div className="btn-group">
+          <h2 className="toprow">Valitse</h2>
+          <h2 className="secondrow">Luupelimuoto:</h2>
+          <div className="btn-group">
+            <button className="writinggame" onClick={this.proceedToSettings}>Kirjoituspeli</button>
+            <button>...</button>
+            <button>...</button>
+          </div>
+          <div className="btn-group">
+          
+            <button id="goBackButton" className="gobackbutton" onClick={this.proceedToMain}>Takaisin</button>
               
-                <button className="gobackbutton"  onClick={this.proceedToMain}>Takaisin</button>
-              
-            </div>
+          </div>
           </div>
         </div>
       </div>

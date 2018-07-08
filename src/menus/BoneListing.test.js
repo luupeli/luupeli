@@ -34,7 +34,6 @@ describe('BoneListing tests', () => {
     //Not having this screenshot will break the tests..
     await page.screenshot({ path: 'animals.png' })
     const textContent = await page.$eval('#listGroup', el => el.textContent)
-    console.log(textContent)
     expect(textContent.includes("Koira")).toBe(true)
   }, 20000)
 
