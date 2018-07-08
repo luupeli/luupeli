@@ -69,18 +69,14 @@ class Home extends React.Component {
 
     
    if (localStorage.getItem('styleIndex') === null) {
-    localStorage.setItem('styleIndex', 0)
- }
+      localStorage.setItem('styleIndex', 0)
+  }
     // localStorage.setItem('allStyles','');
 
-    // localStorage.setItem('allStyles', JSON.stringify(this.state.allStyles));   // Array must be converted to JSON before storing it into localStorage!
-    
-    // this.setState({
-
-    //   styleIndex: 0,
-   
-      
-    // })
+    localStorage.setItem('allStyles', JSON.stringify(this.state.allStyles));   // Array must be converted to JSON before storing it into localStorage!
+    this.setState({
+      styleIndex: 0,
+    })
     this.changeCss = this.changeCss.bind(this)
     this.proceedToSelect = this.proceedToSelect.bind(this)
     this.setThemeColors = this.setThemeColors.bind(this)
@@ -179,9 +175,17 @@ class Home extends React.Component {
     window.location.reload();
   }
 
+  //Getting ready to redirect. Let's look at the class name of the calling event
+  //so that we'll know which page we are going to go to.
   proceedToSelect(event) {
     this.setState({ redirect: true })
+    if (event.target.className === 'gamelink') {
     this.setState({ redirectTo: '/game' })
+    } else if (event.target.className === 'loginlink') {
+      this.setState({ redirectTo: '/login'})
+    } else if (event.target.className === 'signuplink') {
+      this.setState({redirectTo : '/register'})
+    }
   }
 
   setThemeColors(i) {
@@ -216,6 +220,7 @@ class Home extends React.Component {
   }
 
   render() {
+    console.log(localStorage.getItem("allStyles"))
     if (this.state.redirect) {
 			return (
 				<Redirect to={{
@@ -249,12 +254,12 @@ class Home extends React.Component {
           <div className={this.state.flairLayerD}>
           </div>
           <h1 className="gametitle">Luupeli</h1>
-          <div className="btn-group">
+          <div id="btn-group" className="btn-group">
             
             <button className="gamelink" onClick={this.proceedToSelect}>Pelaa</button>
-            <button >Kirjaudu sisään</button>
-            <button>Luo käyttäjätili</button>
-            <button className="theme" onClick={this.changeCss}>Vaihda css</button>
+            <button className="loginlink" onClick={this.proceedToSelect}>Kirjaudu sisään</button>
+            <button className="signuplink" onClick={this.proceedToSelect}>Luo käyttäjätili</button>
+            <button className="theme" onClick={this.changeCss}>Vaihda teema</button>
             <p>Teema: {this.state.style}</p>
             <div className={this.state.style}/>
           </div>

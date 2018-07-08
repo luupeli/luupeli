@@ -8,7 +8,7 @@ class Login extends React.Component {
       style: localStorage.getItem('style')
     }
   }
-  
+
   render() {
     return (
       <div class="App">
