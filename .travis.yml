@@ -6,3 +6,11 @@ deploy:
   api_key:
     secure: da05675c-e520-446d-8a18-97d28928a5c8
   app: luupeli
+
+language: objective-c
+addons:
+  chrome: beta
+before_install:
+  - # start your web application and listen on `localhost`
+  - "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --headless --disable-gpu --remote-debugging-port=9222 http://localhost &"
+  ⋮

@@ -1,3 +1,5 @@
+import { shallow,mount,render} from 'enzyme'
+
 const puppeteer = require('puppeteer')
 
 let browser
@@ -34,7 +36,21 @@ describe("SelectGameMode tests", () => {
     const textContent = await page.$eval('#btn-group', el => el.textContent)
     expect(textContent.includes("Pelaa")).toBe(true)
   })
+
+
+//   it("renders a Link that takes you to the game", () => {
+//     const component = shallow(<Home {...HOME_STATE}/>)
+
+//     const toprow = component.find('.toprow')
+//     expect(gameltoprow.length).toBe(1)
+//     const secondrow = component.find('.secondrow')
+//     expect(secondrow.length).toBe(1)
+//    })
+
 })
+
+
+
 
 
 // import React from 'react'
