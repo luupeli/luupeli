@@ -9,6 +9,7 @@ class Register extends React.Component {
 			style: localStorage.getItem('style'),
 			error: null,
 			username: '',
+			email: '',
 			password: '',
 			repeatPassword: '',
 			user: null
@@ -31,10 +32,13 @@ class Register extends React.Component {
 		try {
 			const user = await usersService.create({
 				username: this.state.username,
+				email: this.state.email,
 				password: this.state.password
 			})
+			console.log('user created:' + user.username)
 			this.setState({
 				username: '',
+				email: '',
 				password: '',
 				repeatPassword: ''
 			})
@@ -74,9 +78,11 @@ class Register extends React.Component {
 								<label for="email">Sähköpostiosoite:</label>
 								<input
 									className="form-control"
-									type="text"
+									type="email"
 									name="email"
 									placeholder="Sähköpostiosoite..."
+									value={this.state.email}
+									onChange={this.handleSignUpFieldChange}
 								// required
 								/>
 							</div>
