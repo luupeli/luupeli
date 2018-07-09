@@ -1,9 +1,35 @@
+
+import React from 'react'
 import { shallow,mount,render} from 'enzyme'
+import { Link } from 'react-router-dom'
+import SelectGameMode from './SelectGameMode'
+
+
+// var localStorageMock = (function() {
+//   var store = {};
+//   return {
+//     getItem: function(key) {
+//       return store[key];
+//     },
+//     setItem: function(key, value) {
+//       store[key] = value.toString();
+//     },
+//     clear: function() {
+//       store = {};
+//     },
+//     removeItem: function(key) {
+//       delete store[key];
+//     }
+//   };
+// })();
+// Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 
 const puppeteer = require('puppeteer')
 
 let browser
 let page
+
+
 
 beforeAll(async () => {
 	//browser = await puppeteer.launch({args: ['--no-sandbox']});
@@ -40,12 +66,11 @@ describe("SelectGameMode tests", () => {
 
 
 //   it("renders a Link that takes you to the game", () => {
-//     const component = shallow(<Home {...HOME_STATE}/>)
+//     const component = shallow(<SelectGameMode />)
 
 //     const toprow = component.find('.toprow')
 //     expect(gameltoprow.length).toBe(1)
-//     const secondrow = component.find('.secondrow')
-//     expect(secondrow.length).toBe(1)
+
 //    })
 
 })
