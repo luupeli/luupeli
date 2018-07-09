@@ -24,6 +24,17 @@ import SelectGameMode from './SelectGameMode'
 // })();
 // Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 
+const retry = (fn, ms) => new Promise(resolve => { 
+  fn()
+    .then(resolve)
+    .catch(() => {
+      setTimeout(() => {
+        console.log('retrying...');
+        retry(fn, ms).then(resolve);
+      }, ms);
+    })
+});
+
 const puppeteer = require('puppeteer')
 
 let browser
@@ -53,6 +64,14 @@ afterAll(async () => {
 })
 
 describe("SelectGameMode tests", () => {
+	
+	it('should open page', async () => {
+  browser = await puppeteer.launch({ headless: false });
+  page = await browser.newPage();
+  const response = await retry(() => page.goto('http://localhost:3000'), 1000);
+  assert.equal(response.status(), 200);
+});
+	
   test('page renders', async () => {
     const textContent = await page.$eval('#gameBody', el => el.textContent)
     expect(textContent.includes("Luupelimuoto")).toBe(true)
