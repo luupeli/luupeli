@@ -66,7 +66,8 @@ class AddBone extends React.Component {
 			images: [],
 			newImages: [],
 			animals: [],
-			bodyParts: []
+			bodyParts: [],
+			user: null
 		};
 
 		this.handleChange = this.handleChange.bind(this)
@@ -102,6 +103,12 @@ class AddBone extends React.Component {
 			.catch((error) => {
 				console.log(error)
 			})
+
+		const loggedUserJSON = localStorage.getItem('loggedUser')
+		if (loggedUserJSON) {
+			const user = JSON.parse(loggedUserJSON)
+			this.setState({ user })
+		}
 	}
 
 	validateImages() {
@@ -308,9 +315,9 @@ class AddBone extends React.Component {
 						<label className="pull-left">Vaihtoehtoinen latinankielinen nimi</label>
 						<input type="text" name="altNameLatin" id="altNameLatin" value={this.state.altNameLatin} className="form-control" onChange={this.handleChange} />
 						<label className="pull-left">Suomenkielinen nimi</label>
-						<input type="text" name="name" id ="name" value={this.state.name} className="form-control" onChange={this.handleChange} />
+						<input type="text" name="name" id="name" value={this.state.name} className="form-control" onChange={this.handleChange} />
 						<label className="pull-left">Kuvaus</label>
-						<input type="text" name="description" id ="description" value={this.state.description} className="form-control" onChange={this.handleChange} />
+						<input type="text" name="description" id="description" value={this.state.description} className="form-control" onChange={this.handleChange} />
 						<label className="pull-left">Ruumiinosa</label>
 						<select name="bodyPart" id="bodyPart" className="form-control" value={this.state.bodyPart} onChange={this.handleChange}>
 							<option value="Eturaaja">Eturaaja</option>

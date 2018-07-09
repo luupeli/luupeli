@@ -8,10 +8,18 @@ class EndScreen extends React.Component {
     this.state = {
       style: localStorage.getItem('style'),
       correct: props.location.state.correct,
-      total: props.location.state.total
+      total: props.location.state.total,
+      user: null
     }
   }
 
+  componentDidMount() {
+    const loggedUserJSON = localStorage.getItem('loggedUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      this.setState({ user })
+    }
+  }
 
   render() {
     return (

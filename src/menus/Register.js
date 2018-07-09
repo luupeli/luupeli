@@ -1,53 +1,115 @@
 import React from 'react'
+import usersService from '../services/users'
 import '../styles/App.css'
 
 class Register extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			style: localStorage.getItem('style')
+			style: localStorage.getItem('style'),
+			error: null,
+			username: '',
+			password: '',
+			repeatPassword: '',
+			user: null
 		}
+
+		this.signUp = this.signUp.bind(this)
+		this.handleSignUpFieldChange = this.handleSignUpFieldChange.bind(this)
+	}
+
+	componentDidMount() {
+		const loggedUserJSON = localStorage.getItem('loggedUser')
+		if (loggedUserJSON) {
+			const user = JSON.parse(loggedUserJSON)
+			this.setState({ user })
+		}
+	}
+
+	signUp = async (event) => {
+		event.preventDefault()
+		try {
+			const user = await usersService.create({
+				username: this.state.username,
+				password: this.state.password
+			})
+			this.setState({
+				username: '',
+				password: '',
+				repeatPassword: ''
+			})
+		} catch (error) {
+			console.log(error)
+			this.setState({ error: 'käyttäjätunnus tai salasana on virheellinen' })
+			setTimeout(() => { this.setState({ error: null }) }, 5000)
+		}
+	}
+
+	handleSignUpFieldChange = (event) => {
+		this.setState({ [event.target.name]: event.target.value })
 	}
 
 	render() {
 		return (
-			<div class="App">
-				<div class="login-clean">
-					<form method="post">
-						<div class="align-center">
-
+			<div className="App">
+				<div className="login-clean">
+					<form onSubmit={this.signUp}>
+						<div className="align-center">
 							<p>Käyttäjätunnuksen minimipituus on 3 merkkiä ja salasanan 8 merkkiä.
 		Tunnus saa sisältää isoja ja pieniä kirjaimia (A-Z ja a-z) ja numeromerkkejä (0-9).
 							</p>
-
-							<div class="form-group">
+							<div className="form-group">
 								<label for="username">Käyttäjätunnus:</label>
-								<input class="form-control" type="text" placeholder="Käyttäjätunnus..." name="username" required ></input>
+								<input
+									className="form-control"
+									type="text"
+									name="username"
+									placeholder="Käyttäjätunnus..."
+									value={this.state.username}
+									onChange={this.handleSignUpFieldChange}
+									required
+								/>
 							</div>
-
-							<div class="form-group">
+							<div className="form-group">
 								<label for="email">Sähköpostiosoite:</label>
-								<input class="form-control" type="text" placeholder="Sähköpostiosoite..." name="email" required></input>
+								<input
+									className="form-control"
+									type="text"
+									name="email"
+									placeholder="Sähköpostiosoite..."
+								// required
+								/>
 							</div>
-
-							<div class="form-group">
+							<div className="form-group">
 								<label for="pass">Salasana:</label>
-								<input class="form-control" type="password" placeholder="Salasana..." name="pass" required></input>
+								<input
+									className="form-control"
+									type="password"
+									name="password"
+									placeholder="Salasana..."
+									value={this.state.password}
+									onChange={this.handleSignUpFieldChange}
+									required
+								/>
 							</div>
-
-							<div class="form-group">
+							<div className="form-group">
 								<label for="pass2">Toista salasana:</label>
-								<input class="form-control" type="password" placeholder="Toista salasana..." name="pass2" required></input>
+								<input
+									className="form-control"
+									type="password"
+									name="repeatPassword"
+									placeholder="Toista salasana..."
+									value={this.state.repeatPassword}
+									onChange={this.handleSignUpFieldChange}
+									required
+								/>
 							</div>
-
-							<div class="form-group btn-group">
-								<button class="btn btn-block" type="submit">Luo tili</button>
+							<div className="form-group btn-group">
+								<button className="btn btn-block" type="submit">Luo tili</button>
 							</div>
-
-							<div class="form-group">
+							<div className="form-group">
 								<p>Onko sinulla jo tili?<a href='/login'> Kirjaudu sisään!</a></p>
 							</div>
-
 						</div>
 					</form>
 				</div>

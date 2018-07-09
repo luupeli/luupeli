@@ -14,7 +14,7 @@
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.4.1",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.1.4",
+    "react-scripts": "^1.1.4",
     "sequelize": "^4.37.8",
     "shallow": "^1.0.0",
     "string-similarity": "^1.2.0",
