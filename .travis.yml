@@ -7,10 +7,3 @@ deploy:
     secure: da05675c-e520-446d-8a18-97d28928a5c8
   app: luupeli
 
-dist: trusty
-addons:
-  chrome: stable
-before_install:
-  - # start your web application and listen on `localhost`
-  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-  ⋮

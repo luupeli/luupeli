@@ -67,8 +67,8 @@ class SelectGameMode extends React.Component {
           <h2 className="secondrow">Luupelimuoto:</h2>
           <div className="btn-group">
             <button className="writinggame" onClick={this.proceedToSettings}>Kirjoituspeli</button>
-            <button>...</button>
-            <button>...</button>
+            <button>.Option 2..</button>
+            <button>.Option 3..</button>
           </div>
           <div className="btn-group">
           
