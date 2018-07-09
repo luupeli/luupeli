@@ -1,14 +1,29 @@
 language: node_js
 node_js:
   - "10"
-deploy:
+
+dist: trusty
+sudo: false  
+addons:
+  chrome: stable
+before_install:
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+cache:
+  yarn: true
+  directories:
+    - node_modules
+install:
+  - yarn install
+script:
+  - yarn test
+
+  deploy:
   provider: heroku
   api_key:
     secure: da05675c-e520-446d-8a18-97d28928a5c8
   app: luupeli
 
-env:
-  - MOZ_HEADLESS=1
-addons:
-  firefox: latest
+
   
+
+ 
