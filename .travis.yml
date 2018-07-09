@@ -2,6 +2,13 @@ language: node_js
 node_js:
   - "10"
 
+  deploy:
+  provider: heroku
+  api_key:
+    secure: da05675c-e520-446d-8a18-97d28928a5c8
+  app: luupeli
+
+
 dist: trusty
 sudo: false  
 addons:
@@ -16,13 +23,6 @@ install:
   - yarn install
 script:
   - yarn test
-
-  deploy:
-  provider: heroku
-  api_key:
-    secure: da05675c-e520-446d-8a18-97d28928a5c8
-  app: luupeli
-
 
   
 
