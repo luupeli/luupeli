@@ -32,7 +32,7 @@ let page
 
 
 beforeAll(async () => {
-	browser = await puppeteer.launch({args: ['--no-sandbox']});
+	browser = await puppeteer.launch({args: ['--no-sandbox --disable-http2']});
   //  browser = await puppeteer.launch()
 	page = await browser.newPage()
   await page.setViewport({ width: 1280, height: 800 })
