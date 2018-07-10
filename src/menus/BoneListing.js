@@ -152,7 +152,7 @@ class BoneListing extends React.Component {
                 
 								<Link to='/add'><button id="addNewBoneButton" className="btn btn-info pull-right" >Lisää uusi</button></Link></span>
                 <div id="bones">
-							{bonesToShow.map(bone =>
+							{bonesToShow.map((bone, i) =>
 								<Link key={bone.id} to={{
 									pathname: '/update/' + bone.id,
 									state: {
@@ -168,7 +168,7 @@ class BoneListing extends React.Component {
 										boneAnimals: bone.animals
 									}
 								}}>
-									<button type="button" className="list-group-item list-group-item-action">{bone.nameLatin} ({bone.animal})</button>
+									<button type="button" id={"bone" + i} className="list-group-item list-group-item-action">{bone.nameLatin} ({bone.animal})</button>
                 </Link>)}
                 </div>
 						</div>

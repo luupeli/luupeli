@@ -377,23 +377,23 @@ class UpdateBone extends React.Component {
 						<WGMessage ref={instance => this.wgmessage = instance} />
 					</div>
 					<Link to='/listing'>
-						<button className="btn btn-default pull-right">Takaisin listaukseen</button>
+						<button id="backToListing" className="btn btn-default pull-right">Takaisin listaukseen</button>
 					</Link>
 					<br />
 					<form onSubmit={this.handleSubmit} enctype="multipart/form-data">
 						<div className="form-group has-feedback">
 							<label className="pull-left">Latinankielinen nimi </label>
-							<input type="text" name="nameLatin" value={this.state.nameLatin} className="form-control" onChange={this.handleChange} />
+							<input type="text" id="nameLatin" name="nameLatin" value={this.state.nameLatin} className="form-control" onChange={this.handleChange} />
 							<span className="glyphicon glyphicon-asterisk form-control-feedback"></span>
 						</div>
 						<label className="pull-left">Vaihtoehtoinen latinankielinen nimi</label>
-						<input type="text" name="altNameLatin" value={this.state.altNameLatin} className="form-control" onChange={this.handleChange} />
+						<input type="text" id="altNameLatin" name="altNameLatin" value={this.state.altNameLatin} className="form-control" onChange={this.handleChange} />
 						<label className="pull-left">Suomenkielinen nimi</label>
-						<input type="text" name="name" value={this.state.name} className="form-control" onChange={this.handleChange} />
+						<input type="text" id="name" name="name" value={this.state.name} className="form-control" onChange={this.handleChange} />
 						<label className="pull-left">Kuvaus</label>
-						<input type="text" name="description" value={this.state.description} className="form-control" onChange={this.handleChange} />
+						<input type="text" id="description" name="description" value={this.state.description} className="form-control" onChange={this.handleChange} />
 						<label className="pull-left">Ruumiinosa</label>
-						<select name="bodyPart" className="form-control" value={this.state.bodyPart} onChange={this.handleChange}>
+						<select id="bodyPart" name="bodyPart" className="form-control" value={this.state.bodyPart} onChange={this.handleChange}>
 							<option value="Eturaaja">Eturaaja</option>
 							<option value="Takaraaja">Takaraaja</option>
 							<option value="Vartalo">Vartalo</option>
@@ -429,7 +429,7 @@ class UpdateBone extends React.Component {
 									<label className="pull-left">Tekijänoikeus</label>
 									<input type="text" name="copyright" value={this.state.images[i].copyright} className="form-control" onChange={this.handleImageChange.bind(this, i)} />
 								</div>
-								<button type="button" className="btn btn-danger pull-right" onClick={this.markForDelete.bind(this, i)}>
+								<button id={"deleteImageButton" + i} type="button" className="btn btn-danger pull-right" onClick={this.markForDelete.bind(this, i)}>
 									{(this.state.images[i].deleted ? "Peruuta poisto" : "Poista")}
 								</button>
 							</li>)}
@@ -464,14 +464,14 @@ class UpdateBone extends React.Component {
 							</li>)}
 							<li className="list-group-item clearfix">
 								<span className="btn-toolbar">
-									<button type="button" className="btn btn-info pull-right" onClick={this.handleAddImage}>Lisää kuvakenttä</button>
-									<button type="button" className="btn btn-danger pull-right" onClick={this.handleDeleteNewImage}>Poista kuvakenttä</button>
+									<button id="addNewImageFieldButton" type="button" className="btn btn-info pull-right" onClick={this.handleAddImage}>Lisää kuvakenttä</button>
+									<button id="removeNewImageFieldButton" type="button" className="btn btn-danger pull-right" onClick={this.handleDeleteNewImage}>Poista kuvakenttä</button>
 								</span>
 							</li>
 						</ul>
 						<div className="btn-toolbar">
-							<button type="submit" className="btn btn-info pull-right">Tallenna muutokset</button>
-							<button type="button" onClick={this.handleDelete} className="btn btn-danger pull-right">Poista luu</button>
+							<button id="submitUpdateButton" type="submit" className="btn btn-info pull-right">Tallenna muutokset</button>
+							<button id="deleteBoneButton" type="button" onClick={this.handleDelete} className="btn btn-danger pull-right">Poista luu</button>
 						</div>
 					</form>
 				</div>

@@ -72,6 +72,17 @@ describe('BoneListing tests', () => {
   //   console.log(textContent)
   //   expect(textContent.includes(expectedInput)).toBe(true)
   // }, 20000)
+
+  test('Clicking a listed bone leads to a pre-filled form', async () => {
+   	await page.waitForSelector('#bone0')
+		const expectedInput = await page.$eval('#bone0', el => el.textContent)
+		await page.click('#bone0')
+		
+   	await page.waitForSelector('#nameLatin')
+   	const nameLatinField = await page.$eval('#nameLatin', el => el.textContent)
+   	
+   	expect(expectedInput.includes(nameLatinField)).toBe(true)
+  }, 20000)
   
     
 })
