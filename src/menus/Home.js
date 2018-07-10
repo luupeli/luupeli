@@ -1,12 +1,9 @@
 import React from 'react'
 import { Redirect, Link } from 'react-router-dom'
 import '../styles/App.css';
-//import styled from 'styled-components';
 import { injectGlobal } from 'styled-components';
 
 class Home extends React.Component {
-
-
 
   constructor(props) {
     super(props);
@@ -66,13 +63,9 @@ class Home extends React.Component {
       user: null
     }
 
-
-
-
     if (localStorage.getItem('styleIndex') === null) {
       localStorage.setItem('styleIndex', 0)
     }
-    // localStorage.setItem('allStyles','');
 
     localStorage.setItem('allStyles', JSON.stringify(this.state.allStyles));   // Array must be converted to JSON before storing it into localStorage!
     this.setState({
@@ -82,56 +75,6 @@ class Home extends React.Component {
     this.proceedToSelect = this.proceedToSelect.bind(this)
     this.setThemeColors = this.setThemeColors.bind(this)
   }
-
-  // componentWillMount() {
-
-  //   const themeBloodDragon = {
-  //     style:'blood-dragon',
-  //     background:'background-blood-dragon',
-  //     flairLayerD:'grid-sub',
-  //     flairLayerC:'grid',
-  //     flairLayerB:'grid-flair',
-  //     flairLayerA:'blinder',
-  //     primary:'#ff5db1',
-  //     secondary:'#ff2596',
-  //     tertiary:'#ef007c'
-  //   };
-  //   const themeFallout = {
-  //     style: 'fallout',
-  //     background: 'background-fallout',
-  //     flairLayerD: 'none',
-  //     flairLayerC: 'none',
-  //     flairLayerB: 'none',
-  //     flairLayerA: 'none',
-  //     primary: '#33BB33',
-  //     secondary: '#229922',
-  //     tertiary: '#115511'
-  //   };
-  //   const themeDeepBlue = {
-  //     style: 'deep-blue',
-  //     background: 'background-deep-blue',
-  //     flairLayerD: 'none',
-  //     flairLayerC: 'none',
-  //     flairLayerB: 'none',
-  //     flairLayerA: 'none',
-  //     primary: '#0033BB',
-  //     secondary: '#002299',
-  //     tertiary: '#000055',
-  //   };
-  //   const themeSteel = {
-  //     style: 'steel',
-  //     background: 'background-steel',
-  //     flairLayerD: 'none',
-  //     flairLayerC: 'none',
-  //     flairLayerB: 'none',
-  //     flairLayerA: 'none',
-  //     primary: '#BBBBFF',
-  //     secondary: '9999DD',
-  //     tertiary: '#555599',
-  //   };
-
-  //   this.setState({allStyles: [themeDeepBlue,themeFallout,themeBloodDragon,themeSteel]});
-  // }
 
   componentDidMount() {
     const loggedUserJSON = localStorage.getItem('loggedUser')
@@ -144,15 +87,12 @@ class Home extends React.Component {
   changeCss(event) {
     var next = parseInt(localStorage.getItem('styleIndex')) + 1;
 
-
     if (this.state.allStyles[next] != null) {
       localStorage.setItem('styleIndex', next);
       this.setState({
         styleIndex: next,
         style: 'placeholder-next-theme-name'
       })
-      document.body.style.color = "#ffffff"
-      document.body.style.background = "#000000"
     }
     else {
       localStorage.setItem('styleIndex', 0);
@@ -160,27 +100,9 @@ class Home extends React.Component {
         styleIndex: 0,
         style: 'placeholder-last-theme-name'
       })
-      document.body.style.color = "#ffffff"
-      document.body.style.background = "#000000"
       next = 0;
     }
     console.log('new style index is now: ' + next)
-    // this.setState({
-
-    //   style: this.state.allStyles[next].style,
-    //   background: this.state.allStyles[next].background,
-    //   flairLayerD: this.state.allStyles[next].flairLayerD,
-    //   flairLayerC: this.state.allStyles[next].flairLayerC,
-    //   flairLayerB: this.state.allStyles[next].flairLayerB,
-    //   flairLayerA: this.state.allStyles[next].flairLayerA,
-    //   primary: this.state.allStyles[next].primary,
-    //   secondary: this.state.allStyles[next].secondary,
-    //   tertiary: this.state.allStyles[next].tertiary
-    // })
-
-
-
-
     window.location.reload();
   }
 
@@ -199,11 +121,8 @@ class Home extends React.Component {
 
   setThemeColors(i) {
 
-
-
     injectGlobal`
-    :root {
-      
+    :root {      
       --primary: ${this.state.primary};
       --secondary: ${this.state.secondary};
       --tertiary: ${this.state.tertiary};
@@ -224,8 +143,6 @@ class Home extends React.Component {
         tertiary: this.state.allStyles[localStorage.styleIndex].tertiary
       })
     }
-
-
   }
 
   render() {
@@ -245,36 +162,53 @@ class Home extends React.Component {
     let i = parseInt(localStorage.getItem('styleIndex'));
     this.setThemeColors(i);
 
-
     return (
-
-
       <div>
-
         <div className={this.state.background}>
           <div className={this.state.style}>
             <div className="App">
-              <div className={this.state.flairLayerA}>
+              <div
+                className={this.state.flairLayerA}>
               </div>
-              <div className={this.state.flairLayerB}>
+              <div
+                className={this.state.flairLayerB}>
               </div>
-              <div className={this.state.flairLayerC}>
+              <div
+                className={this.state.flairLayerC}>
               </div>
-              <div className={this.state.flairLayerD}>
+              <div
+                className={this.state.flairLayerD}>
               </div>
               <h1 className="gametitle">Luupeli</h1>
               <div id="btn-group" className="btn-group">
-                <button className="gamelink" onClick={this.proceedToSelect}>Pelaa</button>
-                <button className="loginlink" onClick={this.proceedToSelect}>Kirjaudu sisään</button>
-                <button className="signuplink" onClick={this.proceedToSelect}>Luo käyttäjätili</button>
-                <button className="theme" onClick={this.changeCss}>Vaihda teema</button>
-                <p>Teema: {this.state.style}</p>
+                <button
+                  className="gamelink"
+                  onClick={this.proceedToSelect}>
+                  Pelaa
+                </button>
+                <button
+                  className="loginlink"
+                  onClick={this.proceedToSelect}>
+                  Kirjaudu sisään
+                </button>
+                <button
+                  className="signuplink"
+                  onClick={this.proceedToSelect}>
+                  Luo käyttäjätili
+                </button>
+                <button
+                  className="theme"
+                  onClick={this.changeCss}>
+                  Vaihda teema
+                </button>
+                <p>
+                  Teema: {this.state.style}
+                </p>
                 <div className={this.state.style} />
               </div>
             </div>
           </div>
         </div>
-
       </div>
     )
   }
