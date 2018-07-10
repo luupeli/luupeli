@@ -299,7 +299,7 @@ class AddBone extends React.Component {
 					<div id="">
 						<WGMessage ref={instance => this.wgmessage = instance} />
 					</div>
-					<Link to='/listing'><button id="backToListing"className="btn btn-default pull-right">Takaisin listaukseen</button></Link><br />
+					<Link to='/listing'><button id="backToListing" className="btn btn-default pull-right">Takaisin listaukseen</button></Link><br />
 					<form enctype="multipart/form-data" onSubmit={this.handleSubmit}>
 						<div className="form-group has-feedback">
 							<label className="pull-left">Latinankielinen nimi </label>
@@ -363,3 +363,4 @@ class AddBone extends React.Component {
 }
 
 export default AddBone
+
