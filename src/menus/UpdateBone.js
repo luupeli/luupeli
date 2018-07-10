@@ -382,13 +382,22 @@ class UpdateBone extends React.Component {
 						<WGMessage ref={instance => this.wgmessage = instance} />
 					</div>
 					<Link to='/listing'>
-						<button id="backToListing" className="btn btn-default pull-right">Takaisin listaukseen</button>
+						<button id="backToListing" className="btn btn-default pull-right">
+							Takaisin listaukseen
+						</button>
 					</Link>
 					<br />
 					<form onSubmit={this.handleSubmit} enctype="multipart/form-data">
 						<div className="form-group has-feedback">
 							<label className="pull-left">Latinankielinen nimi </label>
-							<input type="text" id="nameLatin" name="nameLatin" value={this.state.nameLatin} className="form-control" onChange={this.handleChange} />
+							<input
+								type="text"
+								id="nameLatin"
+								name="nameLatin"
+								value={this.state.nameLatin}
+								className="form-control"
+								onChange={this.handleChange}
+							/>
 							<span className="glyphicon glyphicon-asterisk form-control-feedback"></span>
 						</div>
 						<label className="pull-left">Vaihtoehtoinen latinankielinen nimi</label>

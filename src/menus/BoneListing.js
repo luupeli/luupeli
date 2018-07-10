@@ -117,14 +117,25 @@ class BoneListing extends React.Component {
 								</div>
 								<div class="row">
 									<div class="col-sm-6">
-										<div id="animals" class="input-group" type="checkbox" data-toggle="buttons" onClick={this.handleAnimalChange}>
+										<div
+											id="animals"
+											class="input-group"
+											type="checkbox"
+											data-toggle="buttons"
+											onClick={this.handleAnimalChange}
+										>
 											{this.state.animals.map(animal =>
-												<button className="btn btn-warning" type="button" id={animal.id} autocomplete="on">{animal.name}</button>
+												<button
+													className="btn btn-warning"
+													type="button"
+													id={animal.id}
+													autocomplete="on"
+												>
+													{animal.name}
+												</button>
 											)}
 										</div>
-
 									</div>
-
 									<div class="col-sm-4">
 										<form>
 											<input
@@ -137,7 +148,6 @@ class BoneListing extends React.Component {
 										</form>
 									</div>
 								</div>
-
 								<div class="row">
 									<div class="col-sm-6">
 										<h5>Suodata ruumiinosan mukaan</h5>
@@ -156,28 +166,41 @@ class BoneListing extends React.Component {
 										</ToggleButtonGroup>
 									</div>
 								</div>
-                
-								<Link to='/add'><button id="addNewBoneButton" className="btn btn-info pull-right" >Lisää uusi</button></Link></span>
-                <div id="bones">
-							{bonesToShow.map((bone, i) =>
-								<Link key={bone.id} to={{
-									pathname: '/update/' + bone.id,
-									state: {
-										id: bone.id,
-										boneId: bone.id,
-										nameLatin: bone.nameLatin,
-										altNameLatin: bone.altNameLatin,
-										description: bone.description,
-										name: bone.name,
-										bodyPart: bone.bodyPart.name,
-										attempts: bone.attempts,
-										correctAttempts: bone.correctAttempts,
-										boneAnimals: bone.animals
-									}
-								}}>
-									<button type="button" id={"bone" + i} className="list-group-item list-group-item-action">{bone.nameLatin} ({bone.animal})</button>
-                </Link>)}
-                </div>
+								<Link to='/add'>
+									<button
+										id="addNewBoneButton"
+										className="btn btn-info pull-right">
+										Lisää uusi
+								</button>
+								</Link>
+							</span>
+							<div id="bones">
+								{bonesToShow.map((bone, i) =>
+									<Link key={bone.id} to={{
+										pathname: '/update/' + bone.id,
+										state: {
+											id: bone.id,
+											boneId: bone.id,
+											nameLatin: bone.nameLatin,
+											altNameLatin: bone.altNameLatin,
+											description: bone.description,
+											name: bone.name,
+											bodyPart: bone.bodyPart.name,
+											attempts: bone.attempts,
+											correctAttempts: bone.correctAttempts,
+											boneAnimals: bone.animals
+										}
+									}}>
+										<button
+											type="button"
+											id={"bone" + i}
+											className="list-group-item list-group-item-action"
+										>
+											{bone.nameLatin}
+											({bone.animal})
+										</button>
+									</Link>)}
+							</div>
 						</div>
 					</div>
 				</div>

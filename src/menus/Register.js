@@ -56,41 +56,36 @@ class Register extends React.Component {
 	}
 
 	render() {
-
 		let i = this.state.styleIndex
-
-
 		console.log(this.state)
-
 		return (
-
 			<div className={this.state.allStyles[i].background}>
 				<div className={this.state.allStyles[i].style}>
-
 					<div className="App">
 						<h2 className="toprow">"Luu-o" uusi</h2>
 						<h2 className="secondrow">luukäyttäjätunnus</h2>
-						<div className={this.state.allStyles[i].flairLayerA}>
-
+						<div
+							className={this.state.allStyles[i].flairLayerA}>
 						</div>
-						<div className={this.state.allStyles[i].flairLayerB}>
-
+						<div
+							className={this.state.allStyles[i].flairLayerB}>
 						</div>
-						<div className={this.state.allStyles[i].flairLayerC}>
-
+						<div
+							className={this.state.allStyles[i].flairLayerC}>
 						</div>
-						<div className={this.state.allStyles[i].flairLayerD}>
-
+						<div
+							className={this.state.allStyles[i].flairLayerD}>
 						</div>
 						<div class="transbox">
-						<div className="align-center">
-										<p>Käyttäjätunnuksen minimipituus on 3 merkkiä ja salasanan 8 merkkiä.
-					Tunnus saa sisältää isoja ja pieniä kirjaimia (A-Z ja a-z) ja numeromerkkejä (0-9).
-							</p></div>
+							<div className="align-center">
+								<p>
+									Käyttäjätunnuksen minimipituus on 3 merkkiä ja salasanan 8 merkkiä.
+									Tunnus saa sisältää isoja ja pieniä kirjaimia (A-Z ja a-z) ja numeromerkkejä (0-9).
+								</p>
+							</div>
 							<div className="login-clean">
 								<form onSubmit={this.signUp}>
 									<div className="align-center">
-									
 										<div className="form-group">
 											<label for="username">Käyttäjätunnus:</label>
 											<input
@@ -112,7 +107,6 @@ class Register extends React.Component {
 												placeholder="Sähköpostiosoite..."
 												value={this.state.email}
 												onChange={this.handleSignUpFieldChange}
-											// required
 											/>
 										</div>
 										<div className="form-group">
@@ -140,20 +134,26 @@ class Register extends React.Component {
 											/>
 										</div>
 										<div className="form-group btn-group">
-											<button className="btn btn-block" type="submit">Luo tili</button>
+											<button
+												className="btn btn-block"
+												type="submit">
+												Luo tili
+											</button>
 										</div>
 										<div className="form-group">
 											<p>Onko sinulla jo tili?<a href='/login'> Kirjaudu sisään!</a></p>
 										</div>
-
 									</div>
 								</form>
 							</div>
 						</div>
 						<div className="btn-group">
-
-							<button id="goBackButton" className="gobackbutton" onClick={this.proceedToMain}>Takaisin</button>
-
+							<button
+								id="goBackButton"
+								className="gobackbutton"
+								onClick={this.proceedToMain}>
+								Takaisin
+							</button>
 						</div>
 					</div>
 				</div>

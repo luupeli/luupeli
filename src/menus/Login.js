@@ -16,7 +16,6 @@ class Login extends React.Component {
       user: null
     }
 
-
     this.login = this.login.bind(this)
     this.handleLoginFieldChange = this.handleLoginFieldChange.bind(this)
   }
@@ -93,7 +92,6 @@ class Login extends React.Component {
             <div className="form-group btn-group">
               <button className="btn btn-block" type="submit">Kirjaudu</button>
             </div>
-
             {/* <a href="#" className="forgot">Unohditko sähköpostisi tai salasanasi?</a> */}
           </form>
         </div>
@@ -135,7 +133,12 @@ class Login extends React.Component {
               {this.ifLoggedInForms()}
             </div>
             <div className="btn-group">
-              <button id="goBackButton" className="gobackbutton" onClick={this.proceedToMain}>Takaisin</button>
+              <button
+                id="goBackButton"
+                className="gobackbutton"
+                onClick={this.proceedToMain}>
+                Takaisin
+              </button>
             </div>
           </div>
         </div>
