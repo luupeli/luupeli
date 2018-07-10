@@ -21,8 +21,8 @@ beforeEach(async () => {
 			const buttons = Array.from(document.querySelectorAll('.list-group-item-action'))
 			return buttons.map(button => button.textContent)
 		}, 'div')
-   	const linkHandlers = await page.$x(`//*[contains(text(), elementList[0])]`);
-	await linkHandlers[0].click();*/
+   	const linkHandlers = await page.$x(`//*[contains(text(), elementList[0])]`)
+	await linkHandlers[0].click()*/
 })
 
 afterEach(async () => {

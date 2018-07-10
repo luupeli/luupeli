@@ -4,7 +4,7 @@ import WGMessage from '../games/writinggame/WGMessage'
 import imageService from '../services/images'
 import bodyPartService from '../services/bodyParts'
 import animalService from '../services/animals'
-import { injectGlobal } from 'styled-components';
+import { injectGlobal } from 'styled-components'
 
 /**
  * GameSettings is the menu directly prior to a WritingGame session.
@@ -18,7 +18,7 @@ import { injectGlobal } from 'styled-components';
 class GameSettings extends React.Component {
 
 	constructor(props) {
-		super(props);
+		super(props)
 		this.state = {
 			gameLength: 3,
 			redirect: false,
@@ -30,7 +30,7 @@ class GameSettings extends React.Component {
 			allStyles: props.location.state.allStyles,
 			styleIndex: props.location.state.styleIndex,
 			user: null
-		};
+		}
 
 		this.changeAnimal = this.changeAnimal.bind(this)
 		this.toggleCheck = this.toggleCheck.bind(this)
@@ -51,26 +51,26 @@ class GameSettings extends React.Component {
 						var emo = require('node-emoji')
 						emo = emo.get('cat')
 						console.log(emo)
-						animals[key].emoji = emo;
+						animals[key].emoji = emo
 					}
 					if (animals[key].name.toLowerCase() === 'koira') {
 						var emo = require('node-emoji')
 						emo = emo.get('dog')
 						console.log(emo)
-						animals[key].emoji = emo;
+						animals[key].emoji = emo
 					}
 					if (animals[key].name.toLowerCase() === 'hevonen') {
 						var emo = require('node-emoji')
 						emo = emo.get('horse')
 						console.log(emo)
-						animals[key].emoji = emo;
+						animals[key].emoji = emo
 					}
 
 					if (animals[key].name.toLowerCase() === 'nauta') {
 						var emo = require('node-emoji')
 						emo = emo.get('cow')
 						console.log(emo)
-						animals[key].emoji = emo;
+						animals[key].emoji = emo
 					}
 
 				}
@@ -113,7 +113,7 @@ class GameSettings extends React.Component {
 		animals.forEach((animal) => {
 			animal.selected = false
 		})
-		animals[event.target.id].selected = true;
+		animals[event.target.id].selected = true
 		console.log(this.state.allAnimals)
 	}
 
@@ -181,7 +181,7 @@ class GameSettings extends React.Component {
 		})
 		console.log(apics)
 
-		const pics = [];
+		const pics = []
 		if (apics.length !== 0) {
 			// Here we add as many images into the quiz as dictated by the gameLength option, but less if we don't
 			// have enough images.
@@ -212,15 +212,15 @@ class GameSettings extends React.Component {
 	//this starts the game
 	render() {
 
-		let i = parseInt(localStorage.getItem('styleIndex'));
+		let i = parseInt(localStorage.getItem('styleIndex'))
 
 		injectGlobal`
 		:root {  
-		  --primary: ${this.state.allStyles[i].primary};
-		  --secondary: ${this.state.allStyles[i].secondary};
-		  --tertiary: ${this.state.allStyles[i].tertiary};
+		  --primary: ${this.state.allStyles[i].primary}
+		  --secondary: ${this.state.allStyles[i].secondary}
+		  --tertiary: ${this.state.allStyles[i].tertiary}
 		  }
-		}`;
+		}`
 
 		if (this.state.redirect) {
 			return (
@@ -368,7 +368,7 @@ class GameSettings extends React.Component {
 					</div>
 				</div>
 			</div>
-		);
+		)
 	}
 }
 

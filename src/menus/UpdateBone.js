@@ -9,7 +9,7 @@ import WGMessage from '../games/writinggame/WGMessage'
 class UpdateBone extends React.Component {
 
 	constructor(props) {
-		super(props);
+		super(props)
 
 		this.state = {
 			submitted: false,
@@ -27,7 +27,7 @@ class UpdateBone extends React.Component {
 			animals: [],
 			bodyParts: [],
 			user: null
-		};
+		}
 
 		this.handleChange = this.handleChange.bind(this)
 		this.handleAddImage = this.handleAddImage.bind(this)
@@ -288,8 +288,8 @@ class UpdateBone extends React.Component {
 			}
 		}
 
-		var bone = {};
-		var imageUrl = "";
+		var bone = {}
+		var imageUrl = ""
 
 		var boneAnimals = this.getBoneAnimals()
 

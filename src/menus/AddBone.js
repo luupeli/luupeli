@@ -216,7 +216,7 @@ class AddBone extends React.Component {
 	//POST this bone to database
 	async postBone(boneAnimals) {
 		const bodyPartObj = this.state.bodyParts.filter((bodyPart) => bodyPart.name === this.state.bodyPart)[0]
-		var boneResponse = "";
+		var boneResponse = ""
 
 		return await boneService.create({
 			nameLatin: this.state.nameLatin,

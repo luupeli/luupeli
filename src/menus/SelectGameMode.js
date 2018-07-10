@@ -4,7 +4,7 @@ import { Redirect, Link } from 'react-router-dom'
 class SelectGameMode extends React.Component {
 
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       redirect: false,

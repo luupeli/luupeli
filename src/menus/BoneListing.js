@@ -8,7 +8,7 @@ import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap'
 class BoneListing extends React.Component {
 
 	constructor(props) {
-		super(props);
+		super(props)
 		this.state = {
 			bones: [],
 			animals: [],
@@ -19,9 +19,9 @@ class BoneListing extends React.Component {
 			user: null
 		}
 
-		this.handleAnimalChange = this.handleAnimalChange.bind(this);
-		this.handleBodyPartChange = this.handleBodyPartChange.bind(this);
-		this.handleChange = this.handleChange.bind(this);
+		this.handleAnimalChange = this.handleAnimalChange.bind(this)
+		this.handleBodyPartChange = this.handleBodyPartChange.bind(this)
+		this.handleChange = this.handleChange.bind(this)
 	}
 
 	//GET list of bones from database and stuff it into this.state.bones for rendering
@@ -78,7 +78,7 @@ class BoneListing extends React.Component {
 	}
 
 	handleChange(e) {
-		this.setState({ search: e.target.value });
+		this.setState({ search: e.target.value })
 	}
 
 	//Filter and render bone listing by .mapping bones from this.state.bones array to Link elements.
@@ -182,7 +182,7 @@ class BoneListing extends React.Component {
 					</div>
 				</div>
 			</div>
-		);
+		)
 	}
 }
 

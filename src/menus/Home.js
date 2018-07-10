@@ -1,12 +1,12 @@
 import React from 'react'
 import { Redirect, Link } from 'react-router-dom'
-import '../styles/App.css';
-import { injectGlobal } from 'styled-components';
+import '../styles/App.css'
+import { injectGlobal } from 'styled-components'
 
 class Home extends React.Component {
 
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       allStyles: [{
@@ -67,7 +67,7 @@ class Home extends React.Component {
       localStorage.setItem('styleIndex', 0)
     }
 
-    localStorage.setItem('allStyles', JSON.stringify(this.state.allStyles));   // Array must be converted to JSON before storing it into localStorage!
+    localStorage.setItem('allStyles', JSON.stringify(this.state.allStyles))   // Array must be converted to JSON before storing it into localStorage!
     this.setState({
       styleIndex: 0,
     })
@@ -85,24 +85,24 @@ class Home extends React.Component {
   }
 
   changeCss(event) {
-    var next = parseInt(localStorage.getItem('styleIndex')) + 1;
+    var next = parseInt(localStorage.getItem('styleIndex')) + 1
 
     if (this.state.allStyles[next] != null) {
-      localStorage.setItem('styleIndex', next);
+      localStorage.setItem('styleIndex', next)
       this.setState({
         styleIndex: next,
         style: 'placeholder-next-theme-name'
       })
     } else {
-      localStorage.setItem('styleIndex', 0);
+      localStorage.setItem('styleIndex', 0)
       this.setState({
         styleIndex: 0,
         style: 'placeholder-last-theme-name'
       })
-      next = 0;
+      next = 0
     }
     console.log('new style index is now: ' + next)
-    window.location.reload();
+    window.location.reload()
   }
 
   proceedToSelect(event) {
@@ -120,11 +120,11 @@ class Home extends React.Component {
 
     injectGlobal`
     :root {      
-      --primary: ${this.state.primary};
-      --secondary: ${this.state.secondary};
-      --tertiary: ${this.state.tertiary};
+      --primary: ${this.state.primary}
+      --secondary: ${this.state.secondary}
+      --tertiary: ${this.state.tertiary}
       }
-    }`;
+    }`
 
     if (this.state.styleIndex != localStorage.styleIndex && this.state.allStyles[localStorage.styleIndex] !== undefined) {
       this.setState({
@@ -199,8 +199,8 @@ class Home extends React.Component {
       )
     }
 
-    let i = parseInt(localStorage.getItem('styleIndex'));
-    this.setThemeColors(i);
+    let i = parseInt(localStorage.getItem('styleIndex'))
+    this.setThemeColors(i)
 
     return (
       <div>
