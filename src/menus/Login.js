@@ -46,44 +46,69 @@ class Login extends React.Component {
     }
   }
 
+  logOut = async (event) => {
+    event.preventDefault()
+    try {
+      window.sessionStorage.removeItem('loggedLohjanLuunkeraajaUser')
+      this.setState({ user: null })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   handleLoginFieldChange = (event) => {
     this.setState({ [event.target.name]: event.target.value })
   }
 
   render() {
-    return (
-      <div className="App">
-        <div className="login-clean">
-          <form onSubmit={this.login}>
-            <h2 className="sr-only">Kirjaudu sisään</h2>
-            <div className="form-group">
-              <input
-                className="form-control"
-                type="username"
-                name="username"
-                placeholder="Käyttäjätunnus"
-                value={this.state.username}
-                onChange={this.handleLoginFieldChange}
-              />
-            </div>
-            <div className="form-group">
-              <input
-                className="form-control"
-                type="password"
-                name="password"
-                placeholder="Salasana"
-                value={this.state.password}
-                onChange={this.handleLoginFieldChange}
-              />
-            </div>
-            <div className="form-group btn-group">
-              <button className="btn btn-block" type="submit">Kirjaudu</button>
-            </div>
-            {/* <a href="#" className="forgot">Unohditko sähköpostisi tai salasanasi?</a> */}
-          </form>
+    if (this.state.user === null) {
+      return (
+        <div className="App">
+          <div className="login-clean">
+            <form onSubmit={this.login}>
+              <p>Kirjaudu sisään</p>
+              <div className="form-group">
+                <input
+                  className="form-control"
+                  type="username"
+                  name="username"
+                  placeholder="Käyttäjätunnus"
+                  value={this.state.username}
+                  onChange={this.handleLoginFieldChange}
+                />
+              </div>
+              <div className="form-group">
+                <input
+                  className="form-control"
+                  type="password"
+                  name="password"
+                  placeholder="Salasana"
+                  value={this.state.password}
+                  onChange={this.handleLoginFieldChange}
+                />
+              </div>
+              <div className="form-group btn-group">
+                <button className="btn btn-block" type="submit">Kirjaudu</button>
+              </div>
+              {/* <a href="#" className="forgot">Unohditko sähköpostisi tai salasanasi?</a> */}
+            </form>
+          </div>
         </div>
-      </div>
-    )
+      )
+    } else {
+      return (
+        <div className="App">
+          <div className="login-clean">
+            <form onSubmit={this.logOut}>
+              <p>Olet jo kirjautunut sisään, {this.state.user.username}</p>
+              <div className="form-group btn-group">
+                <button className="btn btn-block" type="submit">Kirjaudu ulos</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )
+    }
   }
 }
 export default Login

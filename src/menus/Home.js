@@ -107,7 +107,13 @@ class Home extends React.Component {
 
   proceedToSelect(event) {
     this.setState({ redirect: true })
-    this.setState({ redirectTo: '/game' })
+    if (event.target.className === 'gamelink') {
+      this.setState({ redirectTo: '/game' })
+    } else if (event.target.className === 'loginlink') {
+      this.setState({ redirectTo: '/login' })
+    } else if (event.target.className === 'signuplink') {
+      this.setState({ redirectTo: '/register' })
+    }
   }
 
   setThemeColors(i) {
@@ -133,6 +139,45 @@ class Home extends React.Component {
         secondary: this.state.allStyles[localStorage.styleIndex].secondary,
         tertiary: this.state.allStyles[localStorage.styleIndex].tertiary
       })
+    }
+  }
+
+  loggedInButtons() {
+    if (this.state.user === null) {
+      return (
+        <div>
+          <button
+            className="loginlink"
+            onClick={this.proceedToSelect}
+          >
+            Kirjaudu sisään
+          </button>
+          <button
+            className="signuplink"
+            onClick={this.proceedToSelect}
+          >
+            Luo käyttäjätili
+          </button>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <button onClick={this.logOut}>
+            Kirjaudu ulos
+          </button>
+        </div>
+      )
+    }
+  }
+
+  logOut = async (event) => {
+    event.preventDefault()
+    try {
+      window.sessionStorage.removeItem('loggedLohjanLuunkeraajaUser')
+      this.setState({ user: null })
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -181,16 +226,7 @@ class Home extends React.Component {
                   onClick={this.proceedToSelect}>
                   Pelaa
                 </button>
-                <button
-                  className="loginlink"
-                  onClick={this.proceedToSelect}>
-                  Kirjaudu sisään
-                </button>
-                <button
-                  className="signuplink"
-                  onClick={this.proceedToSelect}>
-                  Luo käyttäjätili
-                </button>
+                {this.loggedInButtons()}
                 <button
                   className="theme"
                   onClick={this.changeCss}>
