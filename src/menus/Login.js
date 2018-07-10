@@ -18,7 +18,7 @@ class Login extends React.Component {
   }
 
   componentDidMount() {
-    const loggedUserJSON = localStorage.getItem('loggedUser')
+    const loggedUserJSON = localStorage.getItem('loggedLohjanLuunkeraajaUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       this.setState({ user })
@@ -33,7 +33,7 @@ class Login extends React.Component {
         password: this.state.password
       })
       console.log(user)
-      window.localStorage.setItem('loggedLohjanLuunkeraajaUser', JSON.stringify(user))
+      window.sessionStorage.setItem('loggedLohjanLuunkeraajaUser', JSON.stringify(user))
       this.setState({
         username: '',
         password: '',
