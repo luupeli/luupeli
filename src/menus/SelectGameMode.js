@@ -48,7 +48,6 @@ class SelectGameMode extends React.Component {
       )
     }
 
-
     let i = this.state.styleIndex
 
     return (
@@ -56,35 +55,45 @@ class SelectGameMode extends React.Component {
         <div className={this.state.allStyles[i].background}>
           <div className={this.state.allStyles[i].style}>
             <div id="gameBody" className="App">
-              <div className={this.state.allStyles[i].flairLayerA}>
-
+              <div
+                className={this.state.allStyles[i].flairLayerA}>
               </div>
-              <div className={this.state.allStyles[i].flairLayerB}>
-
+              <div
+                className={this.state.allStyles[i].flairLayerB}>
               </div>
-              <div className={this.state.allStyles[i].flairLayerC}>
-
+              <div
+                className={this.state.allStyles[i].flairLayerC}>
               </div>
-              <div className={this.state.allStyles[i].flairLayerD}>
-
+              <div
+                className={this.state.allStyles[i].flairLayerD}>
               </div>
-              <h2 className="toprow">Valitse</h2>
-              <h2 className="secondrow">Luupelimuoto:</h2>
+              <h2 className="toprow">
+                Valitse
+              </h2>
+              <h2 className="secondrow">
+                Luupelimuoto:
+              </h2>
               <div className="btn-group">
-                <button className="writinggame" onClick={this.proceedToSettings}>Kirjoituspeli</button>
+                <button
+                  className="writinggame"
+                  onClick={this.proceedToSettings}>
+                  Kirjoituspeli
+                </button>
                 <button>:: Option #2 ::</button>
                 <button>:: Option #3 ::</button>
               </div>
               <div className="btn-group">
-
-                <button id="goBackButton" className="gobackbutton" onClick={this.proceedToMain}>Takaisin</button>
-
+                <button
+                  id="goBackButton"
+                  className="gobackbutton"
+                  onClick={this.proceedToMain}>
+                  Takaisin
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
-
     )
   }
 }

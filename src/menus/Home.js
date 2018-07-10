@@ -1,7 +1,6 @@
 import React from 'react'
 import { Redirect, Link } from 'react-router-dom'
 import '../styles/App.css';
-//import styled from 'styled-components';
 import { injectGlobal } from 'styled-components';
 
 class Home extends React.Component {
@@ -63,13 +62,9 @@ class Home extends React.Component {
       tertiary: '#ef007c'
     }
 
-
-
-
     if (localStorage.getItem('styleIndex') === null) {
       localStorage.setItem('styleIndex', 0)
     }
-    // localStorage.setItem('allStyles','');
 
     localStorage.setItem('allStyles', JSON.stringify(this.state.allStyles));   // Array must be converted to JSON before storing it into localStorage!
     this.setState({
@@ -80,9 +75,19 @@ class Home extends React.Component {
     this.setThemeColors = this.setThemeColors.bind(this)
   }
 
+<<<<<<< HEAD
+=======
+  componentDidMount() {
+    const loggedUserJSON = localStorage.getItem('loggedUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      this.setState({ user })
+    }
+  }
+
+>>>>>>> aef80fdd78f367ea58fc310fd574ed1e54d8c1f1
   changeCss(event) {
     var next = parseInt(localStorage.getItem('styleIndex')) + 1;
-
 
     if (this.state.allStyles[next] != null) {
       localStorage.setItem('styleIndex', next);
@@ -90,7 +95,12 @@ class Home extends React.Component {
         styleIndex: next,
         style: 'placeholder-next-theme-name'
       })
+<<<<<<< HEAD
     } else {
+=======
+    }
+    else {
+>>>>>>> aef80fdd78f367ea58fc310fd574ed1e54d8c1f1
       localStorage.setItem('styleIndex', 0);
       this.setState({
         styleIndex: 0,
@@ -99,7 +109,10 @@ class Home extends React.Component {
       next = 0;
     }
     console.log('new style index is now: ' + next)
+<<<<<<< HEAD
 
+=======
+>>>>>>> aef80fdd78f367ea58fc310fd574ed1e54d8c1f1
     window.location.reload();
   }
 
@@ -111,8 +124,7 @@ class Home extends React.Component {
   setThemeColors(i) {
 
     injectGlobal`
-    :root {
-      
+    :root {      
       --primary: ${this.state.primary};
       --secondary: ${this.state.secondary};
       --tertiary: ${this.state.tertiary};
@@ -133,8 +145,6 @@ class Home extends React.Component {
         tertiary: this.state.allStyles[localStorage.styleIndex].tertiary
       })
     }
-
-
   }
 
   render() {
@@ -154,36 +164,66 @@ class Home extends React.Component {
     let i = parseInt(localStorage.getItem('styleIndex'));
     this.setThemeColors(i);
 
-
     return (
+<<<<<<< HEAD
       
+=======
+>>>>>>> aef80fdd78f367ea58fc310fd574ed1e54d8c1f1
       <div>
-
         <div className={this.state.background}>
           <div className={this.state.style}>
             <div className="App">
-              <div className={this.state.flairLayerA}>
+              <div
+                className={this.state.flairLayerA}>
               </div>
-              <div className={this.state.flairLayerB}>
+              <div
+                className={this.state.flairLayerB}>
               </div>
-              <div className={this.state.flairLayerC}>
+              <div
+                className={this.state.flairLayerC}>
               </div>
-              <div className={this.state.flairLayerD}>
+              <div
+                className={this.state.flairLayerD}>
               </div>
               <h1 className="gametitle">Luupeli</h1>
               <div id="btn-group" className="btn-group">
+<<<<<<< HEAD
 
                 <button className="gamelink" onClick={this.proceedToSelect}>Pelaa</button>
                 <button >Kirjaudu sisään</button>
                 <button>Luo käyttäjätili</button>
                 <button className="theme" onClick={this.changeCss}>Vaihda css</button>
                 <p>Teema: {this.state.style}</p>
+=======
+                <button
+                  className="gamelink"
+                  onClick={this.proceedToSelect}>
+                  Pelaa
+                </button>
+                <button
+                  className="loginlink"
+                  onClick={this.proceedToSelect}>
+                  Kirjaudu sisään
+                </button>
+                <button
+                  className="signuplink"
+                  onClick={this.proceedToSelect}>
+                  Luo käyttäjätili
+                </button>
+                <button
+                  className="theme"
+                  onClick={this.changeCss}>
+                  Vaihda teema
+                </button>
+                <p>
+                  Teema: {this.state.style}
+                </p>
+>>>>>>> aef80fdd78f367ea58fc310fd574ed1e54d8c1f1
                 <div className={this.state.style} />
               </div>
             </div>
           </div>
         </div>
-
       </div>
     )
   }
