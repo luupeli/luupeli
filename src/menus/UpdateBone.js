@@ -112,7 +112,6 @@ class UpdateBone extends React.Component {
 		this.setState({ [event.target.name]: event.target.value })
 	}
 
-
 	//GET all animals from database for later use
 	fetchAnimals() {
 		animalService.getAll()
@@ -303,7 +302,6 @@ class UpdateBone extends React.Component {
 			}
 		}
 
-
 		//TODO: only show this message if there is no existing failure message
 		this.wgmessage.mountTimer()
 		this.wgmessage.setMessage('Muutokset tallennettu!')
@@ -394,13 +392,40 @@ class UpdateBone extends React.Component {
 							<span className="glyphicon glyphicon-asterisk form-control-feedback"></span>
 						</div>
 						<label className="pull-left">Vaihtoehtoinen latinankielinen nimi</label>
-						<input type="text" id="altNameLatin" name="altNameLatin" value={this.state.altNameLatin} className="form-control" onChange={this.handleChange} />
+						<input
+							type="text"
+							id="altNameLatin"
+							name="altNameLatin"
+							value={this.state.altNameLatin}
+							className="form-control"
+							onChange={this.handleChange}
+						/>
 						<label className="pull-left">Suomenkielinen nimi</label>
-						<input type="text" id="name" name="name" value={this.state.name} className="form-control" onChange={this.handleChange} />
+						<input
+							type="text"
+							id="name"
+							name="name"
+							value={this.state.name}
+							className="form-control"
+							onChange={this.handleChange}
+						/>
 						<label className="pull-left">Kuvaus</label>
-						<input type="text" id="description" name="description" value={this.state.description} className="form-control" onChange={this.handleChange} />
+						<input
+							type="text"
+							id="description"
+							name="description"
+							value={this.state.description}
+							className="form-control"
+							onChange={this.handleChange}
+						/>
 						<label className="pull-left">Ruumiinosa</label>
-						<select id="bodyPart" name="bodyPart" className="form-control" value={this.state.bodyPart} onChange={this.handleChange}>
+						<select
+							id="bodyPart"
+							name="bodyPart"
+							className="form-control"
+							value={this.state.bodyPart}
+							onChange={this.handleChange}
+						>
 							<option value="Eturaaja">Eturaaja</option>
 							<option value="Takaraaja">Takaraaja</option>
 							<option value="Vartalo">Vartalo</option>
@@ -411,9 +436,22 @@ class UpdateBone extends React.Component {
 						</span>
 						<ul className="list-group">
 							{this.state.images.map((file, i) => <li key={file.id} className="list-group-item clearfix">
-								<span className="pull-left">{file.url + (this.state.images[i].deleted ? " (Poistetaan tallennuksen yhteydessä)" : "")}</span>
+								<span className="pull-left">
+									{
+										file.url
+										+ (this.state.images[i].deleted
+											? " (Poistetaan tallennuksen yhteydessä)" : "")
+									}
+								</span>
 								<br />
-								<div className={"input-group " + (this.state.images[i].deleted ? 'hidden' : 'show')}>
+								<div className=
+									{
+										"input-group "
+										+ (this.state.images[i].deleted
+											? 'hidden'
+											: 'show')
+									}
+								>
 									<label className="pull-left">Vaikeustaso</label>
 									<select
 										name="difficulty"
@@ -441,7 +479,12 @@ class UpdateBone extends React.Component {
 										value={this.state.images[i].animal}
 										onChange={this.handleImageChange.bind(this, i)}
 									>
-										{this.state.animals.map((animal, i) => <option key={animal.id} value={animal.id}>{animal.name}</option>)}
+										{
+											this.state.animals.map((animal, i) =>
+												<option key={animal.id} value={animal.id}>
+													{animal.name}
+												</option>)
+										}
 									</select>
 									<label className="pull-left">Kuvaus</label>
 									<input
@@ -477,71 +520,84 @@ class UpdateBone extends React.Component {
 								</button>
 							</li>)}
 						</ul>
-						<span className="clearfix"><label className="pull-left">Uudet kuvat</label></span>
+						<span className="clearfix">
+							<label className="pull-left">
+								Uudet kuvat
+							</label>
+						</span>
 						<ul className="list-group">
-							{this.state.newImages.map((file, i) => <li key={file.id} className="list-group-item clearfix">
-								<input
-									type="file"
-									accept="image/x-png,image/jpeg"
-									id="boneImage"
-									ref={input => { this[`fileInput${i}`] = input }} />
-								<div className="input-group">
-									<label className="pull-left">Vaikeustaso</label>
-									<select
-										name="difficulty"
-										className="form-control"
-										value={this.state.newImages[i].difficulty}
-										onChange={this.handleNewImageChange.bind(this, i)}
-									>
-										<option value="1">Helppo</option>
-										<option value="100">Vaikea</option>
-									</select>
-									<label className="pull-left">Puoli</label>
-									<select
-										name="handedness"
-										className="form-control"
-										value={this.state.newImages[i].handedness}
-										onChange={this.handleNewImageChange.bind(this, i)}
-									>
-										<option value="">Ei valintaa</option>
-										<option value="dex">dex</option>
-										<option value="sin">sin</option>
-									</select>
-									<label className="pull-left">Eläin</label>
-									<select
-										name="animal"
-										className="form-control"
-										value={this.state.newImages[i].animal}
-										onChange={this.handleNewImageChange.bind(this, i)}
-									>
-										{this.state.animals.map((animal, i) => <option key={animal.id} value={animal.id}>{animal.name}</option>)}
-									</select>
-									<label className="pull-left">Kuvaus</label>
-									<input
-										type="text"
-										name="description"
-										value={this.state.newImages[i].description}
-										className="form-control"
-										onChange={this.handleNewImageChange.bind(this, i)}
-									/>
-									<label className="pull-left">Valokuvaaja</label>
-									<input
-										type="text"
-										name="photographer"
-										value={this.state.newImages[i].photographer}
-										className="form-control"
-										onChange={this.handleNewImageChange.bind(this, i)}
-									/>
-									<label className="pull-left">Tekijänoikeus</label>
-									<input
-										type="text"
-										name="copyright"
-										value={this.state.newImages[i].copyright}
-										className="form-control"
-										onChange={this.handleNewImageChange.bind(this, i)}
-									/>
-								</div>
-							</li>)}
+							{
+								this.state.newImages.map((file, i) =>
+									<li key={file.id}
+										className="list-group-item clearfix">
+										<input
+											type="file"
+											accept="image/x-png,image/jpeg"
+											id="boneImage"
+											ref={input => { this[`fileInput${i}`] = input }} />
+										<div className="input-group">
+											<label className="pull-left">Vaikeustaso</label>
+											<select
+												name="difficulty"
+												className="form-control"
+												value={this.state.newImages[i].difficulty}
+												onChange={this.handleNewImageChange.bind(this, i)}
+											>
+												<option value="1">Helppo</option>
+												<option value="100">Vaikea</option>
+											</select>
+											<label className="pull-left">Puoli</label>
+											<select
+												name="handedness"
+												className="form-control"
+												value={this.state.newImages[i].handedness}
+												onChange={this.handleNewImageChange.bind(this, i)}
+											>
+												<option value="">Ei valintaa</option>
+												<option value="dex">dex</option>
+												<option value="sin">sin</option>
+											</select>
+											<label className="pull-left">Eläin</label>
+											<select
+												name="animal"
+												className="form-control"
+												value={this.state.newImages[i].animal}
+												onChange={this.handleNewImageChange.bind(this, i)}
+											>
+												{
+													this.state.animals.map((animal, i) =>
+														<option key={animal.id} value={animal.id}>
+															{animal.name}
+														</option>)
+												}
+											</select>
+											<label className="pull-left">Kuvaus</label>
+											<input
+												type="text"
+												name="description"
+												value={this.state.newImages[i].description}
+												className="form-control"
+												onChange={this.handleNewImageChange.bind(this, i)}
+											/>
+											<label className="pull-left">Valokuvaaja</label>
+											<input
+												type="text"
+												name="photographer"
+												value={this.state.newImages[i].photographer}
+												className="form-control"
+												onChange={this.handleNewImageChange.bind(this, i)}
+											/>
+											<label className="pull-left">Tekijänoikeus</label>
+											<input
+												type="text"
+												name="copyright"
+												value={this.state.newImages[i].copyright}
+												className="form-control"
+												onChange={this.handleNewImageChange.bind(this, i)}
+											/>
+										</div>
+									</li>)
+							}
 							<li className="list-group-item clearfix">
 								<span className="btn-toolbar">
 									<button

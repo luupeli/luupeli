@@ -3,8 +3,6 @@ import React from 'react'
 import WGMessage from './WGMessage'
 import StringSimilarity from 'string-similarity'
 
-
-
 class WritingGame extends React.Component {
 
   constructor(props) {
@@ -128,7 +126,17 @@ class WritingGame extends React.Component {
         <div class="bottom">
           <div class="row" id="image-holder">
             <div class="intro">
-              <img id="question-image" class="img-fluid" alt={this.state.images[this.state.index].bone.nameLatin + ' osasta ' + this.state.bpname + ' kuvan url: http://luupeli-backend.herokuapp.com/images/' + this.state.images[this.state.index].url} src={'http://luupeli-backend.herokuapp.com/images/' + this.state.images[this.state.index].url} />
+              <img
+                id="question-image"
+                class="img-fluid"
+                alt={this.state.images[this.state.index].bone.nameLatin
+                  + ' osasta '
+                  + this.state.bpname
+                  + ' kuvan url: http://luupeli-backend.herokuapp.com/images/'
+                  + this.state.images[this.state.index].url}
+                src={'http://luupeli-backend.herokuapp.com/images/'
+                  + this.state.images[this.state.index].url}
+              />
             </div>
           </div>
           <div class="row">
@@ -144,9 +152,18 @@ class WritingGame extends React.Component {
           <div class="answer-input">
             <div class="container">
               <div class="intro" />
-              <form className="input" class="form-inline" id='gameForm' onSubmit={this.handleSubmit}>
-                <div class="form-groupbd"><input class="form-control" type="text" onChange={this.handleChange} />
-
+              <form
+                className="input"
+                class="form-inline"
+                id='gameForm'
+                onSubmit={this.handleSubmit}
+              >
+                <div class="form-groupbd">
+                  <input
+                    class="form-control"
+                    type="text"
+                    onChange={this.handleChange}
+                  />
                 </div>
                 <div className={"btn-group" + this.state.style + " GameButton"}>
                   <button type="submit" id="submitButton">Vastaa</button>
@@ -173,8 +190,7 @@ class WritingGame extends React.Component {
     if (this.state.endCounter >= this.state.images.length) {
       setTimeout(function () {
         this.setState({ redirectToEndPage: true })
-      }.bind(this), 3000);
-
+      }.bind(this), 3000)
       if (this.state.redirectToEndPage) {
         return (
           <Redirect to={{
