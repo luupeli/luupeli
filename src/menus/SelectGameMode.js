@@ -16,7 +16,7 @@ class SelectGameMode extends React.Component {
     this.proceedToMain = this.proceedToMain.bind(this)
   }
   componentDidMount() {
-    const loggedUserJSON = localStorage.getItem('loggedLohjanLuunkeraajaUser')
+    const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       this.setState({ user })
