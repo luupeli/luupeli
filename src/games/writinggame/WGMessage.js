@@ -35,7 +35,6 @@ class WGMessage extends React.Component {
 		console.log(this.state.counter)
 	}
 
-
 	setMessage(message) {
 		this.setState({ message: message })
 		if (message !== "Oikein!") {
@@ -44,7 +43,7 @@ class WGMessage extends React.Component {
 			this.setState({ style: "alert alert-success" })
 		}
 	}
-	
+
 	setStyle(style) {
 		this.setState({ style: style })
 	}
