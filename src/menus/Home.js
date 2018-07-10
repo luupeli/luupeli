@@ -140,13 +140,17 @@ class Home extends React.Component {
     console.log(localStorage.getItem("allStyles"))
     if (this.state.redirect) {
       return (
-        <Redirect to={{
-          pathname: this.state.redirectTo,
-          state: {
-            allStyles: this.state.allStyles,
-            styleIndex: this.state.styleIndex
+        <Redirect to=
+          {
+            {
+              pathname: this.state.redirectTo,
+              state: {
+                allStyles: this.state.allStyles,
+                styleIndex: this.state.styleIndex
+              }
+            }
           }
-        }} />
+        />
       )
     }
 
