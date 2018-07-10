@@ -20,7 +20,7 @@ class Home extends React.Component {
         primary: '#ff5db1',
         secondary: '#ff2596',
         tertiary: '#ef007c',
-        overlay: ''
+        overlay: null
       }, {
         style: 'fallout',
         background: 'background-fallout',
@@ -42,7 +42,7 @@ class Home extends React.Component {
         primary: '#0033BB',
         secondary: '#002299',
         tertiary: '#000055',
-        overlay: ''
+        overlay: null
       }, {
         style: 'steel',
         background: 'background-steel',
@@ -53,7 +53,7 @@ class Home extends React.Component {
         primary: '#BBBBFF',
         secondary: '9999DD',
         tertiary: '#555599',
-        overlay: ''
+        overlay: null
       }],
       styleIndex: 0,
       style: 'blood-dragon',
@@ -65,7 +65,7 @@ class Home extends React.Component {
       primary: '#ff5db1',
       secondary: '#ff2596',
       tertiary: '#ef007c',
-      overlay: '',
+      overlay: null,
       user: null
     }
 
