@@ -264,17 +264,10 @@ class Home extends React.Component {
               </div>
               <h1 className="gametitle">Luupeli</h1>
               <div id="btn-group" className="btn-group">
-
                 <button className="gamelink" onClick={this.proceedToSelect}>Pelaa</button>
-<<<<<<< HEAD
-                <button >Kirjaudu sisään</button>
-                <button>Luo käyttäjätili</button>
-                <button className="theme" onClick={this.changeCss}>Vaihda css</button>
-=======
                 <button className="loginlink" onClick={this.proceedToSelect}>Kirjaudu sisään</button>
                 <button className="signuplink" onClick={this.proceedToSelect}>Luo käyttäjätili</button>
                 <button className="theme" onClick={this.changeCss}>Vaihda teema</button>
->>>>>>> login
                 <p>Teema: {this.state.style}</p>
                 <div className={this.state.style} />
               </div>
