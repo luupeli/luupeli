@@ -59,7 +59,8 @@ class Home extends React.Component {
       flairLayerA: 'blinder',
       primary: '#ff5db1',
       secondary: '#ff2596',
-      tertiary: '#ef007c'
+      tertiary: '#ef007c',
+      user: null
     }
 
     if (localStorage.getItem('styleIndex') === null) {
