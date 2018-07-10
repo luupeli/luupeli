@@ -1,4 +1,5 @@
 import React from 'react'
+import { Redirect, Link } from 'react-router-dom'
 import loginService from '../services/login'
 import '../styles/App.css'
 
@@ -6,12 +7,15 @@ class Login extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      style: localStorage.getItem('style'),
+      //style: localStorage.getItem('style'),
+      allStyles: JSON.parse(localStorage.getItem("allStyles")),
+      styleIndex: localStorage.getItem('styleIndex'),
       error: null,
       username: '',
       password: '',
       user: null
     }
+
 
     this.login = this.login.bind(this)
     this.handleLoginFieldChange = this.handleLoginFieldChange.bind(this)
@@ -51,36 +55,66 @@ class Login extends React.Component {
   }
 
   render() {
+
+    let i = this.state.styleIndex
+
+
     return (
-      <div className="App">
-        <div className="login-clean">
-          <form onSubmit={this.login}>
-            <h2 className="sr-only">Kirjaudu sisään</h2>
-            <div className="form-group">
-              <input
-                className="form-control"
-                type="username"
-                name="username"
-                placeholder="Käyttäjätunnus"
-                value={this.state.username}
-                onChange={this.handleLoginFieldChange}
-              />
+
+      <div className={this.state.allStyles[i].background}>
+        <div className={this.state.allStyles[i].style}>
+          <div className="App">
+            <div className={this.state.allStyles[i].flairLayerA}>
+
             </div>
-            <div className="form-group">
-              <input
-                className="form-control"
-                type="password"
-                name="password"
-                placeholder="Salasana"
-                value={this.state.password}
-                onChange={this.handleLoginFieldChange}
-              />
+            <div className={this.state.allStyles[i].flairLayerB}>
+
             </div>
-            <div className="form-group btn-group">
-              <button className="btn btn-block" type="submit">Kirjaudu</button>
+            <div className={this.state.allStyles[i].flairLayerC}>
+
             </div>
-            {/* <a href="#" className="forgot">Unohditko sähköpostisi tai salasanasi?</a> */}
-          </form>
+            <div className={this.state.allStyles[i].flairLayerD}>
+
+            </div>
+            <h2 className="toprow">Luukirjaudu sisään</h2>
+            <div class="transbox">
+              <div className="login-clean">
+                <form onSubmit={this.login}>
+                  <h2 className="sr-only">Placeholder #1</h2>
+                  <div className="form-group">
+                    <input
+                      className="form-control"
+                      type="username"
+                      name="username"
+                      placeholder="Käyttäjätunnus"
+                      value={this.state.username}
+                      onChange={this.handleLoginFieldChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <input
+                      className="form-control"
+                      type="password"
+                      name="password"
+                      placeholder="Salasana"
+                      value={this.state.password}
+                      onChange={this.handleLoginFieldChange}
+                    />
+                  </div>
+                  <div className="form-group btn-group">
+                    <button className="btn btn-block" type="submit">Kirjaudu</button>
+                  </div>
+
+                  {/* <a href="#" className="forgot">Unohditko sähköpostisi tai salasanasi?</a> */}
+                </form>
+              </div>
+            </div>
+            <div className="btn-group">
+
+              <button id="goBackButton" className="gobackbutton" onClick={this.proceedToMain}>Takaisin</button>
+
+            </div>
+          </div>
         </div>
       </div>
     )
