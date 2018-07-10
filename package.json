@@ -6,7 +6,10 @@
     "ajv": "^6.5.1",
     "axios": "^0.18.0",
     "chai": "^4.1.2",
+    "child_process": "^1.0.2",
     "express": "^4.16.3",
+    "get-port": "^3.2.0",
+    "net": "^1.0.2",
     "node-emoji": "^1.8.1",
     "pg": "^7.4.3",
     "pg-hstore": "^2.3.2",
@@ -18,13 +21,15 @@
     "sequelize": "^4.37.8",
     "shallow": "^1.0.0",
     "string-similarity": "^1.2.0",
-    "styled-components": "^3.3.3"
+    "styled-components": "^3.3.3",
+    "tree-kill": "^1.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom --coverage --collectCoverageFrom=**/src/menus/*.js --collectCoverageFrom=**/src/games/*.js",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "puppe": "node scripts/puppe.js"
   },
   "devDependencies": {
     "enzyme": "^3.3.0",

@@ -75,8 +75,6 @@ class Home extends React.Component {
     this.setThemeColors = this.setThemeColors.bind(this)
   }
 
-<<<<<<< HEAD
-=======
   componentDidMount() {
     const loggedUserJSON = localStorage.getItem('loggedUser')
     if (loggedUserJSON) {
@@ -85,7 +83,6 @@ class Home extends React.Component {
     }
   }
 
->>>>>>> aef80fdd78f367ea58fc310fd574ed1e54d8c1f1
   changeCss(event) {
     var next = parseInt(localStorage.getItem('styleIndex')) + 1;
 
@@ -95,12 +92,7 @@ class Home extends React.Component {
         styleIndex: next,
         style: 'placeholder-next-theme-name'
       })
-<<<<<<< HEAD
     } else {
-=======
-    }
-    else {
->>>>>>> aef80fdd78f367ea58fc310fd574ed1e54d8c1f1
       localStorage.setItem('styleIndex', 0);
       this.setState({
         styleIndex: 0,
@@ -109,10 +101,6 @@ class Home extends React.Component {
       next = 0;
     }
     console.log('new style index is now: ' + next)
-<<<<<<< HEAD
-
-=======
->>>>>>> aef80fdd78f367ea58fc310fd574ed1e54d8c1f1
     window.location.reload();
   }
 
@@ -165,10 +153,6 @@ class Home extends React.Component {
     this.setThemeColors(i);
 
     return (
-<<<<<<< HEAD
-      
-=======
->>>>>>> aef80fdd78f367ea58fc310fd574ed1e54d8c1f1
       <div>
         <div className={this.state.background}>
           <div className={this.state.style}>
@@ -187,14 +171,6 @@ class Home extends React.Component {
               </div>
               <h1 className="gametitle">Luupeli</h1>
               <div id="btn-group" className="btn-group">
-<<<<<<< HEAD
-
-                <button className="gamelink" onClick={this.proceedToSelect}>Pelaa</button>
-                <button >Kirjaudu sisään</button>
-                <button>Luo käyttäjätili</button>
-                <button className="theme" onClick={this.changeCss}>Vaihda css</button>
-                <p>Teema: {this.state.style}</p>
-=======
                 <button
                   className="gamelink"
                   onClick={this.proceedToSelect}>
@@ -218,7 +194,6 @@ class Home extends React.Component {
                 <p>
                   Teema: {this.state.style}
                 </p>
->>>>>>> aef80fdd78f367ea58fc310fd574ed1e54d8c1f1
                 <div className={this.state.style} />
               </div>
             </div>
