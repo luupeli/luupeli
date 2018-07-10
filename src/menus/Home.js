@@ -62,7 +62,8 @@ class Home extends React.Component {
       flairLayerA: 'blinder',
       primary: '#ff5db1',
       secondary: '#ff2596',
-      tertiary: '#ef007c'
+      tertiary: '#ef007c',
+      user: null
     }
 
 
@@ -132,6 +133,14 @@ class Home extends React.Component {
   //   this.setState({allStyles: [themeDeepBlue,themeFallout,themeBloodDragon,themeSteel]});
   // }
 
+  componentDidMount() {
+    const loggedUserJSON = localStorage.getItem('loggedUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      this.setState({ user })
+    }
+  }
+
   changeCss(event) {
     var next = parseInt(localStorage.getItem('styleIndex')) + 1;
 
@@ -175,9 +184,17 @@ class Home extends React.Component {
     window.location.reload();
   }
 
+  //Getting ready to redirect. Let's look at the class name of the calling event
+  //so that we'll know which page we are going to go to.
   proceedToSelect(event) {
     this.setState({ redirect: true })
-    this.setState({ redirectTo: '/game' })
+    if (event.target.className === 'gamelink') {
+      this.setState({ redirectTo: '/game' })
+    } else if (event.target.className === 'loginlink') {
+      this.setState({ redirectTo: '/login' })
+    } else if (event.target.className === 'signuplink') {
+      this.setState({ redirectTo: '/register' })
+    }
   }
 
   setThemeColors(i) {
@@ -249,9 +266,15 @@ class Home extends React.Component {
               <div id="btn-group" className="btn-group">
 
                 <button className="gamelink" onClick={this.proceedToSelect}>Pelaa</button>
+<<<<<<< HEAD
                 <button >Kirjaudu sisään</button>
                 <button>Luo käyttäjätili</button>
                 <button className="theme" onClick={this.changeCss}>Vaihda css</button>
+=======
+                <button className="loginlink" onClick={this.proceedToSelect}>Kirjaudu sisään</button>
+                <button className="signuplink" onClick={this.proceedToSelect}>Luo käyttäjätili</button>
+                <button className="theme" onClick={this.changeCss}>Vaihda teema</button>
+>>>>>>> login
                 <p>Teema: {this.state.style}</p>
                 <div className={this.state.style} />
               </div>

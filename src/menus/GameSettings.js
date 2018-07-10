@@ -28,7 +28,8 @@ class GameSettings extends React.Component {
 			allBodyParts: [],      // used to store an array of all known bodyparts
 			images: [],			   // used to store an array of images which meet the selection criteria
 			allStyles: props.location.state.allStyles,
-			styleIndex: props.location.state.styleIndex
+			styleIndex: props.location.state.styleIndex,
+			user: null
 		};
 	
 		this.changeAnimal = this.changeAnimal.bind(this)
@@ -94,6 +95,14 @@ class GameSettings extends React.Component {
 			})
 		console.log(this.state.allImages)
 	}
+
+	componentDidMount() {
+    const loggedUserJSON = localStorage.getItem('loggedUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      this.setState({ user })
+    }
+  }
 
 	changeGameLength(event) {
 		this.state.gameLength = event.target.value

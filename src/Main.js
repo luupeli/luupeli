@@ -8,12 +8,16 @@ import GameSettings from './menus/GameSettings'
 import BoneListing from './menus/BoneListing'
 import AddBone from './menus/AddBone'
 import UpdateBone from './menus/UpdateBone'
+import Login from './menus/Login'
+import Register from './menus/Register'
 
 const Main = () => (
   <div>
     <main>
       <Switch>
         <Route exact path='/' component={Home} />
+        <Route exact path='/login' component={Login} />
+        <Route exact path='/register' component={Register} />
         <Route exact path='/game' component={SelectGameMode} />
         <Route exact path='/writinggame' component={WritingGame} />
         <Route exact path='/settings' component={GameSettings} />

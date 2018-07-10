@@ -15,7 +15,8 @@ class BoneListing extends React.Component {
 			selectedAnimals: [],
 			bodyParts: [],
 			selectedBodyParts: [],
-			search: ''
+			search: '',
+			user: null
 		}
 
 		this.handleAnimalChange = this.handleAnimalChange.bind(this);
@@ -48,6 +49,12 @@ class BoneListing extends React.Component {
 			.catch((error) => {
 				console.log(error)
 			})
+
+		const loggedUserJSON = localStorage.getItem('loggedUser')
+		if (loggedUserJSON) {
+			const user = JSON.parse(loggedUserJSON)
+			this.setState({ user })
+		}
 	}
 
 	handleAnimalChange(event) {

@@ -25,7 +25,8 @@ class UpdateBone extends React.Component {
 			newImages: [],
 			images: [],
 			animals: [],
-			bodyParts: []
+			bodyParts: [],
+			user: null
 		};
 
 		this.handleChange = this.handleChange.bind(this)
@@ -64,6 +65,12 @@ class UpdateBone extends React.Component {
 			})
 		this.fetchAnimals()
 		this.fetchBodyparts()
+
+		const loggedUserJSON = localStorage.getItem('loggedUser')
+		if (loggedUserJSON) {
+			const user = JSON.parse(loggedUserJSON)
+			this.setState({ user })
+		}
 	}
 
 	//Adds a new "empty file" to newImages list when user clicks a button to add more images.
