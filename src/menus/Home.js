@@ -6,8 +6,6 @@ import { injectGlobal } from 'styled-components';
 
 class Home extends React.Component {
 
-
-
   constructor(props) {
     super(props);
 
@@ -62,8 +60,7 @@ class Home extends React.Component {
       flairLayerA: 'blinder',
       primary: '#ff5db1',
       secondary: '#ff2596',
-      tertiary: '#ef007c',
-      user: null
+      tertiary: '#ef007c'
     }
 
 
@@ -83,64 +80,6 @@ class Home extends React.Component {
     this.setThemeColors = this.setThemeColors.bind(this)
   }
 
-  // componentWillMount() {
-
-  //   const themeBloodDragon = {
-  //     style:'blood-dragon',
-  //     background:'background-blood-dragon',
-  //     flairLayerD:'grid-sub',
-  //     flairLayerC:'grid',
-  //     flairLayerB:'grid-flair',
-  //     flairLayerA:'blinder',
-  //     primary:'#ff5db1',
-  //     secondary:'#ff2596',
-  //     tertiary:'#ef007c'
-  //   };
-  //   const themeFallout = {
-  //     style: 'fallout',
-  //     background: 'background-fallout',
-  //     flairLayerD: 'none',
-  //     flairLayerC: 'none',
-  //     flairLayerB: 'none',
-  //     flairLayerA: 'none',
-  //     primary: '#33BB33',
-  //     secondary: '#229922',
-  //     tertiary: '#115511'
-  //   };
-  //   const themeDeepBlue = {
-  //     style: 'deep-blue',
-  //     background: 'background-deep-blue',
-  //     flairLayerD: 'none',
-  //     flairLayerC: 'none',
-  //     flairLayerB: 'none',
-  //     flairLayerA: 'none',
-  //     primary: '#0033BB',
-  //     secondary: '#002299',
-  //     tertiary: '#000055',
-  //   };
-  //   const themeSteel = {
-  //     style: 'steel',
-  //     background: 'background-steel',
-  //     flairLayerD: 'none',
-  //     flairLayerC: 'none',
-  //     flairLayerB: 'none',
-  //     flairLayerA: 'none',
-  //     primary: '#BBBBFF',
-  //     secondary: '9999DD',
-  //     tertiary: '#555599',
-  //   };
-
-  //   this.setState({allStyles: [themeDeepBlue,themeFallout,themeBloodDragon,themeSteel]});
-  // }
-
-  componentDidMount() {
-    const loggedUserJSON = localStorage.getItem('loggedUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      this.setState({ user })
-    }
-  }
-
   changeCss(event) {
     var next = parseInt(localStorage.getItem('styleIndex')) + 1;
 
@@ -151,55 +90,25 @@ class Home extends React.Component {
         styleIndex: next,
         style: 'placeholder-next-theme-name'
       })
-      document.body.style.color = "#ffffff"
-      document.body.style.background = "#000000"
-    }
-    else {
+    } else {
       localStorage.setItem('styleIndex', 0);
       this.setState({
         styleIndex: 0,
         style: 'placeholder-last-theme-name'
       })
-      document.body.style.color = "#ffffff"
-      document.body.style.background = "#000000"
       next = 0;
     }
     console.log('new style index is now: ' + next)
-    // this.setState({
-
-    //   style: this.state.allStyles[next].style,
-    //   background: this.state.allStyles[next].background,
-    //   flairLayerD: this.state.allStyles[next].flairLayerD,
-    //   flairLayerC: this.state.allStyles[next].flairLayerC,
-    //   flairLayerB: this.state.allStyles[next].flairLayerB,
-    //   flairLayerA: this.state.allStyles[next].flairLayerA,
-    //   primary: this.state.allStyles[next].primary,
-    //   secondary: this.state.allStyles[next].secondary,
-    //   tertiary: this.state.allStyles[next].tertiary
-    // })
-
-
-
 
     window.location.reload();
   }
 
-  //Getting ready to redirect. Let's look at the class name of the calling event
-  //so that we'll know which page we are going to go to.
   proceedToSelect(event) {
     this.setState({ redirect: true })
-    if (event.target.className === 'gamelink') {
-      this.setState({ redirectTo: '/game' })
-    } else if (event.target.className === 'loginlink') {
-      this.setState({ redirectTo: '/login' })
-    } else if (event.target.className === 'signuplink') {
-      this.setState({ redirectTo: '/register' })
-    }
+    this.setState({ redirectTo: '/game' })
   }
 
   setThemeColors(i) {
-
-
 
     injectGlobal`
     :root {
@@ -247,8 +156,7 @@ class Home extends React.Component {
 
 
     return (
-
-
+      
       <div>
 
         <div className={this.state.background}>
@@ -264,10 +172,11 @@ class Home extends React.Component {
               </div>
               <h1 className="gametitle">Luupeli</h1>
               <div id="btn-group" className="btn-group">
+
                 <button className="gamelink" onClick={this.proceedToSelect}>Pelaa</button>
-                <button className="loginlink" onClick={this.proceedToSelect}>Kirjaudu sisään</button>
-                <button className="signuplink" onClick={this.proceedToSelect}>Luo käyttäjätili</button>
-                <button className="theme" onClick={this.changeCss}>Vaihda teema</button>
+                <button >Kirjaudu sisään</button>
+                <button>Luo käyttäjätili</button>
+                <button className="theme" onClick={this.changeCss}>Vaihda css</button>
                 <p>Teema: {this.state.style}</p>
                 <div className={this.state.style} />
               </div>

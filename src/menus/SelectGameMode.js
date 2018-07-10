@@ -15,6 +15,7 @@ class SelectGameMode extends React.Component {
     this.proceedToSettings = this.proceedToSettings.bind(this)
     this.proceedToMain = this.proceedToMain.bind(this)
   }
+
   componentDidMount() {
     const loggedUserJSON = localStorage.getItem('loggedUser')
     if (loggedUserJSON) {
@@ -27,7 +28,6 @@ class SelectGameMode extends React.Component {
     this.setState({ redirect: true })
     this.setState({ redirectTo: '/settings' })
   }
-
 
   proceedToMain(event) {
     this.setState({ redirect: true })
