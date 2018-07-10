@@ -113,6 +113,7 @@ class Login extends React.Component {
   render() {
     let i = this.state.styleIndex
     return (
+      <div className={this.state.allStyles[i].overlay}>
       <div className={this.state.allStyles[i].background}>
         <div className={this.state.allStyles[i].style}>
           <div className="App">
@@ -143,6 +144,7 @@ class Login extends React.Component {
           </div>
         </div>
       </div>
+    </div>
     )
   }
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Redirect, Link } from 'react-router-dom'
 import '../styles/App.css'
+import '../styles/Crt.css'
 import { injectGlobal } from 'styled-components'
 
 class Home extends React.Component {
@@ -18,7 +19,8 @@ class Home extends React.Component {
         flairLayerA: 'blinder',
         primary: '#ff5db1',
         secondary: '#ff2596',
-        tertiary: '#ef007c'
+        tertiary: '#ef007c',
+        overlay: ''
       }, {
         style: 'fallout',
         background: 'background-fallout',
@@ -28,7 +30,8 @@ class Home extends React.Component {
         flairLayerA: 'none',
         primary: '#33BB33',
         secondary: '#229922',
-        tertiary: '#115511'
+        tertiary: '#115511',
+        overlay: 'crt'
       }, {
         style: 'deep-blue',
         background: 'background-deep-blue',
@@ -39,6 +42,7 @@ class Home extends React.Component {
         primary: '#0033BB',
         secondary: '#002299',
         tertiary: '#000055',
+        overlay: ''
       }, {
         style: 'steel',
         background: 'background-steel',
@@ -49,6 +53,7 @@ class Home extends React.Component {
         primary: '#BBBBFF',
         secondary: '9999DD',
         tertiary: '#555599',
+        overlay: ''
       }],
       styleIndex: 0,
       style: 'blood-dragon',
@@ -60,6 +65,7 @@ class Home extends React.Component {
       primary: '#ff5db1',
       secondary: '#ff2596',
       tertiary: '#ef007c',
+      overlay: '',
       user: null
     }
 
@@ -137,7 +143,8 @@ class Home extends React.Component {
         flairLayerA: this.state.allStyles[localStorage.styleIndex].flairLayerA,
         primary: this.state.allStyles[localStorage.styleIndex].primary,
         secondary: this.state.allStyles[localStorage.styleIndex].secondary,
-        tertiary: this.state.allStyles[localStorage.styleIndex].tertiary
+        tertiary: this.state.allStyles[localStorage.styleIndex].tertiary,
+        overlay: this.state.allStyles[localStorage.styleIndex].overlay
       })
     }
   }
@@ -203,7 +210,7 @@ class Home extends React.Component {
     this.setThemeColors(i)
 
     return (
-      <div>
+      <div className={this.state.overlay}>
         <div className={this.state.background}>
           <div className={this.state.style}>
             <div className="App">

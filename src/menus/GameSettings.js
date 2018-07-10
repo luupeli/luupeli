@@ -251,7 +251,7 @@ class GameSettings extends React.Component {
 
 		// As a general note about using forms w/ NodeJS... A single grouping of radio buttons (single choice) is identified by identical "name" parameter. Separate values within such a grouping are marked with distinct "value" parameters.
 		return (
-			<div>
+			<div className={this.state.allStyles[i].overlay}>
 				<div className={this.state.allStyles[i].background}>
 					<div className={this.state.allStyles[i].style}>
 						<div className="App">

@@ -59,6 +59,7 @@ class Register extends React.Component {
 		let i = this.state.styleIndex
 		console.log(this.state)
 		return (
+	      <div className={this.state.allStyles[i].overlay}>
 			<div className={this.state.allStyles[i].background}>
 				<div className={this.state.allStyles[i].style}>
 					<div className="App">
@@ -157,6 +158,7 @@ class Register extends React.Component {
 						</div>
 					</div>
 				</div>
+			</div>
 			</div>
 		)
 	}
