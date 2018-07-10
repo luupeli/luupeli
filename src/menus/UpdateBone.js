@@ -66,7 +66,7 @@ class UpdateBone extends React.Component {
 		this.fetchAnimals()
 		this.fetchBodyparts()
 
-		const loggedUserJSON = localStorage.getItem('loggedUser')
+		const loggedUserJSON = localStorage.getItem('loggedLohjanLuunkeraajaUser')
 		if (loggedUserJSON) {
 			const user = JSON.parse(loggedUserJSON)
 			this.setState({ user })

@@ -95,7 +95,7 @@ class GameSettings extends React.Component {
 	}
 
 	componentDidMount() {
-		const loggedUserJSON = localStorage.getItem('loggedUser')
+		const loggedUserJSON = localStorage.getItem('loggedLohjanLuunkeraajaUser')
 		if (loggedUserJSON) {
 			const user = JSON.parse(loggedUserJSON)
 			this.setState({ user })

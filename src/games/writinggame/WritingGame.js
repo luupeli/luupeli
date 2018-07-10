@@ -19,13 +19,22 @@ class WritingGame extends React.Component {
       allBodyParts: props.location.state.allBodyParts,  // This is an array of all the known bodyparts.
       allAnimals: props.location.state.allAnimals,       // This is an array of all the known animals.
       bpname: 'jotain',
-      style: localStorage.getItem('style')
+      style: localStorage.getItem('style'),
+      user: null
     };
     console.log(this.state.images)
     console.log(this.state.allBodyParts)
     console.log(this.state.allAnimals)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  componentDidMount() {
+    const loggedUserJSON = localStorage.getItem('loggedLohjanLuunkeraajaUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      this.setState({ user })
+    }
   }
 
   handleChange(event) {
@@ -42,7 +51,6 @@ class WritingGame extends React.Component {
     event.preventDefault()
   }
 
-
   /**
     * Checks if the answer is correct, increments correct counter if needed and shows&hides the proper message after that.
     * If the answer is close enough, then a point (or perhaps a fraction of a point?) will be awarded.
@@ -51,7 +59,6 @@ class WritingGame extends React.Component {
     * Note for further development: the 'string-similarity' could also be used to gauge case-correctiveness of Latin names. Case is NOT irrelevant! 
    */
   checkCorrectness() {
-
     var similarity = StringSimilarity.compareTwoStrings(this.state.images[this.state.index].bone.nameLatin.toLowerCase(), this.state.value.toLowerCase()); // calculate similarity
 
     if (this.state.images[this.state.index].bone.nameLatin.toLowerCase() === this.state.value.toLowerCase()) {

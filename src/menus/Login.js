@@ -33,7 +33,7 @@ class Login extends React.Component {
         password: this.state.password
       })
       console.log(user)
-      window.localStorage.setItem('loggedUser', JSON.stringify(user))
+      window.localStorage.setItem('loggedLohjanLuunkeraajaUser', JSON.stringify(user))
       this.setState({
         username: '',
         password: '',
