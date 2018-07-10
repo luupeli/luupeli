@@ -1,13 +1,50 @@
+
+import React from 'react'
 import { shallow,mount,render} from 'enzyme'
+import { Link } from 'react-router-dom'
+import SelectGameMode from './SelectGameMode'
+
+
+// var localStorageMock = (function() {
+//   var store = {};
+//   return {
+//     getItem: function(key) {
+//       return store[key];
+//     },
+//     setItem: function(key, value) {
+//       store[key] = value.toString();
+//     },
+//     clear: function() {
+//       store = {};
+//     },
+//     removeItem: function(key) {
+//       delete store[key];
+//     }
+//   };
+// })();
+// Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+
+const retry = (fn, ms) => new Promise(resolve => { 
+  fn()
+    .then(resolve)
+    .catch(() => {
+      setTimeout(() => {
+        console.log('retrying...');
+        retry(fn, ms).then(resolve);
+      }, ms);
+    })
+});
 
 const puppeteer = require('puppeteer')
 
 let browser
 let page
 
+
+
 beforeAll(async () => {
-	//browser = await puppeteer.launch({args: ['--no-sandbox']});
-    browser = await puppeteer.launch()
+	browser = await puppeteer.launch({args: ['--no-sandbox --disable-http2']});
+  //  browser = await puppeteer.launch()
 	page = await browser.newPage()
   await page.setViewport({ width: 1280, height: 800 })
   await page.goto('http://localhost:3000')
@@ -27,6 +64,14 @@ afterAll(async () => {
 })
 
 describe("SelectGameMode tests", () => {
+	
+	it('should open page', async () => {
+  browser = await puppeteer.launch({ headless: false });
+  page = await browser.newPage();
+  const response = await retry(() => page.goto('http://localhost:3000'), 1000);
+  assert.equal(response.status(), 200);
+});
+	
   test('page renders', async () => {
     const textContent = await page.$eval('#gameBody', el => el.textContent)
     expect(textContent.includes("Luupelimuoto")).toBe(true)
@@ -40,12 +85,11 @@ describe("SelectGameMode tests", () => {
 
 
 //   it("renders a Link that takes you to the game", () => {
-//     const component = shallow(<Home {...HOME_STATE}/>)
+//     const component = shallow(<SelectGameMode />)
 
 //     const toprow = component.find('.toprow')
 //     expect(gameltoprow.length).toBe(1)
-//     const secondrow = component.find('.secondrow')
-//     expect(secondrow.length).toBe(1)
+
 //    })
 
 })

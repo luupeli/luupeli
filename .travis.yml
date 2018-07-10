@@ -1,8 +1,7 @@
 language: node_js
 node_js:
   - "10"
-
-  deploy:
+deploy:
   provider: heroku
   api_key:
     secure: da05675c-e520-446d-8a18-97d28928a5c8
@@ -11,3 +10,10 @@ app: luupeli
 sudo: required
 addons:
   chrome: stable
+
+services:
+  - mongodb
+  
+before_script:
+  - sleep 15
+  - mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'

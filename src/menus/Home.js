@@ -6,23 +6,23 @@ import { injectGlobal } from 'styled-components';
 
 class Home extends React.Component {
 
- 
-  
+
+
   constructor(props) {
     super(props);
 
     this.state = {
-      allStyles: [  {
-        style:'blood-dragon',
-        background:'background-blood-dragon',
-        flairLayerD:'grid-sub',
-        flairLayerC:'grid',
-        flairLayerB:'grid-flair',
-        flairLayerA:'blinder',
-        primary:'#ff5db1',
-        secondary:'#ff2596',
-        tertiary:'#ef007c'
-      },{
+      allStyles: [{
+        style: 'blood-dragon',
+        background: 'background-blood-dragon',
+        flairLayerD: 'grid-sub',
+        flairLayerC: 'grid',
+        flairLayerB: 'grid-flair',
+        flairLayerA: 'blinder',
+        primary: '#ff5db1',
+        secondary: '#ff2596',
+        tertiary: '#ef007c'
+      }, {
         style: 'fallout',
         background: 'background-fallout',
         flairLayerD: 'none',
@@ -32,7 +32,7 @@ class Home extends React.Component {
         primary: '#33BB33',
         secondary: '#229922',
         tertiary: '#115511'
-      },{
+      }, {
         style: 'deep-blue',
         background: 'background-deep-blue',
         flairLayerD: 'none',
@@ -53,24 +53,24 @@ class Home extends React.Component {
         secondary: '9999DD',
         tertiary: '#555599',
       }],
-      styleIndex:0,
-      style:'blood-dragon',
-      background:'background-blood-dragon',
-      flairLayerD:'grid-sub',
-      flairLayerC:'grid',
-      flairLayerB:'grid-flair',
-      flairLayerA:'blinder',
-      primary:'#ff5db1',
-      secondary:'#ff2596',
-      tertiary:'#ef007c'
+      styleIndex: 0,
+      style: 'blood-dragon',
+      background: 'background-blood-dragon',
+      flairLayerD: 'grid-sub',
+      flairLayerC: 'grid',
+      flairLayerB: 'grid-flair',
+      flairLayerA: 'blinder',
+      primary: '#ff5db1',
+      secondary: '#ff2596',
+      tertiary: '#ef007c'
     }
 
-    
 
-    
-   if (localStorage.getItem('styleIndex') === null) {
+
+
+    if (localStorage.getItem('styleIndex') === null) {
       localStorage.setItem('styleIndex', 0)
-  }
+    }
     // localStorage.setItem('allStyles','');
 
     localStorage.setItem('allStyles', JSON.stringify(this.state.allStyles));   // Array must be converted to JSON before storing it into localStorage!
@@ -83,7 +83,7 @@ class Home extends React.Component {
   }
 
   // componentWillMount() {
-   
+
   //   const themeBloodDragon = {
   //     style:'blood-dragon',
   //     background:'background-blood-dragon',
@@ -128,50 +128,50 @@ class Home extends React.Component {
   //     secondary: '9999DD',
   //     tertiary: '#555599',
   //   };
-  
+
   //   this.setState({allStyles: [themeDeepBlue,themeFallout,themeBloodDragon,themeSteel]});
   // }
-  
+
   changeCss(event) {
-   var next = parseInt(localStorage.getItem('styleIndex'))+1;
-    
-    
-    if (this.state.allStyles[next]!=null) {
+    var next = parseInt(localStorage.getItem('styleIndex')) + 1;
+
+
+    if (this.state.allStyles[next] != null) {
       localStorage.setItem('styleIndex', next);
       this.setState({
         styleIndex: next,
         style: 'placeholder-next-theme-name'
       })
-        document.body.style.color = "#ffffff"
-        document.body.style.background = "#000000"
-      }
-      else {
-        localStorage.setItem('styleIndex', 0);
-        this.setState({
-          styleIndex: 0,
-          style: 'placeholder-last-theme-name'
-        })
-          document.body.style.color = "#ffffff"
-          document.body.style.background = "#000000"
-        next=0;
-        }
-      console.log('new style index is now: '+next)
-        // this.setState({
+      document.body.style.color = "#ffffff"
+      document.body.style.background = "#000000"
+    }
+    else {
+      localStorage.setItem('styleIndex', 0);
+      this.setState({
+        styleIndex: 0,
+        style: 'placeholder-last-theme-name'
+      })
+      document.body.style.color = "#ffffff"
+      document.body.style.background = "#000000"
+      next = 0;
+    }
+    console.log('new style index is now: ' + next)
+    // this.setState({
 
-        //   style: this.state.allStyles[next].style,
-        //   background: this.state.allStyles[next].background,
-        //   flairLayerD: this.state.allStyles[next].flairLayerD,
-        //   flairLayerC: this.state.allStyles[next].flairLayerC,
-        //   flairLayerB: this.state.allStyles[next].flairLayerB,
-        //   flairLayerA: this.state.allStyles[next].flairLayerA,
-        //   primary: this.state.allStyles[next].primary,
-        //   secondary: this.state.allStyles[next].secondary,
-        //   tertiary: this.state.allStyles[next].tertiary
-        // })
-    
-      
+    //   style: this.state.allStyles[next].style,
+    //   background: this.state.allStyles[next].background,
+    //   flairLayerD: this.state.allStyles[next].flairLayerD,
+    //   flairLayerC: this.state.allStyles[next].flairLayerC,
+    //   flairLayerB: this.state.allStyles[next].flairLayerB,
+    //   flairLayerA: this.state.allStyles[next].flairLayerA,
+    //   primary: this.state.allStyles[next].primary,
+    //   secondary: this.state.allStyles[next].secondary,
+    //   tertiary: this.state.allStyles[next].tertiary
+    // })
 
-    
+
+
+
     window.location.reload();
   }
 
@@ -181,9 +181,9 @@ class Home extends React.Component {
   }
 
   setThemeColors(i) {
-    
- 
-    
+
+
+
     injectGlobal`
     :root {
       
@@ -193,7 +193,7 @@ class Home extends React.Component {
       }
     }`;
 
-    if (this.state.styleIndex!=localStorage.styleIndex && this.state.allStyles[localStorage.styleIndex] !==undefined) {
+    if (this.state.styleIndex != localStorage.styleIndex && this.state.allStyles[localStorage.styleIndex] !== undefined) {
       this.setState({
         styleIndex: localStorage.styleIndex,
         style: this.state.allStyles[localStorage.styleIndex].style,
@@ -214,51 +214,51 @@ class Home extends React.Component {
   render() {
     console.log(localStorage.getItem("allStyles"))
     if (this.state.redirect) {
-			return (
-				<Redirect to={{
-					pathname: this.state.redirectTo,
-					state: {
-            allStyles:this.state.allStyles,
-            styleIndex:this.state.styleIndex
-      		}
-				}} />
-			)
+      return (
+        <Redirect to={{
+          pathname: this.state.redirectTo,
+          state: {
+            allStyles: this.state.allStyles,
+            styleIndex: this.state.styleIndex
+          }
+        }} />
+      )
     }
-    
+
     let i = parseInt(localStorage.getItem('styleIndex'));
     this.setThemeColors(i);
 
-  
+
     return (
 
 
       <div>
-        
-      <div className={this.state.background}>
-      <div className={this.state.style}> 
-        <div className="App">
-          <div className={this.state.flairLayerA}>
-          </div>
-          <div className={this.state.flairLayerB}>
-          </div>
-          <div className={this.state.flairLayerC}>
-          </div>
-          <div className={this.state.flairLayerD}>
-          </div>
-          <h1 className="gametitle">Luupeli</h1>
-          <div id="btn-group" className="btn-group">
-            
-            <button className="gamelink" onClick={this.proceedToSelect}>Pelaa</button>
-            <button >Kirjaudu sisään</button>
-            <button>Luo käyttäjätili</button>
-            <button className="theme" onClick={this.changeCss}>Vaihda css</button>
-            <p>Teema: {this.state.style}</p>
-            <div className={this.state.style}/>
+
+        <div className={this.state.background}>
+          <div className={this.state.style}>
+            <div className="App">
+              <div className={this.state.flairLayerA}>
+              </div>
+              <div className={this.state.flairLayerB}>
+              </div>
+              <div className={this.state.flairLayerC}>
+              </div>
+              <div className={this.state.flairLayerD}>
+              </div>
+              <h1 className="gametitle">Luupeli</h1>
+              <div id="btn-group" className="btn-group">
+
+                <button className="gamelink" onClick={this.proceedToSelect}>Pelaa</button>
+                <button >Kirjaudu sisään</button>
+                <button>Luo käyttäjätili</button>
+                <button className="theme" onClick={this.changeCss}>Vaihda css</button>
+                <p>Teema: {this.state.style}</p>
+                <div className={this.state.style} />
+              </div>
+            </div>
           </div>
         </div>
-        </div>
-      </div>
-      
+
       </div>
     )
   }
