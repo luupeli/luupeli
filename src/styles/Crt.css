@@ -156,11 +156,34 @@ http://aleclownes.com/2017/02/01/crt-display.html by Alec Lownes.
     left: 0;
     bottom: 0;
     right: 0;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-    z-index: 4;
-    background-size: 100% 4px, 5px 100%;
+    background: linear-gradient(rgba(29, 24, 24, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.13), rgba(0, 255, 0, 0.05), rgba(0, 0, 255, 0.08));
+    z-index: 5;
+    background-size: 100% 5px, 5px 100%;
     pointer-events: none;
   }
   .crt {
-    animation: textShadow 1.6s infinite;
+    animation: textShadow 0.01s infinite;
+  }
+
+  .fallout h1, .fallout h2, .fallout p, .fallout label {
+    overflow: hidden; /* Ensures the content is not revealed until the animation */
+  /*  border-right: .15em solid orange; /* The typwriter cursor */
+    white-space: nowrap; /* Keeps the content on a single line */
+    margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+    letter-spacing: .15em; /* Adjust as needed */
+    animation: 
+      typing 0.75s steps(40, end),
+      blink-caret .75s step-end infinite;
+  }
+  
+  /* The typing effect */
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+  
+  /* The typewriter cursor effect */
+  @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: orange; }
   }
