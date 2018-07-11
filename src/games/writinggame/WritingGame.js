@@ -129,7 +129,8 @@ class WritingGame extends React.Component {
             <div class="intro">
               <CloudinaryContext cloudName="luupeli">
                 <div>
-                  <Image publicId={this.state.images[this.state.index].url} width="500">
+                  <Image publicId={this.state.images[this.state.index].url}>
+                  <Transformation width="500" crop="fill"  radius="20"/>
                   </Image>
                 </div>
               </CloudinaryContext>
