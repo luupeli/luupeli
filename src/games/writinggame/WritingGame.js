@@ -2,6 +2,7 @@ import { Redirect } from 'react-router-dom'
 import React from 'react'
 import WGMessage from './WGMessage'
 import StringSimilarity from 'string-similarity'
+import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
 
 class WritingGame extends React.Component {
 
@@ -126,17 +127,12 @@ class WritingGame extends React.Component {
         <div class="bottom">
           <div class="row" id="image-holder">
             <div class="intro">
-              <img
-                id="question-image"
-                class="img-fluid"
-                alt={this.state.images[this.state.index].bone.nameLatin
-                  + ' osasta '
-                  + this.state.bpname
-                  + ' kuvan url: http://luupeli-backend.herokuapp.com/images/'
-                  + this.state.images[this.state.index].url}
-                src={'http://luupeli-backend.herokuapp.com/images/'
-                  + this.state.images[this.state.index].url}
-              />
+              <CloudinaryContext cloudName="luupeli">
+                <div>
+                  <Image publicId={this.state.images[this.state.index].url} width="500">
+                  </Image>
+                </div>
+              </CloudinaryContext>
             </div>
           </div>
           <div class="row">

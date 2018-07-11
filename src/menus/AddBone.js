@@ -180,7 +180,6 @@ class AddBone extends React.Component {
 		let data = new FormData()
 		data.append('image', this[`fileInput${i}`].files[0])
 		data.append('name', this[`fileInput${i}`].files[0].name)
-
 		return await imageService.upload(data)
 			.then((response) => {
 				return response.data.url
@@ -290,7 +289,7 @@ class AddBone extends React.Component {
 	}
 
 	//If this.state.submitted is true (currently never), redirect to listing.
-	//Otherwise render bone add form.
+	//Otherwise render bone add form
 	render() {
 		if (this.state.submitted) {
 			return (
@@ -300,6 +299,7 @@ class AddBone extends React.Component {
 
 		return (
 			<div className="scrolling-menu">
+			<div className="container">
 				<div className="App">
 					<div id="">
 						<WGMessage ref={instance => this.wgmessage = instance} />
@@ -373,6 +373,7 @@ class AddBone extends React.Component {
 											this[`fileInput${i}`] = input
 										}}
 									/>
+
 									<div className="input-group">
 										<label className="pull-left">Vaikeustaso</label>
 										<select
@@ -464,6 +465,7 @@ class AddBone extends React.Component {
 						</div>
 					</form>
 				</div>
+			</div>
 			</div>
 		)
 	}
