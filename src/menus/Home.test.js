@@ -71,7 +71,12 @@ expect(testInstance.findByProps({className: "background-blood-dragon"}).children
 // })
 
 // global.expect = expect
+beforeEach(function() {
 
+  global.sessionStorage = jest.genMockFunction();
+  global.sessionStorage.setItem = jest.genMockFunction();
+  global.sessionStorage.getItem = jest.genMockFunction();
+})
 
 describe('Home', () => {
 
