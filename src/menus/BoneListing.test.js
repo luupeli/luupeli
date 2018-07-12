@@ -38,6 +38,8 @@ describe('BoneListing tests', () => {
   }, 20000)
 
   test('bodyparts appear', async () => {
+    await page.waitForSelector("#bodyparts")
+    
     await page.screenshot({ path: 'bones.png' })
     const textContent = await page.$eval('#listGroup', el => el.textContent)
     expect(textContent.includes("Eturaaja")).toBe(true)

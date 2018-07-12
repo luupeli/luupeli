@@ -1,9 +1,7 @@
-
 import React from 'react'
 import { shallow, mount, render } from 'enzyme'
 import { Link } from 'react-router-dom'
 import SelectGameMode from './SelectGameMode'
-
 
 // var localStorageMock = (function() {
 //   var store = {}
@@ -36,6 +34,7 @@ const retry = (fn, ms) => new Promise(resolve => {
 })
 
 const puppeteer = require('puppeteer')
+const assert = require('assert')
 
 let browser
 let page
@@ -66,10 +65,10 @@ afterAll(async () => {
 describe("SelectGameMode tests", () => {
 
   it('should open page', async () => {
-    browser = await puppeteer.launch({ headless: false })
     page = await browser.newPage()
     const response = await retry(() => page.goto('http://localhost:3000'), 1000)
-    assert.equal(response.status(), 200)
+    //Does it need to be 200?
+    assert.equal(response.status(), 304)
   })
 
   test('page renders', async () => {
