@@ -4,7 +4,7 @@ import WGMessage from '../games/writinggame/WGMessage'
 import imageService from '../services/images'
 import bodyPartService from '../services/bodyParts'
 import animalService from '../services/animals'
-import { injectGlobal } from 'styled-components';
+import { injectGlobal } from 'styled-components'
 
 /**
  * GameSettings is the menu directly prior to a WritingGame session.
@@ -18,7 +18,7 @@ import { injectGlobal } from 'styled-components';
 class GameSettings extends React.Component {
 
 	constructor(props) {
-		super(props);
+		super(props)
 		this.state = {
 			gameLength: 3,
 			redirect: false,
@@ -28,9 +28,10 @@ class GameSettings extends React.Component {
 			allBodyParts: [],      // used to store an array of all known bodyparts
 			images: [],			   // used to store an array of images which meet the selection criteria
 			allStyles: props.location.state.allStyles,
-			styleIndex: props.location.state.styleIndex
-		};
-	
+			styleIndex: props.location.state.styleIndex,
+			user: null
+		}
+
 		this.changeAnimal = this.changeAnimal.bind(this)
 		this.toggleCheck = this.toggleCheck.bind(this)
 		this.atLeastOneBodyPartIsSelected = this.atLeastOneBodyPartIsSelected.bind(this)
@@ -41,8 +42,6 @@ class GameSettings extends React.Component {
 				const animals = response.data.map(animal => {
 					return { ...animal, selected: false }
 				})
-
-
 				/*
 				Here we try to fetch emojis for the animals.
 				*/
@@ -52,26 +51,26 @@ class GameSettings extends React.Component {
 						var emo = require('node-emoji')
 						emo = emo.get('cat')
 						console.log(emo)
-						animals[key].emoji = emo;
+						animals[key].emoji = emo
 					}
 					if (animals[key].name.toLowerCase() === 'koira') {
 						var emo = require('node-emoji')
 						emo = emo.get('dog')
 						console.log(emo)
-						animals[key].emoji = emo;
+						animals[key].emoji = emo
 					}
 					if (animals[key].name.toLowerCase() === 'hevonen') {
 						var emo = require('node-emoji')
 						emo = emo.get('horse')
 						console.log(emo)
-						animals[key].emoji = emo;
+						animals[key].emoji = emo
 					}
 
 					if (animals[key].name.toLowerCase() === 'nauta') {
 						var emo = require('node-emoji')
 						emo = emo.get('cow')
 						console.log(emo)
-						animals[key].emoji = emo;
+						animals[key].emoji = emo
 					}
 
 				}
@@ -95,6 +94,14 @@ class GameSettings extends React.Component {
 		console.log(this.state.allImages)
 	}
 
+	componentDidMount() {
+		const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
+		if (loggedUserJSON) {
+			const user = JSON.parse(loggedUserJSON)
+			this.setState({ user })
+		}
+	}
+
 	changeGameLength(event) {
 		this.state.gameLength = event.target.value
 
@@ -106,7 +113,7 @@ class GameSettings extends React.Component {
 		animals.forEach((animal) => {
 			animal.selected = false
 		})
-		animals[event.target.id].selected = true;
+		animals[event.target.id].selected = true
 		console.log(this.state.allAnimals)
 	}
 
@@ -143,7 +150,6 @@ class GameSettings extends React.Component {
 		return this.state
 	}
 
-
 	initializeGame() {
 		// Filtering selected animals and body parts
 		let chosenAnimals = this.state.allAnimals.filter(animal => animal.selected === true)
@@ -175,7 +181,7 @@ class GameSettings extends React.Component {
 		})
 		console.log(apics)
 
-		const pics = [];
+		const pics = []
 		if (apics.length !== 0) {
 			// Here we add as many images into the quiz as dictated by the gameLength option, but less if we don't
 			// have enough images.
@@ -203,21 +209,19 @@ class GameSettings extends React.Component {
 
 	}
 
-
 	//this starts the game
 	render() {
 
-		let i = parseInt(localStorage.getItem('styleIndex'));
- 
+		let i = parseInt(localStorage.getItem('styleIndex'))
+
 		injectGlobal`
-		:root {
-		  
-		  --primary: ${this.state.allStyles[i].primary};
-		  --secondary: ${this.state.allStyles[i].secondary};
-		  --tertiary: ${this.state.allStyles[i].tertiary};
+		:root {  
+		  --primary: ${this.state.allStyles[i].primary}
+		  --secondary: ${this.state.allStyles[i].secondary}
+		  --tertiary: ${this.state.allStyles[i].tertiary}
 		  }
-		}`;
-	
+		}`
+
 		if (this.state.redirect) {
 			return (
 				<Redirect to={{
@@ -247,74 +251,124 @@ class GameSettings extends React.Component {
 
 		// As a general note about using forms w/ NodeJS... A single grouping of radio buttons (single choice) is identified by identical "name" parameter. Separate values within such a grouping are marked with distinct "value" parameters.
 		return (
-			<div>
-			      <div className={this.state.allStyles[i].background}>
-      <div className={this.state.allStyles[i].style}> 
-        <div className="App">
-          <div className={this.state.allStyles[i].flairLayerA}>
-          </div>
-          <div className={this.state.allStyles[i].flairLayerB}>
-          </div>
-          <div className={this.state.allStyles[i].flairLayerC}>
-          </div>
-          <div className={this.state.allStyles[i].flairLayerD}>
-          </div>
-					<h2>Luupelivalinnat:</h2>
-					<div>
-						<WGMessage ref={instance => this.wgmessage = instance} />
-					</div>
-					<div class="transbox">
-						<div class="container">
-							<div class="col-md-12">
-								<h3 className="form-header">Valitse eläin:</h3>
-								<form>
-									{selectAnimal}
-								</form>
+			<div className={this.state.allStyles[i].overlay}>
+				<div className={this.state.allStyles[i].background}>
+					<div className={this.state.allStyles[i].style}>
+						<div className="App">
+							<div
+								className={this.state.allStyles[i].flairLayerA}>
 							</div>
-						</div>
-						<div class="container">
-							<div class="col-md-12">
-								<h3 className="form-header">Valitse ruumiinosa:</h3>
-								<form>
-									{selectBodyPart}
-								</form>
+							<div
+								className={this.state.allStyles[i].flairLayerB}>
 							</div>
-						</div>
-						<div class="container">
-							<div class="col-md-12">
-								<h3 className="form-header">Luupelin pituus:</h3>
-								<form>
-									<label className="radio-inline"><input type="radio" value="3" onClick={this.changeGameLength.bind(this)} name="length" defaultChecked></input>3</label>
-									<label className="radio-inline"><input type="radio" value="5" onClick={this.changeGameLength.bind(this)} name="length"></input>5</label>
-									<label className="radio-inline"><input type="radio" value="7" onClick={this.changeGameLength.bind(this)} name="length"></input>7</label>
-								</form>
+							<div
+								className={this.state.allStyles[i].flairLayerC}>
 							</div>
-						</div>
-						<div class="container">
-							<div class="col-md-12">
-								<h3 className="form-header">Vaikeusaste:</h3>
-								<form>
-									<label className="radio-inline"><input type="radio" value="easy" name="difficultylevel" defaultChecked></input>Helppo</label>
-									<label className="radio-inline"><input type="radio" value="medium" name="difficultylevel"></input>Keskivaikea</label>
-									<label className="radio-inline"><input type="radio" value="hard" name="difficultylevel"></input>Vaikea</label>
-								</form>
-								<div className="btn-group wide settingspage GameButton">
-									<button onClick={this.atLeastOneBodyPartIsSelected}>Luupeliin >>
-								</button>
+							<div
+								className={this.state.allStyles[i].flairLayerD}>
+							</div>
+							<h2>Luupelivalinnat:</h2>
+							<div>
+								<WGMessage ref={instance => this.wgmessage = instance} />
+							</div>
+							<div class="transbox">
+								<div class="container">
+									<div class="col-md-12">
+										<h3 className="form-header">Valitse eläin:</h3>
+										<form>
+											{selectAnimal}
+										</form>
+									</div>
+								</div>
+								<div class="container">
+									<div class="col-md-12">
+										<h3 className="form-header">Valitse ruumiinosa:</h3>
+										<form>
+											{selectBodyPart}
+										</form>
+									</div>
+								</div>
+								<div class="container">
+									<div class="col-md-12">
+										<h3 className="form-header">Luupelin pituus:</h3>
+										<form>
+											<label className="radio-inline">
+												<input
+													type="radio"
+													value="3"
+													onClick={this.changeGameLength.bind(this)}
+													name="length"
+													defaultChecked
+												/>
+												3
+											</label>
+											<label className="radio-inline">
+												<input
+													type="radio"
+													value="5"
+													onClick={this.changeGameLength.bind(this)}
+													name="length"
+												/>
+												5
+											</label>
+											<label className="radio-inline">
+												<input
+													type="radio"
+													value="7"
+													onClick={this.changeGameLength.bind(this)}
+													name="length"
+												/>
+												7
+											</label>
+										</form>
+									</div>
+								</div>
+								<div class="container">
+									<div class="col-md-12">
+										<h3 className="form-header">Vaikeusaste:</h3>
+										<form>
+											<label className="radio-inline">
+												<input
+													type="radio"
+													value="easy"
+													name="difficultylevel"
+													defaultChecked
+												/>
+												Helppo
+											</label>
+											<label className="radio-inline">
+												<input
+													type="radio"
+													value="medium"
+													name="difficultylevel"
+												/>
+												Keskivaikea
+											</label>
+											<label className="radio-inline">
+												<input
+													type="radio"
+													value="hard"
+													name="difficultylevel"
+												/>
+												Vaikea
+											</label>
+										</form>
+										<div className="btn-group wide settingspage GameButton">
+											<button onClick={this.atLeastOneBodyPartIsSelected}>Luupeliin >></button>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
+						<div className="btn-group">
+							<Link to='/'>
+								<button className="gobackbutton">Takaisin</button>
+							</Link>
+						</div>
 					</div>
 				</div>
-				<div className="btn-group">
-					<Link to='/'>
-						<button className="gobackbutton">Takaisin</button>
-					</Link>
-				</div>
 			</div>
-			</div>
-			</div>
-		);
+		)
 	}
 }
 
