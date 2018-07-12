@@ -62,7 +62,7 @@ class Register extends React.Component {
 	      <div className={this.state.allStyles[i].overlay}>
 			<div className={this.state.allStyles[i].background}>
 				<div className={this.state.allStyles[i].style}>
-					<div className="App">
+					<div id="registerMenu" className="App">
 						<h2 className="toprow">"Luu-o" uusi</h2>
 						<h2 className="secondrow">luukäyttäjätunnus</h2>
 						<div

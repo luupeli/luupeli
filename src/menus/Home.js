@@ -153,13 +153,15 @@ class Home extends React.Component {
     if (this.state.user === null) {
       return (
         <div>
-          <button
+          <button 
+            id="homeMenuLoginButton"
             className="loginlink"
             onClick={this.proceedToSelect}
           >
             Kirjaudu sisään
           </button>
           <button
+          id="homeMenuSignUpButton"
             className="signuplink"
             onClick={this.proceedToSelect}
           >
@@ -213,7 +215,7 @@ class Home extends React.Component {
       <div className={this.state.overlay}>
         <div className={this.state.background}>
           <div className={this.state.style}>
-            <div className="App">
+            <div id="homeMenu" className="App">
               <div
                 className={this.state.flairLayerA}>
               </div>
@@ -230,6 +232,7 @@ class Home extends React.Component {
               <div id="btn-group" className="btn-group">
                 <button
                   className="gamelink"
+                  id ="proceedToSelectGameMode"
                   onClick={this.proceedToSelect}>
                   Pelaa
                 </button>

@@ -73,7 +73,7 @@ class SelectGameMode extends React.Component {
               <h2 className="secondrow">
                 Luupelimuoto:
               </h2>
-              <div className="btn-group">
+              <div id="selectableGameModes" className="btn-group">
                 <button
                   className="writinggame"
                   onClick={this.proceedToSettings}>

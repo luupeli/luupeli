@@ -116,7 +116,7 @@ class Login extends React.Component {
       <div className={this.state.allStyles[i].overlay}>
       <div className={this.state.allStyles[i].background}>
         <div className={this.state.allStyles[i].style}>
-          <div className="App">
+          <div id="loginPromptMenu" className="App">
             <div
               className={this.state.allStyles[i].flairLayerA}>
             </div>
