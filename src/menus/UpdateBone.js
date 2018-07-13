@@ -618,7 +618,8 @@ class UpdateBone extends React.Component {
 		}
 
 		return (
-				<Grid>
+			<div className="menu-background">
+<Grid>
 					<div className="App">
 						<Row className="show-grid">
 							<Col xs={12} md={8}>
@@ -735,8 +736,9 @@ class UpdateBone extends React.Component {
 						</button>
 							</div>
 						</form>
-					</div>
+						</div>
 				</Grid>
+				</div>
 		)
 	}
 }
