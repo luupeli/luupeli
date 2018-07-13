@@ -298,7 +298,6 @@ class AddBone extends React.Component {
 		}
 
 		return (
-			<div className="scrolling-menu">
 			<div className="container">
 				<div className="App">
 					<div id="">
@@ -465,7 +464,6 @@ class AddBone extends React.Component {
 						</div>
 					</form>
 				</div>
-			</div>
 			</div>
 		)
 	}

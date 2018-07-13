@@ -108,13 +108,13 @@ class BoneListing extends React.Component {
 		}
 
 		const searchStyle = {
-			marginTop: 30
+			marginTop: 30,
+			marginBottom: 15
 		}
 
 		console.log(bonesToShow)
 
 		return (
-			<div className="scrolling-menu" >
 				<div className="App">
 					<div>
 						<Grid>
@@ -213,7 +213,6 @@ class BoneListing extends React.Component {
 					</div>
 									
 				</div>
-			</div>
 		)
 	}
 }

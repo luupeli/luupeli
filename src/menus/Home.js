@@ -3,6 +3,7 @@ import { Redirect, Link } from 'react-router-dom'
 import '../styles/App.css'
 import '../styles/Crt.css'
 import { injectGlobal } from 'styled-components'
+import { Grid, Row, Col } from 'react-bootstrap'
 
 class Home extends React.Component {
 
@@ -20,7 +21,7 @@ class Home extends React.Component {
         primary: '#ff5db1',
         secondary: '#ff2596',
         tertiary: '#ef007c',
-        overlay: null
+        overlay: null,
       }, {
         style: 'fallout',
         background: 'background-fallout',
@@ -113,11 +114,11 @@ class Home extends React.Component {
 
   proceedToSelect(event) {
     this.setState({ redirect: true })
-    if (event.target.className === 'gamelink') {
+    if (event.target.id === 'proceedToSelectGameMode') {
       this.setState({ redirectTo: '/game' })
-    } else if (event.target.className === 'loginlink') {
+    } else if (event.target.id === 'homeMenuLoginButton') {
       this.setState({ redirectTo: '/login' })
-    } else if (event.target.className === 'signuplink') {
+    } else if (event.target.id === 'homeMenuSignUpButton') {
       this.setState({ redirectTo: '/register' })
     }
   }
@@ -153,28 +154,40 @@ class Home extends React.Component {
     if (this.state.user === null) {
       return (
         <div>
-          <button 
-            id="homeMenuLoginButton"
-            className="loginlink"
-            onClick={this.proceedToSelect}
-          >
-            Kirjaudu sisään
+          <Row className="show-grid">
+            <Col>
+              <button
+                id="homeMenuLoginButton"
+                className="menu-button"
+                onClick={this.proceedToSelect}
+              >
+                Kirjaudu sisään
           </button>
-          <button
-          id="homeMenuSignUpButton"
-            className="signuplink"
-            onClick={this.proceedToSelect}
-          >
-            Luo käyttäjätili
+            </Col>
+          </Row>
+          <Row className="show-grid">
+            <Col>
+              <button
+                id="homeMenuSignUpButton"
+                className="menu-button"
+                onClick={this.proceedToSelect}
+              >
+                Luo käyttäjätili
           </button>
+            </Col>
+          </Row>
         </div>
       )
     } else {
       return (
         <div>
-          <button onClick={this.logOut}>
-            Kirjaudu ulos
+          <Row className="show-grid">
+            <Col>
+              <button onClick={this.logOut}>
+                Kirjaudu ulos
           </button>
+            </Col>
+          </Row>
         </div>
       )
     }
@@ -212,46 +225,54 @@ class Home extends React.Component {
     this.setThemeColors(i)
 
     return (
-      <div className={this.state.overlay}>
-        <div className={this.state.background}>
-          <div id="styleName" className={this.state.style}>
-            <div id="homeMenu" className="App">
-              <div
-                className={this.state.flairLayerA}>
-              </div>
-              <div
-                className={this.state.flairLayerB}>
-              </div>
-              <div
-                className={this.state.flairLayerC}>
-              </div>
-              <div
-                className={this.state.flairLayerD}>
-              </div>
-              <h1 className="gametitle">Luupeli</h1>
-              <div id="btn-group" className="btn-group">
-                <button
-                  className="gamelink"
-                  id ="proceedToSelectGameMode"
-                  onClick={this.proceedToSelect}>
-                  Pelaa
+        <div id="homeMenu" className="App">
+          <div className={this.state.overlay}>
+            <div className={this.state.background}>
+              <div id="styleName" className={this.state.style}>
+                <div
+                  className={this.state.flairLayerA}>
+                </div>
+                <div
+                  className={this.state.flairLayerB}>
+                </div>
+                <div
+                  className={this.state.flairLayerC}>
+                </div>
+                <div
+                  className={this.state.flairLayerD}>
+                </div>
+                <h1 className="game-title">Luupeli</h1>
+                <Row className="show-grid">
+                  <Col xs={10} xsOffset={1} md={4} sm={4} mdOffset={4} smOffset={4}>
+                    <Row className="show-grid">
+                      <Col>
+                        <button
+                          className="menu-button gamelink"
+                          id="proceedToSelectGameMode"
+                          onClick={this.proceedToSelect}>
+                          Pelaa
                 </button>
-                {this.loggedInButtons()}
-                <button
-                  id ="themeChangeButton"
-                  className="theme"
-                  onClick={this.changeCss}>
-                  Vaihda teema
+                      </Col>
+                    </Row>
+                    {this.loggedInButtons()}
+                    <Row className="show-grid">
+                      <button
+                        id="themeChangeButton"
+                        className="menu-button"
+                        onClick={this.changeCss}>
+                        Vaihda teema
                 </button>
-                <p>
-                  Teema: {this.state.style}
-                </p>
-                <div className={this.state.style} />
+                    </Row>
+                    <p>
+                      Teema: {this.state.style}
+                    </p>
+                    <div className={this.state.style} />
+                  </Col>
+                </Row>
               </div>
             </div>
           </div>
         </div>
-      </div>
     )
   }
 }

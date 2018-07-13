@@ -83,7 +83,7 @@ describe("Home (puppeteer) tests", () => {
   test('Pelaa button redirects to SelectGameMode page', async () => {
     
     await page.click('#proceedToSelectGameMode')
-    const textContent = await page.$eval('#selectableGameModes', el => el.textContent)
+    const textContent = await page.$eval('#gameBody', el => el.textContent)
     expect(textContent.includes("Kirjoituspeli")).toBe(true)
   }, 2500)
 

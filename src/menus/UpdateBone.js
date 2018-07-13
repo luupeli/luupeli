@@ -618,7 +618,6 @@ class UpdateBone extends React.Component {
 		}
 
 		return (
-			<div className="scrolling-menu">
 				<Grid>
 					<div className="App">
 						<Row className="show-grid">
@@ -734,16 +733,10 @@ class UpdateBone extends React.Component {
 									className="btn btn-danger pull-right">
 									Poista luu
 						</button>
-								.<br />
-								.<br />
-								.<br />
-								.<br />
-								.<br />
 							</div>
 						</form>
 					</div>
 				</Grid>
-			</div>
 		)
 	}
 }

@@ -188,7 +188,7 @@ describe('Home', () => {
       )
     ).toBeTruthy()
 
-    wrapper.find('.theme').simulate('click')
+    wrapper.find('#themeChangeButton').simulate('click')
     expect(wrapper.state('styleIndex')).toBe(1)
     //    console.log(wrapper.state()) 
   })
@@ -197,7 +197,7 @@ describe('Home', () => {
 
     const wrapper = mount(<Home />)
     wrapper.setState({ 'styleIndex': 0 })
-    wrapper.find('.theme').simulate('click')
+    wrapper.find('#themeChangeButton').simulate('click')
     //console.log(wrapper.debug())
     //await new Promise((resolve) => setTimeout(resolve, 0))
     const updatedWrapper = wrapper.update()
@@ -228,7 +228,7 @@ describe('Home', () => {
   })
 
   it('has the name of the game, Luupeli', () => {
-    const title = home().find('.gametitle')
+    const title = home().find('.game-title')
     expect(title.text()).toContain('Luupeli')
   })
 
