@@ -44,6 +44,9 @@ let page
 beforeAll(async () => {
   browser = await puppeteer.launch({ args: ['--no-sandbox --disable-http2'] })
   //  browser = await puppeteer.launch()
+  //global.Promise = require.requireActual('promise')
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000; 
+
   page = await browser.newPage()
   await page.setViewport({ width: 1280, height: 800 })
   await page.goto('http://localhost:3000')
@@ -98,6 +101,17 @@ describe("Home (puppeteer) tests", () => {
     expect(textContent.includes("luukäyttäjätunnus")).toBe(true)
   }, 2500)
 
+  test('CSS Theme is changeable', async () => {
+    
+    // const preTextContent = await page.$eval('#styleName', el => el.preTextContent)
+    // expect(preTextContent.includes("blood-dragon")).toBe(true)
+
+    await page.click('#themeChangeButton')
+    const textContent = await page.$eval('#styleName', el => el.textContent)
+    expect(textContent.includes("blood-dragon")).toBe(false)
+  }, 2500)
+
+  
   
 
 

@@ -214,7 +214,7 @@ class Home extends React.Component {
     return (
       <div className={this.state.overlay}>
         <div className={this.state.background}>
-          <div className={this.state.style}>
+          <div id="styleName" className={this.state.style}>
             <div id="homeMenu" className="App">
               <div
                 className={this.state.flairLayerA}>
@@ -238,6 +238,7 @@ class Home extends React.Component {
                 </button>
                 {this.loggedInButtons()}
                 <button
+                  id ="themeChangeButton"
                   className="theme"
                   onClick={this.changeCss}>
                   Vaihda teema

@@ -44,6 +44,7 @@ let page
 beforeAll(async () => {
   browser = await puppeteer.launch({ args: ['--no-sandbox --disable-http2'] })
   //  browser = await puppeteer.launch()
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
   page = await browser.newPage()
   await page.setViewport({ width: 1280, height: 800 })
   await page.goto('http://localhost:3000')
