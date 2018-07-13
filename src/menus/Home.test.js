@@ -74,7 +74,8 @@ expect(testInstance.findByProps({className: "background-blood-dragon"}).children
 beforeEach(function() {
 
   global.sessionStorage = jest.genMockFunction();
-  jest.setTimeout(30000)
+ // jest.setTimeout(30000)
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
   global.sessionStorage.setItem = jest.genMockFunction();
   global.sessionStorage.getItem = jest.genMockFunction();
 })
@@ -200,7 +201,7 @@ describe('Home', () => {
     //console.log(wrapper.debug())
     //await new Promise((resolve) => setTimeout(resolve, 0))
     const updatedWrapper = wrapper.update()
-    console.log(wrapper.debug())
+  //  console.log(wrapper.debug())
     expect(
       updatedWrapper.containsMatchingElement(
         <div className="blood-dragon" />
