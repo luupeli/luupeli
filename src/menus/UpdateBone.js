@@ -5,6 +5,8 @@ import imageService from '../services/images'
 import bodyPartService from '../services/bodyParts'
 import animalService from '../services/animals'
 import WGMessage from '../games/writinggame/WGMessage'
+import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
+import { Grid, Row, Col, Form, FormGroup, ControlLabel, FieldGroup, FormControl, Label, HelpBlock } from 'react-bootstrap'
 
 class UpdateBone extends React.Component {
 
@@ -171,6 +173,7 @@ class UpdateBone extends React.Component {
 			bone: bone.id,
 			url: imageUrl,
 			photographer: this.state.newImages[i].photographer,
+			copyright: this.state.newImages[i].copyright,
 			description: this.state.newImages[i].description,
 			attempts: this.state.newImages[i].attempts,
 			correctAttempts: this.state.newImages[i].correctAttempts,
@@ -192,6 +195,7 @@ class UpdateBone extends React.Component {
 		imageService.update(this.state.images[i]._id, {
 			difficulty: this.state.images[i].difficulty,
 			photographer: this.state.images[i].photographer,
+			copyright: this.state.images[i].copyright,
 			description: this.state.images[i].description,
 			attempts: this.state.images[i].attempts,
 			correctAttempts: this.state.images[i].correctAttempts,
@@ -366,6 +370,15 @@ class UpdateBone extends React.Component {
 		return true
 	}
 
+	previewImage(input) {
+		const reader = new FileReader()
+		reader.onload = function () {
+			const output = document.getElementById('new_image')
+			output.src = reader.result
+		}
+		reader.readAsDataURL(input.target.files[0])
+	}
+
 	//If this.state.submitted is true (i.e. bone data has been deleted), redirect to listing.
 	//Otherwise render bone update form.
 	render() {
@@ -375,239 +388,320 @@ class UpdateBone extends React.Component {
 			)
 		}
 
-		return (
-			<div className="scrolling-menu">
-				<div className="container">
-					<div className="App">
-						<div>
-							<WGMessage ref={instance => this.wgmessage = instance} />
-						</div>
-						<Link to='/listing'>
-							<button id="backToListing" className="btn btn-default pull-right">
-								Takaisin listaukseen
-						</button>
-						</Link>
-						<br />
-						<form onSubmit={this.handleSubmit} enctype="multipart/form-data">
-							<div className="form-group has-feedback">
-								<label className="pull-left">Latinankielinen nimi </label>
-								<input
+		const listStyle = {
+			padding: 20,
+			marginBottom: 20
+		}
+
+		const labelStyle = {
+			color: 'white',
+			backgroundColor: '#330066'
+		}
+
+		const titleStyle = {
+			marginBottom: 0,
+			textAlign: 'left',
+		}
+
+		const luunTiedot = {
+			marginTop: 15,
+			textAlign: 'left'
+		}
+
+		const imgStyle = {
+			display: 'block',
+			marginLeft: 'auto',
+			marginRight: 'auto',
+			marginBottom: 15
+		}
+
+		const imageWidth = () => {
+			const windowWidth = Math.max(
+				document.body.scrollWidth,
+				document.documentElement.scrollWidth,
+				document.body.offsetWidth,
+				document.documentElement.offsetWidth,
+				document.documentElement.clientWidth
+			)
+
+			if (windowWidth > 400) {
+				return 300
+			}
+			return windowWidth - 100
+		}
+
+		const boneFields = () => {
+			return (
+				<div>
+					<Row className="show-grid" style={luunTiedot}>
+						<Col xs={12} md={4}>
+							<FormGroup controlId="nameLatin">
+								<ControlLabel>Latinankielinen nimi</ControlLabel>
+								<FormControl
 									type="text"
 									id="nameLatin"
 									name="nameLatin"
 									value={this.state.nameLatin}
-									className="form-control"
+									placeholder="Kirjoita latinankielinen nimi"
 									onChange={this.handleChange}
 								/>
-								<span className="glyphicon glyphicon-asterisk form-control-feedback"></span>
-							</div>
-							<label className="pull-left">Vaihtoehtoinen latinankielinen nimi</label>
-							<input
-								type="text"
-								id="altNameLatin"
-								name="altNameLatin"
-								value={this.state.altNameLatin}
-								className="form-control"
-								onChange={this.handleChange}
-							/>
-							<label className="pull-left">Suomenkielinen nimi</label>
-							<input
-								type="text"
-								id="name"
-								name="name"
-								value={this.state.name}
-								className="form-control"
-								onChange={this.handleChange}
-							/>
-							<label className="pull-left">Kuvaus</label>
-							<input
-								type="text"
-								id="description"
-								name="description"
-								value={this.state.description}
-								className="form-control"
-								onChange={this.handleChange}
-							/>
-							<label className="pull-left">Ruumiinosa</label>
-							<select
-								id="bodyPart"
-								name="bodyPart"
-								className="form-control"
-								value={this.state.bodyPart}
-								onChange={this.handleChange}
-							>
-								<option value="Eturaaja">Eturaaja</option>
-								<option value="Takaraaja">Takaraaja</option>
-								<option value="Vartalo">Vartalo</option>
-								<option value="Pää">Pää</option>
-							</select>
-							<span className="clearfix">
-								<label className="pull-left">Ladatut kuvat</label>
-							</span>
-							<ul className="list-group">
-								{this.state.images.map((file, i) => <li key={file.id} className="list-group-item clearfix">
-									<span className="pull-left">
-										{
-											file.url
-											+ (this.state.images[i].deleted
-												? " (Poistetaan tallennuksen yhteydessä)" : "")
-										}
-									</span>
-									<br />
-									<div className=
-										{
-											"input-group "
-											+ (this.state.images[i].deleted
-												? 'hidden'
-												: 'show')
-										}
-									>
-										<label className="pull-left">Vaikeustaso</label>
-										<select
-											name="difficulty"
-											className="form-control"
-											value={this.state.images[i].difficulty}
-											onChange={this.handleImageChange.bind(this, i)}
-										>
-											<option value={1}>Helppo</option>
-											<option value={100}>Vaikea</option>
-										</select>
-										<label className="pull-left">Puoli</label>
-										<select
-											name="handedness"
-											className="form-control"
-											value={this.state.images[i].handedness}
-											onChange={this.handleImageChange.bind(this, i)}>
-											<option value="">Ei valintaa</option>
-											<option value="dex">dex</option>
-											<option value="sin">sin</option>
-										</select>
-										<label className="pull-left">Eläin</label>
-										<select
-											name="animal"
-											className="form-control"
-											value={this.state.images[i].animal}
-											onChange={this.handleImageChange.bind(this, i)}
-										>
-											{
-												this.state.animals.map((animal, i) =>
-													<option key={animal.id} value={animal.id}>
-														{animal.name}
-													</option>)
-											}
-										</select>
-										<label className="pull-left">Kuvaus</label>
-										<input
-											type="text"
-											name="description"
-											value={this.state.images[i].description}
-											className="form-control"
-											onChange={this.handleImageChange.bind(this, i)}
-										/>
-										<label className="pull-left">Valokuvaaja</label>
-										<input
-											type="text"
-											name="photographer"
-											value={this.state.images[i].photographer}
-											className="form-control"
-											onChange={this.handleImageChange.bind(this, i)}
-										/>
-										<label className="pull-left">Tekijänoikeus</label>
-										<input
-											type="text"
-											name="copyright"
-											value={this.state.images[i].copyright}
-											className="form-control"
-											onChange={this.handleImageChange.bind(this, i)}
-										/>
-									</div>
-									<button
-										id={"deleteImageButton" + i}
-										type="button" className="btn btn-danger pull-right"
-										onClick={this.markForDelete.bind(this, i)}
-									>
-										{(this.state.images[i].deleted ? "Peruuta poisto" : "Poista")}
+							</FormGroup>
+						</Col>
+						<Col xs={12} md={4}>
+							<FormGroup controlId="altNameLatin">
+								<ControlLabel>Vaihtoehtoinen latinankielinen nimi</ControlLabel>
+								<FormControl
+									type="text"
+									id="altNameLatin"
+									name="altNameLatin"
+									value={this.state.altNameLatin}
+									placeholder="Kirjoita vaihtoehtoinen latinankielinen nimi"
+									onChange={this.handleChange}
+								/>
+							</FormGroup>
+						</Col>
+						<Col xs={12} md={4}>
+							<FormGroup controlId="nameLatin">
+								<ControlLabel>Suomenkielinen nimi</ControlLabel>
+								<FormControl
+									type="text"
+									id="name"
+									name="name"
+									value={this.state.name}
+									placeholder="Kirjoita suomenkielinen nimi"
+									onChange={this.handleChange}
+								/>
+							</FormGroup>
+						</Col>
+					</Row>
+
+					<Row className="show-grid">
+						<Col xs={12} md={4}>
+							<FormGroup controlId="bodyPart">
+								<ControlLabel>Valitse ruumiinosa</ControlLabel>
+								<FormControl
+									componentClass="select"
+									placeholder="select"
+									id="bodyPart"
+									name="bodyPart"
+									value={this.state.bodyPart}
+									onChange={this.handleChange}
+								>
+									<option value="Eturaaja">Eturaaja</option>
+									<option value="Takaraaja">Takaraaja</option>
+									<option value="Vartalo">Vartalo</option>
+									<option value="Pää">Pää</option>
+								</FormControl>
+							</FormGroup>
+						</Col>
+						<Col xs={12} md={8}>
+							<FormGroup controlId="description">
+								<ControlLabel>Vapaamuotoinen kuvaus</ControlLabel>
+								<FormControl
+									type="text"
+									id="description"
+									name="description"
+									value={this.state.description}
+									placeholder="Kirjoita vapaamuotoinen kuvaus"
+									onChange={this.handleChange}
+								/>
+							</FormGroup>
+						</Col>
+					</Row>
+				</div>
+			)
+		}
+
+		const imageFields = (i, handler, value) => {
+			return (
+				<div>
+					<Row className="show-grid">
+						<Col xs={12} md={4}>
+							<FormGroup controlId="animal">
+								<ControlLabel>Eläin</ControlLabel>
+								<FormControl
+									componentClass="select"
+									placeholder="valitse"
+									id="animal"
+									name="animal"
+									value={value.animal}
+									onChange={handler.bind(this, i)}
+								>
+									{
+										this.state.animals.map((animal, i) =>
+											<option key={animal.id} value={animal.id}>
+												{animal.name}
+											</option>)
+									}
+								</FormControl>
+							</FormGroup>
+						</Col>
+						<Col xs={12} md={4}>
+							<FormGroup controlId="handedness">
+								<ControlLabel>Puoli</ControlLabel>
+								<FormControl
+									componentClass="select"
+									placeholder="valitse"
+									id="handedness"
+									name="handedness"
+									value={value.handedness}
+									onChange={handler.bind(this, i)}
+								>
+									<option value="">Ei valintaa</option>
+									<option value="dex">dex</option>
+									<option value="sin">sin</option>
+								</FormControl>
+							</FormGroup>
+						</Col>
+						<Col xs={12} md={4}>
+							<FormGroup controlId="difficulty">
+								<ControlLabel>Vaikeustaso</ControlLabel>
+								<FormControl
+									componentClass="select"
+									placeholder="valitse"
+									id="difficulty"
+									name="difficulty"
+									value={value.difficulty}
+									onChange={handler.bind(this, i)}
+								>
+									<option value={1}>Helppo</option>
+									<option value={100}>Vaikea</option>
+								</FormControl>
+							</FormGroup>
+						</Col>
+					</Row>
+					<Row className="show-grid">
+						<Col xs={12} md={6}>
+							<FormGroup controlId="photographer">
+								<ControlLabel>Valokuvaaja</ControlLabel>
+								<FormControl
+									type="text"
+									id="photographer"
+									name="photographer"
+									value={value.photographer}
+									placeholder="Valokuvaaja"
+									onChange={handler.bind(this, i)}
+								/>
+							</FormGroup>
+						</Col>
+						<Col xs={12} md={6}>
+							<FormGroup controlId="copyright">
+								<ControlLabel>Tekijänoikeus</ControlLabel>
+								<FormControl
+									type="text"
+									id="copyright"
+									name="copyright"
+									value={value.copyright}
+									placeholder="Tekijänoikeus"
+									onChange={handler.bind(this, i)}
+								/>
+							</FormGroup>
+						</Col>
+					</Row>
+					<Row>
+						<Col xs={12} md={12}>
+							<FormGroup controlId="description">
+								<ControlLabel>Vapaamuotoinen kuvaus</ControlLabel>
+								<FormControl
+									type="text"
+									id="description"
+									name="description"
+									value={value.description}
+									placeholder="Kirjoita vapaamuotoinen kuvaus"
+									onChange={handler.bind(this, i)}
+								/>
+							</FormGroup>
+						</Col>
+					</Row>
+				</div>
+			)
+		}
+
+		return (
+			<div className="scrolling-menu">
+				<Grid>
+					<div className="App">
+						<Row className="show-grid">
+							<Col xs={12} md={8}>
+								<WGMessage ref={instance => this.wgmessage = instance} />
+							</Col>
+							<Col xs={12} md={4}>
+								<Link to='/listing'>
+									<button id="backToListing" className="btn btn-default pull-right">
+										Takaisin listaukseen
 									</button>
-								</li>)}
-							</ul>
-							<span className="clearfix">
-								<label className="pull-left">
-									Uudet kuvat
-							</label>
-							</span>
+								</Link>
+							</Col>
+						</Row>
+						<Row className="show-grid">
+							<Col xs={12} md={12} className="pull-left">
+								<h2 style={titleStyle}><Label style={labelStyle}>Luun tiedot</Label></h2>
+							</Col>
+						</Row>
+						<form onSubmit={this.handleSubmit} enctype="multipart/form-data">
+							{boneFields()}
+							<Row className="show-grid">
+								<Col xs={12} md={12} className="pull-left">
+									<h2 style={titleStyle}><Label style={labelStyle}>Kuvat</Label></h2>
+								</Col>
+							</Row>
+							{this.state.images.map((file, i) => <li key={file.id} className="list-group-item clearfix" style={listStyle}>
+								{(this.state.images[i].deleted
+									? " (Poistetaan tallennuksen yhteydessä)" :
+									<Row className="show-grid">
+										<Col md={4} xs={12} style={imgStyle}>
+											<CloudinaryContext cloudName="luupeli">
+												<Image publicId={file.url}>
+													<Transformation width={imageWidth()} crop="fill" />
+												</Image>
+											</CloudinaryContext>
+										</Col>
+										<Col md={8} xs={12}>
+											{imageFields(i, this.handleImageChange, this.state.images[i])}
+										</Col>
+									</Row>
+								)
+								}
+								<Row className="show-grid">
+									<Col xs={12} md={12}>
+										<button
+											id={"deleteImageButton" + i}
+											type="button" className="btn btn-danger pull-right"
+											onClick={this.markForDelete.bind(this, i)}
+										>
+											{(this.state.images[i].deleted ? "Peruuta poisto" : "Poista")}
+										</button>
+									</Col>
+								</Row>
+							</li>
+							)}
+							<Row className="show-grid">
+								<Col xs={12} md={12} className="pull-left">
+									<h2 style={titleStyle}><Label style={labelStyle}>Uudet kuvat</Label></h2>
+								</Col>
+							</Row>
 							<ul className="list-group">
 								{
 									this.state.newImages.map((file, i) =>
 										<li key={file.id}
-											className="list-group-item clearfix">
-											<input
-												type="file"
-												accept="image/x-png,image/jpeg"
-												id="boneImage"
-												ref={input => { this[`fileInput${i}`] = input }} />
-											<div className="input-group">
-												<label className="pull-left">Vaikeustaso</label>
-												<select
-													name="difficulty"
-													className="form-control"
-													value={this.state.newImages[i].difficulty}
-													onChange={this.handleNewImageChange.bind(this, i)}
-												>
-													<option value="1">Helppo</option>
-													<option value="100">Vaikea</option>
-												</select>
-												<label className="pull-left">Puoli</label>
-												<select
-													name="handedness"
-													className="form-control"
-													value={this.state.newImages[i].handedness}
-													onChange={this.handleNewImageChange.bind(this, i)}
-												>
-													<option value="">Ei valintaa</option>
-													<option value="dex">dex</option>
-													<option value="sin">sin</option>
-												</select>
-												<label className="pull-left">Eläin</label>
-												<select
-													name="animal"
-													className="form-control"
-													value={this.state.newImages[i].animal}
-													onChange={this.handleNewImageChange.bind(this, i)}
-												>
-													{
-														this.state.animals.map((animal, i) =>
-															<option key={animal.id} value={animal.id}>
-																{animal.name}
-															</option>)
-													}
-												</select>
-												<label className="pull-left">Kuvaus</label>
-												<input
-													type="text"
-													name="description"
-													value={this.state.newImages[i].description}
-													className="form-control"
-													onChange={this.handleNewImageChange.bind(this, i)}
-												/>
-												<label className="pull-left">Valokuvaaja</label>
-												<input
-													type="text"
-													name="photographer"
-													value={this.state.newImages[i].photographer}
-													className="form-control"
-													onChange={this.handleNewImageChange.bind(this, i)}
-												/>
-												<label className="pull-left">Tekijänoikeus</label>
-												<input
-													type="text"
-													name="copyright"
-													value={this.state.newImages[i].copyright}
-													className="form-control"
-													onChange={this.handleNewImageChange.bind(this, i)}
-												/>
-											</div>
-										</li>)
-								}
+											className="list-group-item clearfix" style={listStyle}>
+											<Row className="show-grid">
+												<Col md={4} xs={12}>
+													<img id="new_image" width={imageWidth()} />
+													<center><input
+														type="file"
+														accept="image/x-png,image/jpeg"
+														id="boneImage"
+														onChange={input => this.previewImage(input)}
+														ref={input => { this[`fileInput${i}`] = input }} /></center>
+												</Col>
+												<Col md={8} xs={12}>
+													{imageFields(i, this.handleNewImageChange, this.state.newImages[i])}
+												</Col>
+											</Row>
+										</li>
+									)}
+
 								<li className="list-group-item clearfix">
 									<span className="btn-toolbar">
 										<button
@@ -640,10 +734,15 @@ class UpdateBone extends React.Component {
 									className="btn btn-danger pull-right">
 									Poista luu
 						</button>
+								.<br />
+								.<br />
+								.<br />
+								.<br />
+								.<br />
 							</div>
 						</form>
 					</div>
-				</div>
+				</Grid>
 			</div>
 		)
 	}

@@ -85,6 +85,6 @@ describe('BoneListing tests', () => {
    	
    	expect(expectedInput.includes(nameLatinField)).toBe(true)
   }, 20000)
-  
+
     
 })

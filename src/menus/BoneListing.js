@@ -3,7 +3,7 @@ import boneService from '../services/bones'
 import animalService from '../services/animals'
 import bodyPartService from '../services/bodyParts'
 import { Link } from 'react-router-dom'
-import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap'
+import { ToggleButtonGroup, ToggleButton, Row, Col, Grid, FormControl } from 'react-bootstrap'
 
 class BoneListing extends React.Component {
 
@@ -102,111 +102,120 @@ class BoneListing extends React.Component {
 			})
 		}
 
+		const activeStyle = {
+			background: '#b35900',
+			color: 'white'
+		}
+
+		const searchStyle = {
+			marginTop: 30
+		}
+
 		console.log(bonesToShow)
 
 		return (
 			<div className="scrolling-menu" >
 				<div className="App">
-					<div class="container">
-						<div id="listGroup" className="list-group">
-							<span className="list-group-item list-group-item-info clearfix">
-								<div class="row species">
-									<div class="col-sm-4">
-										<h5>Suodata lajin mukaan</h5>
-									</div>
+					<div>
+						<Grid>
+							<div id="listGroup" className="list-group">
+								<span className="list-group-item list-group-item-info clearfix">
+									<Row className="show-grid">
+										<Col xs={12} md={6}>
+											<Row className="show-grid">
+												<Col>
+													<h5>Suodata lajin mukaan</h5>
+												</Col>
+											</Row>
+											<Row className="show-grid">
+												<Col>
+													<ToggleButtonGroup
+														id="animals"
+														type="checkbox"
+														defaultValue={this.state.selectedAnimals}
+														onClick={this.handleAnimalChange}
+													>
+														{this.state.animals.map(animal => {
+															if (!this.state.selectedAnimals.includes(animal.id)) {
+																return <ToggleButton bsStyle="warning" id={animal.id} value={animal.id}>{animal.name} </ToggleButton>
+															} else {
+																return <ToggleButton style={activeStyle} id={animal.id} value={animal.id}>{animal.name} </ToggleButton>
+															}
+														}
+														)}
+													</ToggleButtonGroup>
+												</Col>
+											</Row>
+											<Row className="show-grid">
+												<Col>
+													<h5>Suodata ruumiinosan mukaan</h5>
+												</Col>
+											</Row>
+											<Row className="show-grid">
+												<Col>
+													<ToggleButtonGroup
+														id="bodyparts"
+														type="checkbox"
+														defaultValue={this.state.selectedBodyParts}
+														onClick={this.handleBodyPartChange}
+													>
+														{this.state.bodyParts.map(bodyPart => {
+															if (!this.state.selectedBodyParts.includes(bodyPart.id)) {
+																return <ToggleButton bsStyle="warning" id={bodyPart.id} value={bodyPart.id}>{bodyPart.name} </ToggleButton>
+															} else {
+																return <ToggleButton style={activeStyle} id={bodyPart.id} value={bodyPart.id}>{bodyPart.name} </ToggleButton>
+															}
+														}
+														)}
+													</ToggleButtonGroup>
+												</Col>
+											</Row>
+										</Col>
+										<Col xs={12} md={6}>
+											<Row className="show-grid">
+												<Col xs={12} md={10} style={searchStyle}>
+													<form>
+														<FormControl
+															type="text"
+															value={this.state.search}
+															placeholder="Hae latinan- tai suomenkielisen nimen perusteella"
+															onChange={this.handleChange}
+														/>
+													</form>
+												</Col>
+											</Row>
+										</Col>
+									</Row>
+
+									<Link to='/add'><button id="addNewBoneButton" className="btn btn-info pull-right">Lisää uusi</button></Link></span>
+								<div id="bones">
+									{bonesToShow.map((bone, i) =>
+										<Link key={bone.id} to={{
+											pathname: '/update/' + bone.id,
+											state: {
+												id: bone.id,
+												boneId: bone.id,
+												nameLatin: bone.nameLatin,
+												altNameLatin: bone.altNameLatin,
+												description: bone.description,
+												name: bone.name,
+												bodyPart: bone.bodyPart.name,
+												attempts: bone.attempts,
+												correctAttempts: bone.correctAttempts,
+												boneAnimals: bone.animals
+											}
+										}}>
+											<button type="button" type="button"	id={"bone" + i} className="list-group-item list-group-item-action">{bone.nameLatin} ({bone.animal})</button>
+										</Link>)}
 								</div>
-								<div class="row">
-									<div class="col-sm-6">
-										<div
-											id="animals"
-											class="input-group"
-											type="checkbox"
-											data-toggle="buttons"
-											onClick={this.handleAnimalChange}
-										>
-											{this.state.animals.map(animal =>
-												<button
-													className="btn btn-warning"
-													type="button"
-													id={animal.id}
-													autocomplete="on"
-												>
-													{animal.name}
-												</button>
-											)}
-										</div>
-									</div>
-									<div class="col-sm-4">
-										<form>
-											<input
-												type="text"
-												class="form-control"
-												value={this.state.search}
-												placeholder="Hae latinan- tai suomenkielisen nimen perusteella"
-												onChange={this.handleChange}
-											/>
-										</form>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-6">
-										<h5>Suodata ruumiinosan mukaan</h5>
-									</div>
-								</div>
-								<div class="row bodyparts">
-									<div id="bodyparts" class="col-sm-6">
-										<ToggleButtonGroup
-											type="checkbox"
-											defaultValue={this.state.selectedBodyParts}
-											onClick={this.handleBodyPartChange}
-										>
-											{this.state.bodyParts.map(bodyPart =>
-												<ToggleButton bsStyle="warning" id={bodyPart.id} value={bodyPart.id}>{bodyPart.name} </ToggleButton>
-											)}
-										</ToggleButtonGroup>
-									</div>
-								</div>
-								<Link to='/add'>
-									<button
-										id="addNewBoneButton"
-										className="btn btn-info pull-right">
-										Lisää uusi
-								</button>
-								</Link>
-							</span>
-							<div id="bones">
-								{bonesToShow.map((bone, i) =>
-									<Link key={bone.id} to={{
-										pathname: '/update/' + bone.id,
-										state: {
-											id: bone.id,
-											boneId: bone.id,
-											nameLatin: bone.nameLatin,
-											altNameLatin: bone.altNameLatin,
-											description: bone.description,
-											name: bone.name,
-											bodyPart: bone.bodyPart.name,
-											attempts: bone.attempts,
-											correctAttempts: bone.correctAttempts,
-											boneAnimals: bone.animals
-										}
-									}}>
-										<button
-											type="button"
-											id={"bone" + i}
-											className="list-group-item list-group-item-action"
-										>
-											{bone.nameLatin}
-											({bone.animal})
-										</button>
-									</Link>)}
 							</div>
-						</div>
+						</Grid>
 					</div>
+									
 				</div>
 			</div>
 		)
 	}
 }
 
-export default BoneListing		
+export default BoneListing
