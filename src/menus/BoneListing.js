@@ -115,6 +115,7 @@ class BoneListing extends React.Component {
 		console.log(bonesToShow)
 
 		return (
+			<div className="menu-background">
 				<div className="App">
 					<div>
 						<Grid>
@@ -205,14 +206,14 @@ class BoneListing extends React.Component {
 												boneAnimals: bone.animals
 											}
 										}}>
-											<button type="button" type="button"	id={"bone" + i} className="list-group-item list-group-item-action">{bone.nameLatin} ({bone.animal})</button>
+											<button type="button" type="button" id={"bone" + i} className="list-group-item list-group-item-action">{bone.nameLatin} ({bone.animal})</button>
 										</Link>)}
 								</div>
 							</div>
 						</Grid>
 					</div>
-									
 				</div>
+			</div>
 		)
 	}
 }

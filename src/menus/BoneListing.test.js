@@ -5,8 +5,10 @@ let page
 
 beforeAll(async () => {
 	browser = await puppeteer.launch({args: ['--no-sandbox']})
+	jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
 	page = await browser.newPage()
-	await page.setViewport({ width: 1280, height: 800 })
+  await page.setViewport({ width: 1280, height: 800 })
+  await page.goto('http://localhost:3000')
 })
 
 beforeEach(async () => {
@@ -34,7 +36,7 @@ describe('BoneListing tests', () => {
     //Not having this screenshot will break the tests..
     await page.screenshot({ path: 'animals.png' })
     const textContent = await page.$eval('#listGroup', el => el.textContent)
-    expect(textContent.includes("Koira")).toBe(true)
+    expect(textContent.toLowerCase().includes("koira")).toBe(true)
   }, 20000)
 
   test('bodyparts appear', async () => {
@@ -42,7 +44,7 @@ describe('BoneListing tests', () => {
     
     await page.screenshot({ path: 'bones.png' })
     const textContent = await page.$eval('#listGroup', el => el.textContent)
-    expect(textContent.includes("Eturaaja")).toBe(true)
+    expect(textContent.toLowerCase().includes("eturaaja")).toBe(true)
   }, 20000)
 
 	test('Lisää uusi-button leads to an empty form', async () => {

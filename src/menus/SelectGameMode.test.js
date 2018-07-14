@@ -74,6 +74,7 @@ describe("SelectGameMode tests", () => {
 
   test('page renders', async () => {
     const textContent = await page.$eval('#gameBody', el => el.textContent)
+
     expect(textContent.includes("luupelimuoto")).toBe(true)
   }, 20000)
 
@@ -82,7 +83,6 @@ describe("SelectGameMode tests", () => {
     const textContent = await page.$eval('#homeMenu', el => el.textContent)
     expect(textContent.includes("Pelaa")).toBe(true)
   })
-
 
   //   it("renders a Link that takes you to the game", () => {
   //     const component = shallow(<SelectGameMode />)

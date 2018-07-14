@@ -27,8 +27,8 @@ class GameSettings extends React.Component {
 			allAnimals: [],        // used to store an array of all known animals
 			allBodyParts: [],      // used to store an array of all known bodyparts
 			images: [],			   // used to store an array of images which meet the selection criteria
-			allStyles: props.location.state.allStyles,
-			styleIndex: props.location.state.styleIndex,
+			allStyles: JSON.parse(localStorage.getItem("allStyles")),
+			styleIndex: localStorage.getItem('styleIndex'),
 			user: null
 		}
 
@@ -254,7 +254,7 @@ class GameSettings extends React.Component {
 			<div className={this.state.allStyles[i].overlay}>
 				<div className={this.state.allStyles[i].background}>
 					<div className={this.state.allStyles[i].style}>
-						<div className="App">
+						<div id="App" className="App">
 							<div
 								className={this.state.allStyles[i].flairLayerA}>
 							</div>
@@ -354,7 +354,7 @@ class GameSettings extends React.Component {
 											</label>
 										</form>
 										<div className="btn-group wide settingspage GameButton">
-											<button onClick={this.atLeastOneBodyPartIsSelected}>Luupeliin >></button>
+											<button id="luupeliinButton" onClick={this.atLeastOneBodyPartIsSelected}>Luupeliin >></button>
 										</div>
 									</div>
 								</div>

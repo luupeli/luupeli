@@ -618,7 +618,8 @@ class UpdateBone extends React.Component {
 		}
 
 		return (
-				<Grid>
+			<div className="menu-background">
+<Grid>
 					<div className="App">
 						<Row className="show-grid">
 							<Col xs={12} md={8}>
@@ -644,7 +645,7 @@ class UpdateBone extends React.Component {
 									<h2 style={titleStyle}><Label style={labelStyle}>Kuvat</Label></h2>
 								</Col>
 							</Row>
-							{this.state.images.map((file, i) => <li key={file.id} className="list-group-item clearfix" style={listStyle}>
+							{this.state.images.map((file, i) => <li key={file.id} id={"bone" + i} className="list-group-item clearfix" style={listStyle}>
 								{(this.state.images[i].deleted
 									? " (Poistetaan tallennuksen yhteydessä)" :
 									<Row className="show-grid">
@@ -735,8 +736,9 @@ class UpdateBone extends React.Component {
 						</button>
 							</div>
 						</form>
-					</div>
+						</div>
 				</Grid>
+				</div>
 		)
 	}
 }
