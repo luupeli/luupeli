@@ -110,16 +110,16 @@ class Home extends React.Component {
     }
     console.log('new style index is now: ' + next)
     window.location.reload()
+    window.onunload = function () { window.location.href = '/' }
   }
 
   proceedToSelect(event) {
-    this.setState({ redirect: true })
     if (event.target.id === 'proceedToSelectGameMode') {
-      this.setState({ redirectTo: '/game' })
+      this.setState({ redirect: true, redirectTo: '/game' })
     } else if (event.target.id === 'homeMenuLoginButton') {
-      this.setState({ redirectTo: '/login' })
+      this.setState({ redirect: true, redirectTo: '/login' })
     } else if (event.target.id === 'homeMenuSignUpButton') {
-      this.setState({ redirectTo: '/register' })
+      this.setState({ redirect: true, redirectTo: '/register' })
     }
   }
 
@@ -159,10 +159,9 @@ class Home extends React.Component {
               <button
                 id="homeMenuLoginButton"
                 className="menu-button"
-                onClick={this.proceedToSelect}
-              >
+                onClick={this.proceedToSelect}>
                 Kirjaudu sisään
-          </button>
+              </button>
             </Col>
           </Row>
           <Row className="show-grid">
@@ -170,10 +169,9 @@ class Home extends React.Component {
               <button
                 id="homeMenuSignUpButton"
                 className="menu-button"
-                onClick={this.proceedToSelect}
-              >
+                onClick={this.proceedToSelect}>
                 Luo käyttäjätili
-          </button>
+              </button>
             </Col>
           </Row>
         </div>
@@ -187,7 +185,7 @@ class Home extends React.Component {
                 className='menu-button'
                 onClick={this.logOut}>
                 Kirjaudu ulos
-          </button>
+              </button>
             </Col>
           </Row>
         </div>
@@ -208,6 +206,7 @@ class Home extends React.Component {
   render() {
     console.log(localStorage.getItem("allStyles"))
     if (this.state.redirect) {
+      this.setState({redirect : false})
       return (
         <Redirect to=
           {
