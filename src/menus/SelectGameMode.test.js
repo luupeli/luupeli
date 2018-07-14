@@ -75,7 +75,7 @@ describe("SelectGameMode tests", () => {
   test('page renders', async () => {
     const textContent = await page.$eval('#gameBody', el => el.textContent)
 
-    expect(textContent.includes("Luupelimuoto")).toBe(true)
+    expect(textContent.includes("luupelimuoto")).toBe(true)
   }, 20000)
 
   test('Takaisin button redirects back to main page', async () => {
