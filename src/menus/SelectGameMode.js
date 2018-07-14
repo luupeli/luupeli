@@ -1,10 +1,11 @@
 import React from 'react'
 import { Redirect, Link } from 'react-router-dom'
+import { Row, Col } from 'react-bootstrap'
 
 class SelectGameMode extends React.Component {
 
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       redirect: false,
@@ -51,10 +52,10 @@ class SelectGameMode extends React.Component {
     let i = this.state.styleIndex
 
     return (
-      <div>
-        <div className={this.state.allStyles[i].background}>
-          <div className={this.state.allStyles[i].style}>
-            <div id="gameBody" className="App">
+      <div id="gameBody" className="App">
+        <div className={this.state.allStyles[i].overlay}>
+          <div className={this.state.allStyles[i].background}>
+            <div className={this.state.allStyles[i].style}>
               <div
                 className={this.state.allStyles[i].flairLayerA}>
               </div>
@@ -67,28 +68,44 @@ class SelectGameMode extends React.Component {
               <div
                 className={this.state.allStyles[i].flairLayerD}>
               </div>
-              <h2 className="toprow">
-                Valitse
-              </h2>
-              <h2 className="secondrow">
-                Luupelimuoto:
-              </h2>
-              <div className="btn-group">
-                <button
-                  className="writinggame"
-                  onClick={this.proceedToSettings}>
-                  Kirjoituspeli
-                </button>
-                <button>:: Option #2 ::</button>
-                <button>:: Option #3 ::</button>
-              </div>
+              <h2 className="game-title">Valitse</h2>
+              <h2 className="game-title">luupelimuoto</h2>
+              <Row className="show-grid">
+                <Col xs={10} xsOffset={1} md={4} sm={4} mdOffset={4} smOffset={4}>
+                  <Row className="show-grid">
+                    <Col>
+                      <button
+                        className="menu-button"
+                        onClick={this.proceedToSettings}>
+                        Kirjoituspeli
+                      </button>
+                    </Col>
+                  </Row>
+                  <Row className="show-grid">
+                    <Col>
+                      <button
+                        className="menu-button">
+                        :: valinta 2 ::
+                      </button>
+                    </Col>
+                  </Row>
+                  <Row className="show-grid">
+                    <Col>
+                      <button
+                        className="menu-button">
+                        :: valinta 3 ::
+                      </button>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
               <div className="btn-group">
                 <button
                   id="goBackButton"
                   className="gobackbutton"
                   onClick={this.proceedToMain}>
                   Takaisin
-                </button>
+                      </button>
               </div>
             </div>
           </div>

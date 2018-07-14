@@ -10,9 +10,11 @@ import AddBone from './menus/AddBone'
 import UpdateBone from './menus/UpdateBone'
 import Login from './menus/Login'
 import Register from './menus/Register'
+import NavBar from './menus/NavBar'
 
 const Main = () => (
   <div>
+    <NavBar/>
     <main>
       <Switch>
         <Route exact path='/' component={Home} />

@@ -171,18 +171,15 @@ class AddBone extends React.Component {
 				}
 			}
 		}
-
 		return boneAnimals
 	}
 
 	//Upload a new image to server via database
 	async uploadImage(i) {
 		var imageUrl = ""
-
 		let data = new FormData()
 		data.append('image', this[`fileInput${i}`].files[0])
 		data.append('name', this[`fileInput${i}`].files[0].name)
-
 		return await imageService.upload(data)
 			.then((response) => {
 				return response.data.url
@@ -216,7 +213,7 @@ class AddBone extends React.Component {
 	//POST this bone to database
 	async postBone(boneAnimals) {
 		const bodyPartObj = this.state.bodyParts.filter((bodyPart) => bodyPart.name === this.state.bodyPart)[0]
-		var boneResponse = "";
+		var boneResponse = ""
 
 		return await boneService.create({
 			nameLatin: this.state.nameLatin,
@@ -292,7 +289,7 @@ class AddBone extends React.Component {
 	}
 
 	//If this.state.submitted is true (currently never), redirect to listing.
-	//Otherwise render bone add form.
+	//Otherwise render bone add form
 	render() {
 		if (this.state.submitted) {
 			return (
@@ -301,69 +298,174 @@ class AddBone extends React.Component {
 		}
 
 		return (
-			<div className="scrolling-menu">
+			<div className="menu-background">
+			<div className="container">
 				<div className="App">
 					<div id="">
 						<WGMessage ref={instance => this.wgmessage = instance} />
 					</div>
-					<Link to='/listing'><button id="backToListing" className="btn btn-default pull-right">Takaisin listaukseen</button></Link><br />
+					<Link to='/listing'>
+						<button id="backToListing" className="btn btn-default pull-right">
+							Takaisin listaukseen
+					</button>
+					</Link>
+					<br />
 					<form enctype="multipart/form-data" onSubmit={this.handleSubmit}>
 						<div className="form-group has-feedback">
 							<label className="pull-left">Latinankielinen nimi </label>
-							<input type="text" name="nameLatin" id="nameLatin" value={this.state.nameLatin} className="form-control" onChange={this.handleChange} /><span className="glyphicon glyphicon-asterisk form-control-feedback"></span>
+							<input
+								type="text"
+								name="nameLatin"
+								id="nameLatin"
+								value={this.state.nameLatin}
+								className="form-control"
+								onChange={this.handleChange} /><span
+									className="glyphicon glyphicon-asterisk form-control-feedback">
+							</span>
 						</div>
 						<label className="pull-left">Vaihtoehtoinen latinankielinen nimi</label>
-						<input type="text" name="altNameLatin" id="altNameLatin" value={this.state.altNameLatin} className="form-control" onChange={this.handleChange} />
+						<input
+							type="text"
+							name="altNameLatin"
+							id="altNameLatin"
+							value={this.state.altNameLatin}
+							className="form-control"
+							onChange={this.handleChange}
+						/>
 						<label className="pull-left">Suomenkielinen nimi</label>
-						<input type="text" name="name" id="name" value={this.state.name} className="form-control" onChange={this.handleChange} />
+						<input
+							type="text"
+							name="name"
+							id="name"
+							value={this.state.name}
+							className="form-control"
+							onChange={this.handleChange}
+						/>
 						<label className="pull-left">Kuvaus</label>
-						<input type="text" name="description" id="description" value={this.state.description} className="form-control" onChange={this.handleChange} />
+						<input
+							type="text"
+							name="description"
+							id="description"
+							value={this.state.description}
+							className="form-control"
+							onChange={this.handleChange}
+						/>
 						<label className="pull-left">Ruumiinosa</label>
-						<select name="bodyPart" id="bodyPart" className="form-control" value={this.state.bodyPart} onChange={this.handleChange}>
+						<select
+							name="bodyPart"
+							id="bodyPart"
+							className="form-control"
+							value={this.state.bodyPart}
+							onChange={this.handleChange}>
 							<option value="Eturaaja">Eturaaja</option>
 							<option value="Takaraaja">Takaraaja</option>
 							<option value="Vartalo">Vartalo</option>
 							<option value="Pää">Pää</option>
 						</select>
 						<ul className="list-group">
-							{this.state.newImages.map((file, i) => <li key={file.id} className="list-group-item clearfix">
-								<input type="file" accept="image/x-png,image/jpeg" id="boneImage" ref={input => { this[`fileInput${i}`] = input }} />
-								<div className="input-group">
-									<label className="pull-left">Vaikeustaso</label>
-									<select name="difficulty" className="form-control" value={this.state.newImages[i].difficulty} onChange={this.handleNewImageChange.bind(this, i)}>
-										<option value="1">Helppo</option>
-										<option value="100">Vaikea</option>
-									</select>
-									<label className="pull-left">Puoli</label>
-									<select name="handedness" className="form-control" value={this.state.newImages[i].handedness} onChange={this.handleNewImageChange.bind(this, i)}>
-										<option value="">Ei valintaa</option>
-										<option value="dex">dex</option>
-										<option value="sin">sin</option>
-									</select>
-									<label className="pull-left">Eläin</label>
-									<select name="animal" className="form-control" value={this.state.newImages[i].animal} onChange={this.handleNewImageChange.bind(this, i)}>
-										{this.state.animals.map((animal, i) => <option key={animal.id} value={animal.id}>{animal.name}</option>)}
-									</select>
-									<label className="pull-left">Kuvaus</label>
-									<input type="text" name="description" value={this.state.newImages[i].description} className="form-control" onChange={this.handleNewImageChange.bind(this, i)} />
-									<label className="pull-left">Valokuvaaja</label>
-									<input type="text" name="photographer" value={this.state.newImages[i].photographer} className="form-control" onChange={this.handleNewImageChange.bind(this, i)} />
-									<label className="pull-left">Tekijänoikeus</label>
-									<input type="text" name="copyright" value={this.state.newImages[i].copyright} className="form-control" onChange={this.handleNewImageChange.bind(this, i)} />
-								</div>
-							</li>)}
+							{this.state.newImages.map((file, i) =>
+								<li key={file.id} className="list-group-item clearfix">
+									<input
+										type="file"
+										accept="image/x-png,image/jpeg"
+										id="boneImage"
+										ref={input => {
+											this[`fileInput${i}`] = input
+										}}
+									/>
+
+									<div className="input-group">
+										<label className="pull-left">Vaikeustaso</label>
+										<select
+											name="difficulty"
+											className="form-control"
+											value={this.state.newImages[i].difficulty}
+											onChange={this.handleNewImageChange.bind(this, i)}
+										>
+											<option value="1">Helppo</option>
+											<option value="100">Vaikea</option>
+										</select>
+										<label className="pull-left">Puoli</label>
+										<select
+											name="handedness"
+											className="form-control"
+											value={this.state.newImages[i].handedness}
+											onChange={this.handleNewImageChange.bind(this, i)}
+										>
+											<option value="">Ei valintaa</option>
+											<option value="dex">dex</option>
+											<option value="sin">sin</option>
+										</select>
+										<label className="pull-left">Eläin</label>
+										<select
+											name="animal"
+											className="form-control"
+											value={this.state.newImages[i].animal}
+											onChange={this.handleNewImageChange.bind(this, i)}
+										>
+											{
+												this.state.animals.map((animal, i) =>
+													<option key={animal.id} value={animal.id}>
+														{animal.name}
+													</option>)
+											}
+										</select>
+										<label className="pull-left">Kuvaus</label>
+										<input
+											type="text"
+											name="description"
+											value={this.state.newImages[i].description}
+											className="form-control"
+											onChange={this.handleNewImageChange.bind(this, i)}
+										/>
+										<label className="pull-left">Valokuvaaja</label>
+										<input
+											type="text"
+											name="photographer"
+											value={this.state.newImages[i].photographer}
+											className="form-control"
+											onChange={this.handleNewImageChange.bind(this, i)}
+										/>
+										<label className="pull-left">Tekijänoikeus</label>
+										<input
+											type="text"
+											name="copyright"
+											value={this.state.newImages[i].copyright}
+											className="form-control"
+											onChange={this.handleNewImageChange.bind(this, i)}
+										/>
+									</div>
+								</li>)}
 							<li className="list-group-item clearfix">
 								<span className="btn-toolbar">
-									<button type="button" id="addNewImageFieldButton" className="btn btn-info pull-right" onClick={this.handleAddImage}>Lisää kuvakenttä</button>
-									<button type="button" id="removeNewImageFieldButton" className="btn btn-danger pull-right" onClick={this.handleRemoveNewImage}>Poista kuvakenttä</button>
+									<button
+										type="button"
+										id="addNewImageFieldButton"
+										className="btn btn-info pull-right"
+										onClick={this.handleAddImage}>
+										Lisää kuvakenttä
+									</button>
+									<button
+										type="button"
+										id="removeNewImageFieldButton"
+										className="btn btn-danger pull-right"
+										onClick={this.handleRemoveNewImage}>
+										Poista kuvakenttä
+									</button>
 								</span>
 							</li>
 						</ul>
 						<div id="addBone" className="btn-toolbar">
-							<button type="submit" id="submitNewBoneButton" className="btn btn-info pull-right">Lisää luu</button>
+							<button
+								type="submit"
+								id="submitNewBoneButton"
+								className="btn btn-info pull-right">
+								Lisää luu
+							</button>
 						</div>
 					</form>
 				</div>
+			</div>
 			</div>
 		)
 	}

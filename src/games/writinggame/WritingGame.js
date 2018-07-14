@@ -2,6 +2,7 @@ import { Redirect } from 'react-router-dom'
 import React from 'react'
 import WGMessage from './WGMessage'
 import StringSimilarity from 'string-similarity'
+import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
 
 class WritingGame extends React.Component {
 
@@ -121,27 +122,38 @@ class WritingGame extends React.Component {
 
   //returns the form of the game, or a message if the end has been reached
   bottomPage() {
+    const imageWidth = () => {
+      const windowWidth = Math.max(
+        document.body.scrollWidth,
+        document.documentElement.scrollWidth,
+        document.body.offsetWidth,
+        document.documentElement.offsetWidth,
+        document.documentElement.clientWidth
+      )
+
+      if (windowWidth > 400) {
+        return 600
+      }
+      return windowWidth - 40
+    }
+
     if (this.state.endCounter < this.state.images.length) {
       return (
         <div class="bottom">
           <div class="row" id="image-holder">
             <div class="intro">
-              <img
-                id="question-image"
-                class="img-fluid"
-                alt={this.state.images[this.state.index].bone.nameLatin
-                  + ' osasta '
-                  + this.state.bpname
-                  + ' kuvan url: http://luupeli-backend.herokuapp.com/images/'
-                  + this.state.images[this.state.index].url}
-                src={'http://luupeli-backend.herokuapp.com/images/'
-                  + this.state.images[this.state.index].url}
-              />
+              <CloudinaryContext cloudName="luupeli">
+                <div>
+                  <Image publicId={this.state.images[this.state.index].url}>
+                    <Transformation width={imageWidth()} crop="fill" radius="20" />
+                  </Image>
+                </div>
+              </CloudinaryContext>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6 col-md-offset-3">
-              <h1 id="heading">{this.state.images[this.state.index].bone.name}</h1>
+            <div><center>
+              <h3 id="heading">{this.state.images[this.state.index].bone.name}</h3></center>
             </div>
           </div>
           <div class="container">

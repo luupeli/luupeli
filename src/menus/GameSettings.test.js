@@ -8,7 +8,7 @@ import GameSettings from './GameSettings'
 describe("GameSettings", () => {
     const settings = () => {
         const settings = shallow(<GameSettings />)
-        return settings;
+        return settings
     }
 /*
     it("always renders a div", () => {

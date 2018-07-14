@@ -14,22 +14,64 @@
   background: #999933;
   border:3px solid rgb(30, 30, 32);
 }
-.bodyparts .btn-group .btn-warning:active {
+
+.bodyparts .menu-button .btn-warning:active {
   filter:brightness(75%);
   background: #55FF33;
   border:2px solid #88FF88;
 }
-
 
 .button:focus
 {
      color:var(--primary);
 }
 
+.page-title {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
 .gamelink{
   color:#fff!important;
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: orange;
+
+}
+
+.menu-button{
+  display: block;
+  width: 100%;
+  border:4px solid var(--primary);
+  text-align: center;
+  -webkit-box-shadow: #B4B5B5 2px 2px 2px  ;
+  -moz-box-shadow: #B4B5B5 2px 2px 2px ;
+    box-shadow: #B4B5B5 2px 2px 2px  ;
+     -webkit-border-radius: 9px;
+     -moz-border-radius: 9px;
+   margin-bottom: 15px;
+   border-radius: 15px;
+   font-size:calc(0.9vw + 0.9vh + .5vmin);/*10vh;/*24px;*/
+   cursor: pointer;
+   width: 100%;
+   padding: 1.0vh 1.25vw;/*20px 24px;*/
+   text-decoration:none;
+   text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+ /*  color: rgb(236, 209, 228);*/
+opacity: 0.68;
+background-size: 200% 200%;
+border:4px solid var(--primary);
+  background-color: var(--tertiary); 
+ background-image: -webkit-gradient(linear, left top, left bottom, from(var(--primary)), to(var(--tertiary)));
+ background-image: -webkit-linear-gradient(top, var(--primary),var(--tertiary));
+ background-image: -moz-linear-gradient(top, var(--primary),var(--tertiary));
+ background-image: -ms-linear-gradient(top,  var(--primary),var(--tertiary));
+ background-image: -o-linear-gradient(top,  var(--primary),var(--tertiary));
+ background-image: linear-gradient(to bottom,  var(--primary),var(--tertiary));
+ filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=var(--primary), endColorstr=var(--tertiary));
+-webkit-animation: Button-Gradient 3.23s ease infinite;
+-moz-animation: Button-Gradient 3.23s ease infinite;
+animation: Button-Gradient 3.23s ease infinite;
 
 }
 
@@ -45,10 +87,10 @@
 
 }
 
-.btn-group button {
+ .btn-group button {
     
     -webkit-box-shadow: #B4B5B5 2px 2px 2px  ;
-    -moz-box-shadow: #B4B5B5 2px 2px 2px ;
+   -moz-box-shadow: #B4B5B5 2px 2px 2px ;
      box-shadow: #B4B5B5 2px 2px 2px  ;
       -webkit-border-radius: 9px;
       -moz-border-radius: 9px;
@@ -57,7 +99,7 @@
     font-size:calc(0.9vw + 0.9vh + .5vmin);/*10vh;/*24px;*/
     cursor: pointer;
     width: 100%;
-    display: block;
+    display: block; 
     padding: 1.0vh 1.25vw;/*20px 24px;*/
     text-decoration:none;
     text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
@@ -78,31 +120,31 @@
  animation: Button-Gradient 3.23s ease infinite;
 
 }
-.blood-dragon .btn-group button {
+.blood-dragon .menu-button button {
   border: 8px solid var(--primary);
   
  
 }
 
-.deep-blue .btn-group button {
+.deep-blue .menu-button button {
   border:4px solid var(--primary);
 
 }
 
-.btn-group button:hover {
+.menu-button button:hover {
   filter:brightness(65%);
   opacity: 0.88;
 }
 
-.blood-dragon .btn-group button:hover {
+.blood-dragon .menu-button button:hover {
 
 }
 
-.deep-blue .btn-group button:hover {
+.deep-blue .menu-button button:hover {
 
 }
 
-.btn-group button:active {
+.menu-button button:active {
 
     filter:brightness(33%);
     opacity: 0.97;
@@ -144,9 +186,11 @@ Logo gradient modified from:
 https://codepen.io/M4TERIAL/pen/gavvQL
 */
 h1 {
+    display: block;
+    width: 100%;
     color: #C6CBF5;
     font-family: 'Press start 2p', sans-serif;
-    font-size:calc(4vw + 4vh + 2.5vmin);
+    font-size:calc(3vw + 3vh + 2.5vmin);
     font-weight: 1000;
     line-height: 1.2;
     left: 50vw;
@@ -233,7 +277,7 @@ h2 {
   color: #88FF88;
   font-family: 'Press start 2p', sans-serif;
 }
-.fallout .btn-group button {
+.fallout .menu-button button {
   color: #88FF88;
   font-family: 'Press start 2p', sans-serif;
 }
@@ -273,7 +317,7 @@ h2 {
 }
 
 div.blinder {
-    position: absolute;
+    position: fixed;
     width: 16vw;
     height: 12vh;
     margin-left: 42vw; 
@@ -292,8 +336,8 @@ div.transbox {
     opacity: 0.9;
     border-radius: 15px;
     filter: alpha(opacity=60); 
-    max-height: 100vh;
-    overflow: auto;
+    max-height: 100%;
+    overflow: hidden;
   
 }
 
@@ -357,20 +401,15 @@ form {
 }
 
 
-.scrolling-menu {
-  overflow: scroll;
-  opacity:1.0;
+.menu-background {
   background: linear-gradient(
     180deg,
       #6A0275 10vh, 
       #040C4A 73vh,
       #000000 100vh);
-  position:fixed;
+  position: absolute;
   width:100%;
   height:100%;
-  top:50px;
-  left:0px;
-  z-index:1000;
 }
 
 body {
@@ -386,14 +425,15 @@ body {
         #000000 80vh);
      */
     background-size: 100% 100%;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    overflow: hidden;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    overflow: scroll;
 }
 
 .background-fallout {
   width: 100wh;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   color: #fff;
   background: radial-gradient(
     180deg,
@@ -412,7 +452,8 @@ body {
 
 .background-steel {
   width: 100wh;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   color: #fff;
   background: linear-gradient(
     125deg,
@@ -428,14 +469,13 @@ body {
   overflow-x: hidden;
   overflow-y: hidden;
   overflow: hidden;
- 
-
 }
 
 
 .background-deep-blue {
   width: 100wh;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   color: #fff;
   background: linear-gradient(
     180deg,
@@ -455,7 +495,8 @@ body {
 .background-blood-dragon {
   
   width: 100wh;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   color: #fff;
   background: linear-gradient(
     180deg,
@@ -497,7 +538,7 @@ https://codepen.io/George-Payne/pen/qOrxao
     bottom: -50vh;
     left: -25vw;
     right: -25vw;
-    position: absolute;
+    position: fixed;
     opacity: 0.25;
 
   
@@ -524,7 +565,7 @@ https://codepen.io/George-Payne/pen/qOrxao
     bottom: -55vh;
     left: -27.5vw;
     right: -27.5vw;
-    position: absolute;
+    position: fixed;
     opacity: 0.47;
 
   
@@ -555,7 +596,7 @@ https://codepen.io/George-Payne/pen/qOrxao
     bottom: -55vh;
     left: -27.5vw;
     right: -27.5vw;
-    position: absolute;
+    position: fixed;
     opacity: 0.07;
 
   
@@ -581,7 +622,7 @@ https://codepen.io/George-Payne/pen/qOrxao
     bottom: -386px;
     left: -400px;
     right: -400px;
-    position: absolute;
+    position: fixed;
     opacity: 0.25;
 
   
@@ -606,7 +647,7 @@ https://codepen.io/George-Payne/pen/qOrxao
     bottom: -386px;
     left: -400px;
     right: -400px;
-    position: absolute;
+    position: fixed;
     opacity: 0.25;
 
   
@@ -631,7 +672,7 @@ https://codepen.io/George-Payne/pen/qOrxao
     bottom: -440px;
     left: -450px;
     right: -450px;
-    position: absolute;
+    position: fixed;
     opacity: 0.07;
 
   
@@ -656,7 +697,7 @@ https://codepen.io/George-Payne/pen/qOrxao
     bottom: -440px;
     left: -450px;
     right: -450px;
-    position: absolute;
+    position: fixed;
     opacity: 0.07;
 
   
