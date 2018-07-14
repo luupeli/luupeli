@@ -26,6 +26,8 @@ describe('AddBone tests', () => {
 
   test('Pressing "Lisää kuvakenttä"-button adds a new image field', async () => {
 		await page.waitForSelector('#addNewImageFieldButton')
+		
+		await page.waitFor(1000)
 		const elementList = await page.evaluate(() => {
 			const lis = Array.from(document.querySelectorAll('.list-group-item'))
 			return lis.map(li => li.textContent)
@@ -33,6 +35,7 @@ describe('AddBone tests', () => {
 		
     await page.click('#addNewImageFieldButton')
     
+    await page.waitFor(1000)
 		const elementListAfterAdd = await page.evaluate(() => {
 			const lis = Array.from(document.querySelectorAll('.list-group-item'))
 			return lis.map(li => li.textContent)
@@ -44,6 +47,7 @@ describe('AddBone tests', () => {
     await page.waitForSelector('#addNewImageFieldButton')
     await page.click('#addNewImageFieldButton')
     
+    await page.waitFor(1000)
 		const elementList = await page.evaluate(() => {
 			const lis = Array.from(document.querySelectorAll('.list-group-item'))
 			return lis.map(li => li.textContent)
@@ -52,6 +56,7 @@ describe('AddBone tests', () => {
     await page.waitForSelector('#removeNewImageFieldButton')
     await page.click('#removeNewImageFieldButton')
     
+    await page.waitFor(1000)
 		const elementListAfterRemove = await page.evaluate(() => {
 			const lis = Array.from(document.querySelectorAll('.list-group-item'))
 			return lis.map(li => li.textContent)
