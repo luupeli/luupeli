@@ -105,7 +105,8 @@ describe("Home (puppeteer) tests", () => {
     
     // const preTextContent = await page.$eval('#styleName', el => el.preTextContent)
     // expect(preTextContent.includes("blood-dragon")).toBe(true)
-
+    
+	await page.waitForSelector('#themeChangeButton')
     await page.click('#themeChangeButton')
     const textContent = await page.$eval('#styleName', el => el.textContent)
     expect(textContent.includes("blood-dragon")).toBe(false)

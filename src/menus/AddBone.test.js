@@ -5,6 +5,7 @@ let page
 
 beforeAll(async () => {
 	browser = await puppeteer.launch({args: ['--no-sandbox']})
+	jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
 	page = await browser.newPage()
 	await page.setViewport({ width: 1280, height: 800 })
 })
@@ -27,7 +28,7 @@ describe('AddBone tests', () => {
   test('Pressing "Lisää kuvakenttä"-button adds a new image field', async () => {
 		await page.waitForSelector('#addNewImageFieldButton')
 		
-		await page.waitFor(1000)
+		await page.waitFor(2000)
 		const elementList = await page.evaluate(() => {
 			const lis = Array.from(document.querySelectorAll('.list-group-item'))
 			return lis.map(li => li.textContent)
@@ -35,7 +36,7 @@ describe('AddBone tests', () => {
 		
     await page.click('#addNewImageFieldButton')
     
-    await page.waitFor(1000)
+    await page.waitFor(2000)
 		const elementListAfterAdd = await page.evaluate(() => {
 			const lis = Array.from(document.querySelectorAll('.list-group-item'))
 			return lis.map(li => li.textContent)
@@ -47,7 +48,7 @@ describe('AddBone tests', () => {
     await page.waitForSelector('#addNewImageFieldButton')
     await page.click('#addNewImageFieldButton')
     
-    await page.waitFor(1000)
+    await page.waitFor(2000)
 		const elementList = await page.evaluate(() => {
 			const lis = Array.from(document.querySelectorAll('.list-group-item'))
 			return lis.map(li => li.textContent)
@@ -56,7 +57,7 @@ describe('AddBone tests', () => {
     await page.waitForSelector('#removeNewImageFieldButton')
     await page.click('#removeNewImageFieldButton')
     
-    await page.waitFor(1000)
+    await page.waitFor(2000)
 		const elementListAfterRemove = await page.evaluate(() => {
 			const lis = Array.from(document.querySelectorAll('.list-group-item'))
 			return lis.map(li => li.textContent)
@@ -70,6 +71,6 @@ describe('AddBone tests', () => {
     await page.click('#backToListing')
     
     const textContent = await page.$eval('#listGroup', el => el.textContent)
-    expect(textContent.includes("Suodata lajin mukaan")).toBe(true)
+    expect(textContent.toLowerCase().includes("suodata lajin mukaan")).toBe(true)
   }, 20000)
 })

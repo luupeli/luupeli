@@ -645,7 +645,7 @@ class UpdateBone extends React.Component {
 									<h2 style={titleStyle}><Label style={labelStyle}>Kuvat</Label></h2>
 								</Col>
 							</Row>
-							{this.state.images.map((file, i) => <li key={file.id} className="list-group-item clearfix" style={listStyle}>
+							{this.state.images.map((file, i) => <li key={file.id} id={"bone" + i} className="list-group-item clearfix" style={listStyle}>
 								{(this.state.images[i].deleted
 									? " (Poistetaan tallennuksen yhteydessä)" :
 									<Row className="show-grid">
