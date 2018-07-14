@@ -74,6 +74,8 @@ expect(testInstance.findByProps({className: "background-blood-dragon"}).children
 beforeEach(function() {
 
   global.sessionStorage = jest.genMockFunction();
+ // jest.setTimeout(30000)
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
   global.sessionStorage.setItem = jest.genMockFunction();
   global.sessionStorage.getItem = jest.genMockFunction();
 })
@@ -186,7 +188,7 @@ describe('Home', () => {
       )
     ).toBeTruthy()
 
-    wrapper.find('.theme').simulate('click')
+    wrapper.find('#themeChangeButton').simulate('click')
     expect(wrapper.state('styleIndex')).toBe(1)
     //    console.log(wrapper.state()) 
   })
@@ -195,11 +197,11 @@ describe('Home', () => {
 
     const wrapper = mount(<Home />)
     wrapper.setState({ 'styleIndex': 0 })
-    wrapper.find('.theme').simulate('click')
+    wrapper.find('#themeChangeButton').simulate('click')
     //console.log(wrapper.debug())
     //await new Promise((resolve) => setTimeout(resolve, 0))
     const updatedWrapper = wrapper.update()
-    console.log(wrapper.debug())
+  //  console.log(wrapper.debug())
     expect(
       updatedWrapper.containsMatchingElement(
         <div className="blood-dragon" />
@@ -226,7 +228,7 @@ describe('Home', () => {
   })
 
   it('has the name of the game, Luupeli', () => {
-    const title = home().find('.gametitle')
+    const title = home().find('.game-title')
     expect(title.text()).toContain('Luupeli')
   })
 

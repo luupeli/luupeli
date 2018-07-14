@@ -44,6 +44,7 @@ let page
 beforeAll(async () => {
   browser = await puppeteer.launch({ args: ['--no-sandbox --disable-http2'] })
   //  browser = await puppeteer.launch()
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
   page = await browser.newPage()
   await page.setViewport({ width: 1280, height: 800 })
   await page.goto('http://localhost:3000')
@@ -73,12 +74,12 @@ describe("SelectGameMode tests", () => {
 
   test('page renders', async () => {
     const textContent = await page.$eval('#gameBody', el => el.textContent)
-    expect(textContent.includes("Luupelimuoto")).toBe(true)
+    expect(textContent.includes("luupelimuoto")).toBe(true)
   }, 20000)
 
   test('Takaisin button redirects back to main page', async () => {
     await page.click('#goBackButton')
-    const textContent = await page.$eval('#btn-group', el => el.textContent)
+    const textContent = await page.$eval('#homeMenu', el => el.textContent)
     expect(textContent.includes("Pelaa")).toBe(true)
   })
 
