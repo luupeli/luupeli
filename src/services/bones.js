@@ -1,6 +1,7 @@
 import axios from 'axios'
 const baseUrl = 'http://luupeli-backend.herokuapp.com/api/bones'
 
+
 const getAll = () => {
   const request = axios.get(baseUrl)
   return request.then(response => { return response })

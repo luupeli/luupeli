@@ -6,7 +6,8 @@ let page
 beforeAll(async () => {
 	browser = await puppeteer.launch({args: ['--no-sandbox']})
 	page = await browser.newPage()
-	await page.setViewport({ width: 1280, height: 800 })
+  await page.setViewport({ width: 1280, height: 800 })
+  await page.goto('http://localhost:3000')
 })
 
 beforeEach(async () => {
