@@ -45,7 +45,7 @@ beforeAll(async () => {
   browser = await puppeteer.launch({ args: ['--no-sandbox --disable-http2'] })
   //  browser = await puppeteer.launch()
   //global.Promise = require.requireActual('promise')
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000; 
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000; 
 
   page = await browser.newPage()
   await page.setViewport({ width: 1280, height: 800 })
@@ -87,7 +87,7 @@ describe("Home (puppeteer) tests", () => {
     await page.waitForSelector('#gameBody')
     const textContent = await page.$eval('#gameBody', el => el.textContent)
     expect(textContent.includes("Kirjoituspeli")).toBe(true)
-  }, 2500)
+  }, 20000)
 
   test('Login button redirects to Login page', async () => {
     
@@ -96,7 +96,7 @@ describe("Home (puppeteer) tests", () => {
     await page.waitForSelector('#loginPromptMenu')
     const textContent = await page.$eval('#loginPromptMenu', el => el.textContent)
     expect(textContent.includes("Luukirjaudu sisään")).toBe(true)
-  }, 2500)
+  }, 20000)
 
   test('Sign-up button redirects to Sign-up page', async () => {
     
@@ -105,7 +105,7 @@ describe("Home (puppeteer) tests", () => {
     await page.waitForSelector('#registerMenu')
     const textContent = await page.$eval('#registerMenu', el => el.textContent)
     expect(textContent.includes("luukäyttäjätunnus")).toBe(true)
-  }, 2500)
+  }, 20000)
 
   test('CSS Theme is changeable', async () => {
     
@@ -117,12 +117,7 @@ describe("Home (puppeteer) tests", () => {
     await page.waitForSelector('#styleName')
     const textContent = await page.$eval('#styleName', el => el.textContent)
     expect(textContent.includes("blood-dragon")).toBe(false)
-  }, 2500)
-
-  
-  
-
-
+  }, 20000)
  
 })
 
