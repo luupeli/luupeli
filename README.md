@@ -8,7 +8,7 @@ Status](https://travis-ci.org/luupeli/luupeli.svg?branch=master)](https://travis
 
 [The project on Heroku](http://luupeli.herokuapp.com/)
 
-## Seuraava asiakastapaaminen: 16.7. klo 11-13
+## Seuraava asiakastapaaminen: 30.7. klo 11-13
 
 ### Ryhmätapaamiset heinäkuussa:
 * Ma klo 12-16
