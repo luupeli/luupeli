@@ -34,24 +34,33 @@ class Register extends React.Component {
 
 	signUp = async (event) => {
 		event.preventDefault()
-		try {
-			const user = await usersService.create({
-				username: this.state.username,
-				email: this.state.email,
-				password: this.state.password
-			})
-			console.log('user created:' + user.username)
-			this.setState({
-				username: '',
-				email: '',
-				password: '',
-				repeatPassword: ''
-			})
-		} catch (error) {
-			console.log(error)
-			this.setState({ error: 'käyttäjätunnus tai salasana on virheellinen' })
+		if (this.checkPasswordMatch) {
+			try {
+				const user = await usersService.create({
+					username: this.state.username,
+					email: this.state.email,
+					password: this.state.password
+				})
+				console.log('user created:' + user.username)
+				this.setState({
+					username: '',
+					email: '',
+					password: '',
+					repeatPassword: ''
+				})
+			} catch (error) {
+				console.log(error)
+				this.setState({ error: 'käyttäjätunnus tai salasana on virheellinen' })
+				setTimeout(() => { this.setState({ error: null }) }, 5000)
+			}
+		} else {
+			this.setState({ error: 'salasanat eivät täsmää' })
 			setTimeout(() => { this.setState({ error: null }) }, 5000)
 		}
+	}
+
+	checkPasswordMatch(pass, pass2) {
+		return pass === pass2
 	}
 
 	handleSignUpFieldChange = (event) => {
