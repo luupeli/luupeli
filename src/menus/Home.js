@@ -120,6 +120,8 @@ class Home extends React.Component {
       this.setState({ redirect: true, redirectTo: '/login' })
     } else if (event.target.id === 'homeMenuSignUpButton') {
       this.setState({ redirect: true, redirectTo: '/register' })
+    } else if (event.target.id === 'adminPageButton') {
+      this.setState({ redirect: true, redirectTo: '/admin' })
     }
   }
 
@@ -182,6 +184,16 @@ class Home extends React.Component {
           <Row className="show-grid">
             <Col>
               <button
+                id="adminPageButton"
+                className="menu-button"
+                onClick={this.proceedToSelect}>
+                Ylläpitäjälle
+              </button>
+            </Col>
+          </Row>
+          <Row className="show-grid">
+            <Col>
+              <button
                 className='menu-button'
                 onClick={this.logOut}>
                 Kirjaudu ulos
@@ -206,7 +218,7 @@ class Home extends React.Component {
   render() {
     console.log(localStorage.getItem("allStyles"))
     if (this.state.redirect) {
-      this.setState({redirect : false})
+      this.setState({ redirect: false })
       return (
         <Redirect to=
           {
