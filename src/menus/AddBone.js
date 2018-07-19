@@ -82,6 +82,8 @@ class AddBone extends React.Component {
 		this.handleAddImage = this.handleAddImage.bind(this)
 		this.handleRemoveNewImage = this.handleRemoveNewImage.bind(this)
 		this.getBoneAnimals = this.getBoneAnimals.bind(this)
+
+		window.onunload = function () { window.location.href = '/' }
 	}
 
 	//GET animals and bodyParts

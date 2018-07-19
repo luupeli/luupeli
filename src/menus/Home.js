@@ -264,7 +264,7 @@ class Home extends React.Component {
                         id="proceedToSelectGameMode"
                         onClick={this.proceedToSelect}>
                         Pelaa
-                </button>
+                       </button>
                     </Col>
                   </Row>
                   {this.loggedInButtons()}
@@ -274,7 +274,7 @@ class Home extends React.Component {
                       className="menu-button"
                       onClick={this.changeCss}>
                       Vaihda teema
-                </button>
+                    </button>
                   </Row>
                   <p>
                     Teema: {this.state.style}
