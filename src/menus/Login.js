@@ -18,6 +18,7 @@ class Login extends React.Component {
 
     this.login = this.login.bind(this)
     this.handleLoginFieldChange = this.handleLoginFieldChange.bind(this)
+    window.onunload = function () { window.location.href = '/' };
   }
 
   componentDidMount() {
@@ -111,40 +112,41 @@ class Login extends React.Component {
   }
 
   render() {
+
     let i = this.state.styleIndex
     return (
       <div className={this.state.allStyles[i].overlay}>
-      <div className={this.state.allStyles[i].background}>
-        <div className={this.state.allStyles[i].style}>
-          <div id="loginPromptMenu" className="App">
-            <div
-              className={this.state.allStyles[i].flairLayerA}>
-            </div>
-            <div
-              className={this.state.allStyles[i].flairLayerB}>
-            </div>
-            <div
-              className={this.state.allStyles[i].flairLayerC}>
-            </div>
-            <div
-              className={this.state.allStyles[i].flairLayerD}>
-            </div>
-            <h2 className="toprow">Luukirjaudu sisään</h2>
-            <div class="transbox">
-              {this.ifLoggedInForms()}
-            </div>
-            <div className="btn-group">
-              <button
-                id="goBackButton"
-                className="gobackbutton"
-                onClick={this.proceedToMain}>
-                Takaisin
+        <div className={this.state.allStyles[i].background}>
+          <div className={this.state.allStyles[i].style}>
+            <div id="loginPromptMenu" className="App">
+              <div
+                className={this.state.allStyles[i].flairLayerA}>
+              </div>
+              <div
+                className={this.state.allStyles[i].flairLayerB}>
+              </div>
+              <div
+                className={this.state.allStyles[i].flairLayerC}>
+              </div>
+              <div
+                className={this.state.allStyles[i].flairLayerD}>
+              </div>
+              <h2 className="toprow">Luukirjaudu sisään</h2>
+              <div class="transbox">
+                {this.ifLoggedInForms()}
+              </div>
+              <div className="btn-group">
+                <button
+                  id="goBackButton"
+                  className="gobackbutton"
+                  onClick={this.proceedToMain}>
+                  Takaisin
               </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     )
   }
 }

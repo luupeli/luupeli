@@ -36,6 +36,7 @@ class GameSettings extends React.Component {
 		this.toggleCheck = this.toggleCheck.bind(this)
 		this.atLeastOneBodyPartIsSelected = this.atLeastOneBodyPartIsSelected.bind(this)
 		this.initializeGame = this.initializeGame.bind(this)
+		window.onunload = function () { window.location.href = '/' };
 
 		animalService.getAll()  // here we fill the allAnimals array and connect selected-attribute for each row 
 			.then(response => {

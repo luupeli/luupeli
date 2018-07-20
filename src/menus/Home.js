@@ -110,16 +110,18 @@ class Home extends React.Component {
     }
     console.log('new style index is now: ' + next)
     window.location.reload()
+    window.onunload = function () { window.location.href = '/' }
   }
 
   proceedToSelect(event) {
-    this.setState({ redirect: true })
     if (event.target.id === 'proceedToSelectGameMode') {
-      this.setState({ redirectTo: '/game' })
+      this.setState({ redirect: true, redirectTo: '/game' })
     } else if (event.target.id === 'homeMenuLoginButton') {
-      this.setState({ redirectTo: '/login' })
+      this.setState({ redirect: true, redirectTo: '/login' })
     } else if (event.target.id === 'homeMenuSignUpButton') {
-      this.setState({ redirectTo: '/register' })
+      this.setState({ redirect: true, redirectTo: '/register' })
+    } else if (event.target.id === 'adminPageButton') {
+      this.setState({ redirect: true, redirectTo: '/admin' })
     }
   }
 
@@ -159,10 +161,9 @@ class Home extends React.Component {
               <button
                 id="homeMenuLoginButton"
                 className="menu-button"
-                onClick={this.proceedToSelect}
-              >
+                onClick={this.proceedToSelect}>
                 Kirjaudu sisään
-          </button>
+              </button>
             </Col>
           </Row>
           <Row className="show-grid">
@@ -170,10 +171,9 @@ class Home extends React.Component {
               <button
                 id="homeMenuSignUpButton"
                 className="menu-button"
-                onClick={this.proceedToSelect}
-              >
+                onClick={this.proceedToSelect}>
                 Luo käyttäjätili
-          </button>
+              </button>
             </Col>
           </Row>
         </div>
@@ -183,9 +183,21 @@ class Home extends React.Component {
         <div>
           <Row className="show-grid">
             <Col>
-              <button onClick={this.logOut}>
+              <button
+                id="adminPageButton"
+                className="menu-button"
+                onClick={this.proceedToSelect}>
+                Ylläpitäjälle
+              </button>
+            </Col>
+          </Row>
+          <Row className="show-grid">
+            <Col>
+              <button
+                className='menu-button'
+                onClick={this.logOut}>
                 Kirjaudu ulos
-          </button>
+              </button>
             </Col>
           </Row>
         </div>
@@ -206,6 +218,7 @@ class Home extends React.Component {
   render() {
     console.log(localStorage.getItem("allStyles"))
     if (this.state.redirect) {
+      this.setState({ redirect: false })
       return (
         <Redirect to=
           {
@@ -225,54 +238,54 @@ class Home extends React.Component {
     this.setThemeColors(i)
 
     return (
-        <div id="homeMenu" className="App">
-          <div className={this.state.overlay}>
-            <div className={this.state.background}>
-              <div id="styleName" className={this.state.style}>
-                <div
-                  className={this.state.flairLayerA}>
-                </div>
-                <div
-                  className={this.state.flairLayerB}>
-                </div>
-                <div
-                  className={this.state.flairLayerC}>
-                </div>
-                <div
-                  className={this.state.flairLayerD}>
-                </div>
-                <h1 className="game-title">Luupeli</h1>
-                <Row className="show-grid">
-                  <Col xs={10} xsOffset={1} md={4} sm={4} mdOffset={4} smOffset={4}>
-                    <Row className="show-grid">
-                      <Col>
-                        <button
-                          className="menu-button gamelink"
-                          id="proceedToSelectGameMode"
-                          onClick={this.proceedToSelect}>
-                          Pelaa
-                </button>
-                      </Col>
-                    </Row>
-                    {this.loggedInButtons()}
-                    <Row className="show-grid">
-                      <button
-                        id="themeChangeButton"
-                        className="menu-button"
-                        onClick={this.changeCss}>
-                        Vaihda teema
-                </button>
-                    </Row>
-                    <p>
-                      Teema: {this.state.style}
-                    </p>
-                    <div className={this.state.style} />
-                  </Col>
-                </Row>
+      <div id="homeMenu" className="App">
+        <div className={this.state.overlay}>
+          <div className={this.state.background}>
+            <div id="styleName" className={this.state.style}>
+              <div
+                className={this.state.flairLayerA}>
               </div>
+              <div
+                className={this.state.flairLayerB}>
+              </div>
+              <div
+                className={this.state.flairLayerC}>
+              </div>
+              <div
+                className={this.state.flairLayerD}>
+              </div>
+              <h1 className="game-title">Luupeli</h1>
+              <Row className="show-grid">
+                <Col xs={10} xsOffset={1} md={4} sm={4} mdOffset={4} smOffset={4}>
+                  <Row className="show-grid">
+                    <Col>
+                      <button
+                        className="menu-button gamelink"
+                        id="proceedToSelectGameMode"
+                        onClick={this.proceedToSelect}>
+                        Pelaa
+                       </button>
+                    </Col>
+                  </Row>
+                  {this.loggedInButtons()}
+                  <Row className="show-grid">
+                    <button
+                      id="themeChangeButton"
+                      className="menu-button"
+                      onClick={this.changeCss}>
+                      Vaihda teema
+                    </button>
+                  </Row>
+                  <p>
+                    Teema: {this.state.style}
+                  </p>
+                  <div className={this.state.style} />
+                </Col>
+              </Row>
             </div>
           </div>
         </div>
+      </div>
     )
   }
 }

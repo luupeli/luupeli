@@ -22,6 +22,8 @@ class BoneListing extends React.Component {
 		this.handleAnimalChange = this.handleAnimalChange.bind(this)
 		this.handleBodyPartChange = this.handleBodyPartChange.bind(this)
 		this.handleChange = this.handleChange.bind(this)
+		
+		window.onunload = function () { window.location.href = '/' }
 	}
 
 	//GET list of bones from database and stuff it into this.state.bones for rendering

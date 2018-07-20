@@ -15,6 +15,8 @@ class SelectGameMode extends React.Component {
 
     this.proceedToSettings = this.proceedToSettings.bind(this)
     this.proceedToMain = this.proceedToMain.bind(this)
+
+    window.onunload = function () { window.location.href = '/' };
   }
 
   componentDidMount() {

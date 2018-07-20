@@ -26,6 +26,8 @@ class WritingGame extends React.Component {
     console.log(this.state.allAnimals)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+
+    window.onunload = function () { window.location.href = '/' };
   }
 
   componentDidMount() {
