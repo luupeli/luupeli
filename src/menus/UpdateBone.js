@@ -4,9 +4,11 @@ import boneService from '../services/bones'
 import imageService from '../services/images'
 import bodyPartService from '../services/bodyParts'
 import animalService from '../services/animals'
-import WGMessage from '../games/writinggame/WGMessage'
+import Message from '../games/Message'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
 import { Grid, Row, Col, Form, FormGroup, ControlLabel, FieldGroup, FormControl, Label, HelpBlock } from 'react-bootstrap'
+import { connect } from 'react-redux'
+import { setMessage } from '../reducers/messageReducer'
 
 class UpdateBone extends React.Component {
 
@@ -216,9 +218,7 @@ class UpdateBone extends React.Component {
 
 	//Display an error message to the user
 	failureMessage() {
-		this.wgmessage.mountTimer()
-		this.wgmessage.setMessage('Jokin meni pieleen.')
-		this.wgmessage.setStyle("alert alert-danger")
+		this.props.setMessage('Jokin meni pieleen.', 'danger')
 	}
 
 	//PUT updated fields of the bone to database
@@ -309,9 +309,7 @@ class UpdateBone extends React.Component {
 		}
 
 		//TODO: only show this message if there is no existing failure message
-		this.wgmessage.mountTimer()
-		this.wgmessage.setMessage('Muutokset tallennettu!')
-		this.wgmessage.setStyle("alert alert-success")
+		this.props.setMessage('Muutokset tallennettu.', 'success')
 	}
 
 	//Delete this bone from DB.
@@ -328,15 +326,11 @@ class UpdateBone extends React.Component {
 			})
 			.catch((error) => {
 				console.log(error)
-				this.wgmessage.mountTimer()
-				this.wgmessage.setMessage('Poisto epäonnistui :(')
-				this.wgmessage.setStyle("alert alert-danger")
+				this.props.setMessage('Poisto epäonnistui.', 'danger')
 			})
 
 		//TODO: only show this message if there is no existing failure message
-		this.wgmessage.mountTimer()
-		this.wgmessage.setMessage('Poistettu!')
-		this.wgmessage.setStyle("alert alert-success")
+		this.props.setMessage('Poistettu!.', 'success')
 	}
 
 	//When user changes a field related to image i in the form, reflect that change in state.
@@ -360,9 +354,7 @@ class UpdateBone extends React.Component {
 		if (this.state.nameLatin.length >= 1) {
 			return true
 		}
-		this.wgmessage.mountTimer()
-		this.wgmessage.setMessage('Anna latinankielinen nimi.')
-		this.wgmessage.setStyle("alert alert-danger")
+		this.props.setMessage('Anni latinankielinen nimi.', 'danger')
 		return false
 	}
 
@@ -621,11 +613,11 @@ class UpdateBone extends React.Component {
 
 		return (
 			<div className="menu-background">
-<Grid>
+				<Grid>
 					<div className="App">
 						<Row className="show-grid">
 							<Col xs={12} md={8}>
-								<WGMessage ref={instance => this.wgmessage = instance} />
+								<Message />
 							</Col>
 							<Col xs={12} md={4}>
 								<Link to='/listing'>
@@ -738,11 +730,19 @@ class UpdateBone extends React.Component {
 						</button>
 							</div>
 						</form>
-						</div>
+					</div>
 				</Grid>
-				</div>
+			</div>
 		)
 	}
 }
 
-export default UpdateBone
+const mapDispatchToProps = {
+	setMessage
+  }
+  
+  const ConnectedUpdateBone = connect(
+	null,
+	mapDispatchToProps
+  )(UpdateBone)
+  export default ConnectedUpdateBone

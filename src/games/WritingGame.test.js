@@ -2,7 +2,7 @@ import React from 'react'
 import { shallow } from 'enzyme'
 import WritingGame from './WritingGame'
 import { Redirect } from 'react-router-dom'
-import WGMessage from './WGMessage'
+import Message from './Message'
 
 describe("WritingGame", () => {
 	const wgcomponent = () => {

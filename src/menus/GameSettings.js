@@ -1,10 +1,13 @@
 import React from 'react'
 import { Redirect, Link } from 'react-router-dom'
-import WGMessage from '../games/writinggame/WGMessage'
+import Message from '../games/Message'
 import imageService from '../services/images'
 import bodyPartService from '../services/bodyParts'
 import animalService from '../services/animals'
 import { injectGlobal } from 'styled-components'
+import { gameInitialization } from '../reducers/gameReducer'
+import { connect } from 'react-redux'
+import { setMessage } from '../reducers/messageReducer'
 
 /**
  * GameSettings is the menu directly prior to a WritingGame session.
@@ -21,8 +24,8 @@ class GameSettings extends React.Component {
 		super(props)
 		this.state = {
 			gameLength: 3,
+			gamemode: '',
 			redirect: false,
-			testiviesti: 'Ladataan...',
 			allImages: [],		   // used to store an array of alla known images
 			allAnimals: [],        // used to store an array of all known animals
 			allBodyParts: [],      // used to store an array of all known bodyparts
@@ -111,10 +114,13 @@ class GameSettings extends React.Component {
 
 	changeAnimal(event) {
 		const animals = this.state.allAnimals
-		animals.forEach((animal) => {
-			animal.selected = false
-		})
-		animals[event.target.id].selected = true
+		console.log(event.target)
+		if (animals[event.target.id].selected)
+			animals[event.target.id].selected = false
+		else {
+			animals[event.target.id].selected = true
+		}
+		this.setState({ allAnimals: animals })
 		console.log(this.state.allAnimals)
 	}
 
@@ -139,8 +145,7 @@ class GameSettings extends React.Component {
 	atLeastOneBodyPartIsSelected() {
 		if (!this.state.allBodyParts[0].selected && !this.state.allBodyParts[1].selected
 			&& !this.state.allBodyParts[2].selected && !this.state.allBodyParts[3].selected) {
-			this.wgmessage.mountTimer()
-			this.wgmessage.setMessage('Valitse ainakin yksi ruumiinosa.')
+			this.props.setMessage('Valitse ainakin yksi ruumiinosa.', 'danger')
 		} else {
 			this.initializeGame()
 		}
@@ -167,41 +172,24 @@ class GameSettings extends React.Component {
 		//then bones should be repeated (using alt images when possible).
 
 		// Filtering the approved images on animals
-		let apics = this.state.allImages.filter(image => {
+		let pics = this.state.allImages.filter(image => {
 			const animalIds = chosenAnimals.map(chosenAnimal => chosenAnimal.id)
 			if (image.animal !== undefined) {
 				return animalIds.includes(image.animal._id)
 			}
 		})
-		console.log(apics)
+		console.log(pics)
 
 		// Filtering the approved images on body parts
-		apics = apics.filter(image => {
+		pics = pics.filter(image => {
 			const bodyPartIds = chosenBodyParts.map(chosenBodyPart => chosenBodyPart.id)
 			return bodyPartIds.includes(image.bone.bodyPart)
 		})
-		console.log(apics)
-
-		const pics = []
-		if (apics.length !== 0) {
-			// Here we add as many images into the quiz as dictated by the gameLength option, but less if we don't
-			// have enough images.
-
-			// Maybe it would be a better option to send all valid photos to WritingGame and choose 
-			// the images first at random and then according to the user's knowledge. If the user did 
-			// not respond correctly, it may be asked later.
-
-			for (let index = 0; index < this.state.gameLength; index++) {
-				if (index < apics.length) {
-					pics.push(apics[index])
-				}
-			}
-		}
+		console.log(pics)
 
 		//if criteria doesn't fulfill the game won't launch
 		if (pics.length === 0) {
-			this.wgmessage.mountTimer()
-			this.wgmessage.setMessage('Peliä ei voitu luoda halutuilla asetuksilla')
+			this.props.setMessage('Peliä ei voitu luoda halutuilla asetuksilla', 'danger')
 		} else {
 			this.setState({ images: pics })
 			this.setState({ redirect: true })
@@ -224,14 +212,10 @@ class GameSettings extends React.Component {
 		}`
 
 		if (this.state.redirect) {
+			this.props.gameInitialization(this.state.gameLength, this.state.images, this.state.user, this.props.location.state.gamemode)
 			return (
 				<Redirect to={{
-					pathname: '/writinggame',
-					state: {
-						images: this.state.images,
-						allBodyParts: this.state.allBodyParts,   // Note here that the WritingGame will be provided with the full arrays of both all the bodyparts
-						allAnimals: this.state.allAnimals        // ... and all the animals known in the database.
-					}
+					pathname: '/game'
 				}} />
 			)
 		}
@@ -240,7 +224,7 @@ class GameSettings extends React.Component {
 		let id = -1
 		const selectAnimal = this.state.allAnimals.map(animal => {
 			id++
-			return <label className="radio-inline"><input type="radio" id={id} name="animal" onClick={this.changeAnimal}></input>{animal.emoji}{animal.name}</label>
+			return <label className="checkbox-inline"><input type="checkbox" id={id} onClick={this.changeAnimal}></input>{animal.emoji}{animal.name}</label>
 		})
 
 		// Creating a body part menu
@@ -270,7 +254,7 @@ class GameSettings extends React.Component {
 							</div>
 							<h2>Luupelivalinnat:</h2>
 							<div>
-								<WGMessage ref={instance => this.wgmessage = instance} />
+								<Message />
 							</div>
 							<div class="transbox">
 								<div class="container">
@@ -362,7 +346,7 @@ class GameSettings extends React.Component {
 							</div>
 						</div>
 						<div className="btn-group">
-								<button className="gobackbutton"><Link to='/'>Takaisin</Link></button>
+							<button className="gobackbutton"><Link to='/'>Takaisin</Link></button>
 						</div>
 					</div>
 				</div>
@@ -371,4 +355,20 @@ class GameSettings extends React.Component {
 	}
 }
 
-export default GameSettings
+
+const mapStateToProps = (state) => {
+	return {
+		game: state.game
+	}
+}
+
+const mapDispatchToProps = {
+	gameInitialization,
+	setMessage
+}
+
+const ConnectedGameSettings = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(GameSettings)
+export default ConnectedGameSettings

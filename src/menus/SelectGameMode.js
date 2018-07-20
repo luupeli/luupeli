@@ -9,6 +9,7 @@ class SelectGameMode extends React.Component {
 
     this.state = {
       redirect: false,
+      gamemode: '',
       allStyles: JSON.parse(localStorage.getItem("allStyles")),
       styleIndex: localStorage.getItem('styleIndex')
     }
@@ -28,6 +29,7 @@ class SelectGameMode extends React.Component {
   }
 
   proceedToSettings(event) {
+    this.setState({ gamemode: event.target.value })
     this.setState({ redirect: true })
     this.setState({ redirectTo: '/settings' })
   }
@@ -40,12 +42,14 @@ class SelectGameMode extends React.Component {
   render() {
 
     if (this.state.redirect) {
+      console.log(this.state.gamemode)
       return (
         <Redirect to={{
           pathname: this.state.redirectTo,
           state: {
             allStyles: this.state.allStyles,
-            styleIndex: this.state.styleIndex
+            styleIndex: this.state.styleIndex,
+            gamemode: this.state.gamemode
           }
         }} />
       )
@@ -78,6 +82,7 @@ class SelectGameMode extends React.Component {
                     <Col>
                       <button
                         className="menu-button"
+                        value="kirjoituspeli"
                         onClick={this.proceedToSettings}>
                         Kirjoituspeli
                       </button>
@@ -85,9 +90,11 @@ class SelectGameMode extends React.Component {
                   </Row>
                   <Row className="show-grid">
                     <Col>
-                      <button
-                        className="menu-button">
-                        :: valinta 2 ::
+                    <button
+                        className="menu-button"
+                        value="monivalintapeli"
+                        onClick={this.proceedToSettings}>
+                        Monivalintapeli
                       </button>
                     </Col>
                   </Row>

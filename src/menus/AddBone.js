@@ -4,7 +4,9 @@ import boneService from '../services/bones'
 import imageService from '../services/images'
 import bodyPartService from '../services/bodyParts'
 import animalService from '../services/animals'
-import WGMessage from '../games/writinggame/WGMessage'
+import Message from '../games/Message'
+import { setMessage } from '../reducers/messageReducer'
+import { connect } from 'react-redux'
 
 //Creates a text input with label text and feedback symbol
 const TextInputWithFeedback = (props) => {
@@ -230,9 +232,7 @@ class AddBone extends React.Component {
 			})
 			.catch((error) => {
 				console.log(error)
-				this.wgmessage.mountTimer()
-				this.wgmessage.setMessage('Tallentaminen epäonnistui :(')
-				this.wgmessage.setStyle("alert alert-danger")
+				this.props.setMessage('Tallentaminen epäonnistui :(', 'danger')
 			})
 	}
 
@@ -260,9 +260,7 @@ class AddBone extends React.Component {
 			}
 		}
 
-		this.wgmessage.mountTimer()
-		this.wgmessage.setMessage('Uusi luu lisätty! Voit nyt lisätä toisenkin luun tai palata nappulasta takaisin listausnäkymään.')
-		this.wgmessage.setStyle("alert alert-success")
+		this.props.setMessage('Uusi luu lisätty! Voit nyt lisätä toisenkin luun tai palata nappulasta takaisin listausnäkymään.', 'success')
 		this.resetFields()
 	}
 
@@ -271,9 +269,7 @@ class AddBone extends React.Component {
 		if (this.state.nameLatin.length >= 1) {
 			return true
 		}
-		this.wgmessage.mountTimer()
-		this.wgmessage.setMessage('Anna latinankielinen nimi.')
-		this.wgmessage.setStyle("alert alert-danger")
+		this.props.setMessage('Anna latinankielinen nimi.', 'danger')
 		return false
 	}
 
@@ -304,7 +300,7 @@ class AddBone extends React.Component {
 			<div className="container">
 				<div className="App">
 					<div id="">
-						<WGMessage ref={instance => this.wgmessage = instance} />
+						<Message/>
 					</div>
 					<Link to='/listing'>
 						<button id="backToListing" className="btn btn-default pull-right">
@@ -473,5 +469,13 @@ class AddBone extends React.Component {
 	}
 }
 
-export default AddBone
 
+  const mapDispatchToProps = {
+	setMessage
+  }
+  
+  const ConnectedAddBone = connect(
+	null,
+	mapDispatchToProps
+  )(AddBone)
+  export default ConnectedAddBone

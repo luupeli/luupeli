@@ -115,7 +115,7 @@ class Home extends React.Component {
 
   proceedToSelect(event) {
     if (event.target.id === 'proceedToSelectGameMode') {
-      this.setState({ redirect: true, redirectTo: '/game' })
+      this.setState({ redirect: true, redirectTo: '/gamemode' })
     } else if (event.target.id === 'homeMenuLoginButton') {
       this.setState({ redirect: true, redirectTo: '/login' })
     } else if (event.target.id === 'homeMenuSignUpButton') {

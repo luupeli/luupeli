@@ -1,6 +1,6 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
-import WritingGame from './games/writinggame/WritingGame'
+import GameLoop from './games/GameLoop'
 import SelectGameMode from './menus/SelectGameMode'
 import EndScreen from './menus/EndScreen'
 import Home from './menus/Home'
@@ -12,16 +12,18 @@ import Login from './menus/Login'
 import Register from './menus/Register'
 import Admin from './menus/Admin'
 import NavBar from './menus/NavBar'
+import { BrowserRouter } from 'react-router-dom'
 
 const Main = () => (
   <div>
     <NavBar/>
     <main>
+    <BrowserRouter>
       <Switch>
         <Route exact path='/' component={Home} />
         <Route exact path='/login' component={Login} />
         <Route exact path='/register' component={Register} />
-        <Route exact path='/game' component={SelectGameMode} />
+        <Route exact path='/gamemode' component={SelectGameMode} />
         <Route exact path='/game' component={GameLoop} />
         <Route exact path='/settings' component={GameSettings} />
         <Route exact path='/endscreen' component={EndScreen} />
@@ -30,6 +32,7 @@ const Main = () => (
         <Route exact path='/update/:boneId' component={UpdateBone} />
         <Route exact path='/admin' component={Admin} />
       </Switch>
+      </BrowserRouter>
     </main>
   </div>
 )

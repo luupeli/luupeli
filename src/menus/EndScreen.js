@@ -1,14 +1,12 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
-//import WGMessage from '../games/writinggame/WGMessage'
+import { connect } from 'react-redux'
 
 class EndScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       style: localStorage.getItem('style'),
-      correct: props.location.state.correct,
-      total: props.location.state.total,
       user: null,
       redirect: false
     }
@@ -36,12 +34,19 @@ class EndScreen extends React.Component {
 					pathname: '/',
 				}} />
 			)
-		}
+    }
+    
+    const correctAnswers = this.props.game.answers.filter(ans => ans.correctness === 100)
+    const almostCorrectAnswers = this.props.game.answers.filter(ans => ans.correctness > 70 && ans.correctness < 100)
+    const wrongAnswers = this.props.game.answers.filter(ans => ans.correctness <= 70)
+
     return (
       <div className='Appbd'>
         <h1 className='h2'>Lopputulos:</h1>
         <div>
-          <p>Oikeita vastauksia: {this.state.correct}/{this.state.total}</p><br />
+          <p>Täysin oikeita vastauksia: {correctAnswers.length}/{this.props.game.answers.length}</p><br />
+          <p>Melkein oikeita vastauksia: {almostCorrectAnswers.length}/{this.props.game.answers.length}</p><br />
+          <p>Vääriä vastauksia: {wrongAnswers.length}/{this.props.game.answers.length}</p><br />
         </div>
         <div>
           <button className='gobackbutton' onClick={this.proceedToMain}>Etusivulle</button>
@@ -51,4 +56,14 @@ class EndScreen extends React.Component {
   }
 }
 
-export default EndScreen
+const mapStateToProps = (state) => {
+  return {
+    game: state.game
+  }
+}
+
+const ConnectedEndScreen = connect(
+  mapStateToProps,
+  null
+)(EndScreen)
+export default ConnectedEndScreen
