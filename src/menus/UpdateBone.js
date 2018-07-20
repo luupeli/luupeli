@@ -50,6 +50,8 @@ class UpdateBone extends React.Component {
 		this.getBoneAnimals = this.getBoneAnimals.bind(this)
 		this.failureMessage = this.failureMessage.bind(this)
 		this.markForDelete = this.markForDelete.bind(this)
+
+		window.onunload = function () { window.location.href = '/' }
 	}
 
 	//GET images related to this bone from DB and store them in state for rendering.

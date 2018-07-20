@@ -10,6 +10,7 @@ import AddBone from './menus/AddBone'
 import UpdateBone from './menus/UpdateBone'
 import Login from './menus/Login'
 import Register from './menus/Register'
+import Admin from './menus/Admin'
 import NavBar from './menus/NavBar'
 
 const Main = () => (
@@ -27,6 +28,7 @@ const Main = () => (
         <Route exact path='/listing' component={BoneListing} />
         <Route exact path='/add' component={AddBone} />
         <Route exact path='/update/:boneId' component={UpdateBone} />
+        <Route exact path='/admin' component={Admin} />
       </Switch>
     </main>
   </div>
