@@ -112,13 +112,14 @@ class GameSettings extends React.Component {
 		console.log('Pelin pituus on nyt ... ' + this.state.gameLength)
 	}
 
-	changeAnimal(event) {
+	changeAnimal(i, event) {
 		const animals = this.state.allAnimals
+		console.log(animals)
 		console.log(event.target)
-		if (animals[event.target.id].selected)
-			animals[event.target.id].selected = false
+		if (animals[i].selected)
+			animals[i].selected = false
 		else {
-			animals[event.target.id].selected = true
+			animals[i].selected = true
 		}
 		this.setState({ allAnimals: animals })
 		console.log(this.state.allAnimals)
@@ -128,13 +129,14 @@ class GameSettings extends React.Component {
 	//of index 1 of array bodyParts. The method creates a copy
 	//of the existing array, modifies it, and replaces the old array
 	//in this.state with it. Hopefully.
-	toggleCheck(event) {
+	toggleCheck(i, event) {
 		const bodyParts = this.state.allBodyParts
+		console.log(bodyParts)
 		console.log(event.target)
-		if (bodyParts[event.target.id].selected)
-			bodyParts[event.target.id].selected = false
+		if (bodyParts[i].selected)
+			bodyParts[i].selected = false
 		else {
-			bodyParts[event.target.id].selected = true
+			bodyParts[i].selected = true
 		}
 		this.setState({ allbodyParts: bodyParts })
 		console.log(this.state.allBodyParts)
@@ -222,16 +224,16 @@ class GameSettings extends React.Component {
 
 		// Creating an animal menu
 		let id = -1
-		const selectAnimal = this.state.allAnimals.map(animal => {
+		const selectAnimal = this.state.allAnimals.map((animal, i) => {
 			id++
-			return <label className="checkbox-inline"><input type="checkbox" id={id} onClick={this.changeAnimal}></input>{animal.emoji}{animal.name}</label>
+			return <label className="checkbox-inline"><input type="checkbox" id={"animal" + i} onClick={this.changeAnimal.bind(this, i)}></input>{animal.emoji}{animal.name}</label>
 		})
 
 		// Creating a body part menu
 		id = -1
-		const selectBodyPart = this.state.allBodyParts.map(bodyPart => {
+		const selectBodyPart = this.state.allBodyParts.map((bodyPart, i) => {
 			id++
-			return <label className="checkbox-inline"><input type="checkbox" id={id} onClick={this.toggleCheck}></input>{bodyPart.name}</label>
+			return <label className="checkbox-inline"><input type="checkbox" id={"bodyPart" + i} onClick={this.toggleCheck.bind(this, i)}></input>{bodyPart.name}</label>
 		})
 
 		// As a general note about using forms w/ NodeJS... A single grouping of radio buttons (single choice) is identified by identical "name" parameter. Separate values within such a grouping are marked with distinct "value" parameters.
@@ -280,6 +282,7 @@ class GameSettings extends React.Component {
 											<label className="radio-inline">
 												<input
 													type="radio"
+													id="gameLengthShort"
 													value="3"
 													onClick={this.changeGameLength.bind(this)}
 													name="length"
@@ -290,6 +293,7 @@ class GameSettings extends React.Component {
 											<label className="radio-inline">
 												<input
 													type="radio"
+													id="gameLengthMedium"
 													value="5"
 													onClick={this.changeGameLength.bind(this)}
 													name="length"
@@ -299,6 +303,7 @@ class GameSettings extends React.Component {
 											<label className="radio-inline">
 												<input
 													type="radio"
+													id="gameLengthLong"
 													value="7"
 													onClick={this.changeGameLength.bind(this)}
 													name="length"
@@ -315,6 +320,7 @@ class GameSettings extends React.Component {
 											<label className="radio-inline">
 												<input
 													type="radio"
+													id="gameEasy"
 													value="easy"
 													name="difficultylevel"
 													defaultChecked
@@ -324,6 +330,7 @@ class GameSettings extends React.Component {
 											<label className="radio-inline">
 												<input
 													type="radio"
+													id="gameMedium"
 													value="medium"
 													name="difficultylevel"
 												/>
@@ -332,6 +339,7 @@ class GameSettings extends React.Component {
 											<label className="radio-inline">
 												<input
 													type="radio"
+													id="gameHard"
 													value="hard"
 													name="difficultylevel"
 												/>
