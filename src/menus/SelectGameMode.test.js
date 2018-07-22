@@ -52,7 +52,7 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   page = await browser.newPage()
-  await page.goto('http://localhost:3000/game')
+  await page.goto('http://localhost:3000/gamemode')
 })
 
 afterEach(async () => {
@@ -74,11 +74,12 @@ describe("SelectGameMode tests", () => {
 
   test('page renders', async () => {
     const textContent = await page.$eval('#gameBody', el => el.textContent)
-
-    expect(textContent.includes("luupelimuoto")).toBe(true)
+console.log(textContent)
+    expect(textContent.toLowerCase().includes("luupelimuoto")).toBe(true)
   }, 20000)
 
   test('Takaisin button redirects back to main page', async () => {
+	await page.waitForSelector('#goBackButton')
     await page.click('#goBackButton')
     const textContent = await page.$eval('#homeMenu', el => el.textContent)
     expect(textContent.includes("Pelaa")).toBe(true)

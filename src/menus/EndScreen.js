@@ -61,12 +61,11 @@ class EndScreen extends React.Component {
 <h2>Pelin kesto: {time} s</h2>
 </div>
 <div>
-        <h1 className='h2'>Lopputulos:</h1>
-        <div>
-          <p>Täysin oikeita vastauksia: {correctAnswers.length}/{this.props.game.answers.length}</p><br />
-          <p>Melkein oikeita vastauksia: {almostCorrectAnswers.length}/{this.props.game.answers.length}</p><br />
-          <p>Vääriä vastauksia: {wrongAnswers.length}/{this.props.game.answers.length}</p><br />
-         
+<h1 className='h2' id="endScreenTitle">Lopputulos:</h1>
+        <div id="resultsText">
+          <p id="completelyCorrectAnswers">Täysin oikeita vastauksia: {correctAnswers.length}/{this.props.game.answers.length}</p><br />
+          <p id="nearlyCorrectAnswers">Melkein oikeita vastauksia: {almostCorrectAnswers.length}/{this.props.game.answers.length}</p><br />
+          <p id="wrongAnswers">Vääriä vastauksia: {wrongAnswers.length}/{this.props.game.answers.length}</p><br />
         </div>
         
           </div>

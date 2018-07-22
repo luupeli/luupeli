@@ -82,6 +82,7 @@ class SelectGameMode extends React.Component {
                     <Col>
                       <button
                         className="menu-button"
+                        id="writingGameButton"
                         value="kirjoituspeli"
                         onClick={this.proceedToSettings}>
                         Kirjoituspeli
@@ -92,6 +93,7 @@ class SelectGameMode extends React.Component {
                     <Col>
                     <button
                         className="menu-button"
+                        id="multipleChoiceButton"
                         value="monivalintapeli"
                         onClick={this.proceedToSettings}>
                         Monivalintapeli

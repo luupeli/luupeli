@@ -168,6 +168,7 @@ class WritingGame extends React.Component {
               <div class="form-groupbd">
                 <input
                   class="form-control"
+                  id="gameTextInput"
                   type="text"
                   value={this.state.value}
                   onChange={this.handleChange}
