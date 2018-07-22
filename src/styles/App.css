@@ -861,3 +861,11 @@ https://codepen.io/George-Payne/pen/qOrxao
   border-radius:.25rem;
   transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
+
+.height-restricted img {
+  max-height: 50vh;
+}
+.gamepix img {
+  max-height: 500px;
+  position: fixed;
+}

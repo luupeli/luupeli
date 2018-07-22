@@ -146,10 +146,19 @@ class WritingGame extends React.Component {
         <div class="row" id="image-holder">
           <div class="intro">
             <CloudinaryContext cloudName="luupeli">
-              <div>
+              <div class="height-restricted">
                 <Image publicId={this.props.currentImage.url}>
                   <Transformation width={imageWidth()} crop="fill" radius="20" />
                 </Image>
+
+                {/* <div class="gamepix">
+                {this.props.game.images.map((img) =>
+                <Image publicId={img.url}>
+     <Transformation width={imageWidth()} crop="fill" radius="20" position="fixed"/>
+    </Image> 
+  )
+}*/}
+
               </div>
             </CloudinaryContext>
           </div>
