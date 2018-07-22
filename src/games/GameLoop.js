@@ -1,6 +1,7 @@
 import { Redirect } from 'react-router-dom'
 import React from 'react'
 import Message from './Message'
+import ScoreFlash from './ScoreFlash'
 import WritingGame from './WritingGame'
 import MultipleChoiceGame from './MultipleChoiceGame'
 import { connect } from 'react-redux'
@@ -104,11 +105,16 @@ class GameLoop extends React.Component {
             <div className="App">
                 {this.topPage()}
                 <div class="dual-layout">
+              
                     <div class="container">
+                    <div>
+                            <ScoreFlash ref={instance => this.wgmessage = instance}  />
+                        </div>
                         <div>
                             <Message ref={instance => this.wgmessage = instance} />
                         </div>
                         {this.gameLoop()}
+                      
                     </div>
                 </div>
             </div>
@@ -120,7 +126,8 @@ class GameLoop extends React.Component {
 const mapStateToProps = (state) => {
     return {
         game: state.game,
-        message: state.message
+        message: state.message,
+        scoreflash: state.scoreflash
     }
 }
 

@@ -3,6 +3,7 @@ import StringSimilarity from 'string-similarity'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
 import { setAnswer,setLocalStats } from '../reducers/gameReducer'
 import { setMessage } from '../reducers/messageReducer'
+import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
 import imageService from '../services/images'
 
@@ -37,18 +38,18 @@ class WritingGame extends React.Component {
     event.preventDefault()
 
     let correctness = 'Melkein oikein'
-    let points = Math.round((this.checkCorrectness()*Math.max(10,this.props.currentImage.bone.nameLatin.length))  * ((100+ Math.max(0, (300-this.state.seconds )))/400))
+    let points = ( Math.round((this.checkCorrectness()*Math.max(10,this.props.currentImage.bone.nameLatin.length))  * ((300+ Math.max(0, (300-this.state.seconds )))/600)) ) / 20
     
     if (this.state.seconds<100) {
       points=points*((100-this.state.seconds)/10)
     }
 
     if (this.checkCorrectness()>99) {
-      points=points*2
+      points=points*10
       correctness = 'Oikein'
   
     } else if (this.checkCorrectness()>85) {
-      points=points*1.25
+      points=points*2
     }
 
     points=Math.round(points/20)*20
@@ -64,7 +65,7 @@ class WritingGame extends React.Component {
     this.setState({ value: '' })
     this.props.setAnswer(this.props.currentImage, this.checkCorrectness(), this.state.value)
 
-
+    this.props.setScoreFlash(points, points+' PTS!!!', 'success')
     this.createMessage(points)
   }
 
@@ -204,7 +205,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   setAnswer,
   setLocalStats,
-  setMessage
+  setMessage,
+  setScoreFlash
 }
 
 const ConnectedWritingGame = connect(
