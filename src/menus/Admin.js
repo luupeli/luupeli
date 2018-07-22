@@ -19,7 +19,7 @@ class Admin extends React.Component {
 		if (event.target.id === 'boneList') {
 			this.setState({ redirect: true, redirectTo: '/listing' })
 		} else if (event.target.id === 'userList') {
-			this.setState({redirect : true, redirectTo: '/users'})
+			this.setState({ redirect: true, redirectTo: '/users' })
 		}
 	}
 
@@ -34,20 +34,22 @@ class Admin extends React.Component {
 		return (
 			<div className="menu-background">
 				<div className='App'>
-					<Row className="show-grid">
-						<Col>
-							<button className="menu-button" id="boneList" onClick={this.proceed}>
-								Luut
+					<div id='adminButtons'>
+						<Row className="show-grid">
+							<Col>
+								<button className="menu-button" id="boneList" onClick={this.proceed}>
+									Luut
            		</button>
-						</Col>
-					</Row>
-					<Row className="show-grid">
-						<Col>
-							<button className="menu-button" id="userList" onClick={this.proceed}>
-								Käyttäjät
+							</Col>
+						</Row>
+						<Row className="show-grid">
+							<Col>
+								<button className="menu-button" id="userList" onClick={this.proceed}>
+									Käyttäjät
            		</button>
-						</Col>
-					</Row>
+							</Col>
+						</Row>
+					</div>
 				</div>
 			</div>
 		)
