@@ -4,7 +4,7 @@ import Message from './Message'
 import WritingGame from './WritingGame'
 import MultipleChoiceGame from './MultipleChoiceGame'
 import { connect } from 'react-redux'
-import { gameInitialization, setAnswer } from '../reducers/gameReducer'
+import { gameInitialization, setAnswer, setLocalStats } from '../reducers/gameReducer'
 import { ProgressBar } from 'react-bootstrap'
 
 class GameLoop extends React.Component {
@@ -126,7 +126,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
     gameInitialization,
-    setAnswer
+    setAnswer,
+    setLocalStats
 }
 
 const ConnectedGameLoop = connect(
