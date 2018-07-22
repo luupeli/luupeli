@@ -1,0 +1,10 @@
+DATABASE_URL=mongodb://luupeli:koiranluu1@ds161790.mlab.com:61790/luupeli
+PORT=3001
+TEST_DATABASE_URL=mongodb://luupeli:koiranluu1@ds161700.mlab.com:61700/luupeli-test
+TEST_PORT=3002
+
+SECRET=47d05712a6d64f260d59fa68d84a28c0
+
+# mlab-tili
+# user: luupeli
+# salasana: kylkiluu7

@@ -36,19 +36,28 @@ class WritingGame extends React.Component {
   handleSubmit (event) {
     event.preventDefault()
 
-    let correctness = 'Oikein'
-    let points = Math.round((this.checkCorrectness()*10)/this.state.seconds)
+    let correctness = 'Melkein oikein'
+    let points = Math.round((this.checkCorrectness()*Math.max(10,this.props.currentImage.bone.nameLatin.length))  * ((100+ Math.max(0, (300-this.state.seconds )))/400))
+    
+    if (this.state.seconds<100) {
+      points=points*((100-this.state.seconds)/10)
+    }
+
     if (this.checkCorrectness()>99) {
       points=points*2
-    } else if (this.checkCorrectness()>95) {
+      correctness = 'Oikein'
+  
+    } else if (this.checkCorrectness()>85) {
       points=points*1.25
     }
 
-    if (this.checkCorrectness()<1.0) {
+    points=Math.round(points/20)*20
+
+    if (this.checkCorrectness()<70) {
       correctness = 'Väärin'
       points=0
     }
-    
+
 
     this.props.setLocalStats(this.props.currentImage.bone.nameLatin,this.state.value,correctness,this.state.seconds,this.state.secondsTotal, points)
 
@@ -56,7 +65,7 @@ class WritingGame extends React.Component {
     this.props.setAnswer(this.props.currentImage, this.checkCorrectness(), this.state.value)
 
 
-    this.createMessage()
+    this.createMessage(points)
   }
 
   tick() {
@@ -74,32 +83,33 @@ class WritingGame extends React.Component {
   componentWillUnmount() {
     clearInterval(this.interval);
   }
+  
 
   checkCorrectness() {
     return 100 * StringSimilarity.compareTwoStrings(this.props.currentImage.bone.nameLatin.toLowerCase(), this.state.value.toLowerCase()); // calculate similarity   
   }
 
-  createMessage() {
+  createMessage(points) {
     const similarity = this.checkCorrectness()
 
     if (this.props.currentImage.bone.nameLatin.toLowerCase() === this.state.value.toLowerCase()) {
-      this.props.setMessage('Oikein!', 'success')
+      this.props.setMessage('Oikein! ' + points+ ' pistettä!', 'success')
       
       this.setState({
-      //  answers: [...this.state.answers, [{nameLatin: this.props.currentImage.bone.nameLatin,correctness: 'Oikein',time: this.state.seconds }]],
-        seconds: 0.0
+      
+        seconds: 0
         
       })
       
       
     } else if (similarity > 70) {
-      this.props.setMessage('Melkein oikein (similarity: ' + similarity.toPrecision(2) + '). Vastasit: ' + this.state.value.toLowerCase() + '. Oikea vastaus oli ' + this.props.currentImage.bone.nameLatin.toLowerCase(), 'warning')
+      this.props.setMessage('Melkein oikein! ' + points+ ' pistettä! (similarity: ' + similarity.toPrecision(2) + '). Vastasit: ' + this.state.value.toLowerCase() + '. Oikea vastaus oli ' + this.props.currentImage.bone.nameLatin.toLowerCase(), 'warning')
     } else {
       this.props.setMessage('Väärin (similarity: ' + similarity.toPrecision(2) + ')! Oikea vastaus oli ' + this.props.currentImage.bone.nameLatin.toLowerCase(), 'danger')
       
       this.setState({
-      //  answers: [...this.state.answers, [{nameLatin: this.props.currentImage.bone.nameLatin,correctness: 'Väärin',time: this.state.seconds }]],
-        seconds: 0.0
+      
+        seconds: 0
         
       })
     }
