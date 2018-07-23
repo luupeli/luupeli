@@ -1,8 +1,5 @@
 const puppeteer = require('puppeteer')
-
-if (process.env.NODE_ENV !== 'production') {
-	require('dotenv').config()
-}
+require ('dotenv').config()
 
 const username = process.env.USERNAME
 const password = process.env.PASSWORD
@@ -12,23 +9,24 @@ let page
 
 beforeAll(async () => {
 	browser = await puppeteer.launch({ args: ['--no-sandbox'] })
-	jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
+	jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000
 	page = await browser.newPage()
 	await page.setViewport({ width: 1280, height: 800 })
-	await page.goto('http://localhost:3000/login')
-	await page.waitForSelector('.login-clean')
-	await page.click('#username-form')
-	await page.keyboard.type(username)
-	await page.click('#password-form')
-	await page.keyboard.type(password)
-	await page.click('#login-button')
-	await page.waitForNavigation()
-}, 90000)
+	await page.goto('http://localhost:3000')
+	await page.waitForSelector('#homeMenuLoginButton')
+	await page.click('#homeMenuLoginButton')
+	await page.waitForSelector('.form-control').then(() => {
+		page.type('#username-form', username)
+		page.type('#password-form', password)
+		page.click('#login-button')
+	})
+	await page.waitForSelector('#logout-button')
+}, 30000)
 
 beforeEach(async () => {
 	page = await browser.newPage()
 	await page.goto('http://localhost:3000/admin')
-})
+}, 20000)
 
 afterEach(async () => {
 	await page.close()
