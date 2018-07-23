@@ -1,5 +1,5 @@
 import React from 'react'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import { Row, Col } from 'react-bootstrap'
 
 class Admin extends React.Component {
@@ -34,8 +34,11 @@ class Admin extends React.Component {
 		return (
 			<div className="menu-background">
 				<div className='App'>
-				<h2>Ylläpitäjän sivu</h2>
-					<div id='adminButtons'>
+					<h2>Ylläpitäjän sivu</h2>
+					<Link to='/'>
+						<button className="gobackbutton">Takaisin</button>
+					</Link>
+					<div id='adminButtons' className='btn-group'>
 						<Row className="show-grid">
 							<Col>
 								<button className="menu-button" id="boneList" onClick={this.proceed}>
