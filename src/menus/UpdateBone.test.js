@@ -1,19 +1,33 @@
 const puppeteer = require('puppeteer')
 
+if (process.env.NODE_ENV !== 'production') {
+	require('dotenv').config()
+}
+
+const username = process.env.USERNAME
+const password = process.env.PASSWORD
+
 let browser
 let page
 
 beforeAll(async () => {
-	browser = await puppeteer.launch({args: ['--no-sandbox']})
+	browser = await puppeteer.launch({ args: ['--no-sandbox'] })
 	jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
 	page = await browser.newPage()
 	await page.setViewport({ width: 1280, height: 800 })
+	await page.goto('http://localhost:3000/login', { waitUntil: 'networkidle0' })
+	await page.type('#username', username)
+	await page.type('#password', password)
+	await Promise.all([
+		page.click('#login-button'),
+		page.waitForNavigation({ waitUntil: 'networkidle0' })
+	])
 })
 
 beforeEach(async () => {
 	page = await browser.newPage()
 	await page.goto('http://localhost:3000/listing')
-	
+
 	//Click on first listed bone to navigate to update form
 	await page.waitForSelector('#bone0')
 	await page.click('#bone0')
@@ -24,61 +38,63 @@ afterEach(async () => {
 })
 
 afterAll(async () => {
+	await page.goto('http://localhost:3000/login', { waitUntil: 'networkidle0' })
+	await page.click('#logout-button')
 	await browser.close()
 })
 
 describe('UpdateBone tests', () => {
 
-  test('Pressing "Lisää kuvakenttä"-button adds a new image field', async () => {
+	test('Pressing "Lisää kuvakenttä"-button adds a new image field', async () => {
 		await page.waitForSelector('#addNewImageFieldButton')
-		
+
 		//Wait for a while for the page to render possibly already existing images
 		//Otherwise the number of .list-group-items might not match
 		await page.waitFor(2000)
-		
+
 		const elementList = await page.evaluate(() => {
 			const lis = Array.from(document.querySelectorAll('.list-group-item'))
 			return lis.map(li => li.textContent)
 		})
-    await page.click('#addNewImageFieldButton')
-    
+		await page.click('#addNewImageFieldButton')
+
 		const elementListAfterAdd = await page.evaluate(() => {
 			const lis = Array.from(document.querySelectorAll('.list-group-item'))
 			return lis.map(li => li.textContent)
 		})
 		expect(elementListAfterAdd.length).toBe(elementList.length + 1)
-  }, 20000)
-  
-  test('Pressing "Poista kuvakenttä"-button removes one new image field', async () => {
-    await page.waitForSelector('#addNewImageFieldButton')
-    
-    //Wait for a while for the page to render possibly already existing images
-    //Otherwise the number of .list-group-items might not match
-    await page.waitFor(2000)
-    
-    await page.click('#addNewImageFieldButton')
-    
+	}, 20000)
+
+	test('Pressing "Poista kuvakenttä"-button removes one new image field', async () => {
+		await page.waitForSelector('#addNewImageFieldButton')
+
+		//Wait for a while for the page to render possibly already existing images
+		//Otherwise the number of .list-group-items might not match
+		await page.waitFor(2000)
+
+		await page.click('#addNewImageFieldButton')
+
 		const elementList = await page.evaluate(() => {
 			const lis = Array.from(document.querySelectorAll('.list-group-item'))
 			return lis.map(li => li.textContent)
 		})
-		
-    await page.waitForSelector('#removeNewImageFieldButton')
-    await page.click('#removeNewImageFieldButton')
-    
+
+		await page.waitForSelector('#removeNewImageFieldButton')
+		await page.click('#removeNewImageFieldButton')
+
 		const elementListAfterRemove = await page.evaluate(() => {
 			const lis = Array.from(document.querySelectorAll('.list-group-item'))
 			return lis.map(li => li.textContent)
 		})
-		
+
 		expect(elementListAfterRemove.length).toBe(elementList.length - 1)
-  }, 20000)
-  
-  test('Pressing "Poista"-button on a previously uploaded image notifies user that the image will be deleted', async () => {
-	  await page.waitForSelector('#deleteImageButton0')
-	  await page.click('#deleteImageButton0')
-	  
-	  const foundNotif = await page.evaluate(() => {
+	}, 20000)
+
+	test('Pressing "Poista"-button on a previously uploaded image notifies user that the image will be deleted', async () => {
+		await page.waitForSelector('#deleteImageButton0')
+		await page.click('#deleteImageButton0')
+
+		const foundNotif = await page.evaluate(() => {
 			const lis = Array.from(document.querySelectorAll('.list-group-item'))
 			var foundNotif = false
 			lis.forEach(li => {
@@ -88,16 +104,16 @@ describe('UpdateBone tests', () => {
 			})
 			return foundNotif
 		})
-	  
-	  expect(foundNotif).toBe(true)
+
+		expect(foundNotif).toBe(true)
 	}, 20000)
-	
+
 	test('Pressing "Peruuta poisto"-button on a previously uploaded image unhides image fields', async () => {
 		await page.waitForSelector('#deleteImageButton0')
-	  await page.click('#deleteImageButton0')
-	  await page.click('#deleteImageButton0')
-	  
-	  const foundNotif = await page.evaluate(() => {
+		await page.click('#deleteImageButton0')
+		await page.click('#deleteImageButton0')
+
+		const foundNotif = await page.evaluate(() => {
 			const lis = Array.from(document.querySelectorAll('.list-group-item'))
 			var foundNotif = false
 			lis.forEach(li => {
@@ -107,15 +123,15 @@ describe('UpdateBone tests', () => {
 			})
 			return foundNotif
 		})
-	  
-	  expect(foundNotif).toBe(false)
+
+		expect(foundNotif).toBe(false)
 	}, 20000)
-  
-  test('Pressing "Takaisin listaukseen"-button leads to listing', async () => {
-    await page.waitForSelector('#backToListing')
-    await page.click('#backToListing')
-    
-    const textContent = await page.$eval('#listGroup', el => el.textContent)
-    expect(textContent.toLowerCase().includes("suodata lajin mukaan")).toBe(true)
-  }, 20000)
+
+	test('Pressing "Takaisin listaukseen"-button leads to listing', async () => {
+		await page.waitForSelector('#backToListing')
+		await page.click('#backToListing')
+
+		const textContent = await page.$eval('#listGroup', el => el.textContent)
+		expect(textContent.toLowerCase().includes("suodata lajin mukaan")).toBe(true)
+	}, 20000)
 })
