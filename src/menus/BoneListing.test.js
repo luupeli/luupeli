@@ -34,7 +34,7 @@ afterEach(async () => {
 })
 
 afterAll(async () => {
-  await page.goto('http://localhost:3000/login', { waitUntil: 'networkidle0' })
+  await page.goto('http://localhost:3000/login')
   await page.click('#logout-button')
   await browser.close()
 })
