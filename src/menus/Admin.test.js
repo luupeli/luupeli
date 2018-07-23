@@ -15,12 +15,12 @@ beforeAll(async () => {
 	jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
 	page = await browser.newPage()
 	await page.setViewport({ width: 1280, height: 800 })
-	await page.goto('http://localhost:3000/login', { waitUntil: 'networkidle0' })
+	await page.goto('http://localhost:3000/login')
 	await page.type('#username', username)
 	await page.type('#password', password)
 	await Promise.all([
 		page.click('#login-button'),
-		page.waitForNavigation({ waitUntil: 'networkidle0' })
+		page.waitForNavigation()
 	])
 })
 
