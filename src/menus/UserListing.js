@@ -35,13 +35,20 @@ class UserListing extends React.Component {
 	render() {
 
 		return (
-			<div className="menu-background">
+			<div className="menu-background App">
+				<h2>Käyttäjälista</h2>
+				<Link to='/admin'>
+					<button className="gobackbutton">Takaisin</button>
+				</Link>
 				<Row>
 					<Col>
-							<p>Lällällää</p>
+						{this.state.allUsers.map(aUser => {
+							return <p>{aUser.username} (sähköposti: {aUser.email})</p>
+						}
+						)}
 					</Col>
 				</Row>
-			</div>
+			</div >
 		)
 	}
 }

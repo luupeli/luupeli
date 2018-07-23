@@ -34,6 +34,7 @@ class Admin extends React.Component {
 		return (
 			<div className="menu-background">
 				<div className='App'>
+				<h2>Ylläpitäjän sivu</h2>
 					<div id='adminButtons'>
 						<Row className="show-grid">
 							<Col>

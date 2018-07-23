@@ -22,7 +22,7 @@ class BoneListing extends React.Component {
 		this.handleAnimalChange = this.handleAnimalChange.bind(this)
 		this.handleBodyPartChange = this.handleBodyPartChange.bind(this)
 		this.handleChange = this.handleChange.bind(this)
-		
+
 		window.onunload = function () { window.location.href = '/' }
 	}
 
@@ -119,6 +119,9 @@ class BoneListing extends React.Component {
 		return (
 			<div className="menu-background">
 				<div className="App">
+					<Link to='/admin'>
+						<button className="gobackbutton">Takaisin</button>
+					</Link>
 					<div>
 						<Grid>
 							<div id="listGroup" className="list-group">
