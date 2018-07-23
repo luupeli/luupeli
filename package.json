@@ -9,6 +9,7 @@
     "child_process": "^1.0.2",
     "cloudinary": "^1.11.0",
     "cloudinary-react": "^1.0.6",
+    "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "get-port": "^3.2.0",
     "net": "^1.0.2",
