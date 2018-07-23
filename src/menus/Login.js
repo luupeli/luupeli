@@ -105,7 +105,7 @@ class Login extends React.Component {
           <form onSubmit={this.logOut}>
             <p>Olet jo kirjautunut sisään, {this.state.user.username}</p>
             <div className="form-group btn-group">
-              <button className="btn btn-block" type="submit">Kirjaudu ulos</button>
+              <button className="btn btn-block" type="submit" id="logout-button">Kirjaudu ulos</button>
             </div>
           </form>
         </div>
