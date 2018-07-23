@@ -37,13 +37,19 @@ class UserListing extends React.Component {
 		return (
 			<div className="menu-background App">
 				<h2>Käyttäjälista</h2>
+				<p>&#9733; = ylläpitäjä</p>
+				<br></br>
 				<Link to='/admin'>
 					<button className="gobackbutton">Takaisin</button>
 				</Link>
 				<Row>
 					<Col>
 						{this.state.allUsers.map(aUser => {
-							return <p>{aUser.username} (sähköposti: {aUser.email})</p>
+							if (aUser.role.toUpperCase() === 'ADMIN') {
+							return <p>&#9733; {aUser.username} (sähköposti: {aUser.email})</p>
+							} else {
+								return <p>{aUser.username} (sähköposti: {aUser.email})</p>
+							}
 						}
 						)}
 					</Col>
