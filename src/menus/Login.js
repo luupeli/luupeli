@@ -72,7 +72,7 @@ class Login extends React.Component {
             <h2 className="sr-only">Placeholder #1</h2>
             <div className="form-group">
               <input
-                id="username"
+                id="username-form"
                 className="form-control"
                 type="username"
                 name="username"
@@ -83,7 +83,7 @@ class Login extends React.Component {
             </div>
             <div className="form-group">
               <input
-                id="password"
+                id="password-form"
                 className="form-control"
                 type="password"
                 name="password"
