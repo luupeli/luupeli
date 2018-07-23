@@ -72,6 +72,7 @@ class Login extends React.Component {
             <h2 className="sr-only">Placeholder #1</h2>
             <div className="form-group">
               <input
+                id="username"
                 className="form-control"
                 type="username"
                 name="username"
@@ -82,6 +83,7 @@ class Login extends React.Component {
             </div>
             <div className="form-group">
               <input
+                id="password"
                 className="form-control"
                 type="password"
                 name="password"
@@ -91,7 +93,7 @@ class Login extends React.Component {
               />
             </div>
             <div className="form-group btn-group">
-              <button className="btn btn-block" type="submit">Kirjaudu</button>
+              <button className="btn btn-block" type="submit" id="login-button">Kirjaudu</button>
             </div>
             {/* <a href="#" className="forgot">Unohditko sähköpostisi tai salasanasi?</a> */}
           </form>

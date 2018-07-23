@@ -1,5 +1,12 @@
 const puppeteer = require('puppeteer')
 
+if (process.env.NODE_ENV !== 'production') {
+	require('dotenv').config()
+}
+
+const username = process.env.USERNAME
+const password = process.env.PASSWORD
+
 let browser
 let page
 
@@ -8,6 +15,13 @@ beforeAll(async () => {
 	jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
 	page = await browser.newPage()
 	await page.setViewport({ width: 1280, height: 800 })
+	await page.goto('http://localhost:3000/login', { waitUntil: 'networkidle0' })
+	await page.type('#username', username)
+	await page.type('#password', password)
+	await Promise.all([
+		page.click('#login-button'),
+		page.waitForNavigation({ waitUntil: 'networkidle0' })
+	])
 })
 
 beforeEach(async () => {
@@ -20,6 +34,8 @@ afterEach(async () => {
 })
 
 afterAll(async () => {
+	await page.goto('http://localhost:3000/login', { waitUntil: 'networkidle0' })
+	await page.click('#logout-button')
 	await browser.close()
 })
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import userService from '../services/users'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { Row, Col, Grid, FormControl } from 'react-bootstrap'
 
 class UserListing extends React.Component {
@@ -9,6 +9,8 @@ class UserListing extends React.Component {
 		super(props)
 
 		this.state = {
+			redirect: false,
+			redirectTo: '',
 			allUsers: [],
 			user: null
 		}
@@ -24,21 +26,33 @@ class UserListing extends React.Component {
 			.catch((error) => {
 				console.log(error)
 			})
-
 		const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
 		if (loggedUserJSON) {
 			const user = JSON.parse(loggedUserJSON)
+			if (user.role !== "ADMIN") {
+				this.setState({ redirect: true, redirectTo: '/login' })
+			}
 			this.setState({ user })
+		} else {
+			this.setState({ redirect: true, redirectTo: '/login' })
 		}
 	}
 
 	render() {
+		// Redirects
+		if (this.state.redirect) {
+			return (
+				<Redirect to={{
+					pathname: this.state.redirectTo,
+				}} />
+			)
+		}
 
 		return (
 			<div className="menu-background">
 				<Row>
 					<Col>
-							<p>Lällällää</p>
+						<p>Lällällää</p>
 					</Col>
 				</Row>
 			</div>

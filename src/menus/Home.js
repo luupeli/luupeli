@@ -67,7 +67,8 @@ class Home extends React.Component {
       secondary: '#ff2596',
       tertiary: '#ef007c',
       overlay: null,
-      user: null
+      user: null,
+      admin: false
     }
 
     if (localStorage.getItem('styleIndex') === null) {
@@ -88,6 +89,9 @@ class Home extends React.Component {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       this.setState({ user })
+      if (user.role === "ADMIN") {
+        this.setState({ admin: true })
+      }
     }
   }
 
@@ -152,6 +156,23 @@ class Home extends React.Component {
     }
   }
 
+  adminButtons() {
+    if (this.state.admin) {
+      return (
+        <Row className="show-grid">
+          <Col>
+            <button
+              id="adminPageButton"
+              className="menu-button"
+              onClick={this.proceedToSelect}>
+              Ylläpitäjälle
+            </button>
+          </Col>
+        </Row>
+      )
+    }
+  }
+
   loggedInButtons() {
     if (this.state.user === null) {
       return (
@@ -184,16 +205,6 @@ class Home extends React.Component {
           <Row className="show-grid">
             <Col>
               <button
-                id="adminPageButton"
-                className="menu-button"
-                onClick={this.proceedToSelect}>
-                Ylläpitäjälle
-              </button>
-            </Col>
-          </Row>
-          <Row className="show-grid">
-            <Col>
-              <button
                 className='menu-button'
                 onClick={this.logOut}>
                 Kirjaudu ulos
@@ -209,7 +220,10 @@ class Home extends React.Component {
     event.preventDefault()
     try {
       window.sessionStorage.removeItem('loggedLohjanLuunkeraajaUser')
-      this.setState({ user: null })
+      this.setState({
+        user: null,
+        admin: false
+      })
     } catch (error) {
       console.log(error)
     }
@@ -267,6 +281,7 @@ class Home extends React.Component {
                        </button>
                     </Col>
                   </Row>
+                  {this.adminButtons()}
                   {this.loggedInButtons()}
                   <Row className="show-grid">
                     <button

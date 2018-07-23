@@ -8,11 +8,25 @@ class Admin extends React.Component {
 
 		this.state = {
 			redirect: false,
-			redirectTo: ''
+			redirectTo: '',
+			user: null
 		}
 
 		window.onunload = function () { window.location.href = '/' }
 		this.proceed = this.proceed.bind(this)
+	}
+
+	componentDidMount() {
+		const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
+		if (loggedUserJSON) {
+			const user = JSON.parse(loggedUserJSON)
+			if (user.role !== "ADMIN") {
+				this.setState({ redirect: true, redirectTo: '/login' })
+			}
+			this.setState({ user })
+		} else {
+			this.setState({ redirect: true, redirectTo: '/login' })
+		}
 	}
 
 	proceed(event) {
@@ -24,6 +38,7 @@ class Admin extends React.Component {
 	}
 
 	render() {
+		// Redirects
 		if (this.state.redirect) {
 			return (
 				<Redirect to={{
@@ -31,6 +46,7 @@ class Admin extends React.Component {
 				}} />
 			)
 		}
+
 		return (
 			<div className="menu-background">
 				<div className='App'>
