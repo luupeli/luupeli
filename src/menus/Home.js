@@ -2,6 +2,7 @@ import React from 'react'
 import { Redirect, Link } from 'react-router-dom'
 import '../styles/App.css'
 import '../styles/Crt.css'
+import skelly from '../skelly'
 import { injectGlobal } from 'styled-components'
 import { Grid, Row, Col } from 'react-bootstrap'
 
@@ -230,6 +231,7 @@ class Home extends React.Component {
   }
 
   render() {
+    skelly()
     console.log(localStorage.getItem("allStyles"))
     if (this.state.redirect) {
       this.setState({ redirect: false })

@@ -135,6 +135,9 @@ class BoneListing extends React.Component {
 		return (
 			<div className="menu-background">
 				<div className="App">
+					<Link to='/admin'>
+						<button className="gobackbutton">Takaisin</button>
+					</Link>
 					<div>
 						<Grid>
 							<div id="listGroup" className="list-group">

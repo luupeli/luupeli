@@ -21,7 +21,7 @@ const scoreFlashReducer = (store = initialState.scoreflash, action) => {
 
 export const setScoreFlash = (score, scoreflash, style, time) => {
     if (time === undefined) {
-        time = 5
+        time = 2
     }
     if (style === undefined) {
         style = 'primary'

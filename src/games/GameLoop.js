@@ -108,13 +108,13 @@ class GameLoop extends React.Component {
               
                     <div class="container">
                     <div>
-                            <ScoreFlash ref={instance => this.wgmessage = instance}  />
-                        </div>
-                        <div>
-                            <Message ref={instance => this.wgmessage = instance} />
-                        </div>
-                        {this.gameLoop()}
-                      
+												<ScoreFlash ref={instance => this.wgmessage = instance}  />
+										</div>
+										<div>
+												<Message ref={instance => this.wgmessage = instance} />
+										</div>
+										{this.gameLoop()}
+									
                     </div>
                 </div>
             </div>
