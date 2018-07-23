@@ -15,7 +15,7 @@ beforeAll(async () => {
 	jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
 	page = await browser.newPage()
 	await page.setViewport({ width: 1280, height: 800 })
-	await page.goto('http://localhost:3000/login', { waitUntil: 'networkidle0' })
+	await page.goto('http://localhost:3000/login')
 	await page.waitForSelector('#username-form')
 	await page.click('#username-form')
 	await page.keyboard.type(username)
@@ -37,7 +37,7 @@ afterEach(async () => {
 })
 
 afterAll(async () => {
-	await page.goto('http://localhost:3000/login', { waitUntil: 'networkidle0' })
+	await page.goto('http://localhost:3000/login')
 	await page.waitForSelector('#logout-button')
 	await page.click('#logout-button')
 	await browser.close()
