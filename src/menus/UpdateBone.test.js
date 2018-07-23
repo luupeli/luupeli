@@ -16,10 +16,13 @@ beforeAll(async () => {
 	page = await browser.newPage()
 	await page.setViewport({ width: 1280, height: 800 })
 	await page.goto('http://localhost:3000/login', { waitUntil: 'networkidle0' })
+	await page.waitForSelector('#username-form')
 	await page.click('#username-form')
 	await page.keyboard.type(username)
+	await page.waitForSelector('#password-form')
 	await page.click('#password-form')
 	await page.keyboard.type(password)
+	await page.waitForSelector('#login-button')
 	await page.click('#login-button')
 	await page.waitForNavigation()
 })
@@ -39,6 +42,7 @@ afterEach(async () => {
 
 afterAll(async () => {
 	await page.goto('http://localhost:3000/login', { waitUntil: 'networkidle0' })
+	await page.waitForSelector('#logout-button')
 	await page.click('#logout-button')
 	await browser.close()
 })
