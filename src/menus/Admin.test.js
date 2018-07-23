@@ -16,16 +16,14 @@ beforeAll(async () => {
 	page = await browser.newPage()
 	await page.setViewport({ width: 1280, height: 800 })
 	await page.goto('http://localhost:3000/login')
-	await page.waitForSelector('#username-form')
+	await page.waitForSelector('.login-clean')
 	await page.click('#username-form')
 	await page.keyboard.type(username)
-	await page.waitForSelector('#password-form')
 	await page.click('#password-form')
 	await page.keyboard.type(password)
-	await page.waitForSelector('#login-button')
 	await page.click('#login-button')
 	await page.waitForNavigation()
-})
+}, 90000)
 
 beforeEach(async () => {
 	page = await browser.newPage()

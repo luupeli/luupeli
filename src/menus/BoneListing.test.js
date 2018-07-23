@@ -10,22 +10,21 @@ const password = process.env.PASSWORD
 let browser
 let page
 
+
 beforeAll(async () => {
-  browser = await puppeteer.launch({ args: ['--no-sandbox'] })
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
-  page = await browser.newPage()
-  await page.setViewport({ width: 1280, height: 800 })
+	browser = await puppeteer.launch({ args: ['--no-sandbox'] })
+	jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
+	page = await browser.newPage()
+	await page.setViewport({ width: 1280, height: 800 })
 	await page.goto('http://localhost:3000/login')
-	await page.waitForSelector('#username-form')
+	await page.waitForSelector('.login-clean')
 	await page.click('#username-form')
 	await page.keyboard.type(username)
-	await page.waitForSelector('#password-form')
 	await page.click('#password-form')
 	await page.keyboard.type(password)
-	await page.waitForSelector('#login-button')
 	await page.click('#login-button')
 	await page.waitForNavigation()
-})
+}, 90000)
 
 beforeEach(async () => {
   page = await browser.newPage()
