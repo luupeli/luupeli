@@ -231,7 +231,9 @@ class Home extends React.Component {
   }
 
   render() {
-    skelly()
+    if (process.env.NODE_ENV !== 'test') {
+      skelly()
+    }
     console.log(localStorage.getItem("allStyles"))
     if (this.state.redirect) {
       this.setState({ redirect: false })
