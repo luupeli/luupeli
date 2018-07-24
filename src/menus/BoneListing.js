@@ -28,7 +28,7 @@ class BoneListing extends React.Component {
 		window.onunload = function () { window.location.href = '/' }
 	}
 
-	//GET list of bones from database and stuff it into this.state.bones for rendering
+	// GET list of bones from database and stuff it into this.state.bones for rendering
 	componentDidMount() {
 		boneService.getAll()
 			.then((response) => {
@@ -96,7 +96,7 @@ class BoneListing extends React.Component {
 		this.setState({ search: e.target.value })
 	}
 
-	//Filter and render bone listing by .mapping bones from this.state.bones array to Link elements.
+	// Filter and render bone listing by .mapping bones from this.state.bones array to Link elements.
 	render() {
 		// Redirects
 		if (this.state.redirect) {
@@ -214,7 +214,6 @@ class BoneListing extends React.Component {
 											</Row>
 										</Col>
 									</Row>
-
 									<Link to='/add'><button id="addNewBoneButton" className="btn btn-info pull-right">Lisää uusi</button></Link></span>
 								<div id="bones">
 									{bonesToShow.map((bone, i) =>

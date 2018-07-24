@@ -85,7 +85,7 @@ class GameLoop extends React.Component {
 
             // Nyt tulee vain ei-kysytyistä kuvista ensimmäinen, mutta kuvien valinta randomisti/vaikeuden perusteella.
             // Nyt returnataan ainoastaan WritingGame, mutta tähän if-lause, että jos on valittu monipeli, niin sitten näytetään se.
-            if (this.props.game.gamemode == 'kirjoituspeli') {
+            if (this.props.game.gamemode === 'kirjoituspeli') {
                 return (
                     <WritingGame currentImage={noAskedImages[0]} />
                 )

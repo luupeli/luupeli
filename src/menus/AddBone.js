@@ -9,10 +9,8 @@ import { setMessage } from '../reducers/messageReducer'
 import { connect } from 'react-redux'
 
 class AddBone extends React.Component {
-
 	constructor(props) {
 		super(props);
-
 		this.state = {
 			notAdmin: false,
 			submitted: false,
@@ -27,7 +25,6 @@ class AddBone extends React.Component {
 			bodyParts: [],
 			user: null
 		};
-
 		this.handleChange = this.handleChange.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.handleNewImageChange = this.handleNewImageChange.bind(this)
@@ -40,11 +37,10 @@ class AddBone extends React.Component {
 		this.handleAddImage = this.handleAddImage.bind(this)
 		this.handleRemoveNewImage = this.handleRemoveNewImage.bind(this)
 		this.getBoneAnimals = this.getBoneAnimals.bind(this)
-
 		window.onunload = function () { window.location.href = '/' }
 	}
 
-	//GET animals and bodyParts
+	// GET animals and bodyParts
 	componentDidMount() {
 		animalService.getAll()
 			.then((response) => {
@@ -63,7 +59,7 @@ class AddBone extends React.Component {
 			.catch((error) => {
 				console.log(error)
 			})
-
+		
 		const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
 		if (loggedUserJSON) {
 			const user = JSON.parse(loggedUserJSON)
@@ -80,35 +76,35 @@ class AddBone extends React.Component {
 		return true
 	}
 
-	//Adds a new "empty file" to newImages list when user clicks a button to add more images.
-	//newImages is used to dynamically render correct amount of file & difficulty input elements in the update form
+	// Adds a new "empty file" to newImages list when user clicks a button to add more images.
+	// newImages is used to dynamically render correct amount of file & difficulty input elements in the update form
 	handleAddImage(event) {
 		const animal = this.state.animals.filter((animal) => animal.name === "Koira")[0]
 		const expandList = this.state.newImages.concat({ difficulty: "1", description: "", photographer: "", copyright: "", attempts: 0, correctAttempts: 0, handedness: "", animal: animal.id })
 		this.setState({ newImages: expandList })
 	}
 
-	//Removes element at index i from this.state.newImages (and thus the corresponding file input element from the form)
+	// Removes element at index i from this.state.newImages (and thus the corresponding file input element from the form)
 	handleRemoveNewImage(i, event) {
 		//this.setState({ newImages: this.state.newImages.filter((element, index) => {return index !== i}) })
 		this.setState({ newImages: this.state.newImages.splice(0, (this.state.newImages.length - 1)) })
 	}
 
-	//When user changes the value of a field in the form, reflect that change in state.
-	//event.target.name must correspond both to a input field name and a state variable name.
+	// When user changes the value of a field in the form, reflect that change in state.
+	// event.target.name must correspond both to a input field name and a state variable name.
 	handleChange(event) {
 		this.setState({ [event.target.name]: event.target.value })
 	}
 
-	//When user changes a field relatod to newImage i in the form, reflect that change in state.
-	//i: list index of the newImage where a field was changed
+	// When user changes a field relatod to newImage i in the form, reflect that change in state.
+	// i: list index of the newImage where a field was changed
 	handleNewImageChange(i, event) {
 		const modifiedList = this.state.newImages
 		modifiedList[i][event.target.name] = event.target.value
 		this.setState({ newImages: modifiedList })
 	}
 
-	//Generate and return a list of all animals related to this bone, with no duplicate animals
+	// Generate and return a list of all animals related to this bone, with no duplicate animals
 	getBoneAnimals() {
 		var boneAnimals = []
 		var animalTally = this.state.animals
@@ -139,7 +135,7 @@ class AddBone extends React.Component {
 		return boneAnimals
 	}
 
-	//Upload a new image to server via database
+	// Upload a new image to server via database
 	async uploadImage(i) {
 		let data = new FormData()
 		data.append('image', this[`fileInput${i}`].files[0])
@@ -153,7 +149,7 @@ class AddBone extends React.Component {
 			})
 	}
 
-	//POST an uploaded new image to database
+	// POST an uploaded new image to database
 	postImage(i, imageUrl, bone) {
 		imageService.create({
 			difficulty: this.state.newImages[i].difficulty,
@@ -174,7 +170,7 @@ class AddBone extends React.Component {
 			})
 	}
 
-	//POST this bone to database
+	// POST this bone to database
 	async postBone(boneAnimals) {
 		const bodyPartObj = this.state.bodyParts.filter((bodyPart) => bodyPart.name === this.state.bodyPart)[0]
 
@@ -195,9 +191,9 @@ class AddBone extends React.Component {
 			})
 	}
 
-	//Sends bone-related values from this.state to the database.
-	//Uploads and posts any new images to the database.
-	//Prepare a WGMessage to notify user of a failed or successful save.
+	// Sends bone-related values from this.state to the database.
+	// Uploads and posts any new images to the database.
+	// Prepare a WGMessage to notify user of a failed or successful save.
 	async handleSubmit(event) {
 		event.preventDefault()
 
@@ -222,7 +218,7 @@ class AddBone extends React.Component {
 		this.resetFields()
 	}
 
-	//Check that the bone has a latin name
+	// Check that the bone has a latin name
 	validateNameLatin() {
 		if (this.state.nameLatin.length >= 1) {
 			return true
@@ -231,7 +227,7 @@ class AddBone extends React.Component {
 		return false
 	}
 
-	//Sets fields to default values in preparation for the addition of another new bone.
+	// Sets fields to default values in preparation for the addition of another new bone.
 	resetFields() {
 		this.setState({
 			nameLatin: "",
@@ -244,8 +240,8 @@ class AddBone extends React.Component {
 		})
 	}
 
-	//If this.state.submitted is true (currently never), redirect to listing.
-	//Otherwise render bone add form
+	// If this.state.submitted is true (currently never), redirect to listing.
+	// Otherwise render bone add form
 	render() {
 		if (this.state.notAdmin) {
 			return (
@@ -429,7 +425,6 @@ class AddBone extends React.Component {
 		)
 	}
 }
-
 
 const mapDispatchToProps = {
 	setMessage

@@ -6,17 +6,14 @@ class SelectGameMode extends React.Component {
 
   constructor(props) {
     super(props)
-
     this.state = {
       redirect: false,
       gamemode: '',
       allStyles: JSON.parse(localStorage.getItem("allStyles")),
       styleIndex: localStorage.getItem('styleIndex')
     }
-
     this.proceedToSettings = this.proceedToSettings.bind(this)
     this.proceedToMain = this.proceedToMain.bind(this)
-
     window.onunload = function () { window.location.href = '/' };
   }
 
@@ -40,23 +37,22 @@ class SelectGameMode extends React.Component {
   }
 
   render() {
-
     if (this.state.redirect) {
       console.log(this.state.gamemode)
       return (
-        <Redirect to={{
-          pathname: this.state.redirectTo,
-          state: {
-            allStyles: this.state.allStyles,
-            styleIndex: this.state.styleIndex,
-            gamemode: this.state.gamemode
-          }
-        }} />
+        <Redirect to=
+          {{
+            pathname: this.state.redirectTo,
+            state: {
+              allStyles: this.state.allStyles,
+              styleIndex: this.state.styleIndex,
+              gamemode: this.state.gamemode
+            }
+          }}
+        />
       )
     }
-
     let i = this.state.styleIndex
-
     return (
       <div id="gameBody" className="App">
         <div className={this.state.allStyles[i].overlay}>
@@ -91,7 +87,7 @@ class SelectGameMode extends React.Component {
                   </Row>
                   <Row className="show-grid">
                     <Col>
-                    <button
+                      <button
                         className="menu-button"
                         id="multipleChoiceButton"
                         value="monivalintapeli"
@@ -116,7 +112,7 @@ class SelectGameMode extends React.Component {
                   className="gobackbutton"
                   onClick={this.proceedToMain}>
                   Takaisin
-                      </button>
+                </button>
               </div>
             </div>
           </div>

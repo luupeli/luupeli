@@ -7,30 +7,32 @@ const password = process.env.PASSWORD
 let browser
 let page
 
+// An admin user must be logged-in in order to pass these tests,
+// and it is done in this beforeAll block
 beforeAll(async () => {
 	browser = await puppeteer.launch({ args: ['--no-sandbox'] })
 	jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000
 	page = await browser.newPage()
 	await page.setViewport({ width: 1280, height: 800 })
+	// Navigates to home
 	await page.goto('http://localhost:3000')
+	// Waits for a button to render
 	await page.waitForSelector('#homeMenuLoginButton')
+	// Navigates to login screen
 	await page.click('#homeMenuLoginButton')
+	// Waits for the forms to render and types in the credentials
 	await page.waitForSelector('.form-control').then(async () => {
 		await page.type('#username-form', username)
 		await page.type('#password-form', password)
 		await page.click('#login-button')
 	})
+	// Finally waits for the logout button to render which shows after a user is logged in
 	await page.waitForSelector('#logout-button')
 }, 30000)
 
 beforeEach(async () => {
-	// page = await browser.newPage()
 	await page.goto('http://localhost:3000/admin')
 }, 20000)
-
-// afterEach(async () => {
-// 	await page.close()
-// })
 
 afterAll(async () => {
 	await page.goto('http://localhost:3000/login')

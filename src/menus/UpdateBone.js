@@ -6,15 +6,13 @@ import bodyPartService from '../services/bodyParts'
 import animalService from '../services/animals'
 import Message from '../games/Message'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
-import { Grid, Row, Col, Form, FormGroup, ControlLabel, FieldGroup, FormControl, Label, HelpBlock } from 'react-bootstrap'
+import { Grid, Row, Col, FormGroup, ControlLabel, FormControl, Label } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { setMessage } from '../reducers/messageReducer'
 
 class UpdateBone extends React.Component {
-
 	constructor(props) {
 		super(props)
-
 		this.state = {
 			notAdmin: false,
 			submitted: false,
@@ -33,7 +31,6 @@ class UpdateBone extends React.Component {
 			bodyParts: [],
 			user: null
 		}
-
 		this.handleChange = this.handleChange.bind(this)
 		this.handleAddImage = this.handleAddImage.bind(this)
 		this.handleDeleteNewImage = this.handleDeleteNewImage.bind(this)
@@ -53,13 +50,11 @@ class UpdateBone extends React.Component {
 		this.getBoneAnimals = this.getBoneAnimals.bind(this)
 		this.failureMessage = this.failureMessage.bind(this)
 		this.markForDelete = this.markForDelete.bind(this)
-
 		window.onunload = function () { window.location.href = '/' }
 	}
-
-	//GET images related to this bone from DB and store them in state for rendering.
-	//Add a deleted flag to each image to mark images the user wants to delete.
-	//GET animals and bodyParts and store them in state for later use.
+	// GET images related to this bone from DB and store them in state for rendering.
+	// Add a deleted flag to each image to mark images the user wants to delete.
+	// GET animals and bodyParts and store them in state for later use.
 	componentDidMount() {
 		boneService.get(this.state.boneId)
 			.then((response) => {
@@ -72,7 +67,6 @@ class UpdateBone extends React.Component {
 			})
 		this.fetchAnimals()
 		this.fetchBodyparts()
-
 		const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
 		if (loggedUserJSON) {
 			const user = JSON.parse(loggedUserJSON)
@@ -84,22 +78,19 @@ class UpdateBone extends React.Component {
 			this.setState({ notAdmin: true })
 		}
 	}
-
-	//Adds a new "empty file" to newImages list when user clicks a button to add more images.
-	//newImages is used to dynamically render correct amount of file & difficulty input elements in the update form
+	// Adds a new "empty file" to newImages list when user clicks a button to add more images.
+	// newImages is used to dynamically render correct amount of file & difficulty input elements in the update form
 	handleAddImage(event) {
 		const animal = this.state.animals.filter((animal) => animal.name === "Koira")[0]
 		const expandList = this.state.newImages.concat({ difficulty: "1", description: "", photographer: "", copyright: "", attempts: 0, correctAttempts: 0, handedness: "", animal: animal.id })
 		this.setState({ newImages: expandList })
 	}
-
-	//Removes element at index i from this.state.newImages (and thus the corresponding file input element from the form)
+	// Removes element at index i from this.state.newImages (and thus the corresponding file input element from the form)
 	handleDeleteNewImage(i, event) {
-		//this.setState({ newImages: this.state.newImages.filter((element, index) => {return index !== i}) })
+		// this.setState({ newImages: this.state.newImages.filter((element, index) => {return index !== i}) })
 		this.setState({ newImages: this.state.newImages.splice(0, (this.state.newImages.length - 1)) })
 	}
-
-	//Removes element at index i from this.state.images and deletes the corresponding image from the database.
+	// Removes element at index i from this.state.images and deletes the corresponding image from the database.
 	handleDeleteImage(i) {
 		console.log(i)
 		console.log(this.state.images)
@@ -117,14 +108,12 @@ class UpdateBone extends React.Component {
 			})
 		this.setState({ images: this.state.images.filter((element, index) => { return index !== i }) })
 	}
-
-	//When user changes the value of a field in the form, reflect that change in state.
-	//event.target.name must correspond both to a input field name and a state variable name.
+	// When user changes the value of a field in the form, reflect that change in state.
+	// event.target.name must correspond both to a input field name and a state variable name.
 	handleChange(event) {
 		this.setState({ [event.target.name]: event.target.value })
 	}
-
-	//GET all animals from database for later use
+	// GET all animals from database for later use
 	fetchAnimals() {
 		animalService.getAll()
 			.then((response) => {
@@ -134,8 +123,7 @@ class UpdateBone extends React.Component {
 				console.log(error)
 			})
 	}
-
-	//GET all bodyParts from database for later use
+	// GET all bodyParts from database for later use
 	fetchBodyparts() {
 		bodyPartService.getAll()
 			.then((response) => {
@@ -146,8 +134,7 @@ class UpdateBone extends React.Component {
 				console.log(error)
 			})
 	}
-
-	//Marks or unmarks an image for deletion, depending on the previous state of deleted flag
+	// Marks or unmarks an image for deletion, depending on the previous state of deleted flag
 	markForDelete(i, event) {
 		const modifiedImages = this.state.images
 		if (modifiedImages[i].deleted) {
@@ -157,8 +144,7 @@ class UpdateBone extends React.Component {
 		}
 		this.setState({ images: modifiedImages })
 	}
-
-	//Upload a new image to server via database
+	// Upload a new image to server via database
 	async uploadImage(i) {
 		let data = new FormData()
 		data.append('image', this[`fileInput${i}`].files[0])
@@ -175,8 +161,7 @@ class UpdateBone extends React.Component {
 				console.log(error)
 			})
 	}
-
-	//POST an uploaded new image to database
+	// POST an uploaded new image to database
 	postImage(i, imageUrl, bone) {
 		imageService.create({
 			difficulty: this.state.newImages[i].difficulty,
@@ -199,8 +184,7 @@ class UpdateBone extends React.Component {
 				console.log(error)
 			})
 	}
-
-	//PUT updated fields of an existing image to database
+	// PUT updated fields of an existing image to database
 	updateImage(i) {
 		imageService.update(this.state.images[i]._id, {
 			difficulty: this.state.images[i].difficulty,
@@ -221,16 +205,13 @@ class UpdateBone extends React.Component {
 				console.log(error)
 			})
 	}
-
-	//Display an error message to the user
+	// Display an error message to the user
 	failureMessage() {
 		this.props.setMessage('Jokin meni pieleen.', 'danger')
 	}
-
-	//PUT updated fields of the bone to database
+	// PUT updated fields of the bone to database
 	async updateBone(boneAnimals) {
 		const bodyPartObj = this.state.bodyParts.filter((bodyPart) => bodyPart.name === this.state.bodyPart)[0]
-
 		return await boneService.update(this.state.boneId, {
 			nameLatin: this.state.nameLatin,
 			name: this.state.name,
@@ -250,48 +231,38 @@ class UpdateBone extends React.Component {
 				console.log(error)
 			})
 	}
-
-	//Generate and return a list of all animals related to this bone, with no duplicate animals
+	// Generate and return a list of all animals related to this bone, with no duplicate animals
 	getBoneAnimals() {
 		var boneAnimals = []
 		var animalTally = this.state.animals
 		animalTally.forEach((animal) => animal.exists = false)
-
 		for (var i = 0; i < this.state.images.length; i++) {
 			const currAnimal = animalTally.filter((animal) => animal.id === this.state.images[i].animal)[0]
-
 			if (!currAnimal.exists) {
 				animalTally.map((animal) => { if (animal.name === currAnimal.name) { animal.exists = true } })
 				boneAnimals = boneAnimals.concat(currAnimal.id)
 			}
 		}
-
 		for (var k = 0; k < this.state.newImages.length; k++) {
 			if (this[`fileInput${k}`].files.length > 0) {
-
 				const currAnimal = animalTally.filter((animal) => animal.id === this.state.newImages[k].animal)[0]
-
 				if (!currAnimal.exists) {
 					animalTally.map((animal) => { if (animal.name === currAnimal.name) { animal.exists = true } })
 					boneAnimals = boneAnimals.concat(currAnimal.id)
 				}
 			}
 		}
-
 		return boneAnimals
 	}
-
-	//Sends bone-related values from this.state to the database.
-	//Updates difficulties for all images already in the database.
-	//Uploads and posts any new images to the database.
-	//Prepare a WGMessage to notify user of a failed or successful save.
+	// Sends bone-related values from this.state to the database.
+	// Updates difficulties for all images already in the database.
+	// Uploads and posts any new images to the database.
+	// Prepare a WGMessage to notify user of a failed or successful save.
 	async handleSubmit(event) {
 		event.preventDefault()
-
 		if (!this.validateNameLatin() || !this.validateImages()) {
 			return
 		}
-
 		for (var i = 0; i < this.state.images.length; i++) {
 			if (!this.state.images[i].deleted) {
 				this.updateImage(i)
@@ -299,28 +270,22 @@ class UpdateBone extends React.Component {
 				this.handleDeleteImage(i)
 			}
 		}
-
 		var bone = {}
 		var imageUrl = ""
-
 		var boneAnimals = this.getBoneAnimals()
-
 		bone = await this.updateBone(boneAnimals)
-
 		for (var j = 0; j < this.state.newImages.length; j++) {
 			if (this[`fileInput${j}`].files.length > 0) {
 				imageUrl = await this.uploadImage(j)
 				this.postImage(j, imageUrl, bone)
 			}
 		}
-
-		//TODO: only show this message if there is no existing failure message
+		// TODO: only show this message if there is no existing failure message
 		this.props.setMessage('Muutokset tallennettu.', 'success')
 	}
-
-	//Delete this bone from DB.
-	//Set this.state.submitted to true in preparation for redirect to listing.
-	//Prepare a message to notify user of the success/failure of the delete.
+	// Delete this bone from DB.
+	// Set this.state.submitted to true in preparation for redirect to listing.
+	// Prepare a message to notify user of the success/failure of the delete.
 	handleDelete(event) {
 		boneService.remove(this.state.boneId)
 			.then((response) => {
@@ -334,28 +299,24 @@ class UpdateBone extends React.Component {
 				console.log(error)
 				this.props.setMessage('Poisto epäonnistui.', 'danger')
 			})
-
-		//TODO: only show this message if there is no existing failure message
+		// TODO: only show this message if there is no existing failure message
 		this.props.setMessage('Poistettu!.', 'success')
 	}
-
-	//When user changes a field related to image i in the form, reflect that change in state.
-	//i: list index of the image where a field was changed
+	// When user changes a field related to image i in the form, reflect that change in state.
+	// i: list index of the image where a field was changed
 	handleImageChange(i, event) {
 		const modifiedList = this.state.images
 		modifiedList[i][event.target.name] = event.target.value
 		this.setState({ images: modifiedList })
 	}
-
-	//When user changes a field relatod to newImage i in the form, reflect that change in state.
-	//i: list index of the newImage where a field was changed
+	// When user changes a field relatod to newImage i in the form, reflect that change in state.
+	// i: list index of the newImage where a field was changed
 	handleNewImageChange(i, event) {
 		const modifiedList = this.state.newImages
 		modifiedList[i][event.target.name] = event.target.value
 		this.setState({ newImages: modifiedList })
 	}
-
-	//Check that the bone has a latin name
+	// Check that the bone has a latin name
 	validateNameLatin() {
 		if (this.state.nameLatin.length >= 1) {
 			return true
@@ -363,9 +324,8 @@ class UpdateBone extends React.Component {
 		this.props.setMessage('Anni latinankielinen nimi.', 'danger')
 		return false
 	}
-
-	//TODO: check that the bone has at least one image
-	//Is this even needed?
+	// TODO: check that the bone has at least one image
+	// Is this even needed?
 	validateImages() {
 		return true
 	}
@@ -378,9 +338,8 @@ class UpdateBone extends React.Component {
 		}
 		reader.readAsDataURL(input.target.files[0])
 	}
-
-	//If this.state.submitted is true (i.e. bone data has been deleted), redirect to listing.
-	//Otherwise render bone update form.
+	// If this.state.submitted is true (i.e. bone data has been deleted), redirect to listing.
+	// Otherwise render bone update form.
 	render() {
 		if (this.state.notAdmin) {
 			return (
@@ -391,34 +350,28 @@ class UpdateBone extends React.Component {
 				<Redirect to="/listing" />
 			)
 		}
-
 		const listStyle = {
 			padding: 20,
 			marginBottom: 20
 		}
-
 		const labelStyle = {
 			color: 'white',
 			backgroundColor: '#330066'
 		}
-
 		const titleStyle = {
 			marginBottom: 0,
 			textAlign: 'left',
 		}
-
 		const luunTiedot = {
 			marginTop: 15,
 			textAlign: 'left'
 		}
-
 		const imgStyle = {
 			display: 'block',
 			marginLeft: 'auto',
 			marginRight: 'auto',
 			marginBottom: 15
 		}
-
 		const imageWidth = () => {
 			const windowWidth = Math.max(
 				document.body.scrollWidth,
@@ -427,7 +380,6 @@ class UpdateBone extends React.Component {
 				document.documentElement.offsetWidth,
 				document.documentElement.clientWidth
 			)
-
 			if (windowWidth > 400) {
 				return 300
 			}
@@ -478,7 +430,6 @@ class UpdateBone extends React.Component {
 							</FormGroup>
 						</Col>
 					</Row>
-
 					<Row className="show-grid">
 						<Col xs={12} md={4}>
 							<FormGroup controlId="bodyPart">
@@ -705,7 +656,6 @@ class UpdateBone extends React.Component {
 											</Row>
 										</li>
 									)}
-
 								<li className="list-group-item clearfix">
 									<span className="btn-toolbar">
 										<button
@@ -714,7 +664,7 @@ class UpdateBone extends React.Component {
 											className="btn btn-info pull-right"
 											onClick={this.handleAddImage}>
 											Lisää kuvakenttä
-									</button>
+										</button>
 										<button
 											id="removeNewImageFieldButton"
 											type="button"
@@ -730,14 +680,14 @@ class UpdateBone extends React.Component {
 									id="submitUpdateButton"
 									type="submit" className="btn btn-info pull-right">
 									Tallenna muutokset
-							</button>
+								</button>
 								<button
 									id="deleteBoneButton"
 									type="button"
 									onClick={this.handleDelete}
 									className="btn btn-danger pull-right">
 									Poista luu
-						</button>
+								</button>
 							</div>
 						</form>
 					</div>

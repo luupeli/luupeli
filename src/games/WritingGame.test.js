@@ -1,8 +1,8 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 import WritingGame from './WritingGame'
-import { Redirect } from 'react-router-dom'
-import Message from './Message'
+// import { Redirect } from 'react-router-dom'
+// import Message from './Message'
 
 describe("WritingGame", () => {
 	const wgcomponent = () => {

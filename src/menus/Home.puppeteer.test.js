@@ -1,26 +1,8 @@
-import React from 'react'
-import { shallow, mount, render } from 'enzyme'
-import { Link } from 'react-router-dom'
-import Home from './Home'
+const puppeteer = require('puppeteer')
+const assert = require('assert')
 
-// var localStorageMock = (function() {
-//   var store = {}
-//   return {
-//     getItem: function(key) {
-//       return store[key]
-//     },
-//     setItem: function(key, value) {
-//       store[key] = value.toString()
-//     },
-//     clear: function() {
-//       store = {}
-//     },
-//     removeItem: function(key) {
-//       delete store[key]
-//     }
-//   }
-// })()
-// Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+let browser
+let page
 
 const retry = (fn, ms) => new Promise(resolve => {
   fn()
@@ -33,19 +15,9 @@ const retry = (fn, ms) => new Promise(resolve => {
     })
 })
 
-const puppeteer = require('puppeteer')
-const assert = require('assert')
-
-let browser
-let page
-
-
 beforeAll(async () => {
   browser = await puppeteer.launch({ args: ['--no-sandbox --disable-http2'] })
-  //  browser = await puppeteer.launch()
-  //global.Promise = require.requireActual('promise')
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
-
   page = await browser.newPage()
   await page.setViewport({ width: 1280, height: 800 })
   await page.goto('http://localhost:3000')
@@ -107,16 +79,11 @@ describe("Home (puppeteer) tests", () => {
   }, 20000)
 
   test('CSS Theme is changeable', async () => {
-
-    // const preTextContent = await page.$eval('#styleName', el => el.preTextContent)
-    // expect(preTextContent.includes("blood-dragon")).toBe(true)
-
     await page.waitForSelector('#themeChangeButton')
     await page.click('#themeChangeButton')
     await page.waitForSelector('#styleName')
     const textContent = await page.$eval('#styleName', el => el.textContent)
     expect(textContent.includes("blood-dragon")).toBe(false)
   }, 20000)
-
 })
 

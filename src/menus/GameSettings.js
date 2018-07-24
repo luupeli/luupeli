@@ -19,7 +19,6 @@ import { setMessage } from '../reducers/messageReducer'
  * 
  */
 class GameSettings extends React.Component {
-
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -124,10 +123,10 @@ class GameSettings extends React.Component {
 		console.log(this.state.allAnimals)
 	}
 
-	//if the id of the calling event is 1, change the boolean value
-	//of index 1 of array bodyParts. The method creates a copy
-	//of the existing array, modifies it, and replaces the old array
-	//in this.state with it. Hopefully.
+	// If the id of the calling event is 1, change the boolean value
+	// of index 1 of array bodyParts. The method creates a copy
+	// of the existing array, modifies it, and replaces the old array
+	// in this.state with it. Hopefully.
 	toggleCheck(i, event) {
 		const bodyParts = this.state.allBodyParts
 		console.log(bodyParts)
@@ -141,8 +140,8 @@ class GameSettings extends React.Component {
 		console.log(this.state.allBodyParts)
 	}
 
-	//at least one body part needs to be selected, so here
-	//we check if none is.
+	// At least one body part needs to be selected, so here
+	// we check if none is.
 	atLeastOneBodyPartIsSelected() {
 		if (!this.state.allBodyParts[0].selected && !this.state.allBodyParts[1].selected
 			&& !this.state.allBodyParts[2].selected && !this.state.allBodyParts[3].selected) {
@@ -152,7 +151,7 @@ class GameSettings extends React.Component {
 		}
 	}
 
-	//returns the state
+	// Returns the state
 	state() {
 		return this.state
 	}
@@ -166,11 +165,11 @@ class GameSettings extends React.Component {
 		console.log(chosenAnimals)
 		console.log(chosenBodyParts)
 
-		//filters the image array into containing only the images of the user chosen animal
-		//NOTE: While the use of filter here is very clever, I think the number of images 
-		//should be actually matched with the number of questions chosen by the user.
-		//In a situation where there's not enough distinct bones to fill up a questionnaire,
-		//then bones should be repeated (using alt images when possible).
+		// Filters the image array into containing only the images of the user chosen animal
+		// NOTE: While the use of filter here is very clever, I think the number of images 
+		// should be actually matched with the number of questions chosen by the user.
+		// In a situation where there's not enough distinct bones to fill up a questionnaire,
+		// then bones should be repeated (using alt images when possible).
 
 		// Filtering the approved images on animals
 		let pics = this.state.allImages.filter(image => {
@@ -188,7 +187,7 @@ class GameSettings extends React.Component {
 		})
 		console.log(pics)
 
-		//if criteria doesn't fulfill the game won't launch
+		// If criteria doesn't fulfill the game won't launch
 		if (pics.length === 0) {
 			this.props.setMessage('Peliä ei voitu luoda halutuilla asetuksilla', 'danger')
 		} else {
@@ -199,7 +198,7 @@ class GameSettings extends React.Component {
 
 	}
 
-	//this starts the game
+	// This starts the game
 	render() {
 
 		let i = parseInt(localStorage.getItem('styleIndex'))

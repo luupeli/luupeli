@@ -5,10 +5,9 @@ import { Row, Col } from 'react-bootstrap'
 class Admin extends React.Component {
 	constructor(props) {
 		super(props)
-
 		this.state = {
 			redirect: false,  // false, because we obviously won't be redirecting yet.
-			redirectTo: '', // empty string, because we've nowhere to redirect to.
+			redirectTo: '', 	// empty string, because we've nowhere to redirect to.
 			user: null
 		}
 

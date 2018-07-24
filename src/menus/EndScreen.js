@@ -58,10 +58,11 @@ class EndScreen extends React.Component {
       <div className='Appbd'>
         <div><h1>Pelin kulku:</h1>
           <ul>
-            {this.props.game.stats.map
-              ((stat) =>
-                <li key={stat.nameLatin}>Kysyttiin: {stat.nameLatin}, vastasit ajassa {Math.round(stat.seconds / 10, 2)} s: {stat.youAnswered} ... {stat.correctness}! {stat.score} pisteen arvoinen vastaus!</li>
-              )
+            {this.props.game.stats.map(
+              (stat) => <li key={stat.nameLatin}>
+                Kysyttiin: {stat.nameLatin}, vastasit ajassa {Math.round(stat.seconds / 10, 2)} s: {stat.youAnswered} ... {stat.correctness}! {stat.score} pisteen arvoinen vastaus!
+              </li>
+            )
             }
           </ul>
           <h2>Pisteet yhteensä: {total}</h2>

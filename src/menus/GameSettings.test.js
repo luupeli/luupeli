@@ -1,8 +1,8 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
-import WritingGame from '../games/WritingGame'
-import { Redirect, Link } from 'react-router-dom'
-import Message from '../games/Message'
+// import WritingGame from '../games/WritingGame'
+// import { Redirect, Link } from 'react-router-dom'
+// import Message from '../games/Message'
 import GameSettings from './GameSettings'
 
 describe("GameSettings", () => {

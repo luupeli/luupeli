@@ -4,17 +4,14 @@ import { Link, Redirect } from 'react-router-dom'
 import { Row, Col } from 'react-bootstrap'
 
 class UserListing extends React.Component {
-
 	constructor(props) {
 		super(props)
-
 		this.state = {
 			redirect: false,
 			redirectTo: '',
 			allUsers: [],
 			user: null
 		}
-
 		// see Admin.js if you want to know more about why this is here.
 		window.onunload = function () { window.location.href = '/' }
 	}

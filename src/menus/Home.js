@@ -12,12 +12,10 @@ import { Row, Col } from 'react-bootstrap'
  */
 
 class Home extends React.Component {
-
   constructor(props) {
     super(props)
-
     this.state = {
-      //these are css style settings which are hopefully in a different place in the future
+      // These are CSS style settings which are hopefully in a different place in the future
       allStyles: [{
         style: 'blood-dragon',
         background: 'background-blood-dragon',
@@ -78,8 +76,8 @@ class Home extends React.Component {
       admin: false
     }
 
-    //The method sets the first style as default if none are chosen.
-    //This occurs when you open the page for the first time
+    // The method sets the first style as default if none are chosen.
+    // This occurs when you open the page for the first time
     if (localStorage.getItem('styleIndex') === null) {
       localStorage.setItem('styleIndex', 0)
     }
@@ -93,7 +91,7 @@ class Home extends React.Component {
     this.setThemeColors = this.setThemeColors.bind(this)
   }
 
-  //If someone is logged in he will be set in the state as the user
+  // If someone is logged in he will be set in the state as the user
   componentDidMount() {
     const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
     if (loggedUserJSON) {
@@ -105,10 +103,9 @@ class Home extends React.Component {
     }
   }
 
-  //This event chooses the next css style settings from the list
+  // This event chooses the next css style settings from the list
   changeCss(event) {
     var next = parseInt(localStorage.getItem('styleIndex')) + 1
-
     if (this.state.allStyles[next] != null) {
       localStorage.setItem('styleIndex', next)
       this.setState({
@@ -227,7 +224,7 @@ class Home extends React.Component {
     }
   }
 
-  //when logging out you will be removed from the sessionstorage
+  // When logging out you will be removed from the sessionstorage
   logOut = async (event) => {
     event.preventDefault()
     try {
@@ -245,7 +242,6 @@ class Home extends React.Component {
     if (process.env.NODE_ENV !== 'test') {
       skelly()
     }
-    // console.log(localStorage.getItem("allStyles"))
     if (this.state.redirect) {
       this.setState({ redirect: false })
       return (
@@ -263,7 +259,7 @@ class Home extends React.Component {
       )
     }
 
-    //this index will pick the proper style from style list
+    // This index will pick the proper style from style list
     let i = parseInt(localStorage.getItem('styleIndex'))
     this.setThemeColors(i)
 

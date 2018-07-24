@@ -6,7 +6,6 @@ class Login extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      //style: localStorage.getItem('style'),
       allStyles: JSON.parse(localStorage.getItem("allStyles")),
       styleIndex: localStorage.getItem('styleIndex'),
       error: null,
@@ -14,7 +13,6 @@ class Login extends React.Component {
       password: '',
       user: null
     }
-
     this.login = this.login.bind(this)
     this.handleLoginFieldChange = this.handleLoginFieldChange.bind(this)
     window.onunload = function () { window.location.href = '/' };
@@ -113,7 +111,6 @@ class Login extends React.Component {
   }
 
   render() {
-
     let i = this.state.styleIndex
     return (
       <div className={this.state.allStyles[i].overlay}>

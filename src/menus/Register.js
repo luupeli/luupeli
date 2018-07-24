@@ -6,7 +6,6 @@ class Register extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			//style: localStorage.getItem('style'),
 			allStyles: JSON.parse(localStorage.getItem("allStyles")),
 			styleIndex: localStorage.getItem('styleIndex'),
 			error: null,
@@ -51,14 +50,14 @@ class Register extends React.Component {
 					password: '',
 					repeatPassword: ''
 				})
-			// If we end up here, a new user could not be created. Backend rejected the request.
+				// If we end up here, a new user could not be created. Backend rejected the request.
 			} catch (error) {
 				console.log(error)
 				this.setState({ error: 'käyttäjätunnus tai salasana on virheellinen' })
 				setTimeout(() => { this.setState({ error: null }) }, 5000)
 			}
-		// If we end up here, the passwords didn't match. Put this information in the state.
-		// And then, after some time, set error to null again.
+			// If we end up here, the passwords didn't match. Put this information in the state.
+			// And then, after some time, set error to null again.
 		} else {
 			this.setState({ error: 'salasanat eivät täsmää' })
 			setTimeout(() => { this.setState({ error: null }) }, 5000)
@@ -108,7 +107,7 @@ class Register extends React.Component {
 										<p>
 											Käyttäjätunnuksen minimipituus on 3 merkkiä ja salasanan 8 merkkiä.
 											Tunnus saa sisältää isoja ja pieniä kirjaimia (A-Z ja a-z) ja numeromerkkejä (0-9).
-								</p>
+										</p>
 									</div>
 									<div className="login-clean">
 										<form onSubmit={this.signUp}>
@@ -165,7 +164,7 @@ class Register extends React.Component {
 														className="btn btn-block"
 														type="submit">
 														Luo tili
-											</button>
+													</button>
 												</div>
 												<div className="form-group">
 													<p>Onko sinulla jo tili?<a href='/login'> Kirjaudu sisään!</a></p>
@@ -181,8 +180,7 @@ class Register extends React.Component {
 									className="gobackbutton"
 									onClick={this.proceedToMain}>
 									Takaisin
-							</button>
-
+								</button>
 							</div>
 						</div>
 					</div>
