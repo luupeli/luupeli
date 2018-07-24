@@ -28,7 +28,10 @@ describe('AddBone tests', () => {
   test('Pressing "Lisää kuvakenttä"-button adds a new image field', async () => {
 		await page.waitForSelector('#addNewImageFieldButton')
 		
+		//Wait for li-elements to render
 		await page.waitFor(2000)
+		
+		//Save the number of li-elements before clicking button for comparison
 		const elementList = await page.evaluate(() => {
 			const lis = Array.from(document.querySelectorAll('.list-group-item'))
 			return lis.map(li => li.textContent)
@@ -36,11 +39,16 @@ describe('AddBone tests', () => {
 		
     await page.click('#addNewImageFieldButton')
     
+    //Wait for li-elements to render
     await page.waitFor(2000)
+    
+    //Save the number of li-elements after clicking for comparison
 		const elementListAfterAdd = await page.evaluate(() => {
 			const lis = Array.from(document.querySelectorAll('.list-group-item'))
 			return lis.map(li => li.textContent)
 		})
+		
+		//There should be one more li-element after clicking button
 		expect(elementListAfterAdd.length).toBe(elementList.length + 1)
   }, 20000)
   
@@ -48,7 +56,10 @@ describe('AddBone tests', () => {
     await page.waitForSelector('#addNewImageFieldButton')
     await page.click('#addNewImageFieldButton')
     
+    //Wait for li-elements to render
     await page.waitFor(2000)
+    
+    //Save number of li-elements before clicking button for comparison
 		const elementList = await page.evaluate(() => {
 			const lis = Array.from(document.querySelectorAll('.list-group-item'))
 			return lis.map(li => li.textContent)
@@ -57,12 +68,16 @@ describe('AddBone tests', () => {
     await page.waitForSelector('#removeNewImageFieldButton')
     await page.click('#removeNewImageFieldButton')
     
+    //Wait for li-elements to render
     await page.waitFor(2000)
+    
+    //Save number of li-elements after clicking button for comparison
 		const elementListAfterRemove = await page.evaluate(() => {
 			const lis = Array.from(document.querySelectorAll('.list-group-item'))
 			return lis.map(li => li.textContent)
 		})
 		
+		//There should be one less li-element after clicking button
 		expect(elementListAfterRemove.length).toBe(elementList.length - 1)
   }, 20000)
   
@@ -70,6 +85,7 @@ describe('AddBone tests', () => {
     await page.waitForSelector('#backToListing')
     await page.click('#backToListing')
     
+    //Get text content from the bone list
     const textContent = await page.$eval('#listGroup', el => el.textContent)
     expect(textContent.toLowerCase().includes("suodata lajin mukaan")).toBe(true)
   }, 20000)

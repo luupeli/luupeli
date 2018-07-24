@@ -246,7 +246,7 @@ class Home extends React.Component {
   }
 
   render() {
-    skelly()
+    //skelly()
     console.log(localStorage.getItem("allStyles"))
     //if redirect-boolean you will be redirect to the path that is pointed in state
     if (this.state.redirect) {
