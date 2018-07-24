@@ -7,14 +7,23 @@ class Admin extends React.Component {
 		super(props)
 
 		this.state = {
-			redirect: false,
-			redirectTo: ''
+			redirect: false,  // false, because we obviously won't be redirecting yet.
+			redirectTo: '' // empty string, because we've nowhere to redirect to.
 		}
 
+		// Most likely a temporary fix, the browser back button works in a funny way...
+		// it may take the user 'back' to a page they haven't event visited.
+		// What we want this function to do is to take the user back to the page they were
+		// on before Luupeli. Sometimes it does that. Nonetheless, it doesn't take the user
+		// to some page they haven't been on, as far as I know.
 		window.onunload = function () { window.location.href = '/' }
 		this.proceed = this.proceed.bind(this)
 	}
 
+	// We know, based on the id of the calling event, which button has been clicked.
+	// So we modify redirectTo based on that. Redirect will be set to true in any case,
+	// so this.state.redirect will be true the next time we render() and the page will
+	// change accordingly.
 	proceed(event) {
 		if (event.target.id === 'boneList') {
 			this.setState({ redirect: true, redirectTo: '/listing' })
@@ -23,6 +32,8 @@ class Admin extends React.Component {
 		}
 	}
 
+	// If redirect is set to true, we will redirect. Else, we will render the admin page,
+	// which contains buttons leading to other pages meant for the admin.
 	render() {
 		if (this.state.redirect) {
 			return (
