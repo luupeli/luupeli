@@ -24,13 +24,16 @@ afterAll(async () => {
 	await browser.close()
 })
 
+
 describe('BoneListing tests', () => {
 
+  //checks if text appears on the page, thus renders
   test('page renders', async () => {
     const textContent = await page.$eval('#listGroup', el => el.textContent)
     expect(textContent.includes("Suodata lajin mukaan")).toBe(true)
   }, 20000)
 
+  //checks if animal selector texts appear on the page
   test('animals appear', async () => {
     await page.waitForSelector("#animals")
     //Not having this screenshot will break the tests..
@@ -39,6 +42,7 @@ describe('BoneListing tests', () => {
     expect(textContent.toLowerCase().includes("koira")).toBe(true)
   }, 20000)
 
+  //checks if bodypart selector texts appear on the page
   test('bodyparts appear', async () => {
     await page.waitForSelector("#bodyparts")
     
@@ -47,6 +51,7 @@ describe('BoneListing tests', () => {
     expect(textContent.toLowerCase().includes("eturaaja")).toBe(true)
   }, 20000)
 
+  //checks if pressing the new form button leads to an empty form; checks if form doesn't contain text
 	test('Lisää uusi-button leads to an empty form', async () => {
     const expectedInput = ""
     await page.click('#addNewBoneButton')
@@ -77,6 +82,7 @@ describe('BoneListing tests', () => {
   //   expect(textContent.includes(expectedInput)).toBe(true)
   // }, 20000)
 
+  //checks if clicking on the bone leads to an update view
   test('Clicking a listed bone leads to a pre-filled form', async () => {
    	await page.waitForSelector('#bone0')
 		const expectedInput = await page.$eval('#bone0', el => el.textContent)

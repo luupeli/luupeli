@@ -34,6 +34,10 @@ class Register extends React.Component {
 
 	signUp = async (event) => {
 		event.preventDefault()
+		// If the user has successfully confirmed their password,
+		// we can try to create a new user. This might fail,
+		// if, for example, the password is too short.
+		// Backend handles these checks. A new user is created through userService.
 		if (this.checkPasswordMatch) {
 			try {
 				const user = await usersService.create({
@@ -48,25 +52,35 @@ class Register extends React.Component {
 					password: '',
 					repeatPassword: ''
 				})
+			// If we end up here, a new user could not be created. Backend rejected the request.
 			} catch (error) {
 				console.log(error)
 				this.setState({ error: 'käyttäjätunnus tai salasana on virheellinen' })
 				setTimeout(() => { this.setState({ error: null }) }, 5000)
 			}
+		// If we end up here, the passwords didn't match. Put this information in the state.
+		// And then, after some time, set error to null again.
 		} else {
 			this.setState({ error: 'salasanat eivät täsmää' })
 			setTimeout(() => { this.setState({ error: null }) }, 5000)
 		}
 	}
 
+	// The user needs to confirm their password, and the inputs need to match.
+	// Here we check that.
 	checkPasswordMatch(pass, pass2) {
 		return pass === pass2
 	}
 
+	// Put the user's username, email etc. in the state so we can create an account for them
+	// in signUp. We'll need the state information there.
 	handleSignUpFieldChange = (event) => {
 		this.setState({ [event.target.name]: event.target.value })
 	}
 
+	// Here we render the registration page. Input fields for username, email, password and password confirmation.
+	// Also a button for creating an account, one for going back to the previous page, and one for going to
+	// the login page in case the user wants to sign in instead of signing up.
 	render() {
 		let i = this.state.styleIndex
 		console.log(this.state)
