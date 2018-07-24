@@ -22,11 +22,15 @@ class ScoreFlash extends React.Component {
         const style='blinder'   // <--- PLACEHOLDER CSS EFFECT!!!
 		if (this.props.scoreflash !== undefined && this.props.scoreflash.scoreflash.length !== 0) {
 			return (
-			 <Animated animationIn="bounceInLeft" animationOut="bounceOutRight" isVisible={true}>
+			 <Animated animationIn="bounceInLeft" animationOut="bounceOutRight" isVisible={this.props.scoreflash.visibility}>
+			
 				<div class={style} role="alert" text-align="center" vertical-align="middle" line-height="90px" position="fixed" >
-					<h2>{this.props.scoreflash.scoreflash}</h2>
+					<h2 data-animation-out="animate-out fadeOutUp">{this.props.scoreflash.scoreflash}</h2>
 				</div>
+			
 				  </Animated> 
+			
+			
 			)
 		} else {
 			return (<br />)

@@ -148,7 +148,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
     gameInitialization,
     setAnswer,
-    setLocalStats
+    setLocalStats    
 }
 
 const ConnectedGameLoop = connect(

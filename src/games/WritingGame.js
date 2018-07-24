@@ -117,6 +117,10 @@ class WritingGame extends React.Component {
       seconds:  prevState.seconds + 1,
       secondsTotal: prevState.secondsTotal + 1
     }));
+
+    if (this.state.seconds===20) {
+      this.props.setScoreFlash('nan','nan','nan',1,false)
+    } 
   }
 
   /**
