@@ -6,12 +6,18 @@ import skelly from '../skelly'
 import { injectGlobal } from 'styled-components'
 import { Grid, Row, Col } from 'react-bootstrap'
 
+/**
+ * This is the index page for the site. You can for example login from here or start creating the game.
+ * 
+ */
+
 class Home extends React.Component {
 
   constructor(props) {
     super(props)
 
     this.state = {
+      //these are css style settings which are hopefully in a different place in the future
       allStyles: [{
         style: 'blood-dragon',
         background: 'background-blood-dragon',
@@ -71,6 +77,8 @@ class Home extends React.Component {
       user: null
     }
 
+    //The method sets the first style as default if none are chosen.
+    //This occurs when you open the page for the first time
     if (localStorage.getItem('styleIndex') === null) {
       localStorage.setItem('styleIndex', 0)
     }
@@ -84,6 +92,7 @@ class Home extends React.Component {
     this.setThemeColors = this.setThemeColors.bind(this)
   }
 
+  //If someone is logged in he will be set in the state as the user
   componentDidMount() {
     const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
     if (loggedUserJSON) {
@@ -92,6 +101,7 @@ class Home extends React.Component {
     }
   }
 
+  //This event chooses the next css style settings from the list
   changeCss(event) {
     var next = parseInt(localStorage.getItem('styleIndex')) + 1
 
@@ -153,6 +163,9 @@ class Home extends React.Component {
     }
   }
 
+  //this will view the login buttons if not logged in.
+  //if logged in you will see logout button.
+  //if logged in as an admin you will see a button for admin tools
   loggedInButtons() {
     if (this.state.user === null) {
       return (
@@ -204,6 +217,7 @@ class Home extends React.Component {
     }
   }
 
+  //by pressing this you will trigger logout event
   logOutButton() {
     return (
       <div>
@@ -220,6 +234,7 @@ class Home extends React.Component {
     )
   }
 
+  //when logging out you will be removed from the sessionstorage
   logOut = async (event) => {
     event.preventDefault()
     try {
@@ -233,6 +248,7 @@ class Home extends React.Component {
   render() {
     skelly()
     console.log(localStorage.getItem("allStyles"))
+    //if redirect-boolean you will be redirect to the path that is pointed in state
     if (this.state.redirect) {
       this.setState({ redirect: false })
       return (
@@ -250,6 +266,7 @@ class Home extends React.Component {
       )
     }
 
+    //this index will pick the proper style from style list
     let i = parseInt(localStorage.getItem('styleIndex'))
     this.setThemeColors(i)
 
