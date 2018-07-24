@@ -20,6 +20,7 @@ beforeAll(async () => {
 		page.type('#password-form', password)
 		page.click('#login-button')
 	})
+	setTimeout(500)
 	await page.waitForSelector('#logout-button')
 }, 30000)
 
