@@ -30,6 +30,8 @@ class BoneListing extends React.Component {
 	componentDidMount() {
 		boneService.getAll()
 			.then((response) => {
+				console.log("bone response:")
+				console.log(response)
 				this.setState({ bones: response.data })
 			})
 			.catch((error) => {
@@ -38,6 +40,8 @@ class BoneListing extends React.Component {
 
 		animalService.getAll()
 			.then((response) => {
+				console.log("animal response:")
+				console.log(response)
 				this.setState({ animals: response.data })
 			})
 			.catch((error) => {
@@ -46,6 +50,8 @@ class BoneListing extends React.Component {
 
 		bodyPartService.getAll()
 			.then((response) => {
+				console.log("bodypart response")
+				console.log(response)
 				this.setState({ bodyParts: response.data })
 			})
 			.catch((error) => {
