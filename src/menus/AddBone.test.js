@@ -1,31 +1,47 @@
 const puppeteer = require('puppeteer')
+require('dotenv').config()
+
+const username = process.env.USERNAME
+const password = process.env.PASSWORD
 
 let browser
 let page
 
 beforeAll(async () => {
-	browser = await puppeteer.launch({args: ['--no-sandbox']})
-	jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
+	browser = await puppeteer.launch({ args: ['--no-sandbox'] })
+	jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000
 	page = await browser.newPage()
 	await page.setViewport({ width: 1280, height: 800 })
-})
+	await page.goto('http://localhost:3000')
+	await page.waitForSelector('#homeMenuLoginButton')
+	await page.click('#homeMenuLoginButton')
+	await page.waitForSelector('.form-control').then(async () => {
+		await page.type('#username-form', username)
+		await page.type('#password-form', password)
+		await page.click('#login-button')
+	})
+	await page.waitForSelector('#logout-button')
+}, 30000)
 
 beforeEach(async () => {
-	page = await browser.newPage()
-  await page.goto('http://localhost:3000/add')
+	// page = await browser.newPage()
+	await page.goto('http://localhost:3000/add')
 })
 
 afterEach(async () => {
-	await page.close()
+	// await page.close()
 })
 
 afterAll(async () => {
+	await page.goto('http://localhost:3000/login')
+	await page.waitForSelector('#logout-button')
+	await page.click('#logout-button')
 	await browser.close()
 })
 
 describe('AddBone tests', () => {
 
-  test('Pressing "Lisää kuvakenttä"-button adds a new image field', async () => {
+	test('Pressing "Lisää kuvakenttä"-button adds a new image field', async () => {
 		await page.waitForSelector('#addNewImageFieldButton')
 		
 		//Wait for li-elements to render

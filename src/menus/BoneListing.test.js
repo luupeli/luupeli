@@ -1,28 +1,43 @@
 const puppeteer = require('puppeteer')
+require('dotenv').config()
+
+const username = process.env.USERNAME
+const password = process.env.PASSWORD
 
 let browser
 let page
 
 beforeAll(async () => {
-	browser = await puppeteer.launch({args: ['--no-sandbox']})
-	jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
-	page = await browser.newPage()
+  browser = await puppeteer.launch({ args: ['--no-sandbox'] })
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000
+  page = await browser.newPage()
   await page.setViewport({ width: 1280, height: 800 })
-})
+  await page.goto('http://localhost:3000')
+  await page.waitForSelector('#homeMenuLoginButton')
+  await page.click('#homeMenuLoginButton')
+  await page.waitForSelector('.form-control').then(async () => {
+    await page.type('#username-form', username)
+    await page.type('#password-form', password)
+    await page.click('#login-button')
+  })
+  await page.waitForSelector('#logout-button')
+}, 30000)
 
 beforeEach(async () => {
-	page = await browser.newPage()
+  // page = await browser.newPage()
   await page.goto('http://localhost:3000/listing')
 })
 
-afterEach(async () => {
-	await page.close()
-})
+// afterEach(async () => {
+//   await page.close()
+// })
 
 afterAll(async () => {
-	await browser.close()
+  await page.goto('http://localhost:3000/login')
+  await page.waitForSelector('#logout-button')
+  await page.click('#logout-button')
+  await browser.close()
 })
-
 
 describe('BoneListing tests', () => {
 
@@ -44,30 +59,30 @@ describe('BoneListing tests', () => {
   //checks if bodypart selector texts appear on the page
   test('bodyparts appear', async () => {
     await page.waitForSelector("#bodyparts")
-    
+
     await page.screenshot({ path: 'bones.png' })
     const textContent = await page.$eval('#listGroup', el => el.textContent)
     expect(textContent.toLowerCase().includes("eturaaja")).toBe(true)
   }, 20000)
 
   //checks if pressing the new form button leads to an empty form; checks if form doesn't contain text
-	test('Lisää uusi-button leads to an empty form', async () => {
-		
-		//Wait for bone addition button to render and click
-		await page.waitForSelector('#addNewBoneButton')
+  test('Lisää uusi-button leads to an empty form', async () => {
+
+    //Wait for bone addition button to render and click
+    await page.waitForSelector('#addNewBoneButton')
     await page.click('#addNewBoneButton')
 
-		//Check the text content/value on nameLatin field
-		const nameLatinField = await page.evaluate(() => 
-			document.querySelector('#nameLatin').textContent)
-		
-		//The value on nameLatin field should be an empty string
-		expect(nameLatinField).toBe("")
+    //Check the text content/value on nameLatin field
+    const nameLatinField = await page.evaluate(() =>
+      document.querySelector('#nameLatin').textContent)
+
+    //The value on nameLatin field should be an empty string
+    expect(nameLatinField).toBe("")
   }, 20000)
-  
-	//* This test works with screenshots, but not always. It also shouldn't run with production database *//
-	// test('Added bone appears on BoneListing', async () => {
-	// 	const expectedInput = "lallallaa"
+
+  //* This test works with screenshots, but not always. It also shouldn't run with production database *//
+  // test('Added bone appears on BoneListing', async () => {
+  // 	const expectedInput = "lallallaa"
   //   await page.click('#addNewBoneButton')
 
   //   await page.type('#nameLatin', expectedInput)
@@ -87,20 +102,20 @@ describe('BoneListing tests', () => {
 
   //checks if clicking on the bone leads to an update view
   test('Clicking a listed bone leads to a pre-filled form', async () => {
-		
-		//Wait for a listed bone to render on the page
-		//Save the name of the bone for later comparison, then click it
-   	await page.waitForSelector('#bone0')
-		const boneName = await page.$eval('#bone0', el => el.textContent)
-		await page.click('#bone0')
-		
-		//Wait for nameLatin field to render and check its text content/value
-   	await page.waitForSelector('#nameLatin')
-   	const nameLatinField = await page.$eval('#nameLatin', el => el.textContent)
-   	
-   	//The saved bone name and field value should match
-   	//.include is used because boneName string may also contain other information,
-   	//eg. animals related to the bone
-   	expect(boneName.includes(nameLatinField)).toBe(true)
+
+    //Wait for a listed bone to render on the page
+    //Save the name of the bone for later comparison, then click it
+    await page.waitForSelector('#bone0')
+    const boneName = await page.$eval('#bone0', el => el.textContent)
+    await page.click('#bone0')
+
+    //Wait for nameLatin field to render and check its text content/value
+    await page.waitForSelector('#nameLatin')
+    const nameLatinField = await page.$eval('#nameLatin', el => el.textContent)
+
+    //The saved bone name and field value should match
+    //.include is used because boneName string may also contain other information,
+    //eg. animals related to the bone
+    expect(boneName.includes(nameLatinField)).toBe(true)
   }, 20000)
 })

@@ -71,6 +71,7 @@ class Login extends React.Component {
             <h2 className="sr-only">Placeholder #1</h2>
             <div className="form-group">
               <input
+                id="username-form"
                 className="form-control"
                 type="username"
                 name="username"
@@ -81,6 +82,7 @@ class Login extends React.Component {
             </div>
             <div className="form-group">
               <input
+                id="password-form"
                 className="form-control"
                 type="password"
                 name="password"
@@ -90,7 +92,7 @@ class Login extends React.Component {
               />
             </div>
             <div className="form-group btn-group">
-              <button className="btn btn-block" type="submit">Kirjaudu</button>
+              <button className="btn btn-block" type="submit" id="login-button">Kirjaudu</button>
             </div>
             {/* <a href="#" className="forgot">Unohditko sähköpostisi tai salasanasi?</a> */}
           </form>
@@ -102,7 +104,7 @@ class Login extends React.Component {
           <form onSubmit={this.logOut}>
             <p>Olet jo kirjautunut sisään, {this.state.user.username}</p>
             <div className="form-group btn-group">
-              <button className="btn btn-block" type="submit">Kirjaudu ulos</button>
+              <button className="btn btn-block" type="submit" id="logout-button">Kirjaudu ulos</button>
             </div>
           </form>
         </div>

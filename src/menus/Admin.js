@@ -8,7 +8,8 @@ class Admin extends React.Component {
 
 		this.state = {
 			redirect: false,  // false, because we obviously won't be redirecting yet.
-			redirectTo: '' // empty string, because we've nowhere to redirect to.
+			redirectTo: '', // empty string, because we've nowhere to redirect to.
+			user: null
 		}
 
 		// Most likely a temporary fix, the browser back button works in a funny way...
@@ -18,6 +19,19 @@ class Admin extends React.Component {
 		// to some page they haven't been on, as far as I know.
 		window.onunload = function () { window.location.href = '/' }
 		this.proceed = this.proceed.bind(this)
+	}
+
+	componentDidMount() {
+		const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
+		if (loggedUserJSON) {
+			const user = JSON.parse(loggedUserJSON)
+			if (user.role !== "ADMIN") {
+				this.setState({ redirect: true, redirectTo: '/login' })
+			}
+			this.setState({ user })
+		} else {
+			this.setState({ redirect: true, redirectTo: '/login' })
+		}
 	}
 
 	// We know, based on the id of the calling event, which button has been clicked.
@@ -35,6 +49,7 @@ class Admin extends React.Component {
 	// If redirect is set to true, we will redirect. Else, we will render the admin page,
 	// which contains buttons leading to other pages meant for the admin.
 	render() {
+		// Redirects
 		if (this.state.redirect) {
 			return (
 				<Redirect to={{
@@ -42,6 +57,7 @@ class Admin extends React.Component {
 				}} />
 			)
 		}
+
 		return (
 			<div className="menu-background">
 				<div className='App'>

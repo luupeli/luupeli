@@ -74,7 +74,8 @@ class Home extends React.Component {
       secondary: '#ff2596',
       tertiary: '#ef007c',
       overlay: null,
-      user: null
+      user: null,
+      admin: false
     }
 
     //The method sets the first style as default if none are chosen.
@@ -98,6 +99,9 @@ class Home extends React.Component {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       this.setState({ user })
+      if (user.role === "ADMIN") {
+        this.setState({ admin: true })
+      }
     }
   }
 
@@ -163,9 +167,23 @@ class Home extends React.Component {
     }
   }
 
-  //this will view the login buttons if not logged in.
-  //if logged in you will see logout button.
-  //if logged in as an admin you will see a button for admin tools
+  adminButtons() {
+    if (this.state.admin) {
+      return (
+        <Row className="show-grid">
+          <Col>
+            <button
+              id="adminPageButton"
+              className="menu-button"
+              onClick={this.proceedToSelect}>
+              Ylläpitäjälle
+            </button>
+          </Col>
+        </Row>
+      )
+    }
+  }
+
   loggedInButtons() {
     if (this.state.user === null) {
       return (
@@ -192,46 +210,21 @@ class Home extends React.Component {
           </Row>
         </div>
       )
-    } else if (this.state.user.role.toUpperCase() === 'ADMIN') {
+    } else {
       return (
         <div>
           <Row className="show-grid">
             <Col>
               <button
-                id="adminPageButton"
-                className="menu-button"
-                onClick={this.proceedToSelect}>
-                Ylläpitäjälle
+                className='menu-button'
+                onClick={this.logOut}>
+                Kirjaudu ulos
               </button>
             </Col>
           </Row>
-          {this.logOutButton()}
-        </div>
-      )
-    } else {
-      return (
-        <div>
-          {this.logOutButton()}
         </div>
       )
     }
-  }
-
-  //by pressing this you will trigger logout event
-  logOutButton() {
-    return (
-      <div>
-        <Row className="show-grid">
-          <Col>
-            <button
-              className='menu-button'
-              onClick={this.logOut}>
-              Kirjaudu ulos
-          </button>
-          </Col>
-        </Row>
-      </div>
-    )
   }
 
   //when logging out you will be removed from the sessionstorage
@@ -239,16 +232,20 @@ class Home extends React.Component {
     event.preventDefault()
     try {
       window.sessionStorage.removeItem('loggedLohjanLuunkeraajaUser')
-      this.setState({ user: null })
+      this.setState({
+        user: null,
+        admin: false
+      })
     } catch (error) {
       console.log(error)
     }
   }
 
   render() {
-    //skelly()
-    console.log(localStorage.getItem("allStyles"))
-    //if redirect-boolean you will be redirect to the path that is pointed in state
+    if (process.env.NODE_ENV !== 'test') {
+      skelly()
+    }
+    // console.log(localStorage.getItem("allStyles"))
     if (this.state.redirect) {
       this.setState({ redirect: false })
       return (
@@ -300,6 +297,7 @@ class Home extends React.Component {
                        </button>
                     </Col>
                   </Row>
+                  {this.adminButtons()}
                   {this.loggedInButtons()}
                   <Row className="show-grid">
                     <button

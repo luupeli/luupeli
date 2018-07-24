@@ -2,7 +2,7 @@ import React from 'react'
 import boneService from '../services/bones'
 import animalService from '../services/animals'
 import bodyPartService from '../services/bodyParts'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { ToggleButtonGroup, ToggleButton, Row, Col, Grid, FormControl } from 'react-bootstrap'
 
 class BoneListing extends React.Component {
@@ -10,6 +10,8 @@ class BoneListing extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			redirect: false,
+			redirectTo: '',
 			bones: [],
 			animals: [],
 			selectedAnimals: [],
@@ -61,7 +63,12 @@ class BoneListing extends React.Component {
 		const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
 		if (loggedUserJSON) {
 			const user = JSON.parse(loggedUserJSON)
+			if (user.role !== "ADMIN") {
+				this.setState({ redirect: true, redirectTo: '/login' })
+			}
 			this.setState({ user })
+		} else {
+			this.setState({ redirect: true, redirectTo: '/login' })
 		}
 	}
 
@@ -91,6 +98,15 @@ class BoneListing extends React.Component {
 
 	//Filter and render bone listing by .mapping bones from this.state.bones array to Link elements.
 	render() {
+		// Redirects
+		if (this.state.redirect) {
+			return (
+				<Redirect to={{
+					pathname: this.state.redirectTo,
+				}} />
+			)
+		}
+
 		let bonesToShow = this.state.bones
 
 		// Filter by body parts 

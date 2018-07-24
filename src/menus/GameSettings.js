@@ -107,7 +107,7 @@ class GameSettings extends React.Component {
 	}
 
 	changeGameLength(event) {
-		this.setState({gameLength: [event.target.value]})
+		this.setState({ gameLength: [event.target.value] })
 		console.log('Pelin pituus on nyt ... ' + this.state.gameLength)
 	}
 
@@ -358,7 +358,6 @@ class GameSettings extends React.Component {
 		)
 	}
 }
-
 
 const mapStateToProps = (state) => {
 	return {

@@ -1,6 +1,6 @@
 import React from 'react'
 import userService from '../services/users'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { Row, Col } from 'react-bootstrap'
 
 class UserListing extends React.Component {
@@ -9,8 +9,10 @@ class UserListing extends React.Component {
 		super(props)
 
 		this.state = {
-			allUsers: [], // we'll fetch the users in componentDidMount().
-			user: null // same, no user yet.
+			redirect: false,
+			redirectTo: '',
+			allUsers: [],
+			user: null
 		}
 
 		// see Admin.js if you want to know more about why this is here.
@@ -29,18 +31,29 @@ class UserListing extends React.Component {
 			.catch((error) => {
 				console.log(error)
 			})
-
 		const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
 		if (loggedUserJSON) {
 			const user = JSON.parse(loggedUserJSON)
+			if (user.role !== "ADMIN") {
+				this.setState({ redirect: true, redirectTo: '/login' })
+			}
 			this.setState({ user })
+		} else {
+			this.setState({ redirect: true, redirectTo: '/login' })
 		}
 	}
 
 	// Here we return the names and email addresses of our users as a list.
 	// If a user is an admin, we put a star next to their name.
 	render() {
-
+		// Redirects
+		if (this.state.redirect) {
+			return (
+				<Redirect to={{
+					pathname: this.state.redirectTo,
+				}} />
+			)
+		}
 		return (
 			<div className="menu-background App">
 				<h2>Käyttäjälista</h2>
@@ -53,7 +66,7 @@ class UserListing extends React.Component {
 					<Col>
 						{this.state.allUsers.map(aUser => {
 							if (aUser.role.toUpperCase() === 'ADMIN') {
-							return <p>&#9733; {aUser.username} (sähköposti: {aUser.email})</p>
+								return <p>&#9733; {aUser.username} (sähköposti: {aUser.email})</p>
 							} else {
 								return <p>{aUser.username} (sähköposti: {aUser.email})</p>
 							}

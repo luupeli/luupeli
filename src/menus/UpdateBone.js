@@ -16,6 +16,7 @@ class UpdateBone extends React.Component {
 		super(props)
 
 		this.state = {
+			notAdmin: false,
 			submitted: false,
 			boneId: this.props.location.state.boneId,
 			nameLatin: this.props.location.state.nameLatin,
@@ -75,7 +76,12 @@ class UpdateBone extends React.Component {
 		const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
 		if (loggedUserJSON) {
 			const user = JSON.parse(loggedUserJSON)
+			if (user.role !== "ADMIN") {
+				this.setState({ notAdmin: true })
+			}
 			this.setState({ user })
+		} else {
+			this.setState({ notAdmin: true })
 		}
 	}
 
@@ -376,7 +382,11 @@ class UpdateBone extends React.Component {
 	//If this.state.submitted is true (i.e. bone data has been deleted), redirect to listing.
 	//Otherwise render bone update form.
 	render() {
-		if (this.state.submitted) {
+		if (this.state.notAdmin) {
+			return (
+				<Redirect to="/login" />
+			)
+		} else if (this.state.submitted) {
 			return (
 				<Redirect to="/listing" />
 			)
@@ -739,10 +749,10 @@ class UpdateBone extends React.Component {
 
 const mapDispatchToProps = {
 	setMessage
-  }
-  
-  const ConnectedUpdateBone = connect(
+}
+
+const ConnectedUpdateBone = connect(
 	null,
 	mapDispatchToProps
-  )(UpdateBone)
-  export default ConnectedUpdateBone
+)(UpdateBone)
+export default ConnectedUpdateBone
