@@ -24,12 +24,12 @@ beforeAll(async () => {
 }, 30000)
 
 beforeEach(async () => {
-	page = await browser.newPage()
+	// page = await browser.newPage()
 	await page.goto('http://localhost:3000/add')
 })
 
 afterEach(async () => {
-	await page.close()
+	// await page.close()
 })
 
 afterAll(async () => {

@@ -15,26 +15,27 @@ beforeAll(async () => {
 	await page.goto('http://localhost:3000')
 	await page.waitForSelector('#homeMenuLoginButton')
 	await page.click('#homeMenuLoginButton')
-	await page.waitForSelector('.form-control').then(async () => {
+	await page.waitForSelector('#username-form').then(async () => {
 		await page.type('#username-form', username)
 		await page.type('#password-form', password)
 		await page.click('#login-button')
 	})
 	await page.waitForSelector('#logout-button')
+	// await page.screenshot({ path: 'bones7331.png' })
 }, 30000)
 
 beforeEach(async () => {
-	page = await browser.newPage()
+	// page = await browser.newPage()
 	await page.goto('http://localhost:3000/listing')
-
+	// await page.screenshot({ path: 'bones1337.png' })
 	//Click on first listed bone to navigate to update form
 	await page.waitForSelector('#bone0')
 	await page.click('#bone0')
 })
 
-afterEach(async () => {
-	await page.close()
-})
+// afterEach(async () => {
+// 	await page.close()
+// })
 
 afterAll(async () => {
 	await page.goto('http://localhost:3000/login')
