@@ -21,7 +21,6 @@ beforeAll(async () => {
 		page.click('#login-button')
 	})
 	setTimeout(500)
-	await page.waitForSelector('#logout-button')
 }, 30000)
 
 beforeEach(async () => {
