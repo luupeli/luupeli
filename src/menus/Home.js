@@ -179,7 +179,7 @@ class Home extends React.Component {
           </Row>
         </div>
       )
-    } else {
+    } else if (this.state.user.role.toUpperCase() === 'ADMIN') {
       return (
         <div>
           <Row className="show-grid">
@@ -192,18 +192,32 @@ class Home extends React.Component {
               </button>
             </Col>
           </Row>
-          <Row className="show-grid">
-            <Col>
-              <button
-                className='menu-button'
-                onClick={this.logOut}>
-                Kirjaudu ulos
-              </button>
-            </Col>
-          </Row>
+          {this.logOutButton()}
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          {this.logOutButton()}
         </div>
       )
     }
+  }
+
+  logOutButton() {
+    return (
+      <div>
+        <Row className="show-grid">
+          <Col>
+            <button
+              className='menu-button'
+              onClick={this.logOut}>
+              Kirjaudu ulos
+          </button>
+          </Col>
+        </Row>
+      </div>
+    )
   }
 
   logOut = async (event) => {
