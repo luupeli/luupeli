@@ -37,6 +37,10 @@ class WritingGame extends React.Component {
     console.log(this.state.value)
   }
 
+  /**
+   * As the player submits the answer, the points will be calculated, gameplay stats will be stored and player message and score flash balloon will be generated.
+   * @param {*} event 
+   */
   handleSubmit (event) {
     event.preventDefault()
 
@@ -55,9 +59,9 @@ class WritingGame extends React.Component {
       points=points*2
     }
 
-    points=Math.round(points/20)*20
+    points=Math.round(points/20)*20      
 
-    if (this.checkCorrectness()<70) {
+    if (this.checkCorrectness()<=70) {
       correctness = 'Väärin'
       points=0
     }

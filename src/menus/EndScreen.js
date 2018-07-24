@@ -2,6 +2,13 @@ import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
+/**
+ * EndScreen is the game over/results screen of Luupeli.
+ * Besides the actual score, the player should also receive some feedback on what has been learned.
+ * The answers are classified as being either correct, almost correct (bad syntax, but close enough) or incorrect. 
+ * 
+ * This class is still very much work-in-progress, as the results are not yet integrated into the database (persistent player-based stats)
+ */
 class EndScreen extends React.Component {
   constructor(props) {
     super(props)
@@ -26,6 +33,7 @@ class EndScreen extends React.Component {
     this.setState({ redirect: true })
     this.setState({ redirectTo: '/' })
   }
+
 
   render() {
     if (this.state.redirect) {
