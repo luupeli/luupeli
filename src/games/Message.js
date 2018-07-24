@@ -4,20 +4,20 @@ import { connect } from 'react-redux'
 
 // This class is used to render page header message boxes throughout the application.
 class Message extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-
 	render() {
 		const style = 'alert alert-' + `${this.props.message.style}`
 		if (this.props.message !== undefined && this.props.message.text.length !== 0) {
 			return (
 				<div class={style} role="alert">
-					<p>{this.props.message.text}</p>
+					<p>
+						{this.props.message.text}
+					</p>
 				</div>
 			)
 		} else {
-			return (<br />)
+			return (
+				<br />
+			)
 		}
 	}
 }
