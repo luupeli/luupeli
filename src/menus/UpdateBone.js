@@ -642,13 +642,15 @@ class UpdateBone extends React.Component {
 											className="list-group-item clearfix" style={listStyle}>
 											<Row className="show-grid">
 												<Col md={4} xs={12}>
-													<img id="new_image" width={imageWidth()} />
-													<center><input
-														type="file"
-														accept="image/x-png,image/jpeg"
-														id="boneImage"
-														onChange={input => this.previewImage(input)}
-														ref={input => { this[`fileInput${i}`] = input }} /></center>
+													<img id="new_image" alt="bone image" width={imageWidth()} />
+													<center>
+														<input
+															type="file"
+															accept="image/x-png,image/jpeg"
+															id="boneImage"
+															onChange={input => this.previewImage(input)}
+															ref={input => { this[`fileInput${i}`] = input }} />
+													</center>
 												</Col>
 												<Col md={8} xs={12}>
 													{imageFields(i, this.handleNewImageChange, this.state.newImages[i])}
