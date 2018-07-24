@@ -7,7 +7,11 @@ import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
 import imageService from '../services/images'
 
-
+/**
+ * WritingGame (run under Gameloop.js) is the standard game mode of Luupeli.
+ * In WritingGame, the player needs to correctly identify each bone image shown. The identification is done by typing in the latin name of the bone.
+ * Points are awarded for correct syntax AND speedy response time.
+ */
 class WritingGame extends React.Component {
 
   constructor(props) {
@@ -18,8 +22,7 @@ class WritingGame extends React.Component {
       seconds: 0.0,
       secondsTotal: 0.0,
       counter: 0,
-      //answers: [{nameLatin:null, youtAnswer: null, correctness:null, time:null}]
-  //    answers: []
+
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -69,6 +72,14 @@ class WritingGame extends React.Component {
     this.createMessage(points)
   }
 
+  /**
+   * Here we increase the game's internal clock by one unit each tick. 
+   * "seconds" refers to the time spent answering the current question, while
+   * "secondsTotal" refers to the total time spent answering all the questions so far.
+   * 
+   * The tick is currently set at 100 milliseconds meaning that 1 actual second is actually 10 tick-seconds.
+   * This is done simply to make the time-based scoring feel more granular.
+   */
   tick() {
     this.setState(prevState => ({
       seconds:  prevState.seconds + 1,
@@ -76,20 +87,39 @@ class WritingGame extends React.Component {
     }));
   }
 
+  /**
+   * With the component mounting, the game time measuring tick() is set at 100 milliseconds.
+   */
   componentWillMount(){
     
     this.interval = setInterval(() => this.tick(), 100);
 }
 
+/**
+ * At component unmount the interval needs to be cleared.
+ */
   componentWillUnmount() {
     clearInterval(this.interval);
   }
   
 
+  /**
+   * This method measures the "correctness" (or similarity) of the answer string compared to the actual latin name string.
+   * The similarity is scaled from 0 to 100, with 100 being a 100 % correct answer.
+   * This method should probably be developed further, perhaps with similarity being measured on a word-to-word basis rather than as a full string.
+   * Also, disregarding case is not proper, as the latin names ARE case-sensitive.
+   */
   checkCorrectness() {
     return 100 * StringSimilarity.compareTwoStrings(this.props.currentImage.bone.nameLatin.toLowerCase(), this.state.value.toLowerCase()); // calculate similarity   
   }
 
+  /**
+   * Here we generate a message for the player which indicates how correct the answer was.
+   * Answers with similarity of 70 or more are considered as "almost correct" and awarded some points.
+   * Answers with similarity of 100 are considered as truly correct.
+   * 
+   * @param {*} points ... the amount of points awarded for the answer.
+   */
   createMessage(points) {
     const similarity = this.checkCorrectness()
 
@@ -119,9 +149,11 @@ class WritingGame extends React.Component {
   }
 
 
-
+/**
+ * Notice that the bone images are fethched from Cloudinary, with a resize transformation done based on the measured window size.
+ */
   render() {
-    const imageWidth = () => {
+    const imageWidth = () => {              // Here we try to measure the window size in order to resize the bone image accordingly
       const windowWidth = Math.max(
         document.body.scrollWidth,
         document.documentElement.scrollWidth,
@@ -151,7 +183,8 @@ class WritingGame extends React.Component {
                   <Transformation width={imageWidth()} crop="fill" radius="20" />
                 </Image>
 
-                {/* <div class="gamepix">
+
+                {/* <div class="gamepix">         // This is a weak attempt at "stacking" the bone images on top of each other. It looked really bad...
                 {this.props.game.images.map((img) =>
                 <Image publicId={img.url}>
      <Transformation width={imageWidth()} crop="fill" radius="20" position="fixed"/>

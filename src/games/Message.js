@@ -1,6 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
+/**
+ * This class is used to render page header message boxes throughout the application.
+ */
 class Message extends React.Component {
 
 	constructor(props) {

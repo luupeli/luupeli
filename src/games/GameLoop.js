@@ -8,6 +8,11 @@ import { connect } from 'react-redux'
 import { gameInitialization, setAnswer, setLocalStats } from '../reducers/gameReducer'
 import { ProgressBar } from 'react-bootstrap'
 
+
+/**
+ * Gameloop is the parent component for 'hosting' different game modes of Luupeli.
+ * Currently, two different game modes are supported.
+ */
 class GameLoop extends React.Component {
 
     constructor(props) {
@@ -27,6 +32,9 @@ class GameLoop extends React.Component {
         }
     }
 
+    /**
+     * Method for rendering the Gameloop page header (containing ProgressBar)
+     */
     topPage() {
         let progressBar = <ProgressBar bsStyle="info" now={0} key={0} />
         let correctAnswers = []
@@ -62,6 +70,9 @@ class GameLoop extends React.Component {
         )
     }
 
+    /**
+     * VILLE: kommentoisitko gameLoopin idean suhteessa kutsuun render() metodin sisällä?
+     */
     gameLoop() {
         if (this.props.game.endCounter > 0) {
             let noAskedImages
@@ -85,8 +96,9 @@ class GameLoop extends React.Component {
             }
         }
     }
-
-    //If all images have been cycled through, redirect to endscreen, otherwise render quiz page
+/**
+ *    If all images have been cycled through, redirect to endscreen, otherwise render quiz page 
+ */
     render() {
         if (this.props.game.endCounter === 0) {
             setTimeout(function () {
@@ -122,6 +134,8 @@ class GameLoop extends React.Component {
     }
 
 }
+
+
 
 const mapStateToProps = (state) => {
     return {
