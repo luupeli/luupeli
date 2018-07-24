@@ -1,10 +1,10 @@
 import React from 'react'
-import { Redirect, Link } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import '../styles/App.css'
 import '../styles/Crt.css'
 import skelly from '../skelly'
 import { injectGlobal } from 'styled-components'
-import { Grid, Row, Col } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 
 /**
  * This is the index page for the site. You can for example login from here or start creating the game.
@@ -146,7 +146,7 @@ class Home extends React.Component {
       }
     }`
 
-    if (this.state.styleIndex != localStorage.styleIndex && this.state.allStyles[localStorage.styleIndex] !== undefined) {
+    if (this.state.styleIndex !== localStorage.styleIndex && this.state.allStyles[localStorage.styleIndex] !== undefined) {
       this.setState({
         styleIndex: localStorage.styleIndex,
         style: this.state.allStyles[localStorage.styleIndex].style,

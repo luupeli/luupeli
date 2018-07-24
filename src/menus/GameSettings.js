@@ -107,8 +107,7 @@ class GameSettings extends React.Component {
 	}
 
 	changeGameLength(event) {
-		this.state.gameLength = event.target.value
-
+		this.setState({gameLength: [event.target.value]})
 		console.log('Pelin pituus on nyt ... ' + this.state.gameLength)
 	}
 
@@ -224,16 +223,12 @@ class GameSettings extends React.Component {
 		}
 
 		// Creating an animal menu
-		let id = -1
 		const selectAnimal = this.state.allAnimals.map((animal, i) => {
-			id++
 			return <label className="checkbox-inline"><input type="checkbox" id={"animal" + i} onClick={this.changeAnimal.bind(this, i)}></input>{animal.emoji}{animal.name}</label>
 		})
 
 		// Creating a body part menu
-		id = -1
 		const selectBodyPart = this.state.allBodyParts.map((bodyPart, i) => {
-			id++
 			return <label className="checkbox-inline"><input type="checkbox" id={"bodyPart" + i} onClick={this.toggleCheck.bind(this, i)}></input>{bodyPart.name}</label>
 		})
 

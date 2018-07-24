@@ -1,5 +1,4 @@
 import React from 'react'
-import { Redirect, Link } from 'react-router-dom'
 import loginService from '../services/login'
 import '../styles/App.css'
 

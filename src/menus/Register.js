@@ -1,7 +1,6 @@
 import React from 'react'
 import usersService from '../services/users'
 import '../styles/App.css'
-import { Grid } from 'react-bootstrap'
 
 class Register extends React.Component {
 	constructor(props) {
