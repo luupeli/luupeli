@@ -9,13 +9,18 @@ class UserListing extends React.Component {
 		super(props)
 
 		this.state = {
-			allUsers: [],
-			user: null
+			allUsers: [], // we'll fetch the users in componentDidMount().
+			user: null // same, no user yet.
 		}
 
+		// see Admin.js if you want to know more about why this is here.
 		window.onunload = function () { window.location.href = '/' }
 	}
 
+	// Using userService to fetch all users. this.state.allUsers will hold the response data,
+	// so we'll have our adorable users there. If an error is thrown, log it.
+	// We'll also be setting the user, if we have a loggedLohjanLuunkeraajaUser value.
+	// 'Cause then the user, namely admin, is logged in. Yo.
 	componentDidMount() {
 		userService.getAll()
 			.then((response) => {
@@ -32,6 +37,8 @@ class UserListing extends React.Component {
 		}
 	}
 
+	// Here we return the names and email addresses of our users as a list.
+	// If a user is an admin, we put a star next to their name.
 	render() {
 
 		return (
