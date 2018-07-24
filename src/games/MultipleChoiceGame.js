@@ -1,5 +1,4 @@
 import React from 'react'
-import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
 import { gameInitialization, setAnswer } from '../reducers/gameReducer'
 import { setMessage } from '../reducers/messageReducer'
 import { connect } from 'react-redux'

@@ -8,51 +8,6 @@ import Message from '../games/Message'
 import { setMessage } from '../reducers/messageReducer'
 import { connect } from 'react-redux'
 
-//Creates a text input with label text and feedback symbol
-const TextInputWithFeedback = (props) => {
-	return (
-		<div className="form-group has-feedback">
-			<label className="pull-left">{props.label}</label>
-			<input type="text" id={props.id} className="form-control" />
-			<span className="glyphicon glyphicon-asterisk form-control-feedback"></span>
-		</div>
-	)
-}
-
-//Creates a text input with label text and no feedback symbol
-const TextInputWithoutFeedback = (props) => {
-	return (
-		<div className="form-group">
-			<label className="pull-left">{props.label}</label>
-			<input type="text" id={props.id} className="form-control" />
-		</div>
-	)
-}
-
-//Creates a dropdown menu with label text and options mapped from a list of lists containing option value attribute and the text between option tags
-const DropdownInput = (props) => {
-	return (
-		<div className="form-group">
-			<label className="pull-left">{props.label}</label>
-			<select id={props.id} className="form-control">
-				{props.values.map(value => <option key={value.id} value={value[0]}>{value[1]}</option>)}
-			</select>
-		</div>
-	)
-}
-
-const ImageInput = (props) => {
-	return (
-		<div className="form-group">
-			<label className="pull-left">Kuva</label>
-			<input type="file" accept="image/x-png,image/jpeg,image/gif" id={props.id} multiple="multiple" />
-			<span className="help-block">Voit valita useamman kuvan painamalla Ctrl-näppäintä ja klikkaamalla haluamiasi kuvia.</span>
-			<label>Kuvan vaikeustaso</label>
-			<input type="submit" value="Tallenna" className="btn btn-info" />
-		</div>
-	)
-}
-
 class AddBone extends React.Component {
 
 	constructor(props) {
@@ -180,7 +135,6 @@ class AddBone extends React.Component {
 
 	//Upload a new image to server via database
 	async uploadImage(i) {
-		var imageUrl = ""
 		let data = new FormData()
 		data.append('image', this[`fileInput${i}`].files[0])
 		data.append('name', this[`fileInput${i}`].files[0].name)
@@ -217,7 +171,6 @@ class AddBone extends React.Component {
 	//POST this bone to database
 	async postBone(boneAnimals) {
 		const bodyPartObj = this.state.bodyParts.filter((bodyPart) => bodyPart.name === this.state.bodyPart)[0]
-		var boneResponse = ""
 
 		return await boneService.create({
 			nameLatin: this.state.nameLatin,
@@ -246,7 +199,6 @@ class AddBone extends React.Component {
 			return
 		}
 
-		var errored = false
 		var bone = {}
 		var imageUrl = ""
 		var boneAnimals = this.getBoneAnimals

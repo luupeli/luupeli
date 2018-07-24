@@ -1,7 +1,7 @@
 import React from 'react'
 import userService from '../services/users'
 import { Link } from 'react-router-dom'
-import { Row, Col, Grid, FormControl } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 
 class UserListing extends React.Component {
 
