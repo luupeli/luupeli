@@ -83,9 +83,6 @@ class Home extends React.Component {
     }
 
     localStorage.setItem('allStyles', JSON.stringify(this.state.allStyles))   // Array must be converted to JSON before storing it into localStorage!
-    this.setState({
-      styleIndex: 0,
-    })
     this.changeCss = this.changeCss.bind(this)
     this.proceedToSelect = this.proceedToSelect.bind(this)
     this.setThemeColors = this.setThemeColors.bind(this)
@@ -93,6 +90,10 @@ class Home extends React.Component {
 
   // If someone is logged in he will be set in the state as the user
   componentDidMount() {
+    this.setState({
+      styleIndex: 0,
+    })
+    
     const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
@@ -105,7 +106,7 @@ class Home extends React.Component {
 
   // This event chooses the next css style settings from the list
   changeCss(event) {
-    var next = parseInt(localStorage.getItem('styleIndex')) + 1
+    var next = parseInt(localStorage.getItem('styleIndex'), 10) + 1
     if (this.state.allStyles[next] != null) {
       localStorage.setItem('styleIndex', next)
       this.setState({
@@ -260,7 +261,7 @@ class Home extends React.Component {
     }
 
     // This index will pick the proper style from style list
-    let i = parseInt(localStorage.getItem('styleIndex'))
+    let i = parseInt(localStorage.getItem('styleIndex'), 10)
     this.setThemeColors(i)
 
     return (

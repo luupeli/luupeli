@@ -152,10 +152,10 @@ class UpdateBone extends React.Component {
 
 		return await imageService.upload(data)
 			.then((response) => {
-				return response.data.url
 				if (response.status !== 200) {
 					this.failureMessage()
 				}
+				return response.data.url
 			})
 			.catch((error) => {
 				console.log(error)
@@ -221,11 +221,10 @@ class UpdateBone extends React.Component {
 			animals: boneAnimals
 		})
 			.then((response) => {
-				return response.data
-
 				if (response.status !== 200) {
 					this.failureMessage()
 				}
+				return response.data
 			})
 			.catch((error) => {
 				console.log(error)

@@ -59,7 +59,7 @@ class AddBone extends React.Component {
 			.catch((error) => {
 				console.log(error)
 			})
-		
+
 		const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
 		if (loggedUserJSON) {
 			const user = JSON.parse(loggedUserJSON)

@@ -8,6 +8,7 @@ import { injectGlobal } from 'styled-components'
 import { gameInitialization } from '../reducers/gameReducer'
 import { connect } from 'react-redux'
 import { setMessage } from '../reducers/messageReducer'
+import emoji from 'node-emoji'
 
 /**
  * GameSettings is the menu directly prior to a WritingGame session.
@@ -49,28 +50,23 @@ class GameSettings extends React.Component {
 				Here we try to fetch emojis for the animals.
 				*/
 				for (var key in animals) {
-
+					var emo = emoji
 					if (animals[key].name.toLowerCase() === 'kissa') {
-						var emo = require('node-emoji')
 						emo = emo.get('cat')
 						console.log(emo)
 						animals[key].emoji = emo
 					}
 					if (animals[key].name.toLowerCase() === 'koira') {
-						var emo = require('node-emoji')
 						emo = emo.get('dog')
 						console.log(emo)
 						animals[key].emoji = emo
 					}
-					if (animals[key].name.toLowerCase() === 'hevonen') {
-						var emo = require('node-emoji')
+					if (animals[key].name.toLowerCase() === 'hevonen') {	
 						emo = emo.get('horse')
 						console.log(emo)
 						animals[key].emoji = emo
 					}
-
 					if (animals[key].name.toLowerCase() === 'nauta') {
-						var emo = require('node-emoji')
 						emo = emo.get('cow')
 						console.log(emo)
 						animals[key].emoji = emo
@@ -177,6 +173,7 @@ class GameSettings extends React.Component {
 			if (image.animal !== undefined) {
 				return animalIds.includes(image.animal._id)
 			}
+			return null
 		})
 		console.log(pics)
 
@@ -200,9 +197,7 @@ class GameSettings extends React.Component {
 
 	// This starts the game
 	render() {
-
-		let i = parseInt(localStorage.getItem('styleIndex'))
-
+		let i = parseInt(localStorage.getItem('styleIndex'), 10)
 		// Here we inject the visual style specific colors into the css. Each visual style has a primary, secondary and tertiary color (accent).
 		injectGlobal`
 		:root {  
@@ -253,25 +248,25 @@ class GameSettings extends React.Component {
 							<div>
 								<Message />
 							</div>
-							<div class="transbox">
-								<div class="container">
-									<div class="col-md-12">
+							<div className="transbox">
+								<div className="container">
+									<div className="col-md-12">
 										<h3 className="form-header">Valitse eläin:</h3>
 										<form>
 											{selectAnimal}
 										</form>
 									</div>
 								</div>
-								<div class="container">
-									<div class="col-md-12">
+								<div className="container">
+									<div className="col-md-12">
 										<h3 className="form-header">Valitse ruumiinosa:</h3>
 										<form>
 											{selectBodyPart}
 										</form>
 									</div>
 								</div>
-								<div class="container">
-									<div class="col-md-12">
+								<div className="container">
+									<div className="col-md-12">
 										<h3 className="form-header">Luupelin pituus:</h3>
 										<form>
 											<label className="radio-inline">
@@ -308,8 +303,8 @@ class GameSettings extends React.Component {
 										</form>
 									</div>
 								</div>
-								<div class="container">
-									<div class="col-md-12">
+								<div className="container">
+									<div className="col-md-12">
 										<h3 className="form-header">Vaikeusaste:</h3>
 										<form>
 											<label className="radio-inline">
