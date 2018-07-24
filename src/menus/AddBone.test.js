@@ -15,16 +15,16 @@ beforeAll(async () => {
 	await page.goto('http://localhost:3000')
 	await page.waitForSelector('#homeMenuLoginButton')
 	await page.click('#homeMenuLoginButton')
-	await page.waitForSelector('.form-control').then(() => {
-		page.type('#username-form', username)
-		page.type('#password-form', password)
-		page.click('#login-button')
+	await page.waitForSelector('.form-control').then(async () => {
+		await page.type('#username-form', username)
+		await page.type('#password-form', password)
+		await page.click('#login-button')
 	})
-	setTimeout(500)
+	await page.waitForSelector('#logout-button')
 }, 30000)
 
 beforeEach(async () => {
-	// page = await browser.newPage()
+	page = await browser.newPage()
 	await page.goto('http://localhost:3000/add')
 })
 
