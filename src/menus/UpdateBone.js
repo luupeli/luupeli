@@ -642,7 +642,7 @@ class UpdateBone extends React.Component {
 											className="list-group-item clearfix" style={listStyle}>
 											<Row className="show-grid">
 												<Col md={4} xs={12}>
-													<img id="new_image" alt="bone image" width={imageWidth()} />
+													<img id="new_image" alt="bone" width={imageWidth()} />
 													<center>
 														<input
 															type="file"
