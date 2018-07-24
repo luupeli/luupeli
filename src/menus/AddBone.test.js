@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer')
-require ('dotenv').config()
+require('dotenv').config()
 
 const username = process.env.USERNAME
 const password = process.env.PASSWORD
@@ -24,7 +24,7 @@ beforeAll(async () => {
 }, 30000)
 
 beforeEach(async () => {
-	page = await browser.newPage()
+	// page = await browser.newPage()
 	await page.goto('http://localhost:3000/add')
 })
 
