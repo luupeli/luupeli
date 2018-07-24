@@ -203,7 +203,7 @@ class WritingGame extends React.Component {
     let attempts = this.props.currentImage.attempts
     let correctAttempts = this.props.currentImage.correctAttempts
     let correctPercentile = Math.round(100*(correctAttempts/attempts))
-    if (correctPercentile===NaN || correctPercentile<0) {correctPercentile = 0}
+    if (isNaN(correctPercentile) || correctPercentile<0) {correctPercentile = 0}
 
     return (
       <div class="bottom">

@@ -864,6 +864,7 @@ https://codepen.io/George-Payne/pen/qOrxao
 
 .height-restricted img {
   max-height: 50vh;
+  max-width: 100vw;
 }
 .gamepix img {
   max-height: 500px;
