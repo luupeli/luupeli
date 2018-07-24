@@ -22,6 +22,8 @@ class WritingGame extends React.Component {
       seconds: 0.0,
       secondsTotal: 0.0,
       counter: 0,
+      streak: 0,
+      bonus: 1.0
 
     }
     this.handleChange = this.handleChange.bind(this)
@@ -44,19 +46,44 @@ class WritingGame extends React.Component {
   handleSubmit (event) {
     event.preventDefault()
 
+    let currentStreak = this.state.streak
+    let currentBonus = this.state.bonus
+
+    let streakNote=''
+    var streakEmoji= require('node-emoji')
+    streakEmoji = streakEmoji.get('yellow_heart')
     let correctness = 'Melkein oikein'
     let points = ( Math.round((this.checkCorrectness()*Math.max(10,this.props.currentImage.bone.nameLatin.length))  * ((300+ Math.max(0, (300-this.state.seconds )))/600)) ) / 20
     
+
+
     if (this.state.seconds<100) {
       points=points*((100-this.state.seconds)/10)
     }
 
     if (this.checkCorrectness()>99) {
-      points=points*10
+      points=points*5
       correctness = 'Oikein'
-  
-    } else if (this.checkCorrectness()>85) {
-      points=points*2
+      this.setState({ streak: currentStreak+1, bonus: currentBonus+0.5 })
+      streakNote=currentBonus+'x!'
+      if (currentBonus<1.5) {
+        streakNote=''
+      }
+      streakEmoji= require('node-emoji')
+      streakEmoji = streakEmoji.get('fire')
+      console.log(streakEmoji)
+    } else {
+      this.setState({ streak: 0, bonus: 1.0 })
+      
+      streakNote=''
+      if (this.checkCorrectness()<1) {
+        streakEmoji= require('node-emoji')
+        streakEmoji = streakEmoji.get('poop')
+      }
+    }
+    
+    if (this.checkCorrectness()>85) {
+      points=points*2*currentBonus
     }
 
     points=Math.round(points/20)*20      
@@ -66,13 +93,14 @@ class WritingGame extends React.Component {
       points=0
     }
 
+    
 
     this.props.setLocalStats(this.props.currentImage.bone.nameLatin,this.state.value,correctness,this.state.seconds,this.state.secondsTotal, points)
 
     this.setState({ value: '' })
     this.props.setAnswer(this.props.currentImage, this.checkCorrectness(), this.state.value)
 
-    this.props.setScoreFlash(points, points+' PTS!!!', 'success')
+    this.props.setScoreFlash(points, ''+streakNote+''+streakEmoji+''+points+' PTS!!!'+streakEmoji, 'success')
     this.createMessage(points)
   }
 

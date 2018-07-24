@@ -205,6 +205,7 @@ class GameSettings extends React.Component {
 
 		let i = parseInt(localStorage.getItem('styleIndex'))
 
+		// Here we inject the visual style specific colors into the css. Each visual style has a primary, secondary and tertiary color (accent).
 		injectGlobal`
 		:root {  
 		  --primary: ${this.state.allStyles[i].primary}
