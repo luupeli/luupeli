@@ -1,7 +1,7 @@
 import React from 'react'
 import StringSimilarity from 'string-similarity'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
-import { setAnswer, setLocalStats } from '../reducers/gameReducer'
+import { setAnswer, setImageToAsk } from '../reducers/gameReducer'
 import { setMessage } from '../reducers/messageReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
@@ -19,7 +19,6 @@ class WritingGame extends React.Component {
     this.state = {
       value: '',
       seconds: 0.0,
-      secondsTotal: 0.0,
       counter: 0,
       streak: 0,
       bonus: 1.0
@@ -44,7 +43,7 @@ class WritingGame extends React.Component {
     let streakNote = ''
     let streakEmoji = emoji.get('yellow_heart')
     let correctness = 'Melkein oikein'
-    let points = (Math.round((this.checkCorrectness() * Math.max(10, this.props.currentImage.bone.nameLatin.length)) * ((300 + Math.max(0, (300 - this.state.seconds))) / 600))) / 20
+    let points = (Math.round((this.checkCorrectness() * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((300 + Math.max(0, (300 - this.state.seconds))) / 600))) / 20
 
     if (this.state.seconds < 100) {
       points = points * ((100 - this.state.seconds) / 10)
@@ -76,12 +75,12 @@ class WritingGame extends React.Component {
       correctness = 'Väärin'
       points = 0
     }
-    this.props.setLocalStats(this.props.currentImage.bone.nameLatin, this.state.value, correctness, this.state.seconds, this.state.secondsTotal, points)
-    this.setState({ value: '' })
-    this.props.setAnswer(this.props.currentImage, this.checkCorrectness(), this.state.value)
     this.props.setScoreFlash(points, '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji, 'success')
-    this.createMessage(points)
-  }
+
+    this.setState({ value: '' })
+    this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(), this.state.value, this.state.seconds, points)
+    this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
+    this.createMessage(points)  }
   /**
    * Here we increase the game's internal clock by one unit each tick. 
    * "seconds" refers to the time spent answering the current question, while
@@ -93,7 +92,6 @@ class WritingGame extends React.Component {
   tick() {
     this.setState(prevState => ({
       seconds: prevState.seconds + 1,
-      secondsTotal: prevState.secondsTotal + 1
     }));
 
     if (this.state.seconds === 20) {
@@ -120,7 +118,7 @@ class WritingGame extends React.Component {
    * Also, disregarding case is not proper, as the latin names ARE case-sensitive.
    */
   checkCorrectness() {
-    return 100 * StringSimilarity.compareTwoStrings(this.props.currentImage.bone.nameLatin.toLowerCase(), this.state.value.toLowerCase()); // calculate similarity   
+    return 100 * StringSimilarity.compareTwoStrings(this.props.game.currentImage.bone.nameLatin.toLowerCase(), this.state.value.toLowerCase()); // calculate similarity   
   }
 
   /**
@@ -131,24 +129,19 @@ class WritingGame extends React.Component {
    * @param {*} points ... the amount of points awarded for the answer.
    */
   createMessage(points) {
+    this.setState({
+      seconds: 0
+    })
+
     const similarity = this.checkCorrectness()
-    if (this.props.currentImage.bone.nameLatin.toLowerCase() === this.state.value.toLowerCase()) {
+
+    if (this.props.game.currentImage.bone.nameLatin.toLowerCase() === this.state.value.toLowerCase()) {
       this.props.setMessage('Oikein! ' + points + ' pistettä!', 'success')
-      this.setState({
-        seconds: 0
-      })
     } else if (similarity > 70) {
-      this.props.setMessage('Melkein oikein! ' + points + ' pistettä! (similarity: ' + similarity.toPrecision(2) + '). Vastasit: ' + this.state.value.toLowerCase() + '. Oikea vastaus oli ' + this.props.currentImage.bone.nameLatin.toLowerCase(), 'warning')
+      this.props.setMessage('Melkein oikein! ' + points + ' pistettä! (similarity: ' + similarity.toPrecision(2) + '). Vastasit: ' + this.state.value.toLowerCase() + '. Oikea vastaus oli ' + this.props.game.currentImage.bone.nameLatin.toLowerCase(), 'warning')
     } else {
-      this.props.setMessage('Väärin (similarity: ' + similarity.toPrecision(2) + ')! Oikea vastaus oli ' + this.props.currentImage.bone.nameLatin.toLowerCase(), 'danger')
-
-      this.setState({
-
-        seconds: 0
-
-      })
+      this.props.setMessage('Väärin (similarity: ' + similarity.toPrecision(2) + ')! Oikea vastaus oli ' + this.props.game.currentImage.bone.nameLatin.toLowerCase(), 'danger')
     }
-    console.log(this.state)
   }
   /**
    * Notice that the bone images are fethched from Cloudinary, with a resize transformation done based on the measured window size.
@@ -167,8 +160,8 @@ class WritingGame extends React.Component {
       }
       return windowWidth - 40
     }
-    let attempts = this.props.currentImage.attempts
-    let correctAttempts = this.props.currentImage.correctAttempts
+    let attempts = this.props.game.currentImage.attempts
+    let correctAttempts = this.props.game.currentImage.correctAttempts
     let correctPercentile = Math.round(100 * (correctAttempts / attempts))
     if (isNaN(correctPercentile) || correctPercentile < 0) { correctPercentile = 0 }
     return (
@@ -177,32 +170,24 @@ class WritingGame extends React.Component {
           <div class="intro">
             <CloudinaryContext cloudName="luupeli">
               <div class="height-restricted">
-                <Image publicId={this.props.currentImage.url}>
+                <Image publicId={this.props.game.currentImage.url}>
                   <Transformation width={imageWidth()} crop="fill" radius="20" />
                 </Image>
-                {/* <div class="gamepix">         // This is a weak attempt at "stacking" the bone images on top of each other. It looked really bad...
-                    {this.props.game.images.map((img) =>
-                      <Image publicId={img.url}>
-                        <Transformation width={imageWidth()} crop="fill" radius="20" position="fixed"/>
-                      </Image> 
-                    )
-                  }*/
-                }
               </div>
             </CloudinaryContext>
           </div>
         </div>
         <div class="row">
           <div><center>
-            <h3 id="heading">{this.props.currentImage.bone.name}</h3></center>
+            <h3 id="heading">{this.props.game.currentImage.bone.name}</h3></center>
           </div>
         </div>
         <div class="container">
           <div class="col-md-6 col-md-offset-3" id="info">
             <h6>Vastausaikaa kulunut {Math.round(this.state.seconds / 10, 1)}</h6>
-            <p>{this.props.currentImage.bone.description}</p>
+            <p>{this.props.game.currentImage.bone.description}</p>
             <p>Tätä kuvaa on yritetty {attempts} kertaa, niistä {correctAttempts} oikein. Oikeita vastauksia: {correctPercentile} % kaikista yrityksistä.</p>
-            <p>(Oikea vastaus: {this.props.currentImage.bone.nameLatin})</p>
+            <p>(Oikea vastaus: {this.props.game.currentImage.bone.nameLatin})</p>
           </div>
         </div>
         <div class="answer-input">
@@ -242,7 +227,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   setAnswer,
-  setLocalStats,
+  setImageToAsk,
   setMessage,
   setScoreFlash
 }

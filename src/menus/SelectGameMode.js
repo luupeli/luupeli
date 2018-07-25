@@ -98,9 +98,12 @@ class SelectGameMode extends React.Component {
                   </Row>
                   <Row className="show-grid">
                     <Col>
-                      <button
-                        className="menu-button">
-                        :: valinta 3 ::
+                    <button
+                        className="menu-button"
+                        id="mixedGameButton"
+                        value="sekapeli"
+                        onClick={this.proceedToSettings}>
+                        Sekapeli
                       </button>
                     </Col>
                   </Row>

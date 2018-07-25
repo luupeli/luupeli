@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
  * 
  * This class is still very much work-in-progress, as the results are not yet integrated into the database (persistent player-based stats)
  */
+
 class EndScreen extends React.Component {
   constructor(props) {
     super(props)
@@ -47,26 +48,17 @@ class EndScreen extends React.Component {
     const almostCorrectAnswers = this.props.game.answers.filter(ans => ans.correctness > 70 && ans.correctness < 100)
     const wrongAnswers = this.props.game.answers.filter(ans => ans.correctness <= 70)
 
-    let total = 0
-    let time = 0;
-    for (var i = 0; i < this.props.game.stats.length; i++) {
-      total += this.props.game.stats[i].score
-      time += Math.round(this.props.game.stats[i].seconds / 10, 2)
-    }
-
     return (
       <div className='Appbd'>
         <div><h1>Pelin kulku:</h1>
           <ul>
-            {this.props.game.stats.map(
-              (stat) => <li key={stat.nameLatin}>
-                Kysyttiin: {stat.nameLatin}, vastasit ajassa {Math.round(stat.seconds / 10, 2)} s: {stat.youAnswered} ... {stat.correctness}! {stat.score} pisteen arvoinen vastaus!
-              </li>
+            {this.props.game.answers.map((answer) =>
+              <li key={answer.image.nameLatin}>Kysyttiin: {answer.image.nameLatin}, vastasit ajassa {Math.round(answer.seconds / 10, 2)} s: {answer.answer} ... {answer.correctness}! {answer.score} pisteen arvoinen vastaus!</li>
             )
             }
           </ul>
-          <h2>Pisteet yhteensä: {total}</h2>
-          <h2>Pelin kesto: {time} s</h2>
+          <h2>Pisteet yhteensä: {this.props.game.totalScore}</h2>
+          <h2>Pelin kesto: {this.props.game.totalSeconds} s</h2>
         </div>
         <div>
           <h1 className='h2' id="endScreenTitle">Lopputulos:</h1>
@@ -75,6 +67,7 @@ class EndScreen extends React.Component {
             <p id="nearlyCorrectAnswers">Melkein oikeita vastauksia: {almostCorrectAnswers.length}/{this.props.game.answers.length}</p><br />
             <p id="wrongAnswers">Vääriä vastauksia: {wrongAnswers.length}/{this.props.game.answers.length}</p><br />
           </div>
+
         </div>
         <div>
           <button className='gobackbutton' onClick={this.proceedToMain}>Etusivulle</button>

@@ -1,25 +1,168 @@
 import React from 'react'
-import { gameInitialization, setAnswer } from '../reducers/gameReducer'
+import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
+import { setAnswer, setImageToAsk, setWrongAnswerOptions, setWrongImageOptions } from '../reducers/gameReducer'
 import { setMessage } from '../reducers/messageReducer'
+import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
+import { Button } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 
 class MultipleChoiceGame extends React.Component {
 
   constructor(props) {
     super(props);
+    this.timer = 0;
     this.state = {
-      value: ''
+      value: '',
+      seconds: 0
+    }
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  handleSubmit(event) {
+    event.preventDefault()
+    this.setState({ value: event.target.value })
+    this.createMessage(event.target.value)
+
+    let points = (Math.round((this.checkCorrectness(event.target.value) * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((300 + Math.max(0, (300 - this.state.seconds))) / 600))) / 20
+
+    if (this.checkCorrectness(event.target.value) > 99) {
+      points = points * 10
+    }
+    points = Math.round(points / 20) * 20
+
+    if (this.checkCorrectness(event.target.value) < 70) {
+      points = 0
+    }
+
+    setTimeout(() => {
+      this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(this.state.value), this.state.value, this.state.seconds - 3, points)
+      this.setState({ value: '' })
+      this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
+      this.props.setWrongImageOptions(this.props.game.currentImage, this.props.game.images)
+      this.props.setWrongAnswerOptions(this.props.game.currentImage, this.props.game.images)
+    }, 3000)
+  }
+
+  checkCorrectness(answer) {
+    if (this.props.game.currentImage.bone.nameLatin.toLowerCase() === answer.toLowerCase()) {
+      return 100
+    } else {
+      return 0
+    }
+  }
+
+  tick() {
+    this.setState(prevState => ({
+      seconds: prevState.seconds + 1,
+    }));
+  }
+
+  componentWillMount() {
+    this.interval = setInterval(() => this.tick(), 100);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  createMessage(answer) {
+    this.setState({
+      seconds: 0
+    })
+
+    const correctness = this.checkCorrectness(answer)
+
+    if (correctness === 100) {
+      this.props.setMessage('Oikein!', 'success')
+    } else {
+      this.props.setMessage('Väärin! Oikea vastaus oli ' + this.props.game.currentImage.bone.nameLatin, 'danger')
+    }
+  }
+
+  answerButtons() {
+    let choices = [
+      {
+        nameLatin: this.props.game.currentImage.bone.nameLatin,
+        correct: true
+      }
+    ]
+
+    const wrongs = this.props.game.wrongAnswerOptions.map(nameLatin => {
+      return { nameLatin: nameLatin, correct: false }
+    })
+
+    choices = wrongs.concat(choices)
+    choices.sort(function (a, b) { return a - b })
+
+    if (this.state.value === '' || this.state.value === undefined) {
+      return (
+        choices.map(choice => <Button bsStyle='info' value={choice.nameLatin} onClick={this.handleSubmit}>{choice.nameLatin}</Button>
+        )
+      )
+    } else if (this.state.value === this.props.game.currentImage.bone.nameLatin) {
+      return choices.map(choice => {
+        if (choice.correct) {
+          return <Button bsStyle='success' disabled={true} value={choice.nameLatin}>{choice.nameLatin}</Button>
+        } else {
+          return <Button bsStyle='info' disabled={true} value={choice.nameLatin}>{choice.nameLatin}</Button>
+        }
+      })
+    } else {
+      return choices.map(choice => {
+        if (choice.correct) {
+          return <Button bsStyle='success' disabled={true} value={choice.nameLatin}>{choice.nameLatin}</Button>
+        } else if (this.state.value === choice.nameLatin) {
+          return <Button bsStyle='danger' disabled={true} value={choice.nameLatin}>{choice.nameLatin}</Button>
+        } else {
+          return <Button bsStyle='info' disabled={true} value={choice.nameLatin}>{choice.nameLatin}</Button>
+        }
+      })
     }
   }
 
   render() {
+    const imageWidth = () => {
+      const windowWidth = Math.max(
+        document.body.scrollWidth,
+        document.documentElement.scrollWidth,
+        document.body.offsetWidth,
+        document.documentElement.offsetWidth,
+        document.documentElement.clientWidth
+      )
+
+      if (windowWidth > 400) {
+        return 600
+      }
+      return windowWidth - 40
+    }
+
     return (
       <div class="bottom">
-
-        <div class="container">
-        <div class="row">
-          <div><p>Vaihtoehtoinen pelimuoto, valmistuu ensi viikolla</p></div>
+        <div class="row" id="image-holder">
+          <div class="intro">
+            <CloudinaryContext cloudName="luupeli">
+              <div class="height-restricted">
+                <Image publicId={this.props.game.currentImage.url}>
+                  <Transformation width={imageWidth()} crop="fill" radius="20" />
+                </Image>
+              </div>
+            </CloudinaryContext>
+          </div>
         </div>
+        <div class="row">
+        </div>
+        <div class="container">
+          <div class="col-md-6 col-md-offset-3" id="info">
+            <h6>Vastausaikaa kulunut {Math.round(this.state.seconds / 10, 1)}</h6>
+            <p>{this.props.game.currentImage.bone.description}</p>
+          </div>
+        </div>
+        <div class="answer-input">
+          <div class="container">
+            <div class="intro" />
+            {this.answerButtons()}
+          </div>
         </div>
       </div>
     )
@@ -33,9 +176,12 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  gameInitialization,
   setAnswer,
-  setMessage
+  setImageToAsk,
+  setWrongAnswerOptions,
+  setWrongImageOptions,
+  setMessage,
+  setScoreFlash
 }
 
 const ConnectedMultipleChoiceGame = connect(

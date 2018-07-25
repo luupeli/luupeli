@@ -4,8 +4,9 @@ import Message from './Message'
 import ScoreFlash from './ScoreFlash'
 import WritingGame from './WritingGame'
 import MultipleChoiceGame from './MultipleChoiceGame'
+import ImageMultipleChoiceGame from './ImageMultipleChoiceGame'
 import { connect } from 'react-redux'
-import { gameInitialization, setAnswer, setLocalStats } from '../reducers/gameReducer'
+import { gameInitialization, setAnswer } from '../reducers/gameReducer'
 import { ProgressBar } from 'react-bootstrap'
 
 
@@ -71,34 +72,35 @@ class GameLoop extends React.Component {
     }
 
     /**
-     * VILLE: kommentoisitko gameLoopin idean suhteessa kutsuun render() metodin sisällä?
+     * Method for rendering selected game mode
      */
     gameLoop() {
         if (this.props.game.endCounter > 0) {
-            let noAskedImages
-            if (this.props.game.endCounter !== this.props.game.gameLength) {
-                noAskedImages = this.props.game.images.filter(img => !this.props.game.answers.some(ans => ans.image.id === img.id))
-            } else {
-                noAskedImages = this.props.game.images
-            }
-            console.log(noAskedImages)
-
-            // Nyt tulee vain ei-kysytyistä kuvista ensimmäinen, mutta kuvien valinta randomisti/vaikeuden perusteella.
-            // Nyt returnataan ainoastaan WritingGame, mutta tähän if-lause, että jos on valittu monipeli, niin sitten näytetään se.
-            if (this.props.game.gamemode === 'kirjoituspeli') {
+            if (this.props.game.gamemode == 'kirjoituspeli') {
                 return (
-                    <WritingGame currentImage={noAskedImages[0]} />
+                    <WritingGame />
                 )
+            } else if (this.props.game.gamemode == 'monivalintapeli') {
+                if (this.props.game.surpriseGameMode < 2) {
+                    return <MultipleChoiceGame />
+                } else {
+                    return <ImageMultipleChoiceGame />
+                }
             } else {
-                return (
-                    <MultipleChoiceGame />
-                )
+                if (this.props.game.surpriseGameMode <= 1) {
+                    return <MultipleChoiceGame />
+                } else if (this.props.game.surpriseGameMode <= 2) {
+                    return <ImageMultipleChoiceGame />
+                } else {
+                    return <WritingGame />
+                }
             }
         }
     }
-/**
- *    If all images have been cycled through, redirect to endscreen, otherwise render quiz page 
- */
+
+    /**
+     *    If all images have been cycled through, redirect to endscreen, otherwise render quiz page 
+     */
     render() {
         if (this.props.game.endCounter === 0) {
             setTimeout(function () {
@@ -117,16 +119,16 @@ class GameLoop extends React.Component {
             <div className="App">
                 {this.topPage()}
                 <div class="dual-layout">
-              
+
                     <div class="container">
-                    <div>
-												<ScoreFlash ref={instance => this.wgmessage = instance}  />
-										</div>
-										<div>
-												<Message ref={instance => this.wgmessage = instance} />
-										</div>
-										{this.gameLoop()}
-									
+                        <div>
+                            <ScoreFlash ref={instance => this.wgmessage = instance} />
+                        </div>
+                        <div>
+                            <Message />
+                        </div>
+                        {this.gameLoop()}
+
                     </div>
                 </div>
             </div>
@@ -147,8 +149,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
     gameInitialization,
-    setAnswer,
-    setLocalStats    
+    setAnswer
 }
 
 const ConnectedGameLoop = connect(
