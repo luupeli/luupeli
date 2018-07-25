@@ -74,9 +74,9 @@ class MultipleChoiceGame extends React.Component {
     const correctness = this.checkCorrectness(answer)
 
     if (correctness === 100) {
-      this.props.setMessage('Oikein!', 'success')
+      this.props.setMessage('Oikein!', 'success', 3)
     } else {
-      this.props.setMessage('Väärin! Oikea vastaus oli ' + this.props.game.currentImage.bone.nameLatin, 'danger')
+      this.props.setMessage('Väärin! Oikea vastaus oli ' + this.props.game.currentImage.bone.nameLatin, 'danger', 3)
     }
   }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import StringSimilarity from 'string-similarity'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
-import { setAnswer, setImageToAsk } from '../reducers/gameReducer'
+import { setAnswer, setImageToAsk, setWrongAnswerOptions, setWrongImageOptions } from '../reducers/gameReducer'
 import { setMessage } from '../reducers/messageReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
@@ -19,7 +19,6 @@ class WritingGame extends React.Component {
     this.state = {
       value: '',
       seconds: 0.0,
-      counter: 0,
       streak: 0,
       bonus: 1.0
 
@@ -80,6 +79,8 @@ class WritingGame extends React.Component {
     this.setState({ value: '' })
     this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(), this.state.value, this.state.seconds, points)
     this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
+    this.props.setWrongImageOptions(this.props.game.currentImage, this.props.game.images)
+    this.props.setWrongAnswerOptions(this.props.game.currentImage, this.props.game.images)
     this.createMessage(points)  }
   /**
    * Here we increase the game's internal clock by one unit each tick. 
@@ -228,6 +229,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   setAnswer,
   setImageToAsk,
+  setWrongAnswerOptions, 
+  setWrongImageOptions,
   setMessage,
   setScoreFlash
 }
