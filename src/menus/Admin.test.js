@@ -33,7 +33,7 @@ beforeAll(async () => {
 beforeEach(async () => {
 	await page.goto('http://localhost:3000/admin')
 }, 20000)
-
+// After the tests have been run, log out and close the browser
 afterAll(async () => {
 	await page.goto('http://localhost:3000/login')
 	await page.waitForSelector('#logout-button')
@@ -42,7 +42,8 @@ afterAll(async () => {
 })
 
 describe('Admin tests', () => {
-
+	// Fetching the content of the div with id adminButtons. Luut and Käyttäjät
+	// should be found.
 	test('page renders', async () => {
 
 		const textContent = await page.$eval('#adminButtons', el => el.textContent)
@@ -50,6 +51,8 @@ describe('Admin tests', () => {
 		expect(textContent.includes("Käyttäjät")).toBe(true)
 	}, 20000)
 
+	// Let's click "Luut", which has boneList as an id. It should take us to BoneListing,
+	// and if it does, we will find the text "Suodata lajin mukaan" there (case doesn't matter).
 	test('pressing "Luut" takes the user to BoneListing', async () => {
 
 		await page.waitForSelector('#boneList')
