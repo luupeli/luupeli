@@ -66,6 +66,7 @@ export const gameInitialization = (gameLength, images, user, gamemode) => {
     }
 }
 
+// This sets a new answer to the answers array.
 export const setAnswer = (image, correctness, answer, seconds, score) => {
     return {
         type: 'SET_ANSWER',
@@ -82,6 +83,7 @@ export const setAnswer = (image, correctness, answer, seconds, score) => {
     }
 }
 
+// When the previous question is answered, this call will choose the image for the next question.
 export const setImageToAsk = (images, answers) => {
     const imageToAsk = selectNextImage(answers, images);
     return {
@@ -90,6 +92,7 @@ export const setImageToAsk = (images, answers) => {
     }
 }
 
+// When the previous question is answered, this call will choose incorrect answer options for multiple choice game mode (MultipleChoiceGame).
 export const setWrongAnswerOptions = (currentImage, images) => {
     const wrongAnswerOptions = selectWrongAnswerOptions(images, currentImage);
     return {
@@ -98,6 +101,7 @@ export const setWrongAnswerOptions = (currentImage, images) => {
     }
 }
 
+// When the previous question is answered, this call will choose incorrect image options for multiple choice game mode (ImageMultipleChoiceGame).
 export const setWrongImageOptions = (currentImage, images) => {
     const wrongImageOptions = selectWrongImageOptions(images, currentImage);
     return {
@@ -108,6 +112,10 @@ export const setWrongImageOptions = (currentImage, images) => {
 
 export default gameReducer
 
+/** This method defines the wrong answer options. We only use the bones that match the game settings. 
+ * The bones are chosen randomly. If there are too few bones, the answer options will be less than three.
+ * The correct answer can not be among the wrong answers.
+*/ 
 function selectWrongAnswerOptions(images, currentImage) {
     let allLatinNames = images.map(img => img.bone.nameLatin);
     allLatinNames = Array.from(new Set(allLatinNames));
@@ -122,6 +130,10 @@ function selectWrongAnswerOptions(images, currentImage) {
     return selectedAnswers;
 }
 
+/** This method defines the wrong image options. We only use the images that match the game settings. 
+ * The images are chosen randomly. If there are too few images, the image options will be less than three.
+ * The correct answer can not be among the wrong answers.
+*/ 
 function selectWrongImageOptions(images, currentImage) {
     const allImages = images.filter(img => !((img.animal === currentImage.animal) && (img.bone === currentImage.bone)));
     const selectedImages = [];
@@ -134,6 +146,11 @@ function selectWrongImageOptions(images, currentImage) {
     return selectedImages;
 }
 
+/**
+This method chooses an image for the next question. I think this is not ready yet. 
+We first use all the images that have not yet been asked. 
+Then we use those images that correctness is less than correctness average. The images are chosen randomly.
+ */
 function selectNextImage(answers, images) {
     let noAskedImages;
     if (!answers === undefined) {

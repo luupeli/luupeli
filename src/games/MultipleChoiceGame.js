@@ -7,6 +7,11 @@ import { connect } from 'react-redux'
 import { Button } from 'react-bootstrap'
 import { Row, Col } from 'react-bootstrap'
 
+/**
+ * MultipleChoiceGame (run under Gameloop.js) is one of game mode of Luupeli.
+ * In MultipleChoiceGame, the player sees the picture and four names of the different bones. 
+ * The player needs to click on the correct bone name.
+ */
 class MultipleChoiceGame extends React.Component {
 
   constructor(props) {
@@ -19,6 +24,10 @@ class MultipleChoiceGame extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
+  /**
+ * As the player submits the answer, the points will be calculated, gameplay stats will be stored and player message will be generated.
+ * @param {*} event 
+ */
   handleSubmit(event) {
     event.preventDefault()
     this.setState({ value: event.target.value })
@@ -44,6 +53,9 @@ class MultipleChoiceGame extends React.Component {
     }, 3000)
   }
 
+  /**
+* This method returns 100 if the answer is correct and 0 if the answer is incorrect.
+*/
   checkCorrectness(answer) {
     if (this.props.game.currentImage.bone.nameLatin.toLowerCase() === answer.toLowerCase()) {
       return 100
@@ -80,6 +92,10 @@ class MultipleChoiceGame extends React.Component {
     }
   }
 
+    /**
+   * This method generates the buttons to be displayed. If the answer is correct, the selected button is green. 
+   * If wrongly answered, the selected button is red and the correct answer is green.
+  */
   answerButtons() {
     let choices = [
       {
@@ -93,7 +109,8 @@ class MultipleChoiceGame extends React.Component {
     })
 
     choices = wrongs.concat(choices)
-    choices.sort(function (a, b) { return a - b })
+
+    // NOTE: The correct answer is all the time at the right corner. We have to sort answer option on some way.
 
     if (this.state.value === '' || this.state.value === undefined) {
       return (

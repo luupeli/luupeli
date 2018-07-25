@@ -92,7 +92,6 @@ class ImageMultipleChoiceGame extends React.Component {
     })
 
     choices = wrongs.concat(choices)
-    choices = choices.sort(function(a, b){return a.bone.nameLatin - b.bone.nameLatin})
 
     if (this.state.value === '' || this.state.value === undefined) {
       return (
