@@ -18,6 +18,8 @@ class Login extends React.Component {
     window.onunload = function () { window.location.href = '/' };
   }
 
+  // If loggedLohjanLuunkeraajaUser has a value, the user is logged in.
+  // Put this info in the state.
   componentDidMount() {
     const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
     if (loggedUserJSON) {
@@ -26,6 +28,9 @@ class Login extends React.Component {
     }
   }
 
+  // Try to log in with the username and password given by the user using loginService.
+  // If this is successful, set the user as the value of loggedLohjanLuunkeraajaUser
+  // and get rid of state's username and password, which were the user's inputs.
   login = async (event) => {
     event.preventDefault()
     try {
@@ -40,6 +45,7 @@ class Login extends React.Component {
         password: '',
         user
       })
+      // If we get here, the attempt to log in was unsuccessful.
     } catch (error) {
       console.log(error)
       this.setState({ error: 'käyttäjätunnus tai salasana on virheellinen' })
@@ -47,6 +53,8 @@ class Login extends React.Component {
     }
   }
 
+  // Remove loggedLohjanLuunkeraajaUser so it no longer has a value, also
+  // set user to null, and then they're officially logged out.
   logOut = async (event) => {
     event.preventDefault()
     try {
@@ -57,10 +65,15 @@ class Login extends React.Component {
     }
   }
 
+  // Put the info given by the user in the state.
   handleLoginFieldChange = (event) => {
     this.setState({ [event.target.name]: event.target.value })
   }
 
+  // If user is null, they aren't logged in, so they can do that. Show fields for
+  // username and password in this case.
+  // If user is not null, they're logged in, so we tell them they're already logged in. Show
+  // a button for logging out.
   ifLoggedInForms() {
     if (this.state.user === null) {
       return (
