@@ -102,7 +102,7 @@ class Register extends React.Component {
 								className={this.state.allStyles[i].flairLayerD}>
 							</div>
 							<div className="container">
-								<div class="transbox">
+								<div className="transbox">
 									<div className="align-center">
 										<p>
 											Käyttäjätunnuksen minimipituus on 3 merkkiä ja salasanan 8 merkkiä.

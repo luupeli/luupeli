@@ -331,6 +331,38 @@ div.blinder {
         0 0 240px 120px transparent;
 }
 
+div.dual-layout {
+  background-color: transparent;
+  z-index:0;
+  /* position: absolute; */
+}
+
+div.row {
+  z-index:1;
+  
+}
+
+.answer-input {
+  background-color: transparent;
+}
+
+div.scoreflash {
+  position: absolute;
+  width: 22vw;
+  height: 16vh;
+  z-index: 1000;
+  margin-left: 42vw; 
+  margin-top: 25vh;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow:
+      0 0 60px 30px #fff, 
+      0 0 100px 60px  rgba(236, 0, 199, 0.75), 
+      0 0 160px 90px rgba(173, 78, 165, 0.33) ,
+      0 0 240px 120px transparent;
+}
+
+
 div.transbox {
     margin:calc(1.1vw + 1.1vh + 0.55vmin);
     opacity: 0.9;

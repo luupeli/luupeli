@@ -14,13 +14,14 @@ class ScoreFlash extends React.Component {
 	 */
 	render() {
 		// const style = 'alert alert-' + `${this.props.scoreflash.style}`
-		const style = 'blinder'   // <--- PLACEHOLDER CSS EFFECT!!! {this.props.scoreflash.score}
+		const style = 'scoreflash'   // <--- PLACEHOLDER CSS EFFECT!!! {this.props.scoreflash.score}
 
 		const scoreActual = this.props.scoreflash.score 
 		const durationOfScoreRise = Math.min(150,(scoreActual/50) + 25)
 
 		let scoreShown =Math.min(scoreActual, Math.round(scoreActual*( this.props.game.gameClock /durationOfScoreRise)))
 
+		//	position="fixed"
 		
 		let rowtext = this.props.scoreflash.streak+'' +this.props.scoreflash.streakemoji+''+scoreShown//+ ''+this.props.scoreflash.streakemoji
 		
@@ -32,12 +33,12 @@ class ScoreFlash extends React.Component {
 			return (
 				<Animated animationIn="bounceInLeft faster" animationOut="bounceOutRight faster" isVisible={this.props.scoreflash.visibility}>
 					<div
-						class={style}
+						className={style}
 						role="alert"
 						text-align="center"
 						vertical-align="middle"
 						line-height="90px"
-						position="fixed"
+					
 					>
 		 <h2>
 			{rowtext}

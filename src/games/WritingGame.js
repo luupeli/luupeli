@@ -150,11 +150,11 @@ class WritingGame extends React.Component {
     
 
     return (
-      <div class="bottom">
-        <div class="row" id="image-holder">
-          <div class="intro">
+      <div className="bottom">
+        <div className="row" id="image-holder">
+          <div className="intro">
             <CloudinaryContext cloudName="luupeli">
-              <div class="height-restricted">
+              <div className="height-restricted">
                 <Image publicId={this.props.game.currentImage.url}>
                   <Transformation width={imageWidth()} crop="fill" radius="20" />
                 </Image>
@@ -162,13 +162,13 @@ class WritingGame extends React.Component {
             </CloudinaryContext>
           </div>
         </div>
-        <div class="row">
+        <div className="row">
           <div><center>
             <h3 id="heading">{this.props.game.currentImage.bone.name}</h3></center>
           </div>
         </div>
-        <div class="container">
-          <div class="col-md-6 col-md-offset-3" id="info">
+        <div className="container">
+          <div className="col-md-6 col-md-offset-3" id="info">
             <h6>Vastausaikaa kulunut {Math.round(this.state.seconds / 100, 1)}</h6>
             <h5>Vastausaikaa kulunut {Math.round(this.props.game.gameClock / 100, 1)}</h5>
             <p>{this.props.game.currentImage.bone.description}</p>
@@ -176,16 +176,16 @@ class WritingGame extends React.Component {
             <p>(Oikea vastaus: {this.props.game.currentImage.bone.nameLatin})</p>
           </div>
         </div>
-        <div class="answer-input">
-          <div class="container">
-            <div class="intro" />
+        <div className="answer-input">
+          <div className="container">
+            <div className="intro" />
             <form
               className="input"
               class="form-inline"
               id='gameForm'
               onSubmit={this.handleSubmit}
             >
-              <div class="form-groupbd">
+              <div className="form-groupbd">
                 <input
                   class="form-control"
                   id="gameTextInput"

@@ -8,7 +8,7 @@ import ImageMultipleChoiceGame from './ImageMultipleChoiceGame'
 import { connect } from 'react-redux'
 import { gameInitialization, setAnswer, advanceGameClock } from '../reducers/gameReducer'
 import { ProgressBar } from 'react-bootstrap'
-
+import { injectGlobal } from 'styled-components'
 
 /**
  * Gameloop is the parent component for 'hosting' different game modes of Luupeli.
@@ -32,6 +32,8 @@ class GameLoop extends React.Component {
             currentScoreFlashTime: 0,
             currentScoreFlashCutOff: 0,
             currentScoreFlashVisibility: false,
+            allStyles: JSON.parse(localStorage.getItem("allStyles")),
+			styleIndex: localStorage.getItem('styleIndex'),
         };
     }
 
@@ -94,9 +96,9 @@ class GameLoop extends React.Component {
         return (
             <div>
                 <div>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-6 col-md-offset-3">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-6 col-md-offset-3">
                                 <ProgressBar label={`moi`}>
                                     {progressBar}
                                 </ProgressBar>
@@ -146,6 +148,16 @@ class GameLoop extends React.Component {
      *    If all images have been cycled through, redirect to endscreen, otherwise render quiz page 
      */
     render() {
+        let i = parseInt(localStorage.getItem('styleIndex'), 10)
+		// Here we inject the visual style specific colors into the css. Each visual style has a primary, secondary and tertiary color (accent).
+		injectGlobal`
+		:root {  
+		  --primary: ${this.state.allStyles[i].primary}
+		  --secondary: ${this.state.allStyles[i].secondary}
+		  --tertiary: ${this.state.allStyles[i].tertiary}
+		  }
+        }`
+        
         if (this.props.game.endCounter === 0) {
             setTimeout(function () {
                 this.setState({ redirectToEndPage: true })
@@ -160,22 +172,47 @@ class GameLoop extends React.Component {
         }
 
         return (
-            <div className="App">
-                {this.topPage()}
-                <div class="dual-layout">
-
-                    <div class="container">
-                        <div>
-                            <ScoreFlash ref={instance => this.wgmessage = instance} />
+          
+            
+            <div className={this.state.allStyles[i].overlay}>
+            <div className={this.state.allStyles[i].background}>
+                <div className={this.state.allStyles[i].style}>
+                    <div id="App" className="App">
+                        <div
+                            className={this.state.allStyles[i].flairLayerA}>
                         </div>
+                        <div
+                            className={this.state.allStyles[i].flairLayerB}>
+                        </div>
+                        <div
+                            className={this.state.allStyles[i].flairLayerC}>
+                        </div>
+                        <div
+                            className={this.state.allStyles[i].flairLayerD}>
+                        </div>
+                        <div className="transbox">
+                {this.topPage()}
+                
+                <div className="dual-layout">
+                
+                    {/* <div className="container"> */}
+                    <div>
+                            <ScoreFlash ref={instance => this.wgmessage = instance} />
+                        </div>    
                         <div>
                             <Message />
                         </div>
                         {this.gameLoop()}
-
-                    </div>
+                        
+                    {/* </div> */}
+                    
+                </div>
                 </div>
             </div>
+            </div>
+            </div>
+            </div>
+            
         );
     }
 

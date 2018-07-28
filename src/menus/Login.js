@@ -143,7 +143,7 @@ class Login extends React.Component {
                 className={this.state.allStyles[i].flairLayerD}>
               </div>
               <h2 className="toprow">Luukirjaudu sisään</h2>
-              <div class="transbox">
+              <div className="transbox">
                 {this.ifLoggedInForms()}
               </div>
               <div className="btn-group">

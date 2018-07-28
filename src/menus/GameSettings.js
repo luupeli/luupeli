@@ -211,7 +211,12 @@ class GameSettings extends React.Component {
 			this.props.gameInitialization(this.state.gameLength, this.state.images, this.state.user, this.props.location.state.gamemode)
 			return (
 				<Redirect to={{
-					pathname: '/game'
+					pathname: '/game',
+					state: {
+						allStyles: this.state.allStyles,
+						styleIndex: this.state.styleIndex,
+						gamemode: this.state.gamemode
+					  }
 				}} />
 			)
 		}

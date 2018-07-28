@@ -69,15 +69,16 @@ class MultipleChoiceGame extends React.Component {
 
 
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
+
     this.props.setScoreFlash(points, streakNote,streakEmoji,scoreFlashRowtext, 'success',3,true)
 
-    setTimeout(() => {
+     setTimeout(() => {
       this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(this.state.value), this.state.value, this.state.seconds - 3, points)
       this.setState({ value: '' })
       this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
       this.props.setWrongImageOptions(this.props.game.currentImage, this.props.game.images)
       this.props.setWrongAnswerOptions(this.props.game.currentImage, this.props.game.images)
-    }, 3000)
+     }, 3000)
   }
 
   /**
@@ -187,11 +188,11 @@ class MultipleChoiceGame extends React.Component {
     }
 
     return (
-      <div class="bottom">
-        <div class="row" id="image-holder">
-          <div class="intro">
+      <div className="bottom">
+        <div className="row" id="image-holder">
+          <div className="intro">
             <CloudinaryContext cloudName="luupeli">
-              <div class="height-restricted">
+              <div className="height-restricted">
                 <Image publicId={this.props.game.currentImage.url}>
                   <Transformation width={imageWidth()} crop="fill" radius="20" />
                 </Image>
@@ -199,17 +200,17 @@ class MultipleChoiceGame extends React.Component {
             </CloudinaryContext>
           </div>
         </div>
-        <div class="row">
+        <div className="row">
         </div>
-        <div class="container">
-          <div class="col-md-6 col-md-offset-3" id="info">
+        <div className="container">
+          <div className="col-md-6 col-md-offset-3" id="info">
             <h6>Vastausaikaa kulunut {Math.round(this.state.seconds / 10, 1)}</h6>
             <p>{this.props.game.currentImage.bone.description}</p>
           </div>
         </div>
-        <div class="answer-input">
-          <div class="container">
-            <div class="intro" />
+        <div className="answer-input">
+          <div className="container">
+            <div className="intro" />
             {this.answerButtons()}
           </div>
         </div>
