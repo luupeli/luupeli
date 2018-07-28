@@ -63,9 +63,19 @@ class UserListing extends React.Component {
 					<Col>
 						{this.state.allUsers.map(aUser => {
 							if (aUser.role.toUpperCase() === 'ADMIN') {
-								return <p>&#9733; {aUser.username} (sähköposti: {aUser.email})</p>
+								return <Link key={aUser.id} to={{
+									pathname: '/users/' + aUser.id,
+									state: {
+										id: aUser.id
+									}
+								}}>&#9733; {aUser.username} (sähköposti: {aUser.email})<p></p></Link>
 							} else {
-								return <p>{aUser.username} (sähköposti: {aUser.email})</p>
+								return <Link key={aUser.id} to={{
+									pathname: '/users/' + aUser.id,
+									state: {
+										id: aUser.id,
+									}
+								}}>{aUser.username} (sähköposti: {aUser.email})<p></p></Link>
 							}
 						}
 						)}
