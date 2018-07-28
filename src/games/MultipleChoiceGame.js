@@ -6,6 +6,7 @@ import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
 import { Button } from 'react-bootstrap'
 import { Row, Col } from 'react-bootstrap'
+import emoji from 'node-emoji'
 
 /**
  * MultipleChoiceGame (run under Gameloop.js) is one of game mode of Luupeli.
@@ -19,7 +20,9 @@ class MultipleChoiceGame extends React.Component {
     this.timer = 0;
     this.state = {
       value: '',
-      seconds: 0
+      seconds: 0,
+      currentStreak: 0,
+      currentBonus: 0
     }
     this.handleSubmit = this.handleSubmit.bind(this)
   }
@@ -33,7 +36,8 @@ class MultipleChoiceGame extends React.Component {
     this.setState({ value: event.target.value })
     this.createMessage(event.target.value)
 
-    let points = (Math.round((this.checkCorrectness(event.target.value) * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((300 + Math.max(0, (300 - this.state.seconds))) / 600))) / 20
+    //let points = (Math.round((this.checkCorrectness(event.target.value) * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((300 + Math.max(0, (300 - this.state.seconds))) / 600))) / 20
+    let points = Math.round((1000+((1000 + Math.max(0, (1000 - this.props.game.gameClock))) / 2000))) / 20
 
     if (this.checkCorrectness(event.target.value) > 99) {
       points = points * 10
@@ -43,6 +47,29 @@ class MultipleChoiceGame extends React.Component {
     if (this.checkCorrectness(event.target.value) < 70) {
       points = 0
     }
+
+    const correctness = this.checkCorrectness(event.target.value)
+    let streakEmoji = require('node-emoji')
+    streakEmoji = emoji.get('yellow_heart')
+    let streakNote = ''
+    let currentStreak = this.state.streakMCG
+    let currentBonus = this.state.bonus
+    
+    points = 1000;
+    if (correctness === 100) {
+      this.setState({ streakMCG: currentStreak + 1, bonus: currentBonus + 0.5 })
+      streakNote = currentBonus + 'x!'
+    } else {
+      points = 0
+      streakEmoji = require('node-emoji')
+      streakEmoji = streakEmoji.get('poop')
+      streakNote = ''
+      this.setState({ streakMCG: 0, bonus: 1.0 })
+    }
+
+
+    let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
+    this.props.setScoreFlash(points, streakNote,streakEmoji,scoreFlashRowtext, 'success',3,true)
 
     setTimeout(() => {
       this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(this.state.value), this.state.value, this.state.seconds - 3, points)
@@ -87,9 +114,14 @@ class MultipleChoiceGame extends React.Component {
 
     if (correctness === 100) {
       this.props.setMessage('Oikein!', 'success', 3)
+
     } else {
+      
       this.props.setMessage('Väärin! Oikea vastaus oli ' + this.props.game.currentImage.bone.nameLatin, 'danger', 3)
+
     }
+
+
   }
 
     /**

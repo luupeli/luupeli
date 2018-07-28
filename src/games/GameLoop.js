@@ -45,22 +45,10 @@ class GameLoop extends React.Component {
    * This is done simply to make the time-based scoring feel more granular.
    */
   tick() {
-    
-    // this.setState(prevState => ({
-    //   seconds: prevState.seconds + 1,
-    //   scoreSeconds: prevState.scoreSeconds +1
-    // }));
-
+ 
     this.props.advanceGameClock()
-
-    if (this.state.scoreSeconds < 101 && this.state.currentScore>0) {
-    //   this.props.setScoreFlash(Math.round(this.state.currentScore*(this.state.scoreSeconds/100)),this.state.currentScoreFlash,this.state.currentScoreFlashStyle,this.state.currentScoreFlashTime)
-    }
-
-    else if (this.state.seconds === 200) {
-     //  this.props.setScoreFlash(this.state.currentScore,this.state.currentScoreFlash,'nan',1, false)
-    } 
   }
+
   /**
    * With the component mounting, the game time measuring tick() is set at 100 milliseconds.
    */
@@ -192,7 +180,7 @@ class GameLoop extends React.Component {
     }
 
 }
-
+//<ScoreFlash />ref={instance => this.wgmessage = instance} />
 
 
 const mapStateToProps = (state) => {

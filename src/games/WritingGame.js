@@ -66,7 +66,7 @@ class WritingGame extends React.Component {
       streakEmoji = streakEmoji.get('fire')
       console.log(streakEmoji)
     } else {
-      this.setState({ streak: 0, bonus: 1.0 })
+      this.setState({ streakWG: 0, bonus: 1.0 })
       streakNote = ''
       if (this.checkCorrectness() < 1) {
         streakEmoji = require('node-emoji')
