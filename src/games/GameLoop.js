@@ -6,7 +6,7 @@ import WritingGame from './WritingGame'
 import MultipleChoiceGame from './MultipleChoiceGame'
 import ImageMultipleChoiceGame from './ImageMultipleChoiceGame'
 import { connect } from 'react-redux'
-import { gameInitialization, setAnswer } from '../reducers/gameReducer'
+import { gameInitialization, setAnswer, advanceGameClock } from '../reducers/gameReducer'
 import { ProgressBar } from 'react-bootstrap'
 
 
@@ -21,9 +21,59 @@ class GameLoop extends React.Component {
         this.state = {
             redirectToEndPage: false,
             style: localStorage.getItem('style'),
-            user: null
+            user: null,
+            seconds: 0,
+            scoreSeconds: 0,
+            streak: 0,
+            bonus: 1.0,
+            currentScore: 0,
+            currentScoreFlash: '',
+            currentScoreFlashStyle: '',
+            currentScoreFlashTime: 0,
+            currentScoreFlashCutOff: 0,
+            currentScoreFlashVisibility: false,
         };
     }
+
+
+    /**
+   * Here we increase the game's internal clock by one unit each tick. 
+   * "seconds" refers to the time spent answering the current question, while
+   * "secondsTotal" refers to the total time spent answering all the questions so far.
+   * 
+   * The tick is currently set at 100 milliseconds meaning that 1 actual second is actually 10 tick-seconds.
+   * This is done simply to make the time-based scoring feel more granular.
+   */
+  tick() {
+    
+    // this.setState(prevState => ({
+    //   seconds: prevState.seconds + 1,
+    //   scoreSeconds: prevState.scoreSeconds +1
+    // }));
+
+    this.props.advanceGameClock()
+
+    if (this.state.scoreSeconds < 101 && this.state.currentScore>0) {
+    //   this.props.setScoreFlash(Math.round(this.state.currentScore*(this.state.scoreSeconds/100)),this.state.currentScoreFlash,this.state.currentScoreFlashStyle,this.state.currentScoreFlashTime)
+    }
+
+    else if (this.state.seconds === 200) {
+     //  this.props.setScoreFlash(this.state.currentScore,this.state.currentScoreFlash,'nan',1, false)
+    } 
+  }
+  /**
+   * With the component mounting, the game time measuring tick() is set at 100 milliseconds.
+   */
+  componentWillMount() {
+
+    this.interval = setInterval(() => this.tick(), 10);
+  }
+  /**
+   * At component unmount the interval needs to be cleared.
+   */
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
 
     componentDidMount() {
         const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
@@ -96,6 +146,12 @@ class GameLoop extends React.Component {
                 }
             }
         }
+
+        else if (this.props.game.gamemode == 'kirjoituspeli') {
+            return (
+                <WritingGame />
+            )
+        }
     }
 
     /**
@@ -105,7 +161,7 @@ class GameLoop extends React.Component {
         if (this.props.game.endCounter === 0) {
             setTimeout(function () {
                 this.setState({ redirectToEndPage: true })
-            }.bind(this), 3000)
+            }.bind(this), 3500)
             if (this.state.redirectToEndPage) {
                 return (
                     <Redirect to={{
@@ -149,7 +205,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
     gameInitialization,
-    setAnswer
+    setAnswer,
+    advanceGameClock
 }
 
 const ConnectedGameLoop = connect(

@@ -6,7 +6,7 @@ const initialState = {
 }
 
 const messageReducer = (store = initialState.message, action) => {
-    console.log(action.type)
+//    console.log(action.type)
     if (action.type === 'INIT_MESSAGE') {
         console.log(action)
         return { ...store, text: action.message, style: action.style }

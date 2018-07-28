@@ -18,10 +18,15 @@ class WritingGame extends React.Component {
     this.timer = 0;
     this.state = {
       value: '',
-      seconds: 0.0,
-      streak: 0,
-      bonus: 1.0
-
+      streakWG: 0,
+      bonus: 1.0,
+      currentScore: 0,
+      currentScoreFlash: '',
+      currentScoreFlashStyle: '',
+      currentScoreFlashTime: 0,
+      currentScoreFlashCutOff: 0,
+      currentScoreFlashVisibility: false,
+      
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -37,20 +42,22 @@ class WritingGame extends React.Component {
    */
   handleSubmit(event) {
     event.preventDefault()
-    let currentStreak = this.state.streak
+    let currentStreak = this.state.streakWG
     let currentBonus = this.state.bonus
     let streakNote = ''
     let streakEmoji = emoji.get('yellow_heart')
     let correctness = 'Melkein oikein'
-    let points = (Math.round((this.checkCorrectness() * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((300 + Math.max(0, (300 - this.state.seconds))) / 600))) / 20
+    let points = (Math.round((this.checkCorrectness() * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((3000 + Math.max(0, (3000 - this.props.game.gameClock))) / 6000))) / 20
+    
+    
 
-    if (this.state.seconds < 100) {
-      points = points * ((100 - this.state.seconds) / 10)
+    if (this.props.game.gameClock < 1000) {
+      points = points * ((1000 - this.props.game.gameClock) / 100)
     }
     if (this.checkCorrectness() > 99) {
       points = points * 5
       correctness = 'Oikein'
-      this.setState({ streak: currentStreak + 1, bonus: currentBonus + 0.5 })
+      this.setState({ streakWG: currentStreak + 1, bonus: currentBonus + 0.5 })
       streakNote = currentBonus + 'x!'
       if (currentBonus < 1.5) {
         streakNote = ''
@@ -74,44 +81,17 @@ class WritingGame extends React.Component {
       correctness = 'Väärin'
       points = 0
     }
-    this.props.setScoreFlash(points, '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji, 'success')
-
+    
+    let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
+    this.props.setScoreFlash(points, streakNote,streakEmoji,scoreFlashRowtext, 'success',3,true)
+    
     this.setState({ value: '' })
-    this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(), this.state.value, this.state.seconds, points)
+    this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(), this.state.value, this.props.game.gameClock, points)
     this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
     this.props.setWrongImageOptions(this.props.game.currentImage, this.props.game.images)
     this.props.setWrongAnswerOptions(this.props.game.currentImage, this.props.game.images)
     this.createMessage(points)  }
-  /**
-   * Here we increase the game's internal clock by one unit each tick. 
-   * "seconds" refers to the time spent answering the current question, while
-   * "secondsTotal" refers to the total time spent answering all the questions so far.
-   * 
-   * The tick is currently set at 100 milliseconds meaning that 1 actual second is actually 10 tick-seconds.
-   * This is done simply to make the time-based scoring feel more granular.
-   */
-  tick() {
-    this.setState(prevState => ({
-      seconds: prevState.seconds + 1,
-    }));
-
-    if (this.state.seconds === 20) {
-      this.props.setScoreFlash('nan', 'nan', 'nan', 1, false)
-    }
-  }
-  /**
-   * With the component mounting, the game time measuring tick() is set at 100 milliseconds.
-   */
-  componentWillMount() {
-
-    this.interval = setInterval(() => this.tick(), 100);
-  }
-  /**
-   * At component unmount the interval needs to be cleared.
-   */
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
+  
   /**
    * This method measures the "correctness" (or similarity) of the answer string compared to the actual latin name string.
    * The similarity is scaled from 0 to 100, with 100 being a 100 % correct answer.
@@ -148,6 +128,7 @@ class WritingGame extends React.Component {
    * Notice that the bone images are fethched from Cloudinary, with a resize transformation done based on the measured window size.
    */
   render() {
+    
     const imageWidth = () => {              // Here we try to measure the window size in order to resize the bone image accordingly
       const windowWidth = Math.max(
         document.body.scrollWidth,
@@ -165,6 +146,9 @@ class WritingGame extends React.Component {
     let correctAttempts = this.props.game.currentImage.correctAttempts
     let correctPercentile = Math.round(100 * (correctAttempts / attempts))
     if (isNaN(correctPercentile) || correctPercentile < 0) { correctPercentile = 0 }
+    
+    
+
     return (
       <div class="bottom">
         <div class="row" id="image-holder">
@@ -185,7 +169,8 @@ class WritingGame extends React.Component {
         </div>
         <div class="container">
           <div class="col-md-6 col-md-offset-3" id="info">
-            <h6>Vastausaikaa kulunut {Math.round(this.state.seconds / 10, 1)}</h6>
+            <h6>Vastausaikaa kulunut {Math.round(this.state.seconds / 100, 1)}</h6>
+            <h5>Vastausaikaa kulunut {Math.round(this.props.game.gameClock / 100, 1)}</h5>
             <p>{this.props.game.currentImage.bone.description}</p>
             <p>Tätä kuvaa on yritetty {attempts} kertaa, niistä {correctAttempts} oikein. Oikeita vastauksia: {correctPercentile} % kaikista yrityksistä.</p>
             <p>(Oikea vastaus: {this.props.game.currentImage.bone.nameLatin})</p>
@@ -217,6 +202,7 @@ class WritingGame extends React.Component {
         </div>
       </div>
     )
+  
   }
 }
 

@@ -53,7 +53,7 @@ class EndScreen extends React.Component {
         <div><h1>Pelin kulku:</h1>
           <ul>
             {this.props.game.answers.map((answer) =>
-              <li key={answer.image.nameLatin}>Kysyttiin: {answer.image.nameLatin}, vastasit ajassa {Math.round(answer.seconds / 10, 2)} s: {answer.answer} ... {answer.correctness}! {answer.score} pisteen arvoinen vastaus!</li>
+              <li key={answer.image.nameLatin}>Kysyttiin: {answer.image.nameLatin}, vastasit ajassa {Math.round(answer.seconds / 100, 2)} s: {answer.answer} ... {answer.correctness}! {answer.score} pisteen arvoinen vastaus!</li>
             )
             }
           </ul>
