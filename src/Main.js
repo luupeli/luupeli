@@ -7,6 +7,7 @@ import Home from './menus/Home'
 import GameSettings from './menus/GameSettings'
 import BoneListing from './menus/BoneListing'
 import UserListing from './menus/UserListing'
+import User from './menus/User'
 import AddBone from './menus/AddBone'
 import UpdateBone from './menus/UpdateBone'
 import Login from './menus/Login'
@@ -30,6 +31,7 @@ const Main = () => (
         <Route exact path='/endscreen' component={EndScreen} />
         <Route exact path='/listing' component={BoneListing} />
         <Route exact path='/users' component={UserListing} />
+        <Route exact path='/users/:userId' component={User} />
         <Route exact path='/add' component={AddBone} />
         <Route exact path='/update/:boneId' component={UpdateBone} />
         <Route exact path='/admin' component={Admin} />
