@@ -61,8 +61,11 @@ class UserListing extends React.Component {
 				</Link>
 				<Row>
 					<Col>
+						//For every user in allUsers, name and email will be shown
 						{this.state.allUsers.map(aUser => {
 							if (aUser.role.toUpperCase() === 'ADMIN') {
+							//We'll need the id on the user's page, so we are forwarding
+							//it like this, in the state (going to users/:id)
 								return <Link key={aUser.id} to={{
 									pathname: '/users/' + aUser.id,
 									state: {
@@ -70,6 +73,7 @@ class UserListing extends React.Component {
 									}
 								}}>&#9733; {aUser.username} (sähköposti: {aUser.email})<p></p></Link>
 							} else {
+								//Copypaste, kill me
 								return <Link key={aUser.id} to={{
 									pathname: '/users/' + aUser.id,
 									state: {
