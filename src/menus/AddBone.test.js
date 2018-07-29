@@ -73,7 +73,7 @@ describe('AddBone tests', () => {
 		expect(elementListAfterAdd.length).toBe(elementList.length + 1)
 	}, 20000)
 
-	test('Pressing "Poista kuvakenttä"-button removes one new image field', async () => {
+	/*test('Pressing "Poista kuvakenttä"-button removes one new image field', async () => {
 		await page.waitForSelector('#addNewImageFieldButton')
 		await page.click('#addNewImageFieldButton')
 
@@ -100,7 +100,7 @@ describe('AddBone tests', () => {
 
 		// There should be one less li-element after clicking button
 		expect(elementListAfterRemove.length).toBe(elementList.length - 1)
-	}, 20000)
+	}, 20000)*/
 
 	test('Pressing "Takaisin listaukseen"-button leads to listing', async () => {
 		await page.waitForSelector('#backToListing')
