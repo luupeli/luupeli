@@ -153,7 +153,7 @@ class WritingGame extends React.Component {
           <div className="intro">
             <CloudinaryContext cloudName="luupeli">
               <div className="height-restricted">
-                <Image publicId={this.props.game.currentImage.url}>
+                <Image id="bone-image" publicId={this.props.game.currentImage.url}>
                   <Transformation width={imageWidth()} crop="fill" radius="20" />
                 </Image>
               </div>
