@@ -65,17 +65,7 @@ describe('WritingGame tests', () => {
 		await page.click('#luupeliinButton')
 
 		//Play game
-		for (var i = 0; i < gameLength; i++) {
-			console.log("starting round no. " + (i + 1))
-			setTimeout(500)
-			await page.waitForSelector('#bone-image').then(async () => {
-				await page.waitForSelector('#gameTextInput')
-				await page.type('#gameTextInput', "testivastaus")
-				await page.waitForSelector('#submitButton')
-				await page.screenshot({ path: 'beforeSubmit.png', fullPage: true });
-				await page.click('#submitButton')
-			})
-		}
+		playRounds(gameLength)
 
 		//Look at endscreen results
 		console.log("looking at endscreen")
@@ -86,4 +76,16 @@ describe('WritingGame tests', () => {
 		expect(textContent.toLowerCase().includes("lopputulos")).toBe(true)
 	}, 20000)
 
+	async function playRounds(gameLength) {
+		for (var i = 0; i < gameLength; i++) {
+			console.log("starting round no. " + (i + 1))
+			await page.waitForSelector('#bone-image').then(async () => {
+				await page.waitForSelector('#gameTextInput')
+				await page.type('#gameTextInput', "testivastaus")
+				await page.waitForSelector('#submitButton')
+				await page.screenshot({ path: 'beforeSubmit.png', fullPage: true });
+				await page.click('#submitButton')
+			})
+		}
+	}
 })
