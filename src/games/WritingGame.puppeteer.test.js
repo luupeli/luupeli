@@ -6,7 +6,7 @@ let page
 beforeAll(async () => {
 	browser = await puppeteer.launch({ args: ['--no-sandbox'] })
 	page = await browser.newPage()
-	jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
+	jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000
 	await page.setViewport({ width: 1280, height: 800 })
 })
 
@@ -83,7 +83,7 @@ describe('WritingGame tests', () => {
 				await page.waitForSelector('#gameTextInput')
 				await page.type('#gameTextInput', "testivastaus")
 				await page.waitForSelector('#submitButton')
-				await page.screenshot({ path: 'beforeSubmit.png', fullPage: true });
+				await page.screenshot({ path: `beforeSubmit${i + 1}.png`, fullPage: true });
 				await page.click('#submitButton')
 			})
 		}
