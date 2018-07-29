@@ -49,8 +49,6 @@ class WritingGame extends React.Component {
     let correctness = 'Melkein oikein'
     let points = (Math.round((this.checkCorrectness() * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((3000 + Math.max(0, (3000 - this.props.game.gameClock))) / 6000))) / 20
     
-    
-
     if (this.props.game.gameClock < 1000) {
       points = points * ((1000 - this.props.game.gameClock) / 100)
     }

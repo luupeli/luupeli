@@ -33,7 +33,7 @@ class GameLoop extends React.Component {
             currentScoreFlashCutOff: 0,
             currentScoreFlashVisibility: false,
             allStyles: JSON.parse(localStorage.getItem("allStyles")),
-			styleIndex: localStorage.getItem('styleIndex'),
+            styleIndex: localStorage.getItem('styleIndex'),
         };
     }
 
@@ -46,24 +46,24 @@ class GameLoop extends React.Component {
    * The tick is currently set at 100 milliseconds meaning that 1 actual second is actually 10 tick-seconds.
    * This is done simply to make the time-based scoring feel more granular.
    */
-  tick() {
- 
-    this.props.advanceGameClock()
-  }
+    tick() {
 
-  /**
-   * With the component mounting, the game time measuring tick() is set at 100 milliseconds.
-   */
-  componentWillMount() {
+        this.props.advanceGameClock()
+    }
 
-    this.interval = setInterval(() => this.tick(), 10);
-  }
-  /**
-   * At component unmount the interval needs to be cleared.
-   */
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
+    /**
+     * With the component mounting, the game time measuring tick() is set at 100 milliseconds.
+     */
+    componentWillMount() {
+
+        this.interval = setInterval(() => this.tick(), 10);
+    }
+    /**
+     * At component unmount the interval needs to be cleared.
+     */
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
 
     componentDidMount() {
         const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
@@ -116,11 +116,11 @@ class GameLoop extends React.Component {
      */
     gameLoop() {
         if (this.props.game.endCounter > 0) {
-            if (this.props.game.gamemode == 'kirjoituspeli') {
+            if (this.props.game.gamemode === 'kirjoituspeli') {
                 return (
                     <WritingGame />
                 )
-            } else if (this.props.game.gamemode == 'monivalintapeli') {
+            } else if (this.props.game.gamemode === 'monivalintapeli') {
                 if (this.props.game.surpriseGameMode < 2) {
                     return <MultipleChoiceGame />
                 } else {
@@ -137,7 +137,7 @@ class GameLoop extends React.Component {
             }
         }
 
-        else if (this.props.game.gamemode == 'kirjoituspeli') {
+        else if (this.props.game.gamemode === 'kirjoituspeli') {
             return (
                 <WritingGame />
             )
@@ -149,8 +149,8 @@ class GameLoop extends React.Component {
      */
     render() {
         let i = parseInt(localStorage.getItem('styleIndex'), 10)
-		// Here we inject the visual style specific colors into the css. Each visual style has a primary, secondary and tertiary color (accent).
-		injectGlobal`
+        // Here we inject the visual style specific colors into the css. Each visual style has a primary, secondary and tertiary color (accent).
+        injectGlobal`
 		:root {  
             --highlight: ${this.state.allStyles[i].highlight}
 		  --primary: ${this.state.allStyles[i].primary}
@@ -158,7 +158,7 @@ class GameLoop extends React.Component {
 		  --tertiary: ${this.state.allStyles[i].tertiary}
 		  }
         }`
-        
+
         if (this.props.game.endCounter === 0) {
             setTimeout(function () {
                 this.setState({ redirectToEndPage: true })
@@ -173,47 +173,47 @@ class GameLoop extends React.Component {
         }
 
         return (
-          
-            
+
+
             <div className={this.state.allStyles[i].overlay}>
-            <div className={this.state.allStyles[i].background}>
-                <div className={this.state.allStyles[i].style}>
-                    <div id="App" className="App">
-                        <div
-                            className={this.state.allStyles[i].flairLayerA}>
+                <div className={this.state.allStyles[i].background}>
+                    <div className={this.state.allStyles[i].style}>
+                        <div id="App" className="App">
+                            <div
+                                className={this.state.allStyles[i].flairLayerA}>
+                            </div>
+                            <div
+                                className={this.state.allStyles[i].flairLayerB}>
+                            </div>
+                            <div
+                                className={this.state.allStyles[i].flairLayerC}>
+                            </div>
+                            <div
+                                className={this.state.allStyles[i].flairLayerD}>
+                            </div>
+                            <div className="transbox">
+                                {this.topPage()}
+
+                                <div className="ffdual-layout">
+
+                                    {/* <div className="container"> */}
+                                    <div>
+                                        <ScoreFlash ref={instance => this.wgmessage = instance} />
+                                    </div>
+                                    <div>
+                                        <Message />
+                                    </div>
+                                    {this.gameLoop()}
+
+                                    {/* </div> */}
+
+                                </div>
+                            </div>
                         </div>
-                        <div
-                            className={this.state.allStyles[i].flairLayerB}>
-                        </div>
-                        <div
-                            className={this.state.allStyles[i].flairLayerC}>
-                        </div>
-                        <div
-                            className={this.state.allStyles[i].flairLayerD}>
-                        </div>
-                        <div className="transbox">
-                {this.topPage()}
-                
-                <div className="ffdual-layout">
-                
-                    {/* <div className="container"> */}
-                    <div>
-                            <ScoreFlash ref={instance => this.wgmessage = instance} />
-                        </div>    
-                        <div>
-                            <Message />
-                        </div>
-                        {this.gameLoop()}
-                        
-                    {/* </div> */}
-                    
+                    </div>
                 </div>
-                </div>
             </div>
-            </div>
-            </div>
-            </div>
-            
+
         );
     }
 

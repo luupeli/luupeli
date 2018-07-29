@@ -4,7 +4,6 @@ import { setAnswer, setImageToAsk, setWrongImageOptions, setWrongAnswerOptions }
 import { setMessage } from '../reducers/messageReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
-import { Button } from 'react-bootstrap'
 import { Row, Col } from 'react-bootstrap'
 import emoji from 'node-emoji'
 
@@ -41,7 +40,7 @@ class ImageMultipleChoiceGame extends React.Component {
     let streakNote = ''
     let currentStreak = this.state.streakMCG
     let currentBonus = this.state.bonus
-    
+
     points = 1000;
     if (correctness === 100) {
       this.setState({ streakMCG: currentStreak + 1, bonus: currentBonus + 0.5 })
@@ -57,7 +56,7 @@ class ImageMultipleChoiceGame extends React.Component {
 
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
 
-    this.props.setScoreFlash(points, streakNote,streakEmoji,scoreFlashRowtext, 'success',3,true)
+    this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 3, true)
 
     setTimeout(() => {
       this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(this.state.value), this.state.value.bone.nameLatin, this.state.seconds - 3, points)
@@ -182,26 +181,26 @@ class ImageMultipleChoiceGame extends React.Component {
         } else if (this.state.value.id === choice.id) {
           return (
             <Col xs={12} md={6}>
-            <div className="height-restricted">
-              <CloudinaryContext cloudName="luupeli">
-                <Image publicId={choice.url} value={choice.bone.nameLatin}>
-                  <Transformation border="15px_solid_rgb:ae0f0f" background="#000000" height="235" width="335" crop="lpad" radius="20" />
-                </Image>
-              </CloudinaryContext>
-            </div>
-          </Col>
+              <div className="height-restricted">
+                <CloudinaryContext cloudName="luupeli">
+                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
+                    <Transformation border="15px_solid_rgb:ae0f0f" background="#000000" height="235" width="335" crop="lpad" radius="20" />
+                  </Image>
+                </CloudinaryContext>
+              </div>
+            </Col>
           )
         } else {
           return (
             <Col xs={12} md={6}>
-            <div className="height-restricted">
-              <CloudinaryContext cloudName="luupeli">
-                <Image publicId={choice.url} value={choice.bone.nameLatin}>
-                  <Transformation background="#000000" height="250" width="350" crop="lpad" radius="20" />
-                </Image>
-              </CloudinaryContext>
-            </div>
-          </Col>
+              <div className="height-restricted">
+                <CloudinaryContext cloudName="luupeli">
+                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
+                    <Transformation background="#000000" height="250" width="350" crop="lpad" radius="20" />
+                  </Image>
+                </CloudinaryContext>
+              </div>
+            </Col>
           )
         }
       })
