@@ -53,7 +53,7 @@ describe('BoneListing tests', () => {
   test('animals appear', async () => {
     await page.waitForSelector("#animals")
     // Not having this screenshot will break the tests..
-    await page.screenshot({ path: 'animals.png' })
+    // await page.screenshot({ path: 'animals.png' })
     const textContent = await page.$eval('#listGroup', el => el.textContent)
     expect(textContent.toLowerCase().includes("koira")).toBe(true)
   }, 20000)
@@ -62,7 +62,7 @@ describe('BoneListing tests', () => {
   test('bodyparts appear', async () => {
     await page.waitForSelector("#bodyparts")
 
-    await page.screenshot({ path: 'bones.png' })
+    // await page.screenshot({ path: 'bones.png' })
     const textContent = await page.$eval('#listGroup', el => el.textContent)
     expect(textContent.toLowerCase().includes("eturaaja")).toBe(true)
   }, 20000)
