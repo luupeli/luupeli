@@ -23,6 +23,7 @@ class Home extends React.Component {
         flairLayerC: 'grid',
         flairLayerB: 'grid-flair',
         flairLayerA: 'blinder',
+        highlight: '#ff9de1',
         primary: '#ff5db1',
         secondary: '#ff2596',
         tertiary: '#ef007c',
@@ -34,6 +35,7 @@ class Home extends React.Component {
         flairLayerC: 'none',
         flairLayerB: 'none',
         flairLayerA: 'none',
+        highlight: '#55DD55',
         primary: '#33BB33',
         secondary: '#229922',
         tertiary: '#115511',
@@ -45,6 +47,7 @@ class Home extends React.Component {
         flairLayerC: 'none',
         flairLayerB: 'none',
         flairLayerA: 'none',
+        highlight: '#5599FF',
         primary: '#0033BB',
         secondary: '#002299',
         tertiary: '#000055',
@@ -56,6 +59,7 @@ class Home extends React.Component {
         flairLayerC: 'none',
         flairLayerB: 'none',
         flairLayerA: 'none',
+        highlight: 'DFDFFF',
         primary: '#BBBBFF',
         secondary: '9999DD',
         tertiary: '#555599',
@@ -68,6 +72,7 @@ class Home extends React.Component {
       flairLayerC: 'grid',
       flairLayerB: 'grid-flair',
       flairLayerA: 'blinder',
+      highlight: '#ff9de1',
       primary: '#ff5db1',
       secondary: '#ff2596',
       tertiary: '#ef007c',
@@ -141,7 +146,8 @@ class Home extends React.Component {
   setThemeColors(i) {
 
     injectGlobal`
-    :root {      
+    :root {   
+      --highlight: ${this.state.highlight}   
       --primary: ${this.state.primary}
       --secondary: ${this.state.secondary}
       --tertiary: ${this.state.tertiary}
@@ -157,6 +163,7 @@ class Home extends React.Component {
         flairLayerC: this.state.allStyles[localStorage.styleIndex].flairLayerC,
         flairLayerB: this.state.allStyles[localStorage.styleIndex].flairLayerB,
         flairLayerA: this.state.allStyles[localStorage.styleIndex].flairLayerA,
+        highlight: this.state.allStyles[localStorage.styleIndex].highlight,
         primary: this.state.allStyles[localStorage.styleIndex].primary,
         secondary: this.state.allStyles[localStorage.styleIndex].secondary,
         tertiary: this.state.allStyles[localStorage.styleIndex].tertiary,

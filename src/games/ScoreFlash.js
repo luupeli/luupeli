@@ -40,9 +40,9 @@ class ScoreFlash extends React.Component {
 						line-height="90px"
 					
 					>
-		 <h2>
+		 <h3>
 			{rowtext}
-		 </h2>
+		 </h3>
 					
 					</div>
 				</Animated>

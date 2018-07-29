@@ -169,7 +169,6 @@ class WritingGame extends React.Component {
         </div>
         <div className="container">
           <div className="col-md-6 col-md-offset-3" id="info">
-            <h6>Vastausaikaa kulunut {Math.round(this.state.seconds / 100, 1)}</h6>
             <h5>Vastausaikaa kulunut {Math.round(this.props.game.gameClock / 100, 1)}</h5>
             <p>{this.props.game.currentImage.bone.description}</p>
             <p>Tätä kuvaa on yritetty {attempts} kertaa, niistä {correctAttempts} oikein. Oikeita vastauksia: {correctPercentile} % kaikista yrityksistä.</p>
