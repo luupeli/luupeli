@@ -79,7 +79,7 @@ describe('WritingGame tests', () => {
 	async function playRounds(gameLength) {
 		for (var i = 0; i < gameLength; i++) {
 			console.log("starting round no. " + (i + 1))
-			// await page.waitForSelector('#bone-image').then(async () => {
+			await page.waitForSelector('#bone-image').then(async () => {
 				await page.waitForSelector('#gameTextInput')
 				await page.type('#gameTextInput', "testivastaus")
 				await page.waitForSelector('#submitButton')
