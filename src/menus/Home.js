@@ -16,18 +16,18 @@ class Home extends React.Component {
     super(props)
     this.state = {
       // These are CSS style settings which are hopefully in a different place in the future
-      allStyles: [{
-        style: 'blood-dragon',
-        background: 'background-blood-dragon',
-        flairLayerD: 'grid-sub',
-        flairLayerC: 'grid',
-        flairLayerB: 'grid-flair',
-        flairLayerA: 'blinder',
-        highlight: '#ff9de1',
-        primary: '#ff5db1',
-        secondary: '#ff2596',
-        tertiary: '#ef007c',
-        overlay: null,
+      allStyles: [{                             // KEY
+        style: 'blood-dragon',                  // Name of the visual theme
+        background: 'background-blood-dragon',  // reference to the css background styling
+        flairLayerD: 'grid-sub',                // on top of the background, a visual style can use up to 4 layers ouf 'flair'
+        flairLayerC: 'grid',                    // Layer D is the bottom most layer of flair, while layer A is the top most
+        flairLayerB: 'grid-flair',              //
+        flairLayerA: 'blinder',                 //
+        highlight: '#ff9de1',                   // Each theme specficies four color codes. Highlight is mostly for the fonts.
+        primary: '#ff5db1',                     // Primary is the second most brightest theme color
+        secondary: '#ff2596',                   // Secondary is the middle color of the theme
+        tertiary: '#ef007c',                    // Tertiary is the darkest color of the theme
+        overlay: null,                          // Overlay can be used to add an extra layer of vfx on top of the viewport. Optional!
       }, {
         style: 'fallout',
         background: 'background-fallout',
