@@ -1,5 +1,6 @@
 import React from 'react'
 import usersService from '../services/users'
+import { Link } from 'react-router-dom'
 import '../styles/App.css'
 
 class Register extends React.Component {
@@ -175,12 +176,9 @@ class Register extends React.Component {
 								</div>
 							</div>
 							<div className="btn-group">
-								<button
-									id="goBackButton"
-									className="gobackbutton"
-									onClick={this.proceedToMain}>
-									Takaisin
-								</button>
+								<Link to='/'>
+									<button className="gobackbutton">Etusivulle</button>
+								</Link>
 							</div>
 						</div>
 					</div>

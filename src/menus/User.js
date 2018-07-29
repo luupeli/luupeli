@@ -67,8 +67,15 @@ class User extends React.Component {
 				<Link to='/users'>
 					<button className="gobackbutton">Takaisin</button>
 				</Link>
+				<font size="4"><div>
 				<h2>Käyttäjä {this.state.viewedUserName}</h2>
-				<p>Sähköposti: {this.state.viewedUserEmail}</p>
+				<p>Sähköposti: {this.state.viewedUserEmail}</p><br></br>
+				<p>Peliä pelattu kaikkiaan: 3 min 36 s</p>
+				<p>Pelattuja pelejä: 23</p>
+				<p>Oikeita vastauksia: 52 joista suurin osa alueella eturaaja, koira</p>
+				<p>Vääriä vastauksia: 17 joista suurin osa alueella pää, hevonen</p>
+				</div>
+				</font>
 			</div >
 		)
 	}
