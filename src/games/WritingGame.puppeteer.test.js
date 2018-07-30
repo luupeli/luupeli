@@ -26,6 +26,7 @@ afterAll(async () => {
 describe('WritingGame tests', () => {
 
 	test('easy short playthrough', async () => {
+		jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000
 		//Navigate to Select Game Mode-screen
 		console.log("navigating from main page to game mode selection")
 		await page.waitForSelector('#proceedToSelectGameMode')
@@ -74,7 +75,7 @@ describe('WritingGame tests', () => {
 		const textContent = await page.$eval('#endScreenTitle', el => el.textContent)
 
 		expect(textContent.toLowerCase().includes("lopputulos")).toBe(true)
-	}, 20000)
+	}, 30000)
 
 	async function playRounds(gameLength) {
 		for (var i = 0; i < gameLength; i++) {
