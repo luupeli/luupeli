@@ -18,7 +18,7 @@ import { BrowserRouter } from 'react-router-dom'
 
 const Main = () => (
   <div>
-    <NavBar/>
+    {/* <NavBar/> */}
     <main>
     <BrowserRouter>
       <Switch>
