@@ -32,7 +32,9 @@ class GameSettings extends React.Component {
 			images: [],			   // used to store an array of images which meet the selection criteria
 			allStyles: JSON.parse(localStorage.getItem("allStyles")),
 			styleIndex: localStorage.getItem('styleIndex'),
-			user: null
+      user: null,
+      animals: [],
+      bodyParts: []
 		}
 
 		this.changeAnimal = this.changeAnimal.bind(this)
@@ -155,8 +157,8 @@ class GameSettings extends React.Component {
 	initializeGame() {
 		// Filtering selected animals and body parts
 		let chosenAnimals = this.state.allAnimals.filter(animal => animal.selected === true)
-		let chosenBodyParts = this.state.allBodyParts.filter(bodyPart => bodyPart.selected === true)
-
+    let chosenBodyParts = this.state.allBodyParts.filter(bodyPart => bodyPart.selected === true)
+    
 		console.log(this.state.allAnimals)
 		console.log(chosenAnimals)
 		console.log(chosenBodyParts)
@@ -181,14 +183,23 @@ class GameSettings extends React.Component {
 		pics = pics.filter(image => {
 			const bodyPartIds = chosenBodyParts.map(chosenBodyPart => chosenBodyPart.id)
 			return bodyPartIds.includes(image.bone.bodyPart)
-		})
+    })
 		console.log(pics)
 
 		// If criteria doesn't fulfill the game won't launch
 		if (pics.length === 0) {
 			this.props.setMessage('Peliä ei voitu luoda halutuilla asetuksilla', 'danger')
 		} else {
-			this.setState({ images: pics })
+      for(let animal of chosenAnimals) {
+        delete animal.emoji
+        delete animal.selected
+      }
+      for (let bodyPart of chosenBodyParts) {
+        delete bodyPart.selected
+      }
+      this.setState({ images: pics })
+      this.setState({ animals : chosenAnimals })
+      this.setState({ bodyParts: chosenBodyParts })
 			this.setState({ redirect: true })
 		}
 		console.log(pics)
@@ -208,7 +219,8 @@ class GameSettings extends React.Component {
 		}`
 
 		if (this.state.redirect) {
-			this.props.gameInitialization(this.state.gameLength, this.state.images, this.state.user, this.props.location.state.gamemode)
+      this.props.gameInitialization(this.state.gameLength, this.state.images, this.state.user, 
+        this.props.location.state.gamemode, this.state.animals, this.state.bodyParts)
 			return (
 				<Redirect to={{
 					pathname: '/game'

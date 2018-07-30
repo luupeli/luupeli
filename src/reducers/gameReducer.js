@@ -10,6 +10,7 @@ const initialState = {
         wrongImageOptions: [],
         images: [],
         answers: [],
+
         totalSeconds: ''
     }
 }
@@ -18,7 +19,11 @@ const gameReducer = (store = initialState.game, action) => {
     console.log(action.type)
     if (action.type === 'INIT_GAME') {
         console.log(action)
-        return { ...store, surpriseGameMode: action.surpriseGameMode, wrongImageOptions: action.wrongImageOptions, wrongAnswerOptions: action.wrongAnswerOptions, currentImage: action.currentImage, user: action.user, totalScore: action.totalScore, gameLength: action.gameLength, endCounter: action.endCounter, totalSeconds: action.totalSeconds, images: action.images, answers: action.answer, gamemode: action.gamemode }
+        return { ...store, surpriseGameMode: action.surpriseGameMode, wrongImageOptions: action.wrongImageOptions, 
+              wrongAnswerOptions: action.wrongAnswerOptions, currentImage: action.currentImage, user: action.user,
+               totalScore: action.totalScore, gameLength: action.gameLength, endCounter: action.endCounter, 
+               totalSeconds: action.totalSeconds, images: action.images, animals: action.animals, 
+               bodyparts: action.bodyparts, answers: action.answer, gamemode: action.gamemode }
     }
     if (action.type === 'SET_ANSWER') {
         console.log(action)
@@ -43,12 +48,14 @@ const gameReducer = (store = initialState.game, action) => {
     return store
 }
 
-export const gameInitialization = (gameLength, images, user, gamemode) => {
+export const gameInitialization = (gameLength, images, user, gamemode, animals, bodyparts) => {
     const imageToAsk = selectNextImage(undefined, images);
     const wrongAnswerOptions = selectWrongAnswerOptions(images, imageToAsk)
     const wrongImageOptions = selectWrongImageOptions(images, imageToAsk)
     console.log(images)
     console.log(gameLength)
+    console.log(animals)
+    console.log(bodyparts)
     return {
         type: 'INIT_GAME',
         gameLength: gameLength,
@@ -58,6 +65,8 @@ export const gameInitialization = (gameLength, images, user, gamemode) => {
         wrongImageOptions: wrongImageOptions,
         surpriseGameMode: Math.floor(Math.random() * 4),
         images: images,
+        animals: animals,
+        bodyparts: bodyparts,
         answers: [],
         gamemode: gamemode,
         user: user,
