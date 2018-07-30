@@ -56,6 +56,7 @@ describe('BoneListing tests', () => {
     // Not having this screenshot will break the tests..
     await page.screenshot({ path: 'animals.png' })
     const textContent = await page.$eval('#listGroup', el => el.textContent)
+    console.log(textContent)
     expect(textContent.toLowerCase().includes("koira")).toBe(true)
   }, 20000)
 
@@ -65,6 +66,7 @@ describe('BoneListing tests', () => {
 
     await page.screenshot({ path: 'bones.png' })
     const textContent = await page.$eval('#listGroup', el => el.textContent)
+    console.log(textContent)
     expect(textContent.toLowerCase().includes("eturaaja")).toBe(true)
   }, 20000)
 
