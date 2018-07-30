@@ -155,9 +155,6 @@ describe('BoneListing tests', () => {
   const textContent1 = await page.$eval('#bone0', el => el.textContent)
   const textContent2 = await page.$eval('#bone1', el => el.textContent)
   console.log(textContent1)
-  
-  //Prevent interception after this test is done?
-  await page.setRequestInterception(false)
 
   //Listing should contain the names given in the mocked request response
   expect(textContent1.includes("latin1")).toBe(true)
