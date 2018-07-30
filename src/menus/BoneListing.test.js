@@ -10,24 +10,24 @@ let page
 // An admin user must be logged-in in order to pass these tests,
 // and it is done in this beforeAll block
 beforeAll(async () => {
-	browser = await puppeteer.launch({ args: ['--no-sandbox'] })
-	jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000
-	page = await browser.newPage()
-	await page.setViewport({ width: 1280, height: 800 })
-	// Navigates to home
-	await page.goto('http://localhost:3000')
-	// Waits for a button to render
-	await page.waitForSelector('#homeMenuLoginButton')
-	// Navigates to login screen
-	await page.click('#homeMenuLoginButton')
-	// Waits for the forms to render and types in the credentials
-	await page.waitForSelector('.form-control').then(async () => {
-		await page.type('#username-form', username)
-		await page.type('#password-form', password)
-		await page.click('#login-button')
-	})
-	// Finally waits for the logout button to render which shows after a user is logged in
-	await page.waitForSelector('#logout-button')
+  browser = await puppeteer.launch({ args: ['--no-sandbox'] })
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000
+  page = await browser.newPage()
+  await page.setViewport({ width: 1280, height: 800 })
+  // Navigates to home
+  await page.goto('http://localhost:3000')
+  // Waits for a button to render
+  await page.waitForSelector('#homeMenuLoginButton')
+  // Navigates to login screen
+  await page.click('#homeMenuLoginButton')
+  // Waits for the forms to render and types in the credentials
+  await page.waitForSelector('.form-control').then(async () => {
+    await page.type('#username-form', username)
+    await page.type('#password-form', password)
+    await page.click('#login-button')
+  })
+  // Finally waits for the logout button to render which shows after a user is logged in
+  await page.waitForSelector('#logout-button')
 }, 30000)
 
 beforeEach(async () => {
@@ -53,7 +53,7 @@ describe('BoneListing tests', () => {
   test('animals appear', async () => {
     await page.waitForSelector("#animals")
     // Not having this screenshot will break the tests..
-    // await page.screenshot({ path: 'animals.png' })
+    await page.screenshot({ path: 'animals.png' })
     const textContent = await page.$eval('#listGroup', el => el.textContent)
     expect(textContent.toLowerCase().includes("koira")).toBe(true)
   }, 20000)
@@ -62,7 +62,7 @@ describe('BoneListing tests', () => {
   test('bodyparts appear', async () => {
     await page.waitForSelector("#bodyparts")
 
-    // await page.screenshot({ path: 'bones.png' })
+    await page.screenshot({ path: 'bones.png' })
     const textContent = await page.$eval('#listGroup', el => el.textContent)
     expect(textContent.toLowerCase().includes("eturaaja")).toBe(true)
   }, 20000)
