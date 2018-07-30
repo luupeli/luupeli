@@ -5,7 +5,6 @@ import { setMessage } from '../reducers/messageReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
 import { Button } from 'react-bootstrap'
-import { Row, Col } from 'react-bootstrap'
 import emoji from 'node-emoji'
 
 /**
@@ -37,7 +36,7 @@ class MultipleChoiceGame extends React.Component {
     this.createMessage(event.target.value)
 
     //let points = (Math.round((this.checkCorrectness(event.target.value) * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((300 + Math.max(0, (300 - this.state.seconds))) / 600))) / 20
-    let points = Math.round((1000+((1000 + Math.max(0, (1000 - this.props.game.gameClock))) / 2000))) / 20
+    let points = Math.round((1000 + ((1000 + Math.max(0, (1000 - this.props.game.gameClock))) / 2000))) / 20
 
     if (this.checkCorrectness(event.target.value) > 99) {
       points = points * 10
@@ -54,7 +53,7 @@ class MultipleChoiceGame extends React.Component {
     let streakNote = ''
     let currentStreak = this.state.streakMCG
     let currentBonus = this.state.bonus
-    
+
     points = 1000;
     if (correctness === 100) {
       this.setState({ streakMCG: currentStreak + 1, bonus: currentBonus + 0.5 })
@@ -70,15 +69,15 @@ class MultipleChoiceGame extends React.Component {
 
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
 
-    this.props.setScoreFlash(points, streakNote,streakEmoji,scoreFlashRowtext, 'success',3,true)
+    this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 3, true)
 
-     setTimeout(() => {
+    setTimeout(() => {
       this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(this.state.value), this.state.value, this.state.seconds - 3, points)
       this.setState({ value: '' })
       this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
       this.props.setWrongImageOptions(this.props.game.currentImage, this.props.game.images)
       this.props.setWrongAnswerOptions(this.props.game.currentImage, this.props.game.images)
-     }, 3000)
+    }, 3000)
   }
 
   /**
@@ -117,7 +116,7 @@ class MultipleChoiceGame extends React.Component {
       this.props.setMessage('Oikein!', 'success', 3)
 
     } else {
-      
+
       this.props.setMessage('Väärin! Oikea vastaus oli ' + this.props.game.currentImage.bone.nameLatin, 'danger', 3)
 
     }
@@ -125,10 +124,10 @@ class MultipleChoiceGame extends React.Component {
 
   }
 
-    /**
-   * This method generates the buttons to be displayed. If the answer is correct, the selected button is green. 
-   * If wrongly answered, the selected button is red and the correct answer is green.
-  */
+  /**
+ * This method generates the buttons to be displayed. If the answer is correct, the selected button is green. 
+ * If wrongly answered, the selected button is red and the correct answer is green.
+*/
   answerButtons() {
     let choices = [
       {

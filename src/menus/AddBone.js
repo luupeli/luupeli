@@ -25,6 +25,7 @@ class AddBone extends React.Component {
 			bodyParts: [],
 			user: null
 		};
+
 		this.handleChange = this.handleChange.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.handleNewImageChange = this.handleNewImageChange.bind(this)
@@ -37,6 +38,7 @@ class AddBone extends React.Component {
 		this.handleAddImage = this.handleAddImage.bind(this)
 		this.handleRemoveNewImage = this.handleRemoveNewImage.bind(this)
 		this.getBoneAnimals = this.getBoneAnimals.bind(this)
+
 		window.onunload = function () { window.location.href = '/' }
 	}
 
