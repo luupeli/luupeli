@@ -128,11 +128,11 @@ describe('BoneListing tests', () => {
 		
 		//Set a handler to handle intercepted requests
 		page.on('request', request => {
-		console.log("request intercepted")
-		console.log(request.url())
+		//console.log("request intercepted")
+		//console.log(request.url())
     if (request.url() === 'http://luupeli-backend.herokuapp.com/api/bones') {
 			//Intercept and respond to requests to the above url with mock data
-			console.log("responding....")
+			//console.log("responding....")
         request.respond({
 					content: 'application/json; charset=utf-8',
           headers: {"Access-Control-Allow-Origin": "*"},
