@@ -122,7 +122,7 @@ describe('BoneListing tests', () => {
     expect(boneName.includes(nameLatinField)).toBe(true)
   }, 20000)
   
-  /*test('Page renders fetched bones', async () => {
+  test('Page renders fetched bones', async () => {
 		//Allow request interception
 		await page.setRequestInterception(true)
 		
@@ -158,5 +158,5 @@ describe('BoneListing tests', () => {
   expect(textContent1.includes("latin1")).toBe(true)
   expect(textContent2.includes("latin2")).toBe(true)
 		
-	}, 20000)*/
+	}, 20000)
 })
