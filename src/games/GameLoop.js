@@ -181,7 +181,6 @@ class GameLoop extends React.Component {
 
 
             <div className={this.state.allStyles[i].overlay}>
-<<<<<<< HEAD
             <div className={this.state.allStyles[i].background}>
                 <div className={this.state.allStyles[i].style}>
               
@@ -215,44 +214,13 @@ class GameLoop extends React.Component {
                         </div>    
                         <div>
                             <Message />
-=======
-                <div className={this.state.allStyles[i].background}>
-                    <div className={this.state.allStyles[i].style}>
-                        <div id="App" className="App">
-                            <div
-                                className={this.state.allStyles[i].flairLayerA}>
-                            </div>
-                            <div
-                                className={this.state.allStyles[i].flairLayerB}>
-                            </div>
-                            <div
-                                className={this.state.allStyles[i].flairLayerC}>
-                            </div>
-                            <div
-                                className={this.state.allStyles[i].flairLayerD}>
-                            </div>
-                            <div className="transbox">
-                                {this.topPage()}
-
-                                <div className="ffdual-layout">
-
-                                    {/* <div className="container"> */}
-                                    <div>
-                                        <ScoreFlash ref={instance => this.wgmessage = instance} />
-                                    </div>
-                                    <div>
-                                        <Message />
-                                    </div>
-                                    {this.gameLoop()}
-
-                                    {/* </div> */}
-
-                                </div>
-                            </div>
->>>>>>> 8f489e68f083e700a3c37cf543fa3623a0a5d63d
                         </div>
+                        {this.gameLoop()}
                     </div>
                 </div>
+            </div>
+            </div>
+            </div>
             </div>
 
         );
