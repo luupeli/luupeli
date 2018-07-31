@@ -10,14 +10,9 @@ const initialState = {
         wrongImageOptions: [],
         images: [],
         answers: [],
-<<<<<<< HEAD
-
-        totalSeconds: ''
-=======
         totalSeconds: '',
         gameClock:0,
         
->>>>>>> 8f489e68f083e700a3c37cf543fa3623a0a5d63d
     }
 }
 

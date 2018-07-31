@@ -8,15 +8,10 @@ import ImageMultipleChoiceGame from './ImageMultipleChoiceGame'
 import { connect } from 'react-redux'
 import { gameInitialization, setAnswer, advanceGameClock } from '../reducers/gameReducer'
 import { ProgressBar } from 'react-bootstrap'
-<<<<<<< HEAD
 import gameSessionService from '../services/gameSessions'
 import bodyPartService from '../services/bodyParts'
 import animalService from '../services/animals'
-
-=======
 import { injectGlobal } from 'styled-components'
->>>>>>> 8f489e68f083e700a3c37cf543fa3623a0a5d63d
-
 /**
  * Gameloop is the parent component for 'hosting' different game modes of Luupeli.
  * Currently, two different game modes are supported.
@@ -24,17 +19,6 @@ import { injectGlobal } from 'styled-components'
 class GameLoop extends React.Component {
 
     constructor(props) {
-<<<<<<< HEAD
-      super(props);
-      this.state = {
-        redirectToEndPage: false,
-        style: localStorage.getItem('style'),
-        user: null,
-        allAnimals: [],
-        allBodyParts: []
-      };
-      this.postGameSession = this.postGameSession.bind(this)
-=======
         super(props);
         this.state = {
             redirectToEndPage: false,
@@ -52,9 +36,12 @@ class GameLoop extends React.Component {
             currentScoreFlashVisibility: false,
             allStyles: JSON.parse(localStorage.getItem("allStyles")),
             styleIndex: localStorage.getItem('styleIndex'),
+            allAnimals: [],
+            allBodyParts: []
+          }
+          this.postGameSession = this.postGameSession.bind(this)
         };
->>>>>>> 8f489e68f083e700a3c37cf543fa3623a0a5d63d
-    }
+    
 
 
     /**
@@ -269,55 +256,46 @@ class GameLoop extends React.Component {
             }
         }
 
-        const scoreActual = this.props.scoreflash.score 
-		const durationOfScoreRise = Math.min(150,(scoreActual/50) + 25)
-
-        let scoreShown =  this.props.game.totalScore-scoreActual + Math.min(scoreActual, Math.round(scoreActual*( this.props.game.gameClock /durationOfScoreRise)))
-
         return (
 
 
             <div className={this.state.allStyles[i].overlay}>
-            <div className={this.state.allStyles[i].background}>
-                <div className={this.state.allStyles[i].style}>
-              
-                    <div id="App" className="App">
-                  
-                        <div
-                            className={this.state.allStyles[i].flairLayerA}>
+                <div className={this.state.allStyles[i].background}>
+                    <div className={this.state.allStyles[i].style}>
+                        <div id="App" className="App">
+                            <div
+                                className={this.state.allStyles[i].flairLayerA}>
+                            </div>
+                            <div
+                                className={this.state.allStyles[i].flairLayerB}>
+                            </div>
+                            <div
+                                className={this.state.allStyles[i].flairLayerC}>
+                            </div>
+                            <div
+                                className={this.state.allStyles[i].flairLayerD}>
+                            </div>
+                            <div className="transbox">
+                                {this.topPage()}
+
+                                <div className="ffdual-layout">
+
+                                    {/* <div className="container"> */}
+                                    <div>
+                                        <ScoreFlash ref={instance => this.wgmessage = instance} />
+                                    </div>
+                                    <div>
+                                        <Message />
+                                    </div>
+                                    {this.gameLoop()}
+
+                                    {/* </div> */}
+
+                                </div>
+                            </div>
                         </div>
-                        <div
-                            className={this.state.allStyles[i].flairLayerB}>
-                        </div>
-                        <div
-                            className={this.state.allStyles[i].flairLayerC}>
-                        </div>
-                        <div
-                            className={this.state.allStyles[i].flairLayerD}>
-                        </div>
-                        <div className="transbox">
-                        <div className="btn-group">
-                    <div classNAme="gobackbutton">
-                        <h3>SCORE {scoreShown}</h3>
-                        </div>
-                        </div>
-                {this.topPage()}
-                
-                <div className="ffdual-layout">
-                
-                    {/* <div className="container"> */}
-                    <div>
-                            <ScoreFlash ref={instance => this.wgmessage = instance} />
-                        </div>    
-                        <div>
-                            <Message />
-                        </div>
-                        {this.gameLoop()}
                     </div>
                 </div>
-            </div>
-            </div>
-            </div>
             </div>
 
         );
