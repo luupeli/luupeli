@@ -257,17 +257,49 @@ h2 {
     z-index: 11;
 }
 .fallout h1 {
-  color: #88FF88;
+  color: #88FF88 !important;
 }
 
 .fallout h2 {
-  color: #88FF88;
+  color: #88FF88 !important;
   font-family: 'Press start 2p', sans-serif;
 }
-.fallout h3 {
-  color: #88FF88;
+.fallout h3, .fallout h4, .fallout h5, .fallout h6 {
   font-family: 'Press start 2p', sans-serif;
 }
+
+h3 {
+  font-size:calc(1.25vw + 1.25vh + 1.0vmin);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color:  var(--highlight);
+  -webkit-text-stroke-width: 0.75px;
+  -webkit-text-stroke-color: var(--primary);
+}
+
+h4 {
+  font-size:calc(1.05vw + 1.05vh + 0.8vmin);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color:  var(--highlight);
+  -webkit-text-stroke-width: 0.5px;
+  -webkit-text-stroke-color: var(--primary);
+}
+
+
+h5 {
+  font-size:calc(0.85vw + 0.85vh + 0.7vmin);
+}
+  
+h6 {
+  font-size:calc(0.7vw + 0.7vh + 0.55vmin);
+}
+
+
+h3, h4, h5, h6 {
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--highlight) !important;
+}
+
 .fallout p {
   color: #88FF88;
   font-family: 'Press start 2p', sans-serif;
@@ -331,11 +363,45 @@ div.blinder {
         0 0 240px 120px transparent;
 }
 
+div.dual-layout {
+  background-color: transparent;
+  z-index:0;
+  /* position: absolute; */
+}
+
+
+
+div.row {
+  z-index:1;
+  
+}
+
+.answer-input {
+  background-color: transparent;
+}
+
+div.scoreflash {
+  position: absolute;
+  width: 22vw;
+  height: 16vh;
+  z-index: 1000;
+  margin-left: 42vw; 
+  margin-top: 25vh;
+  border-radius: 50%;
+  background-color: #aaa;
+  box-shadow:
+      0 0 60px 30px #fff, 
+      0 0 100px 60px  rgba(236, 0, 199, 0.75), 
+      0 0 160px 90px rgba(173, 78, 165, 0.33) ,
+      0 0 240px 120px transparent;
+}
+
+
 div.transbox {
     margin:calc(1.1vw + 1.1vh + 0.55vmin);
     opacity: 0.9;
     border-radius: 15px;
-    filter: alpha(opacity=60); 
+    filter: alpha(opacity=80); 
     max-height: 100%;
     overflow: hidden;
   
@@ -357,9 +423,9 @@ div.transbox {
 
 
 div.transbox p {
-    margin: 5%;
+    margin: 1%;
     font-weight: bold;
-    color: #000000;
+    color: var(--highlight) !important;
   }
 
 form {
@@ -377,20 +443,17 @@ form {
 }
 
 .form-header {
-    color:  rgb(235, 137, 183);
+    color:  var(--highlight);
     font-size:calc(1.4vw + 1.4vh + 0.7vmin);
     margin-bottom:calc(1.1vw + 1.1vh + 0.5vmin);
     
 }
 
 .deep-blue .form-header {
-  color:  rgb(0,0, 183);
+  color:  var(--highlight);
 
 }
-.deep-blue .form-header {
-  color:  rgb(137, 137, 255);
 
-}
 
 
 .settingspage {

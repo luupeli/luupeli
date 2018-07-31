@@ -7,7 +7,7 @@ class Message extends React.Component {
 		const style = `alert alert-${this.props.message.style}`
 		if (this.props.message !== undefined && this.props.message.text.length !== 0) {
 			return (
-				<div class={style} role="alert">
+				<div className={style} role="alert">
 					<p>
 						{this.props.message.text}
 					</p>

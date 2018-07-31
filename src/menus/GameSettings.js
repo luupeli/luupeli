@@ -212,6 +212,7 @@ class GameSettings extends React.Component {
 		// Here we inject the visual style specific colors into the css. Each visual style has a primary, secondary and tertiary color (accent).
 		injectGlobal`
 		:root {  
+	     --highlight: ${this.state.allStyles[i].highlight}
 		  --primary: ${this.state.allStyles[i].primary}
 		  --secondary: ${this.state.allStyles[i].secondary}
 		  --tertiary: ${this.state.allStyles[i].tertiary}
@@ -223,7 +224,12 @@ class GameSettings extends React.Component {
         this.props.location.state.gamemode, this.state.animals, this.state.bodyParts)
 			return (
 				<Redirect to={{
-					pathname: '/game'
+					pathname: '/game',
+					state: {
+						allStyles: this.state.allStyles,
+						styleIndex: this.state.styleIndex,
+						gamemode: this.state.gamemode
+					  }
 				}} />
 			)
 		}

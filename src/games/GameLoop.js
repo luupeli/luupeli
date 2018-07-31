@@ -6,12 +6,16 @@ import WritingGame from './WritingGame'
 import MultipleChoiceGame from './MultipleChoiceGame'
 import ImageMultipleChoiceGame from './ImageMultipleChoiceGame'
 import { connect } from 'react-redux'
-import { gameInitialization, setAnswer } from '../reducers/gameReducer'
+import { gameInitialization, setAnswer, advanceGameClock } from '../reducers/gameReducer'
 import { ProgressBar } from 'react-bootstrap'
+<<<<<<< HEAD
 import gameSessionService from '../services/gameSessions'
 import bodyPartService from '../services/bodyParts'
 import animalService from '../services/animals'
 
+=======
+import { injectGlobal } from 'styled-components'
+>>>>>>> 8f489e68f083e700a3c37cf543fa3623a0a5d63d
 
 /**
  * Gameloop is the parent component for 'hosting' different game modes of Luupeli.
@@ -20,6 +24,7 @@ import animalService from '../services/animals'
 class GameLoop extends React.Component {
 
     constructor(props) {
+<<<<<<< HEAD
       super(props);
       this.state = {
         redirectToEndPage: false,
@@ -29,6 +34,54 @@ class GameLoop extends React.Component {
         allBodyParts: []
       };
       this.postGameSession = this.postGameSession.bind(this)
+=======
+        super(props);
+        this.state = {
+            redirectToEndPage: false,
+            style: localStorage.getItem('style'),
+            user: null,
+            seconds: 0,
+            scoreSeconds: 0,
+            streak: 0,
+            bonus: 1.0,
+            currentScore: 0,
+            currentScoreFlash: '',
+            currentScoreFlashStyle: '',
+            currentScoreFlashTime: 0,
+            currentScoreFlashCutOff: 0,
+            currentScoreFlashVisibility: false,
+            allStyles: JSON.parse(localStorage.getItem("allStyles")),
+            styleIndex: localStorage.getItem('styleIndex'),
+        };
+>>>>>>> 8f489e68f083e700a3c37cf543fa3623a0a5d63d
+    }
+
+
+    /**
+   * Here we increase the game's internal clock by one unit each tick. 
+   * "seconds" refers to the time spent answering the current question, while
+   * "secondsTotal" refers to the total time spent answering all the questions so far.
+   * 
+   * The tick is currently set at 100 milliseconds meaning that 1 actual second is actually 10 tick-seconds.
+   * This is done simply to make the time-based scoring feel more granular.
+   */
+    tick() {
+
+        this.props.advanceGameClock()
+    }
+
+    /**
+     * With the component mounting, the game time measuring tick() is set at 100 milliseconds.
+     */
+    componentWillMount() {
+
+        this.interval = setInterval(() => this.tick(), 10);
+    }
+    /**
+     * At component unmount the interval needs to be cleared.
+     */
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     componentDidMount() {
@@ -137,9 +190,9 @@ class GameLoop extends React.Component {
         return (
             <div>
                 <div>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-6 col-md-offset-3">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-6 col-md-offset-3">
                                 <ProgressBar label={`moi`}>
                                     {progressBar}
                                 </ProgressBar>
@@ -157,11 +210,11 @@ class GameLoop extends React.Component {
      */
     gameLoop() {
         if (this.props.game.endCounter > 0) {
-            if (this.props.game.gamemode == 'kirjoituspeli') {
+            if (this.props.game.gamemode === 'kirjoituspeli') {
                 return (
                     <WritingGame />
                 )
-            } else if (this.props.game.gamemode == 'monivalintapeli') {
+            } else if (this.props.game.gamemode === 'monivalintapeli') {
                 if (this.props.game.surpriseGameMode < 2) {
                     return <MultipleChoiceGame />
                 } else {
@@ -177,16 +230,33 @@ class GameLoop extends React.Component {
                 }
             }
         }
+
+        else if (this.props.game.gamemode === 'kirjoituspeli') {
+            return (
+                <WritingGame />
+            )
+        }
     }
 
     /**
      *    If all images have been cycled through, redirect to endscreen, otherwise render quiz page 
      */
     render() {
+        let i = parseInt(localStorage.getItem('styleIndex'), 10)
+        // Here we inject the visual style specific colors into the css. Each visual style has a primary, secondary and tertiary color (accent).
+        injectGlobal`
+		:root {  
+            --highlight: ${this.state.allStyles[i].highlight}
+		  --primary: ${this.state.allStyles[i].primary}
+		  --secondary: ${this.state.allStyles[i].secondary}
+		  --tertiary: ${this.state.allStyles[i].tertiary}
+		  }
+        }`
+
         if (this.props.game.endCounter === 0) {
             setTimeout(function () {
                 this.setState({ redirectToEndPage: true })
-            }.bind(this), 3000)
+            }.bind(this), 3500)
             if (this.state.redirectToEndPage) {
               if (this.state.user !== null) {
                 this.postGameSession()
@@ -200,27 +270,52 @@ class GameLoop extends React.Component {
         }
 
         return (
-            <div className="App">
-                {this.topPage()}
-                <div class="dual-layout">
 
-                    <div class="container">
-                        <div>
-                            <ScoreFlash ref={instance => this.wgmessage = instance} />
-                        </div>
-                        <div>
-                            <Message />
-                        </div>
-                        {this.gameLoop()}
 
+            <div className={this.state.allStyles[i].overlay}>
+                <div className={this.state.allStyles[i].background}>
+                    <div className={this.state.allStyles[i].style}>
+                        <div id="App" className="App">
+                            <div
+                                className={this.state.allStyles[i].flairLayerA}>
+                            </div>
+                            <div
+                                className={this.state.allStyles[i].flairLayerB}>
+                            </div>
+                            <div
+                                className={this.state.allStyles[i].flairLayerC}>
+                            </div>
+                            <div
+                                className={this.state.allStyles[i].flairLayerD}>
+                            </div>
+                            <div className="transbox">
+                                {this.topPage()}
+
+                                <div className="ffdual-layout">
+
+                                    {/* <div className="container"> */}
+                                    <div>
+                                        <ScoreFlash ref={instance => this.wgmessage = instance} />
+                                    </div>
+                                    <div>
+                                        <Message />
+                                    </div>
+                                    {this.gameLoop()}
+
+                                    {/* </div> */}
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
         );
     }
 
 }
-
+//<ScoreFlash />ref={instance => this.wgmessage = instance} />
 
 
 const mapStateToProps = (state) => {
@@ -233,7 +328,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
     gameInitialization,
-    setAnswer
+    setAnswer,
+    advanceGameClock
 }
 
 const ConnectedGameLoop = connect(

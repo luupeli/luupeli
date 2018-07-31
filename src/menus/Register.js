@@ -1,5 +1,6 @@
 import React from 'react'
 import usersService from '../services/users'
+import { Link } from 'react-router-dom'
 import '../styles/App.css'
 
 class Register extends React.Component {
@@ -102,7 +103,7 @@ class Register extends React.Component {
 								className={this.state.allStyles[i].flairLayerD}>
 							</div>
 							<div className="container">
-								<div class="transbox">
+								<div className="transbox">
 									<div className="align-center">
 										<p>
 											Käyttäjätunnuksen minimipituus on 3 merkkiä ja salasanan 8 merkkiä.
@@ -175,12 +176,9 @@ class Register extends React.Component {
 								</div>
 							</div>
 							<div className="btn-group">
-								<button
-									id="goBackButton"
-									className="gobackbutton"
-									onClick={this.proceedToMain}>
-									Takaisin
-								</button>
+								<Link to='/'>
+									<button className="gobackbutton">Etusivulle</button>
+								</Link>
 							</div>
 						</div>
 					</div>

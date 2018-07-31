@@ -14,34 +14,60 @@ class ScoreFlash extends React.Component {
 	 */
 	render() {
 		// const style = 'alert alert-' + `${this.props.scoreflash.style}`
-		const style = 'blinder'   // <--- PLACEHOLDER CSS EFFECT!!!
-		if (this.props.scoreflash !== undefined && this.props.scoreflash.scoreflash.length !== 0) {
+		const style = 'scoreflash'   // <--- PLACEHOLDER CSS EFFECT!!! {this.props.scoreflash.score}
+
+		const scoreActual = this.props.scoreflash.score 
+		const durationOfScoreRise = Math.min(150,(scoreActual/50) + 25)
+
+		let scoreShown =Math.min(scoreActual, Math.round(scoreActual*( this.props.game.gameClock /durationOfScoreRise)))
+
+		//	position="fixed"
+		
+		let rowtext = this.props.scoreflash.streak+'' +this.props.scoreflash.streakemoji+''+scoreShown//+ ''+this.props.scoreflash.streakemoji
+		
+		if (scoreActual === 0) {
+			rowtext=this.props.scoreflash.streakemoji+'VÄÄRIN!'+this.props.scoreflash.streakemoji
+		}
+
+		if (this.props.scoreflash !== undefined && this.props.game.gameClock<300 && this.props.scoreflash.scoreflash.length !== 0) {
 			return (
-				<Animated animationIn="bounceInLeft" animationOut="bounceOutRight" isVisible={this.props.scoreflash.visibility}>
+				<Animated animationIn="bounceInLeft faster" animationOut="bounceOutRight faster" isVisible={this.props.scoreflash.visibility}>
 					<div
-						class={style}
+						className={style}
 						role="alert"
 						text-align="center"
 						vertical-align="middle"
 						line-height="90px"
-						position="fixed"
+					
 					>
-						<h2 data-animation-out="animate-out fadeOutUp">
-							{this.props.scoreflash.scoreflash}
-						</h2>
+		 <h3>
+			{rowtext}
+		 </h3>
+					
 					</div>
 				</Animated>
 			)
-		} else {
+		}
+		
+		
+		
+		
+		else 		
+		
+		{
 			return (
-				<br />
+				
+			<br/>
 			)
 		}
 	}
-}
 
+
+
+}
 const mapStateToProps = (state) => {
 	return {
+		game: state.game,
 		scoreflash: state.scoreflash
 	}
 }

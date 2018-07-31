@@ -19,6 +19,7 @@ describe('Home', () => {
         flairLayerC: 'grid',
         flairLayerB: 'grid-flair',
         flairLayerA: 'blinder',
+        highlight: '#ff5db1',
         primary: '#ff5db1',
         secondary: '#ff2596',
         tertiary: '#ef007c'
@@ -29,6 +30,7 @@ describe('Home', () => {
         flairLayerC: 'grid',
         flairLayerB: 'grid-flair',
         flairLayerA: 'blinder',
+        highlight: '#ff5db1',
         primary: '#ff5db1',
         secondary: '#ff2596',
         tertiary: '#ef007c'
@@ -41,6 +43,7 @@ describe('Home', () => {
       flairLayerC: 'grid',
       flairLayerB: 'grid-flair',
       flairLayerA: 'blinder',
+      highlight: '#ff5db1',
       primary: '#ff5db1',
       secondary: '#ff2596',
       tertiary: '#ef007c'

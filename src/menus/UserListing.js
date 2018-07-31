@@ -40,7 +40,7 @@ class UserListing extends React.Component {
 		}
 	}
 
-	// Here we return the names and email addresses of our users as a list.
+	// Here we return the names of our users as a list.
 	// If a user is an admin, we put a star next to their name.
 	render() {
 		// Redirects
@@ -54,18 +54,31 @@ class UserListing extends React.Component {
 		return (
 			<div className="menu-background App">
 				<h2>Käyttäjälista</h2>
-				<p>&#9733; = ylläpitäjä</p>
+				<font size ="4"><p>&#9733; = ylläpitäjä</p></font>
 				<br></br>
 				<Link to='/admin'>
 					<button className="gobackbutton">Takaisin</button>
 				</Link>
 				<Row>
 					<Col>
-						{this.state.allUsers.map(aUser => {
+						{this.state.allUsers.map(aUser => { //For every user in allUsers, name will be shown
 							if (aUser.role.toUpperCase() === 'ADMIN') {
-								return <p>&#9733; {aUser.username} (sähköposti: {aUser.email})</p>
+							//We'll need the id on the user's page, so we are forwarding
+							//it like this, in the state (going to users/:id)
+								return <Link key={aUser.id} to={{
+									pathname: '/users/' + aUser.id,
+									state: {
+										id: aUser.id
+									}
+								}}>&#9733; {aUser.username}<p></p></Link>
 							} else {
-								return <p>{aUser.username} (sähköposti: {aUser.email})</p>
+								//Copypaste, kill me
+								return <Link key={aUser.id} to={{
+									pathname: '/users/' + aUser.id,
+									state: {
+										id: aUser.id,
+									}
+								}}>{aUser.username}<p></p></Link>
 							}
 						}
 						)}

@@ -10,13 +10,19 @@ const initialState = {
         wrongImageOptions: [],
         images: [],
         answers: [],
+<<<<<<< HEAD
 
         totalSeconds: ''
+=======
+        totalSeconds: '',
+        gameClock:0,
+        
+>>>>>>> 8f489e68f083e700a3c37cf543fa3623a0a5d63d
     }
 }
 
 const gameReducer = (store = initialState.game, action) => {
-    console.log(action.type)
+   // console.log(action.type)
     if (action.type === 'INIT_GAME') {
         console.log(action)
         return { ...store, surpriseGameMode: action.surpriseGameMode, wrongImageOptions: action.wrongImageOptions, 
@@ -28,9 +34,9 @@ const gameReducer = (store = initialState.game, action) => {
     if (action.type === 'SET_ANSWER') {
         console.log(action)
         if (store.answers === undefined) {
-            return { ...store, surpriseGameMode: action.surpriseGameMode, answers: action.answer, endCounter: store.endCounter - 1, totalSeconds: action.totalSeconds, totalScore: action.totalScore }
+            return { ...store, surpriseGameMode: action.surpriseGameMode, answers: action.answer, endCounter: store.endCounter - 1, gameClock: 0,totalSeconds: action.totalSeconds, totalScore: action.totalScore }
         } else {
-            return { ...store, surpriseGameMode: action.surpriseGameMode,answers: store.answers.concat(action.answer), endCounter: store.endCounter - 1, totalSeconds: store.totalSeconds + action.totalSeconds, totalScore: store.totalScore + action.totalScore }
+            return { ...store, surpriseGameMode: action.surpriseGameMode,answers: store.answers.concat(action.answer), endCounter: store.endCounter - 1, gameClock: 0, totalSeconds: store.totalSeconds + action.totalSeconds, totalScore: store.totalScore + action.totalScore }
         }
     }
     if (action.type === 'SET_IMAGE_TO_ASK') {
@@ -44,6 +50,10 @@ const gameReducer = (store = initialState.game, action) => {
     if (action.type === 'SET_WRONG_IMAGE_OPTIONS') {
         console.log(action)
         return { ...store, wrongImageOptions: action.wrongImageOptions }
+    }
+    if (action.type === 'ADVANCE_GAMECLOCK') {
+        
+        return { ...store, gameClock: store.gameClock+1 }
     }
     return store
 }
@@ -71,7 +81,8 @@ export const gameInitialization = (gameLength, images, user, gamemode, animals, 
         gamemode: gamemode,
         user: user,
         totalSeconds: 0,
-        totalScore: 0
+        totalScore: 0,
+        gameClock:0 
     }
 }
 
@@ -116,6 +127,12 @@ export const setWrongImageOptions = (currentImage, images) => {
     return {
         type: 'SET_WRONG_IMAGE_OPTIONS',
         wrongImageOptions: wrongImageOptions
+    }
+}
+
+export const advanceGameClock = () => {
+    return {
+        type: 'ADVANCE_GAMECLOCK'
     }
 }
 

@@ -4,8 +4,8 @@ import { setAnswer, setImageToAsk, setWrongImageOptions, setWrongAnswerOptions }
 import { setMessage } from '../reducers/messageReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
-import { Button } from 'react-bootstrap'
 import { Row, Col } from 'react-bootstrap'
+import emoji from 'node-emoji'
 
 class ImageMultipleChoiceGame extends React.Component {
 
@@ -33,6 +33,30 @@ class ImageMultipleChoiceGame extends React.Component {
     if (this.checkCorrectness(image) < 70) {
       points = 0
     }
+
+    const correctness = this.checkCorrectness(image)
+    let streakEmoji = require('node-emoji')
+    streakEmoji = emoji.get('yellow_heart')
+    let streakNote = ''
+    let currentStreak = this.state.streakMCG
+    let currentBonus = this.state.bonus
+
+    points = 1000;
+    if (correctness === 100) {
+      this.setState({ streakMCG: currentStreak + 1, bonus: currentBonus + 0.5 })
+      streakNote = currentBonus + 'x!'
+    } else {
+      points = 0
+      streakEmoji = require('node-emoji')
+      streakEmoji = streakEmoji.get('poop')
+      streakNote = ''
+      this.setState({ streakMCG: 0, bonus: 1.0 })
+    }
+
+
+    let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
+
+    this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 3, true)
 
     setTimeout(() => {
       this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(this.state.value), this.state.value.bone.nameLatin, this.state.seconds - 3, points)
@@ -99,7 +123,7 @@ class ImageMultipleChoiceGame extends React.Component {
           {choices.map(choice => {
             return (
               <Col xs={12} md={6}>
-                <div class="height-restricted">
+                <div className="height-restricted">
                   <CloudinaryContext cloudName="luupeli">
                     <Image publicId={choice.url} onClick={() => this.handleSubmit(choice)}>
                       <Transformation background="#000000" height="250" width="350" crop="lpad" radius="20" />
@@ -117,7 +141,7 @@ class ImageMultipleChoiceGame extends React.Component {
         if (choice.correct) {
           return (
             <Col xs={12} md={6}>
-              <div class="height-restricted">
+              <div className="height-restricted">
                 <CloudinaryContext cloudName="luupeli">
                   <Image publicId={choice.url} value={choice.bone.nameLatin}>
                     <Transformation border="15px_solid_rgb:29ae00" background="#000000" height="235" width="335" crop="lpad" radius="20" />
@@ -129,7 +153,7 @@ class ImageMultipleChoiceGame extends React.Component {
         } else {
           return (
             <Col xs={12} md={6}>
-              <div class="height-restricted">
+              <div className="height-restricted">
                 <CloudinaryContext cloudName="luupeli">
                   <Image publicId={choice.url} value={choice.bone.nameLatin}>
                     <Transformation background="#000000" height="250" width="350" crop="lpad" radius="20" />
@@ -145,7 +169,7 @@ class ImageMultipleChoiceGame extends React.Component {
         if (choice.correct) {
           return (
             <Col xs={12} md={6}>
-              <div class="height-restricted">
+              <div className="height-restricted">
                 <CloudinaryContext cloudName="luupeli">
                   <Image publicId={choice.url} value={choice.bone.nameLatin}>
                     <Transformation border="15px_solid_rgb:29ae00" background="#000000" height="235" width="335" crop="lpad" radius="20" />
@@ -157,26 +181,26 @@ class ImageMultipleChoiceGame extends React.Component {
         } else if (this.state.value.id === choice.id) {
           return (
             <Col xs={12} md={6}>
-            <div class="height-restricted">
-              <CloudinaryContext cloudName="luupeli">
-                <Image publicId={choice.url} value={choice.bone.nameLatin}>
-                  <Transformation border="15px_solid_rgb:ae0f0f" background="#000000" height="235" width="335" crop="lpad" radius="20" />
-                </Image>
-              </CloudinaryContext>
-            </div>
-          </Col>
+              <div className="height-restricted">
+                <CloudinaryContext cloudName="luupeli">
+                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
+                    <Transformation border="15px_solid_rgb:ae0f0f" background="#000000" height="235" width="335" crop="lpad" radius="20" />
+                  </Image>
+                </CloudinaryContext>
+              </div>
+            </Col>
           )
         } else {
           return (
             <Col xs={12} md={6}>
-            <div class="height-restricted">
-              <CloudinaryContext cloudName="luupeli">
-                <Image publicId={choice.url} value={choice.bone.nameLatin}>
-                  <Transformation background="#000000" height="250" width="350" crop="lpad" radius="20" />
-                </Image>
-              </CloudinaryContext>
-            </div>
-          </Col>
+              <div className="height-restricted">
+                <CloudinaryContext cloudName="luupeli">
+                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
+                    <Transformation background="#000000" height="250" width="350" crop="lpad" radius="20" />
+                  </Image>
+                </CloudinaryContext>
+              </div>
+            </Col>
           )
         }
       })
@@ -185,16 +209,16 @@ class ImageMultipleChoiceGame extends React.Component {
 
   render() {
     return (
-      <div class="bottom">
-        <div class="intro">
+      <div className="bottom" z-index="3" position="absolute">
+        <div className="intro" z-index="3" position="absolute">
           <h2>{this.props.game.currentImage.bone.nameLatin}, {this.props.game.currentImage.animal.name}</h2>
           <p>(klikkaa oikeaa kuvaa!)</p>
         </div>
-        <div class="container">
-          <div>
+        <div className="container" z-index="3" position="absolute">
+          <div z-index="3" position="absolute">
             {this.answerButtons()}
           </div>
-          <div class="col-md-6 col-md-offset-3" id="info">
+          <div className="col-md-6 col-md-offset-3" id="info">
             <h6>Vastausaikaa kulunut {Math.round(this.state.seconds / 10, 1)}</h6>
           </div>
         </div>

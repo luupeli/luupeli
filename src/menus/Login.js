@@ -1,5 +1,6 @@
 import React from 'react'
 import loginService from '../services/login'
+import { Link } from 'react-router-dom'
 import '../styles/App.css'
 
 class Login extends React.Component {
@@ -65,6 +66,13 @@ class Login extends React.Component {
     }
   }
 
+  proceedToMain(event) {
+
+    if (event.target.id === "gobackbutton") {
+
+    }
+  }
+
   // Put the info given by the user in the state.
   handleLoginFieldChange = (event) => {
     this.setState({ [event.target.name]: event.target.value })
@@ -113,7 +121,7 @@ class Login extends React.Component {
       return (
         <div className="login-clean">
           <form onSubmit={this.logOut}>
-            <p>Olet jo kirjautunut sisään, {this.state.user.username}</p>
+            <p>Olet kirjautunut sisään, {this.state.user.username}</p>
             <div className="form-group btn-group">
               <button className="btn btn-block" type="submit" id="logout-button">Kirjaudu ulos</button>
             </div>
@@ -143,16 +151,13 @@ class Login extends React.Component {
                 className={this.state.allStyles[i].flairLayerD}>
               </div>
               <h2 className="toprow">Luukirjaudu sisään</h2>
-              <div class="transbox">
+              <div className="transbox">
                 {this.ifLoggedInForms()}
               </div>
               <div className="btn-group">
-                <button
-                  id="goBackButton"
-                  className="gobackbutton"
-                  onClick={this.proceedToMain}>
-                  Takaisin
-              </button>
+                <Link to='/'>
+                  <button className="gobackbutton">Etusivulle</button>
+                </Link>
               </div>
             </div>
           </div>
