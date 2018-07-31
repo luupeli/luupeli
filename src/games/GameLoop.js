@@ -116,23 +116,23 @@ class GameLoop extends React.Component {
       //   })
       // })
 
-      for (let animal of this.state.allAnimals) {
-        for (let animal2 of faultyAnimals) {
-          if (animal.id === animal2.id) {
-            animalsPosted.push(animal)
-          }
-        }
-      }
+    //   for (let animal of this.state.allAnimals) {
+    //     for (let animal2 of faultyAnimals) {
+    //       if (animal.id === animal2.id) {
+    //         animalsPosted.push(animal)
+    //       }
+    //     }
+    //   }
 
-      for (let bodyPart of this.state.allBodyParts) {
-        for (let bodyPart2 of faultyBodyParts) {
-          console.log(bodyPart)
-          console.log(bodyPart2)
-          if (bodyPart.id === bodyPart2.id) {
-            bodyPartsPosted.push(bodyPart)
-          }
-        }
-      }
+    //   for (let bodyPart of this.state.allBodyParts) {
+    //     for (let bodyPart2 of faultyBodyParts) {
+    //       console.log(bodyPart)
+    //       console.log(bodyPart2)
+    //       if (bodyPart.id === bodyPart2.id) {
+    //         bodyPartsPosted.push(bodyPart)
+    //       }
+    //     }
+    //   }
 
       console.log(animalsPosted)
       console.log(bodyPartsPosted)
@@ -217,12 +217,6 @@ class GameLoop extends React.Component {
                 }
             }
         }
-
-        else if (this.props.game.gamemode === 'kirjoituspeli') {
-            return (
-                <WritingGame />
-            )
-        }
     }
 
     /**
@@ -240,7 +234,7 @@ class GameLoop extends React.Component {
 		  }
         }`
 
-        if (this.props.game.endCounter === 0) {
+        if (this.props.game.endCounter < 1) {
             setTimeout(function () {
                 this.setState({ redirectToEndPage: true })
             }.bind(this), 3500)

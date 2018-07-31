@@ -183,7 +183,7 @@ class GameSettings extends React.Component {
 		pics = pics.filter(image => {
 			const bodyPartIds = chosenBodyParts.map(chosenBodyPart => chosenBodyPart.id)
 			return bodyPartIds.includes(image.bone.bodyPart)
-    })
+		})		
 		console.log(pics)
 
 		// If criteria doesn't fulfill the game won't launch
@@ -294,7 +294,6 @@ class GameSettings extends React.Component {
 													value="3"
 													onClick={this.changeGameLength.bind(this)}
 													name="length"
-													defaultChecked
 												/>
 												3
 											</label>
@@ -305,6 +304,7 @@ class GameSettings extends React.Component {
 													value="5"
 													onClick={this.changeGameLength.bind(this)}
 													name="length"
+													defaultChecked
 												/>
 												5
 											</label>
@@ -331,9 +331,8 @@ class GameSettings extends React.Component {
 													id="gameEasy"
 													value="easy"
 													name="difficultylevel"
-													defaultChecked
 												/>
-												Helppo
+												Luupää (helppo)
 											</label>
 											<label className="radio-inline">
 												<input
@@ -341,8 +340,9 @@ class GameSettings extends React.Component {
 													id="gameMedium"
 													value="medium"
 													name="difficultylevel"
+													defaultChecked
 												/>
-												Keskivaikea
+												Normaali
 											</label>
 											<label className="radio-inline">
 												<input
@@ -351,7 +351,7 @@ class GameSettings extends React.Component {
 													value="hard"
 													name="difficultylevel"
 												/>
-												Vaikea
+												Luunkova (vaikea)
 											</label>
 										</form>
 										<div className="btn-group wide settingspage GameButton">
