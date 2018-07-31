@@ -36,7 +36,7 @@ class MultipleChoiceGame extends React.Component {
     this.createMessage(event.target.value)
 
     //let points = (Math.round((this.checkCorrectness(event.target.value) * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((300 + Math.max(0, (300 - this.state.seconds))) / 600))) / 20
-    let points = Math.round((1000 + ((1000 + Math.max(0, (1000 - this.props.game.gameClock))) / 2000))) / 20
+    let points = Math.round((1000 + ((1000 + Math.max(0, (400 - this.props.game.gameClock))) / 800))) / 20
 
     if (this.checkCorrectness(event.target.value) > 99) {
       points = points * 10

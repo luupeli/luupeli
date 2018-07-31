@@ -58,11 +58,11 @@ class GameLoop extends React.Component {
     }
 
     /**
-     * With the component mounting, the game time measuring tick() is set at 100 milliseconds.
+     * With the component mounting, the game time measuring tick() is set at 50 milliseconds.
      */
     componentWillMount() {
 
-        this.interval = setInterval(() => this.tick(), 10);
+        this.interval = setInterval(() => this.tick(), 50);
     }
     /**
      * At component unmount the interval needs to be cleared.
