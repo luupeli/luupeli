@@ -1,3 +1,4 @@
+import responseMocks from '../helpers/ResponseMocks'
 const puppeteer = require('puppeteer')
 require('dotenv').config()
 
@@ -55,6 +56,7 @@ describe('BoneListing tests', () => {
     // Not having this screenshot will break the tests..
     await page.screenshot({ path: 'animals.png' })
     const textContent = await page.$eval('#listGroup', el => el.textContent)
+    console.log(textContent)
     expect(textContent.toLowerCase().includes("koira")).toBe(true)
   }, 20000)
 
@@ -64,6 +66,7 @@ describe('BoneListing tests', () => {
 
     await page.screenshot({ path: 'bones.png' })
     const textContent = await page.$eval('#listGroup', el => el.textContent)
+    console.log(textContent)
     expect(textContent.toLowerCase().includes("eturaaja")).toBe(true)
   }, 20000)
 
@@ -120,4 +123,42 @@ describe('BoneListing tests', () => {
     // eg. animals related to the bone
     expect(boneName.includes(nameLatinField)).toBe(true)
   }, 20000)
+  
+  test('Page renders fetched bones', async () => {
+		//Allow request interception
+		await page.setRequestInterception(true)
+		
+		//Set a handler to handle intercepted requests
+		page.on('request', request => {
+		//console.log("request intercepted")
+		//console.log(request.url())
+    if (request.url() === 'http://luupeli-backend.herokuapp.com/api/bones') {
+			//Intercept and respond to requests to the above url with mock data
+			//console.log("responding....")
+        request.respond({
+					content: 'application/json; charset=utf-8',
+          headers: {"Access-Control-Allow-Origin": "*"},
+          body: JSON.stringify(responseMocks.twoBones)
+        })
+    } else {
+			//Let other requests continue normally
+      request.continue()
+    }
+	})
+	
+	//Re-navigate to listing page to re-fire the get-request for bones
+	await page.goto('http://localhost:3000/')
+	await page.goto('http://localhost:3000/listing')
+	
+	//Look at bones listed on the page
+  await page.waitForSelector('#bone0')
+  const textContent1 = await page.$eval('#bone0', el => el.textContent)
+  const textContent2 = await page.$eval('#bone1', el => el.textContent)
+  console.log(textContent1)
+
+  //Listing should contain the names given in the mocked request response
+  expect(textContent1.includes("latin1")).toBe(true)
+  expect(textContent2.includes("latin2")).toBe(true)
+		
+	}, 20000)
 })

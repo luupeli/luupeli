@@ -160,4 +160,5 @@ describe('UpdateBone tests', () => {
 		const textContent = await page.$eval('#listGroup', el => el.textContent)
 		expect(textContent.toLowerCase().includes("suodata lajin mukaan")).toBe(true)
 	}, 20000)
+
 })

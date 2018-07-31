@@ -31,7 +31,7 @@ class ScoreFlash extends React.Component {
 
 		if (this.props.scoreflash !== undefined && this.props.game.gameClock<300 && this.props.scoreflash.scoreflash.length !== 0) {
 			return (
-				<Animated animationIn="bounceInLeft faster" animationOut="bounceOutRight faster" isVisible={this.props.scoreflash.visibility}>
+				<Animated animationIn="rubberBand faster" animationOut="zoomOut faster" isVisible={this.props.scoreflash.visibility}>
 					<div
 						className={style}
 						role="alert"

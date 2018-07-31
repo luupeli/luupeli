@@ -269,46 +269,55 @@ class GameLoop extends React.Component {
             }
         }
 
+        const scoreActual = this.props.scoreflash.score 
+		const durationOfScoreRise = Math.min(150,(scoreActual/50) + 25)
+
+        let scoreShown =  this.props.game.totalScore-scoreActual + Math.min(scoreActual, Math.round(scoreActual*( this.props.game.gameClock /durationOfScoreRise)))
+
         return (
 
 
             <div className={this.state.allStyles[i].overlay}>
-                <div className={this.state.allStyles[i].background}>
-                    <div className={this.state.allStyles[i].style}>
-                        <div id="App" className="App">
-                            <div
-                                className={this.state.allStyles[i].flairLayerA}>
-                            </div>
-                            <div
-                                className={this.state.allStyles[i].flairLayerB}>
-                            </div>
-                            <div
-                                className={this.state.allStyles[i].flairLayerC}>
-                            </div>
-                            <div
-                                className={this.state.allStyles[i].flairLayerD}>
-                            </div>
-                            <div className="transbox">
-                                {this.topPage()}
-
-                                <div className="ffdual-layout">
-
-                                    {/* <div className="container"> */}
-                                    <div>
-                                        <ScoreFlash ref={instance => this.wgmessage = instance} />
-                                    </div>
-                                    <div>
-                                        <Message />
-                                    </div>
-                                    {this.gameLoop()}
-
-                                    {/* </div> */}
-
-                                </div>
-                            </div>
+            <div className={this.state.allStyles[i].background}>
+                <div className={this.state.allStyles[i].style}>
+              
+                    <div id="App" className="App">
+                  
+                        <div
+                            className={this.state.allStyles[i].flairLayerA}>
                         </div>
+                        <div
+                            className={this.state.allStyles[i].flairLayerB}>
+                        </div>
+                        <div
+                            className={this.state.allStyles[i].flairLayerC}>
+                        </div>
+                        <div
+                            className={this.state.allStyles[i].flairLayerD}>
+                        </div>
+                        <div className="transbox">
+                        <div className="btn-group">
+                    <div classNAme="gobackbutton">
+                        <h3>SCORE {scoreShown}</h3>
+                        </div>
+                        </div>
+                {this.topPage()}
+                
+                <div className="ffdual-layout">
+                
+                    {/* <div className="container"> */}
+                    <div>
+                            <ScoreFlash ref={instance => this.wgmessage = instance} />
+                        </div>    
+                        <div>
+                            <Message />
+                        </div>
+                        {this.gameLoop()}
                     </div>
                 </div>
+            </div>
+            </div>
+            </div>
             </div>
 
         );
