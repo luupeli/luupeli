@@ -47,10 +47,10 @@ class WritingGame extends React.Component {
     let streakNote = ''
     let streakEmoji = emoji.get('yellow_heart')
     let correctness = 'Melkein oikein'
-    let points = (Math.round((this.checkCorrectness() * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((3000 + Math.max(0, (3000 - this.props.game.gameClock))) / 6000))) / 20
+    let points = (Math.round((this.checkCorrectness() * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((900 + Math.max(0, (900 - this.props.game.gameClock))) / 1800))) / 20
     
-    if (this.props.game.gameClock < 1000) {
-      points = points * ((1000 - this.props.game.gameClock) / 100)
+    if (this.props.game.gameClock < 200) {
+      points = points * ((400 - this.props.game.gameClock) / 40)
     }
     if (this.checkCorrectness() > 99) {
       points = points * 5
@@ -167,7 +167,7 @@ class WritingGame extends React.Component {
         </div>
         <div className="container">
           <div className="col-md-6 col-md-offset-3" id="info">
-            <h5>Vastausaikaa kulunut {Math.round(this.props.game.gameClock / 100, 1)}</h5>
+            <h5>Vastausaikaa kulunut {Math.round(this.props.game.gameClock / 20, 1)}</h5>
             <p>{this.props.game.currentImage.bone.description}</p>
             <p>Tätä kuvaa on yritetty {attempts} kertaa, niistä {correctAttempts} oikein. Oikeita vastauksia: {correctPercentile} % kaikista yrityksistä.</p>
             <p>(Oikea vastaus: {this.props.game.currentImage.bone.nameLatin})</p>
