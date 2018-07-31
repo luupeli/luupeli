@@ -144,7 +144,7 @@ http://aleclownes.com/2017/02/01/crt-display.html by Alec Lownes.
     right: 0;
     background: rgba(18, 16, 16, 0.1);
     opacity: 0;
-    z-index: 4;
+    z-index: 2;
     pointer-events: none;
     animation: flicker 0.15s infinite;
   }
@@ -157,8 +157,8 @@ http://aleclownes.com/2017/02/01/crt-display.html by Alec Lownes.
     bottom: 0;
     right: 0;
     background: linear-gradient(rgba(29, 24, 24, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.13), rgba(0, 255, 0, 0.05), rgba(0, 0, 255, 0.08));
-    z-index: 5;
-    background-size: 100% 5px, 5px 100%;
+    z-index: 3;
+    background-size: 100% 3px, 3px 100%;
     pointer-events: none;
   }
   .crt {
