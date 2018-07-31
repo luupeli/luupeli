@@ -138,7 +138,7 @@ class GameLoop extends React.Component {
       console.log(bodyPartsPosted)
     
       gameSessionService.create({
-        user: this.state.user.username,
+        user: this.state.user,
         mode: this.props.game.gamemode,
         length: this.props.game.gameLength,
         difficulty: this.props.game.difficulty,
