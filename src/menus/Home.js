@@ -273,6 +273,7 @@ class Home extends React.Component {
 
     return (
       <div id="homeMenu" className="App">
+       <div className="menu">
         <div className={this.state.overlay}>
           <div className={this.state.background}>
             <div id="styleName" className={this.state.style}>
@@ -320,6 +321,7 @@ class Home extends React.Component {
             </div>
           </div>
         </div>
+      </div>
       </div>
     )
   }

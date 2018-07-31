@@ -54,7 +54,7 @@ class SelectGameMode extends React.Component {
     }
     let i = this.state.styleIndex
     return (
-      <div id="gameBody" className="App">
+      <div id="gameBody" className="App menu">
         <div className={this.state.allStyles[i].overlay}>
           <div className={this.state.allStyles[i].background}>
             <div className={this.state.allStyles[i].style}>

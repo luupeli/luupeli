@@ -250,13 +250,17 @@ class GameLoop extends React.Component {
             }
         }
 
+        const scoreActual = this.props.scoreflash.score 
+		const durationOfScoreRise = Math.min(30,(scoreActual/10) + 5)
+         let scoreShown =  this.props.game.totalScore-scoreActual + Math.min(scoreActual, Math.round(scoreActual*( this.props.game.gameClock /durationOfScoreRise)))
+
         return (
 
 
             <div className={this.state.allStyles[i].overlay}>
                 <div className={this.state.allStyles[i].background}>
                     <div className={this.state.allStyles[i].style}>
-                        <div id="App" className="App">
+                        <div id="App" className="App gameplay">
                             <div
                                 className={this.state.allStyles[i].flairLayerA}>
                             </div>
@@ -270,6 +274,11 @@ class GameLoop extends React.Component {
                                 className={this.state.allStyles[i].flairLayerD}>
                             </div>
                             <div className="transbox">
+                            <div className="btn-group">
+                    <div classNAme="gobackbutton">
+                        <h3>SCORE {scoreShown}</h3>
+                        </div>
+                        </div>
                                 {this.topPage()}
 
                                 <div className="ffdual-layout">
@@ -279,7 +288,7 @@ class GameLoop extends React.Component {
                                         <ScoreFlash ref={instance => this.wgmessage = instance} />
                                     </div>
                                     <div>
-                                        <Message />
+                                        {/* <Message /> */}
                                     </div>
                                     {this.gameLoop()}
 

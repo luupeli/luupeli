@@ -634,7 +634,8 @@ https://codepen.io/George-Payne/pen/qOrxao
     background-size:2% 2%, 2% 2%;
     background-position:0 0, 0 0;
     
-    transform: perspective(calc(25.5vh + 25.5vw)) rotateX(80deg);
+    transform: perspective(calc(25.5vh + 25.5vw)) rotateX(80deg);}
+.menu .grid {
     animation: throughSpace-bottom 3s linear;
     animation-iteration-count: infinite;
     
@@ -666,9 +667,10 @@ https://codepen.io/George-Payne/pen/qOrxao
     background-position:0 0, 0 0;
     
     transform: perspective(calc(25.5vh + 25.5vw)) rotateX(80deg);
+  }
+ .menu .grid-flair {
     animation: throughSpace-bottom 0.5s linear;
     animation-iteration-count: infinite;
-    
   }
 
  
@@ -693,6 +695,9 @@ https://codepen.io/George-Payne/pen/qOrxao
     background-position:0 0, 0 0;
     
     transform: perspective(calc(25.5vh + 25.5vw)) rotateX(80deg);
+  }
+
+ .menu .grid-sub{
     animation: throughSpace-bottom 6s linear;
     animation-iteration-count: infinite;
     
@@ -719,9 +724,11 @@ https://codepen.io/George-Payne/pen/qOrxao
     background-position:0 0, 0 0;
     
     transform: perspective(calc(25.5vh + 25.5vw)) rotateX(80deg);
+  }
+
+ .menu .grid-faster {
     animation: throughSpace-bottom 1.5s linear;
     animation-iteration-count: infinite;
-    
   }
 
   /*
@@ -744,6 +751,8 @@ https://codepen.io/George-Payne/pen/qOrxao
     background-position:0 0, 0 0;
     
     transform: perspective(calc(25.5vh + 25.5vw)) rotateX(80deg);
+  }
+ .menu .grid-fastest{
     animation: throughSpace-bottom 0.5s linear;
     animation-iteration-count: infinite;
     
