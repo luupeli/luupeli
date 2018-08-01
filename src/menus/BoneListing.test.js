@@ -53,8 +53,7 @@ describe('BoneListing tests', () => {
   // Checks if animal selector texts appear on the page
   test('animals appear', async () => {
     await page.waitForSelector("#animals")
-    // Not having this screenshot will break the tests..
-    await page.screenshot({ path: 'animals.png' })
+    await page.waitFor(2000)
     const textContent = await page.$eval('#listGroup', el => el.textContent)
     console.log(textContent)
     expect(textContent.toLowerCase().includes("koira")).toBe(true)
@@ -63,8 +62,7 @@ describe('BoneListing tests', () => {
   // Checks if bodypart selector texts appear on the page
   test('bodyparts appear', async () => {
     await page.waitForSelector("#bodyparts")
-
-    await page.screenshot({ path: 'bones.png' })
+    await page.waitFor(2000)
     const textContent = await page.$eval('#listGroup', el => el.textContent)
     console.log(textContent)
     expect(textContent.toLowerCase().includes("eturaaja")).toBe(true)
