@@ -74,10 +74,7 @@ class UserListing extends React.Component {
 							} else {
 								//Copypaste, kill me
 								return <Link key={aUser.id} to={{
-									pathname: '/users/' + aUser.id,
-									state: {
-										id: aUser.id,
-									}
+									pathname: '/users/' + aUser.id
 								}}>{aUser.username}<p></p></Link>
 							}
 						}

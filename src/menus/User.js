@@ -7,7 +7,7 @@ class User extends React.Component {
 		super(props)
 		this.state = {
 			//userId is the id that was given in UserListing, inside Redirect
-			userId: this.props.location.state.id,
+			userId: this.props.userId,
 			redirect: false,
 			redirectTo: '',
 			//Some information about the user being viewed below
@@ -24,7 +24,7 @@ class User extends React.Component {
 		//Let's fetch the user we want using userService, we already have the id,
 		//so let's GET the user of that specific id
 		//so we can put some useful information of them in the state
-		userService.get(this.state.userId)
+		userService.get(this.props.userId)
 			.then((response) => {
 				this.setState({
 					viewedUserName: response.data.username,

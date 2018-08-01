@@ -218,20 +218,7 @@ class BoneListing extends React.Component {
 								<div id="bones">
 									{bonesToShow.map((bone, i) =>
 										<Link key={bone.id} to={{
-											pathname: '/update/' + bone.id,
-											state: {
-												id: bone.id,
-												boneId: bone.id,
-												nameLatin: bone.nameLatin,
-												altNameLatin: bone.altNameLatin,
-												description: bone.description,
-												name: bone.name,
-												bodyPart: bone.bodyPart.name,
-												attempts: bone.attempts,
-												correctAttempts: bone.correctAttempts,
-												boneAnimals: bone.animals
-											}
-										}}>
+											pathname: '/update/' + bone.id}}>
 											<button type="button" id={"bone" + i} className="list-group-item list-group-item-action">{bone.nameLatin} ({bone.animal})</button>
 										</Link>)}
 								</div>

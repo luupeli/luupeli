@@ -142,7 +142,7 @@ class GameLoop extends React.Component {
         mode: this.props.game.gamemode,
         length: this.props.game.gameLength,
         difficulty: this.props.game.difficulty,
-        animals: animalsPosted,
+        animals: this.props.game.animals,
         bodyparts: bodyPartsPosted,
         correctAnswerCount: this.props.game.answers.filter(ans => ans.correctness === 100).length,
         almostCorrectAnswerCount: this.props.game.answers.filter(ans => ans.correctness > 70 && ans.correctness < 100).length
