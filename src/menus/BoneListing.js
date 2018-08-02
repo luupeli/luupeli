@@ -4,6 +4,7 @@ import animalService from '../services/animals'
 import bodyPartService from '../services/bodyParts'
 import { Link, Redirect } from 'react-router-dom'
 import { ToggleButtonGroup, ToggleButton, Row, Col, Grid, FormControl } from 'react-bootstrap'
+import { connect } from 'react-redux'
 
 class BoneListing extends React.Component {
 
@@ -13,9 +14,7 @@ class BoneListing extends React.Component {
 			redirect: false,
 			redirectTo: '',
 			bones: [],
-			animals: [],
 			selectedAnimals: [],
-			bodyParts: [],
 			selectedBodyParts: [],
 			search: '',
 			user: null
@@ -35,26 +34,6 @@ class BoneListing extends React.Component {
 				console.log("bone response:")
 				console.log(response)
 				this.setState({ bones: response.data })
-			})
-			.catch((error) => {
-				console.log(error)
-			})
-
-		animalService.getAll()
-			.then((response) => {
-				console.log("animal response:")
-				console.log(response)
-				this.setState({ animals: response.data })
-			})
-			.catch((error) => {
-				console.log(error)
-			})
-
-		bodyPartService.getAll()
-			.then((response) => {
-				console.log("bodypart response")
-				console.log(response)
-				this.setState({ bodyParts: response.data })
 			})
 			.catch((error) => {
 				console.log(error)
@@ -163,7 +142,7 @@ class BoneListing extends React.Component {
 														defaultValue={this.state.selectedAnimals}
 														onClick={this.handleAnimalChange}
 													>
-														{this.state.animals.map(animal => {
+														{this.props.init.animals.map(animal => {
 															if (!this.state.selectedAnimals.includes(animal.id)) {
 																return <ToggleButton bsStyle="warning" id={animal.id} value={animal.id}>{animal.name} </ToggleButton>
 															} else {
@@ -187,7 +166,7 @@ class BoneListing extends React.Component {
 														defaultValue={this.state.selectedBodyParts}
 														onClick={this.handleBodyPartChange}
 													>
-														{this.state.bodyParts.map(bodyPart => {
+														{this.props.init.bodyParts.map(bodyPart => {
 															if (!this.state.selectedBodyParts.includes(bodyPart.id)) {
 																return <ToggleButton bsStyle="warning" id={bodyPart.id} value={bodyPart.id}>{bodyPart.name} </ToggleButton>
 															} else {
@@ -231,4 +210,16 @@ class BoneListing extends React.Component {
 	}
 }
 
-export default BoneListing
+
+const mapStateToProps = (state) => {
+	return {
+		init: state.init
+	}
+}
+
+const ConnectedBoneListing = connect(
+	mapStateToProps,
+	null
+)(BoneListing)
+export default ConnectedBoneListing
+

@@ -76,10 +76,10 @@ describe('AddBone tests', () => {
 
 	test('Pressing "Poista kuvakenttä"-button removes one new image field', async () => {
 		await page.waitForSelector('#addNewImageFieldButton')
-		await page.click('#addNewImageFieldButton')
 
 		// Wait for li-elements to render
 		await page.waitFor(2000)
+		await page.click('#addNewImageFieldButton')
 
 		// Save number of li-elements before clicking button for comparison
 		const elementList = await page.evaluate(() => {

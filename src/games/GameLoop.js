@@ -35,9 +35,7 @@ class GameLoop extends React.Component {
             currentScoreFlashCutOff: 0,
             currentScoreFlashVisibility: false,
             allStyles: JSON.parse(localStorage.getItem("allStyles")),
-            styleIndex: localStorage.getItem('styleIndex'),
-            allAnimals: [],
-            allBodyParts: []
+            styleIndex: localStorage.getItem('styleIndex')
           }
           this.postGameSession = this.postGameSession.bind(this)
         };
@@ -77,73 +75,17 @@ class GameLoop extends React.Component {
         const user = JSON.parse(loggedUserJSON)
         this.setState({ user })
       }
-      animalService.getAll()
-        .then(response => {
-          console.log(response)
-          console.log(response.data)
-          this.setState({allAnimals : response.data})
-      })
-
-      bodyPartService.getAll()
-        .then(response => {
-          this.setState({allBodyParts : response.data})
-      })
     }
 
     postGameSession() {
-
-      let animalsPosted = []
-      let bodyPartsPosted = []
-
-      let faultyAnimals = this.props.game.animals
-      let faultyBodyParts = this.props.game.bodyparts
-      console.log (faultyAnimals)
-
-      // allAnimals.forEach(function(animal) {
-      //   this.props.game.animals.forEach(function(animal2) {
-      //     if (animal.id === animal2.id) {
-      //       animalsPosted.push(animal)
-      //     }
-      //   })
-      // })
-
-      // allBodyParts.forEach(function(bodyPart) {
-      //   this.props.game.bodyparts.forEach(function(bodyPart2) {
-      //     console.log(bodyPart)
-      //     if (bodyPart.id === bodyPart2.id) {
-      //       bodyPartsPosted.push(bodyPart)
-      //     }
-      //   })
-      // })
-
-    //   for (let animal of this.state.allAnimals) {
-    //     for (let animal2 of faultyAnimals) {
-    //       if (animal.id === animal2.id) {
-    //         animalsPosted.push(animal)
-    //       }
-    //     }
-    //   }
-
-    //   for (let bodyPart of this.state.allBodyParts) {
-    //     for (let bodyPart2 of faultyBodyParts) {
-    //       console.log(bodyPart)
-    //       console.log(bodyPart2)
-    //       if (bodyPart.id === bodyPart2.id) {
-    //         bodyPartsPosted.push(bodyPart)
-    //       }
-    //     }
-    //   }
-
-      console.log(animalsPosted)
-      console.log(bodyPartsPosted)
-    
+    console.log(this.state.user)
       gameSessionService.create({
-        user: this.state.user.username,
+        user: this.state.user.id,
         mode: this.props.game.gamemode,
         length: this.props.game.gameLength,
         difficulty: this.props.game.difficulty,
-        animals: this.props.game.animals,
-        bodyparts: bodyPartsPosted,
+        animals: this.props.game.animals.map(animal => animal.id),
+        bodyparts: this.props.game.bodyparts.map(bodypart => bodypart.id),
         correctAnswerCount: this.props.game.answers.filter(ans => ans.correctness === 100).length,
         almostCorrectAnswerCount: this.props.game.answers.filter(ans => ans.correctness > 70 && ans.correctness < 100).length
       })

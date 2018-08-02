@@ -42,17 +42,6 @@ describe('WritingGame tests', () => {
 		await page.click('#writingGameButton')
 
 		//Select settings and begin game
-		/*console.log("selecting settings")
-		await page.waitForSelector('#animal1')
-		await page.click('#animal0')
-		await page.click('#animal1')
-		await page.click('#animal2')
-		await page.click('#animal3')
-		await page.waitForSelector('#bodyPart1')
-		await page.click('#bodyPart0')
-		await page.click('#bodyPart1')
-		await page.click('#bodyPart2')
-		await page.click('#bodyPart3')*/
 		// await page.screenshot({ path: 'menu3.png', fullPage: true });
 		await page.waitForSelector('#gameLengthShort')
 		await page.click('#gameLengthShort')
