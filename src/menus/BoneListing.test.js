@@ -14,7 +14,12 @@ let page
 beforeAll(async () => {
   browser = await puppeteer.launch({ args: ['--no-sandbox'] })
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000
-  page = await browser.newPage()
+}, 30000)
+
+beforeEach(async () => {
+	//For some reason the tests seem to hang and timeout around page.$eval() or expect() when using page.removeAllListeners()
+	//So instead we close the page after tests, open a new page and then re-login to unsubscribe leftover event listeners
+	page = await browser.newPage()
   await page.setViewport({ width: 1280, height: 800 })
   // Navigates to home
   await page.goto('http://localhost:' + port)
@@ -30,14 +35,12 @@ beforeAll(async () => {
   })
   // Finally waits for the logout button to render which shows after a user is logged in
   await page.waitForSelector('#logout-button')
-}, 30000)
-
-beforeEach(async () => {
   await page.goto('http://localhost:' + port + '/listing')
 })
 
 afterEach(async () => {
-	await page.removeAllListeners('request')
+	//await page.removeAllListeners('request')
+	await page.close()
 })
 
 afterAll(async () => {
@@ -155,6 +158,7 @@ describe('BoneListing tests', () => {
 		//Look at bones listed on the page
 		await page.waitForSelector('#searchByKeyword')
 		await page.type('#searchByKeyword', "latin1")
+		await page.waitForSelector('#bones')
 		const textContent1 = await page.$eval('#bones', el => el.textContent)
 		const textContent2 = await page.$eval('#bones', el => el.textContent)
 
@@ -177,10 +181,11 @@ describe('BoneListing tests', () => {
 		await page.waitForSelector('#animal0')
 		const animalName = await page.$eval('#animal0', el => el.textContent)
 		await page.click('#animal0')
+		await page.waitForSelector('#bones')
 		const textContent1 = await page.$eval('#bones', el => el.textContent)
 
 		//Listing should only contain bones with animals matching the search criteria
-		expect(textContent1.toLowerCase().includes(animalName.toLowerCase())).toBe(true)
+		expect(textContent1.toLowerCase().trim().includes(animalName.toLowerCase().trim())).toBe(true)
 		
 	}, 20000)
 	

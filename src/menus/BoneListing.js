@@ -110,7 +110,8 @@ class BoneListing extends React.Component {
 
 		// Filter by animals
 		if (this.state.selectedAnimals.length > 0) {
-			bonesToShow = bonesToShow.filter(bone => bone.images.some(img => this.state.selectedAnimals.includes(img.animal)))
+			//bonesToShow = bonesToShow.filter(bone => bone.images.some(img => this.state.selectedAnimals.includes(img.animal)))
+			bonesToShow = bonesToShow.filter(bone => bone.animals.some(animal => this.state.selectedAnimals.includes(animal._id)))
 		}
 
 		// Filter by search attribute (latin names and finnish name)
