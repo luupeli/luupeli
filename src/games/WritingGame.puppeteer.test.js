@@ -1,5 +1,7 @@
 const puppeteer = require('puppeteer')
 
+const port = process.env.PORT
+
 let browser
 let page
 
@@ -12,7 +14,7 @@ beforeAll(async () => {
 
 beforeEach(async () => {
 	page = await browser.newPage()
-	await page.goto('http://localhost:3000/')
+	await page.goto('http://localhost:' + port)
 })
 
 afterEach(async () => {
@@ -40,7 +42,7 @@ describe('WritingGame tests', () => {
 		await page.click('#writingGameButton')
 
 		//Select settings and begin game
-		console.log("selecting settings")
+		/*console.log("selecting settings")
 		await page.waitForSelector('#animal1')
 		await page.click('#animal0')
 		await page.click('#animal1')
@@ -50,7 +52,7 @@ describe('WritingGame tests', () => {
 		await page.click('#bodyPart0')
 		await page.click('#bodyPart1')
 		await page.click('#bodyPart2')
-		await page.click('#bodyPart3')
+		await page.click('#bodyPart3')*/
 		// await page.screenshot({ path: 'menu3.png', fullPage: true });
 		await page.waitForSelector('#gameLengthShort')
 		await page.click('#gameLengthShort')
@@ -75,7 +77,7 @@ describe('WritingGame tests', () => {
 		const textContent = await page.$eval('#endScreenTitle', el => el.textContent)
 
 		expect(textContent.toLowerCase().includes("lopputulos")).toBe(true)
-	}, 30000)
+	}, 40000)
 
 	async function playRounds(gameLength) {
 		for (var i = 0; i < gameLength; i++) {
