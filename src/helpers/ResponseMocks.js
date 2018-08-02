@@ -8,7 +8,7 @@ static twoBones = [
 						bodyPart: {name: "Eturaaja"},
 						attempts: 0,
 						correctAttempts: 0,
-						boneAnimals: [{name: "Koira"}]},
+						animals: [{name: "Koira"}, {name: "Hevonen"}, {name: "Nauta"}, {name: "Kissa"}]},
 						{id: 2,
 						nameLatin: "latin2",
 						altNameLatin: "",
@@ -17,7 +17,7 @@ static twoBones = [
 						bodyPart: {name: "Eturaaja"},
 						attempts: 0,
 						correctAttempts: 0,
-						boneAnimals: [{name: "Koira"}]}
+						animals: [{name: "Hevonen"}]}
 					]
 }
 export default ResponseMocks;

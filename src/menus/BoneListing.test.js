@@ -12,7 +12,7 @@ let page
 // An admin user must be logged-in in order to pass these tests,
 // and it is done in this beforeAll block
 beforeAll(async () => {
-  browser = await puppeteer.launch({ args: ['--no-sandbox'] })
+  browser = await puppeteer.launch({ args: ['--no-sandbox'], headless: false })
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000
   page = await browser.newPage()
   await page.setViewport({ width: 1280, height: 800 })
@@ -56,7 +56,6 @@ describe('BoneListing tests', () => {
     await page.waitForSelector("#animals")
     await page.waitFor(2000)
     const textContent = await page.$eval('#listGroup', el => el.textContent)
-    console.log(textContent)
     expect(textContent.toLowerCase().includes("koira")).toBe(true)
   }, 20000)
 
@@ -65,7 +64,6 @@ describe('BoneListing tests', () => {
     await page.waitForSelector("#bodyparts")
     await page.waitFor(2000)
     const textContent = await page.$eval('#listGroup', el => el.textContent)
-    console.log(textContent)
     expect(textContent.toLowerCase().includes("eturaaja")).toBe(true)
   }, 20000)
 
@@ -124,39 +122,76 @@ describe('BoneListing tests', () => {
   }, 20000)
   
   test('Page renders fetched bones', async () => {
-		//Allow request interception
+		//Allow request interception, set a handler to handle intercepted requests
 		await page.setRequestInterception(true)
+		setResponseHandler(responseMocks.twoBones)
+	
+		//Re-navigate to listing page to re-fire the get-request for bones
+		await page.goto('http://localhost:' + port)
+		await page.goto('http://localhost:' + port + '/listing')
+		//Look at bones listed on the page
+		await page.waitForSelector('#bone0')
+		const textContent1 = await page.$eval('#bone0', el => el.textContent)
+		const textContent2 = await page.$eval('#bone1', el => el.textContent)
+
+		//Listing should contain the names given in the mocked request response
+		expect(textContent1.includes("latin1")).toBe(true)
+		expect(textContent2.includes("latin2")).toBe(true)
 		
-		//Set a handler to handle intercepted requests
+	}, 20000)
+	
+	test('Bones can be filtered by latin name', async () => {
+		//Allow request interception, set a handler to handle intercepted requests
+		await page.setRequestInterception(true)
+		setResponseHandler(responseMocks.twoBones)
+	
+		//Re-navigate to listing page to re-fire the get-request for bones
+		await page.goto('http://localhost:' + port)
+		await page.goto('http://localhost:' + port + '/listing')
+		//Look at bones listed on the page
+		await page.waitForSelector('#searchByKeyword')
+		await page.type('#searchByKeyword', "latin1")
+		const textContent1 = await page.$eval('#bones', el => el.textContent)
+		const textContent2 = await page.$eval('#bones', el => el.textContent)
+
+		//Listing should only contain bones with names matching the search criteria
+		expect(textContent1.includes("latin1")).toBe(true)
+		expect(textContent2.includes("latin2")).toBe(false)
+		
+	}, 20000)
+	/* Unfinished
+	test('Bones can be filtered by animal', async () => {
+		//Allow request interception, set a handler to handle intercepted requests
+		await page.setRequestInterception(true)
+		setResponseHandler(responseMocks.twoBones)
+	
+		//Re-navigate to listing page to re-fire the get-request for bones
+		await page.goto('http://localhost:' + port)
+		await page.goto('http://localhost:' + port + '/listing')
+		//Look at bones listed on the page
+		await page.waitForSelector('#animal0')
+		const animalName = await page.$eval('#animal0', el => el.textContent)
+		await page.click('#animal0')
+		const textContent1 = await page.$eval('#bones', el => el.textContent)
+
+		//Listing should only contain bones with names matching the search criteria
+		expect(textContent1.toLowerCase().includes(animalName.toLowerCase())).toBe(true)
+		
+	}, 20000)*/
+	
+	async function setResponseHandler(mockResponse) {
 		page.on('request', request => {
-		//console.log("request intercepted")
-		//console.log(request.url())
     if (request.url() === 'http://luupeli-backend.herokuapp.com/api/bones') {
 			//Intercept and respond to requests to the above url with mock data
-			//console.log("responding....")
         request.respond({
 					content: 'application/json; charset=utf-8',
           headers: {"Access-Control-Allow-Origin": "*"},
-          body: JSON.stringify(responseMocks.twoBones)
+          body: JSON.stringify(mockResponse)
         })
     } else {
 			//Let other requests continue normally
       request.continue()
     }
 	})
-	
-	//Re-navigate to listing page to re-fire the get-request for bones
-	await page.goto('http://localhost:' + port)
-	await page.goto('http://localhost:' + port + '/listing')
-	//Look at bones listed on the page
-  await page.waitForSelector('#bone0')
-  const textContent1 = await page.$eval('#bone0', el => el.textContent)
-  const textContent2 = await page.$eval('#bone1', el => el.textContent)
-  console.log(textContent1)
-
-  //Listing should contain the names given in the mocked request response
-  expect(textContent1.includes("latin1")).toBe(true)
-  expect(textContent2.includes("latin2")).toBe(true)
-		
-	}, 20000)
+	}
 })

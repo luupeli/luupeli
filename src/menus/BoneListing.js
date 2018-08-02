@@ -23,6 +23,7 @@ class BoneListing extends React.Component {
 		this.handleAnimalChange = this.handleAnimalChange.bind(this)
 		this.handleBodyPartChange = this.handleBodyPartChange.bind(this)
 		this.handleChange = this.handleChange.bind(this)
+		this.boneAnimalsToString = this.boneAnimalsToString.bind(this)
 
 		window.onunload = function () { window.location.href = '/' }
 	}
@@ -52,27 +53,41 @@ class BoneListing extends React.Component {
 	}
 
 	handleAnimalChange(event) {
+		console.log(event.target.children[0].value)
 		let animals = this.state.selectedAnimals
-		if (animals.includes(event.target.id)) {
-			animals = animals.filter(a => a !== event.target.id)
+		if (animals.includes(event.target.children[0].value)) {
+			animals = animals.filter(a => a !== event.target.children[0].value)
 		} else {
-			animals.push(event.target.id)
+			animals.push(event.target.children[0].value)
 		}
 		this.setState({ selectedAnimals: animals })
 	}
 
 	handleBodyPartChange(event) {
 		let bodyParts = this.state.selectedBodyParts
-		if (bodyParts.includes(event.target.id)) {
-			bodyParts = bodyParts.filter(a => a !== event.target.id)
+		if (bodyParts.includes(event.target.children[0].value)) {
+			bodyParts = bodyParts.filter(a => a !== event.target.children[0].value)
 		} else {
-			bodyParts.push(event.target.id)
+			bodyParts.push(event.target.children[0].value)
 		}
 		this.setState({ selectedBodyParts: bodyParts })
 	}
 
 	handleChange(e) {
 		this.setState({ search: e.target.value })
+	}
+	
+	boneAnimalsToString(bone) {
+		console.log(bone)
+		var animalsString = ""
+		bone.animals.forEach((animal, i) => {
+			if (i === 0) {
+				animalsString = animal.name.toLowerCase()
+			} else {
+				animalsString = animalsString + ', ' + animal.name.toLowerCase()
+			}
+		})
+		return animalsString
 	}
 
 	// Filter and render bone listing by .mapping bones from this.state.bones array to Link elements.
@@ -142,11 +157,11 @@ class BoneListing extends React.Component {
 														defaultValue={this.state.selectedAnimals}
 														onClick={this.handleAnimalChange}
 													>
-														{this.props.init.animals.map(animal => {
+														{this.props.init.animals.map((animal, i) => {
 															if (!this.state.selectedAnimals.includes(animal.id)) {
-																return <ToggleButton bsStyle="warning" id={animal.id} value={animal.id}>{animal.name} </ToggleButton>
+																return <ToggleButton bsStyle="warning" id={"animal" + i} value={animal.id}>{animal.name} </ToggleButton>
 															} else {
-																return <ToggleButton style={activeStyle} id={animal.id} value={animal.id}>{animal.name} </ToggleButton>
+																return <ToggleButton style={activeStyle} id={"animal" + i} value={animal.id}>{animal.name} </ToggleButton>
 															}
 														}
 														)}
@@ -166,11 +181,11 @@ class BoneListing extends React.Component {
 														defaultValue={this.state.selectedBodyParts}
 														onClick={this.handleBodyPartChange}
 													>
-														{this.props.init.bodyParts.map(bodyPart => {
+														{this.props.init.bodyParts.map((bodyPart, i) => {
 															if (!this.state.selectedBodyParts.includes(bodyPart.id)) {
-																return <ToggleButton bsStyle="warning" id={bodyPart.id} value={bodyPart.id}>{bodyPart.name} </ToggleButton>
+																return <ToggleButton bsStyle="warning" id={"bodyPart" + i} value={bodyPart.id} name={bodyPart.id}>{bodyPart.name} </ToggleButton>
 															} else {
-																return <ToggleButton style={activeStyle} id={bodyPart.id} value={bodyPart.id}>{bodyPart.name} </ToggleButton>
+																return <ToggleButton style={activeStyle} id={"bodyPart" + i} value={bodyPart.id} name={bodyPart.id}>{bodyPart.name} </ToggleButton>
 															}
 														}
 														)}
@@ -183,6 +198,7 @@ class BoneListing extends React.Component {
 												<Col xs={12} md={10} style={searchStyle}>
 													<form>
 														<FormControl
+															id="searchByKeyword"
 															type="text"
 															value={this.state.search}
 															placeholder="Hae latinan- tai suomenkielisen nimen perusteella"
@@ -198,7 +214,7 @@ class BoneListing extends React.Component {
 									{bonesToShow.map((bone, i) =>
 										<Link key={bone.id} to={{
 											pathname: '/update/' + bone.id}}>
-											<button type="button" id={"bone" + i} className="list-group-item list-group-item-action">{bone.nameLatin} ({bone.animal})</button>
+											<button type="button" id={"bone" + i} className="list-group-item list-group-item-action">{bone.nameLatin} ({this.boneAnimalsToString(bone)})</button>
 										</Link>)}
 								</div>
 							</div>
