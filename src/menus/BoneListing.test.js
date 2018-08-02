@@ -12,7 +12,7 @@ let page
 // An admin user must be logged-in in order to pass these tests,
 // and it is done in this beforeAll block
 beforeAll(async () => {
-  browser = await puppeteer.launch({ args: ['--no-sandbox'], headless: false })
+  browser = await puppeteer.launch({ args: ['--no-sandbox'] })
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000
   page = await browser.newPage()
   await page.setViewport({ width: 1280, height: 800 })
