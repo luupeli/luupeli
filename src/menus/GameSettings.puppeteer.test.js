@@ -30,11 +30,8 @@ afterAll(async () => {
 describe('GameSettings tests', () => {
 	test('page renders', async () => {
 		await page.waitForSelector('#luupeliinButton')
-		console.log("screenshot 1")
 		await page.screenshot({ path: 'gameSettings.png' })
-		console.log("waiting for #App to be found")
 		const textContent = await page.$eval('#App', el => el.textContent)
-		console.log("screenshot 2")
 		await page.screenshot({ path: 'gameSettings2.png' })
 		await page.waitFor(500)
 		expect(textContent.includes("Koira")).toBe(true)

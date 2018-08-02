@@ -123,7 +123,7 @@ describe('BoneListing tests', () => {
     expect(boneName.includes(nameLatinField)).toBe(true)
   }, 20000)
   
-  /*test('Page renders fetched bones', async () => {
+  test('Page renders fetched bones', async () => {
 		//Allow request interception
 		await page.setRequestInterception(true)
 		
@@ -147,8 +147,7 @@ describe('BoneListing tests', () => {
 	
 	//Re-navigate to listing page to re-fire the get-request for bones
 	await page.goto('http://localhost:' + port)
-	await page.goto('http://localhost:3000' + port + '/listing')
-	
+	await page.goto('http://localhost:' + port + '/listing')
 	//Look at bones listed on the page
   await page.waitForSelector('#bone0')
   const textContent1 = await page.$eval('#bone0', el => el.textContent)
@@ -159,5 +158,5 @@ describe('BoneListing tests', () => {
   expect(textContent1.includes("latin1")).toBe(true)
   expect(textContent2.includes("latin2")).toBe(true)
 		
-	}, 20000)*/
+	}, 20000)
 })
