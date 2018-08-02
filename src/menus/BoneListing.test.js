@@ -36,6 +36,10 @@ beforeEach(async () => {
   await page.goto('http://localhost:' + port + '/listing')
 })
 
+afterEach(async () => {
+	await page.removeAllListeners('request')
+})
+
 afterAll(async () => {
   await page.goto('http://localhost:' + port + '/login')
   await page.waitForSelector('#logout-button')
@@ -159,7 +163,8 @@ describe('BoneListing tests', () => {
 		expect(textContent2.includes("latin2")).toBe(false)
 		
 	}, 20000)
-	/* Unfinished
+	
+	
 	test('Bones can be filtered by animal', async () => {
 		//Allow request interception, set a handler to handle intercepted requests
 		await page.setRequestInterception(true)
@@ -174,10 +179,10 @@ describe('BoneListing tests', () => {
 		await page.click('#animal0')
 		const textContent1 = await page.$eval('#bones', el => el.textContent)
 
-		//Listing should only contain bones with names matching the search criteria
+		//Listing should only contain bones with animals matching the search criteria
 		expect(textContent1.toLowerCase().includes(animalName.toLowerCase())).toBe(true)
 		
-	}, 20000)*/
+	}, 20000)
 	
 	async function setResponseHandler(mockResponse) {
 		page.on('request', request => {
