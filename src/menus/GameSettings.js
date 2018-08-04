@@ -46,7 +46,7 @@ class GameSettings extends React.Component {
 		animalService.getAll()  // here we fill the allAnimals array and connect selected-attribute for each row 
 			.then(response => {
 				const animals = response.data.map(animal => {
-					return { ...animal, selected: false }
+					return { ...animal, selected: true }
 				})
 				/*
 				Here we try to fetch emojis for the animals.
@@ -81,7 +81,7 @@ class GameSettings extends React.Component {
 		bodyPartService.getAll()    // here we fill the allBodyParts array and connect selected-attribute for each row 
 			.then(response => {
 				const bodyParts = response.data.map(bodyPart => {
-					return { ...bodyPart, selected: false }
+					return { ...bodyPart, selected: true }
 				})
 				this.setState({ allBodyParts: bodyParts })
 			})
@@ -183,7 +183,7 @@ class GameSettings extends React.Component {
 		pics = pics.filter(image => {
 			const bodyPartIds = chosenBodyParts.map(chosenBodyPart => chosenBodyPart.id)
 			return bodyPartIds.includes(image.bone.bodyPart)
-    })
+		})		
 		console.log(pics)
 
 		// If criteria doesn't fulfill the game won't launch
@@ -236,12 +236,12 @@ class GameSettings extends React.Component {
 
 		// Creating an animal menu
 		const selectAnimal = this.state.allAnimals.map((animal, i) => {
-			return <label className="checkbox-inline"><input type="checkbox" id={"animal" + i} onClick={this.changeAnimal.bind(this, i)}></input>{animal.emoji}{animal.name}</label>
+			return <label className="checkbox-inline"><input type="checkbox" id={"animal" + i} defaultChecked onClick={this.changeAnimal.bind(this, i)}></input>{animal.emoji}{animal.name}</label>
 		})
 
 		// Creating a body part menu
 		const selectBodyPart = this.state.allBodyParts.map((bodyPart, i) => {
-			return <label className="checkbox-inline"><input type="checkbox" id={"bodyPart" + i} onClick={this.toggleCheck.bind(this, i)}></input>{bodyPart.name}</label>
+			return <label className="checkbox-inline"><input type="checkbox" id={"bodyPart" + i} defaultChecked onClick={this.toggleCheck.bind(this, i)}></input>{bodyPart.name}</label>
 		})
 
 		// As a general note about using forms w/ NodeJS... A single grouping of radio buttons (single choice) is identified by identical "name" parameter. Separate values within such a grouping are marked with distinct "value" parameters.
@@ -249,7 +249,7 @@ class GameSettings extends React.Component {
 			<div className={this.state.allStyles[i].overlay}>
 				<div className={this.state.allStyles[i].background}>
 					<div className={this.state.allStyles[i].style}>
-						<div id="App" className="App">
+						<div id="App" className="App menu">
 							<div
 								className={this.state.allStyles[i].flairLayerA}>
 							</div>
@@ -294,7 +294,6 @@ class GameSettings extends React.Component {
 													value="3"
 													onClick={this.changeGameLength.bind(this)}
 													name="length"
-													defaultChecked
 												/>
 												3
 											</label>
@@ -305,6 +304,7 @@ class GameSettings extends React.Component {
 													value="5"
 													onClick={this.changeGameLength.bind(this)}
 													name="length"
+													defaultChecked
 												/>
 												5
 											</label>
@@ -331,9 +331,8 @@ class GameSettings extends React.Component {
 													id="gameEasy"
 													value="easy"
 													name="difficultylevel"
-													defaultChecked
 												/>
-												Helppo
+												Luupää (helppo)
 											</label>
 											<label className="radio-inline">
 												<input
@@ -341,8 +340,9 @@ class GameSettings extends React.Component {
 													id="gameMedium"
 													value="medium"
 													name="difficultylevel"
+													defaultChecked
 												/>
-												Keskivaikea
+												Normaali
 											</label>
 											<label className="radio-inline">
 												<input
@@ -351,7 +351,7 @@ class GameSettings extends React.Component {
 													value="hard"
 													name="difficultylevel"
 												/>
-												Vaikea
+												Luunkova (vaikea)
 											</label>
 										</form>
 										<div className="btn-group wide settingspage GameButton">

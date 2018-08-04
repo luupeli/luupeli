@@ -35,13 +35,11 @@ class GameLoop extends React.Component {
             currentScoreFlashCutOff: 0,
             currentScoreFlashVisibility: false,
             allStyles: JSON.parse(localStorage.getItem("allStyles")),
-            styleIndex: localStorage.getItem('styleIndex'),
-            allAnimals: [],
-            allBodyParts: []
-          }
-          this.postGameSession = this.postGameSession.bind(this)
-        };
-    
+            styleIndex: localStorage.getItem('styleIndex')
+        }
+        this.postGameSession = this.postGameSession.bind(this)
+    };
+
 
 
     /**
@@ -72,87 +70,31 @@ class GameLoop extends React.Component {
     }
 
     componentDidMount() {
-      const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
-      if (loggedUserJSON) {
-        const user = JSON.parse(loggedUserJSON)
-        this.setState({ user })
-      }
-      animalService.getAll()
-        .then(response => {
-          console.log(response)
-          console.log(response.data)
-          this.setState({allAnimals : response.data})
-      })
-
-      bodyPartService.getAll()
-        .then(response => {
-          this.setState({allBodyParts : response.data})
-      })
+        const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
+        if (loggedUserJSON) {
+            const user = JSON.parse(loggedUserJSON)
+            this.setState({ user })
+        }
     }
 
     postGameSession() {
-
-      let animalsPosted = []
-      let bodyPartsPosted = []
-
-      let faultyAnimals = this.props.game.animals
-      let faultyBodyParts = this.props.game.bodyparts
-      console.log (faultyAnimals)
-
-      // allAnimals.forEach(function(animal) {
-      //   this.props.game.animals.forEach(function(animal2) {
-      //     if (animal.id === animal2.id) {
-      //       animalsPosted.push(animal)
-      //     }
-      //   })
-      // })
-
-      // allBodyParts.forEach(function(bodyPart) {
-      //   this.props.game.bodyparts.forEach(function(bodyPart2) {
-      //     console.log(bodyPart)
-      //     if (bodyPart.id === bodyPart2.id) {
-      //       bodyPartsPosted.push(bodyPart)
-      //     }
-      //   })
-      // })
-
-      for (let animal of this.state.allAnimals) {
-        for (let animal2 of faultyAnimals) {
-          if (animal.id === animal2.id) {
-            animalsPosted.push(animal)
-          }
-        }
-      }
-
-      for (let bodyPart of this.state.allBodyParts) {
-        for (let bodyPart2 of faultyBodyParts) {
-          console.log(bodyPart)
-          console.log(bodyPart2)
-          if (bodyPart.id === bodyPart2.id) {
-            bodyPartsPosted.push(bodyPart)
-          }
-        }
-      }
-
-      console.log(animalsPosted)
-      console.log(bodyPartsPosted)
-    
-      gameSessionService.create({
-        user: this.state.user.username,
-        mode: this.props.game.gamemode,
-        length: this.props.game.gameLength,
-        difficulty: this.props.game.difficulty,
-        animals: animalsPosted,
-        bodyparts: bodyPartsPosted,
-        correctAnswerCount: this.props.game.answers.filter(ans => ans.correctness === 100).length,
-        almostCorrectAnswerCount: this.props.game.answers.filter(ans => ans.correctness > 70 && ans.correctness < 100).length
-      })
-        .then((response) => {
-          console.log(response)
+        console.log(this.state.user)
+        gameSessionService.create({
+            user: this.state.user.id,
+            mode: this.props.game.gamemode,
+            length: this.props.game.gameLength,
+            difficulty: this.props.game.difficulty,
+            animals: this.props.game.animals.map(animal => animal.id),
+            bodyparts: this.props.game.bodyparts.map(bodypart => bodypart.id),
+            correctAnswerCount: this.props.game.answers.filter(ans => ans.correctness === 100).length,
+            almostCorrectAnswerCount: this.props.game.answers.filter(ans => ans.correctness > 70 && ans.correctness < 100).length
         })
-        .catch((error) => {
-          console.log(error)
-        })
+            .then((response) => {
+                console.log(response)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
     /**
      * Method for rendering the Gameloop page header (containing ProgressBar)
@@ -177,8 +119,8 @@ class GameLoop extends React.Component {
         return (
             <div>
                 <div>
-                    <div className="container">
-                        <div className="row">
+                    {/* <div className="container"> */}
+                        {/* <div className="row"> */}
                             <div className="col-md-6 col-md-offset-3">
                                 <ProgressBar label={`moi`}>
                                     {progressBar}
@@ -187,8 +129,8 @@ class GameLoop extends React.Component {
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                // </div>
+            // </div>
         )
     }
 
@@ -217,12 +159,6 @@ class GameLoop extends React.Component {
                 }
             }
         }
-
-        else if (this.props.game.gamemode === 'kirjoituspeli') {
-            return (
-                <WritingGame />
-            )
-        }
     }
 
     /**
@@ -240,14 +176,14 @@ class GameLoop extends React.Component {
 		  }
         }`
 
-        if (this.props.game.endCounter === 0) {
+        if (this.props.game.endCounter < 1) {
             setTimeout(function () {
                 this.setState({ redirectToEndPage: true })
             }.bind(this), 3500)
             if (this.state.redirectToEndPage) {
-              if (this.state.user !== null) {
-                this.postGameSession()
-              }
+                if (this.state.user !== null) {
+                    this.postGameSession()
+                }
                 return (
                     <Redirect to={{
                         pathname: "/endscreen"
@@ -256,6 +192,10 @@ class GameLoop extends React.Component {
             }
         }
 
+        const scoreActual = this.props.scoreflash.score
+        const durationOfScoreRise = Math.min(30, (scoreActual / 10) + 5)
+        let scoreShown = this.props.game.totalScore - scoreActual + Math.min(scoreActual, Math.round(scoreActual * (this.props.game.gameClock / durationOfScoreRise)))
+
         return (
 
 
@@ -263,40 +203,55 @@ class GameLoop extends React.Component {
                 <div className={this.state.allStyles[i].background}>
                     <div className={this.state.allStyles[i].style}>
                         <div id="App" className="App">
-                            <div
-                                className={this.state.allStyles[i].flairLayerA}>
-                            </div>
-                            <div
-                                className={this.state.allStyles[i].flairLayerB}>
-                            </div>
-                            <div
-                                className={this.state.allStyles[i].flairLayerC}>
-                            </div>
-                            <div
-                                className={this.state.allStyles[i].flairLayerD}>
-                            </div>
-                            <div className="transbox">
-                                {this.topPage()}
-
-                                <div className="ffdual-layout">
-
-                                    {/* <div className="container"> */}
-                                    <div>
-                                        <ScoreFlash ref={instance => this.wgmessage = instance} />
-                                    </div>
-                                    <div>
-                                        <Message />
-                                    </div>
-                                    {this.gameLoop()}
-
-                                    {/* </div> */}
-
+                            <div id="App" className="gameplay">
+                                <div
+                                    className={this.state.allStyles[i].flairLayerA}>
                                 </div>
+                                <div
+                                    className={this.state.allStyles[i].flairLayerB}>
+                                </div>
+                                <div
+                                    className={this.state.allStyles[i].flairLayerC}>
+                                </div>
+                                <div
+                                    className={this.state.allStyles[i].flairLayerD}>
+                                </div>
+                                <div className="transbox">
+
+                                    <div className="game-mainview">
+
+                                        <div>
+                                            <ScoreFlash ref={instance => this.wgmessage = instance} />
+                                        </div>
+
+                                        {this.gameLoop()}
+
+                                    </div>
+                                    <div className="game-score">
+                                        <div className="btn-group">
+                                            <div classNAme="gobackbutton">
+                                                <h3>SCORE {scoreShown}</h3>
+                                            </div>
+
+                                        </div>
+                                        {/* <div className="game-info"> */}
+                                        {this.topPage()}
+                                    {/* </div> */}
+                                    </div>
+                                    </div>
+                                    
+                                    
+                                    
+                                    </div>
+
+
+                                
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            
+            
 
         );
     }
