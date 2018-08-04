@@ -1,5 +1,5 @@
 import React from 'react'
-import userService from '../services/users'
+import userService from '../../services/users'
 import { Link, Redirect } from 'react-router-dom'
 import { Row, Col } from 'react-bootstrap'
 

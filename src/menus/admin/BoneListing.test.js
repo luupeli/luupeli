@@ -1,4 +1,4 @@
-import responseMocks from '../helpers/ResponseMocks'
+import responseMocks from '../../helpers/ResponseMocks'
 const puppeteer = require('puppeteer')
 require('dotenv').config()
 
