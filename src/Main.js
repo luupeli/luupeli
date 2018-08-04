@@ -12,6 +12,7 @@ import UpdateBone from './menus/UpdateBone'
 import Login from './menus/Login'
 import Register from './menus/Register'
 import Admin from './menus/Admin'
+import Statistics from './menus/Statistics'
 import NavBar from './menus/NavBar'
 import { BrowserRouter } from 'react-router-dom'
 import { init } from './reducers/initializeRecuder'
@@ -19,9 +20,9 @@ import { connect } from 'react-redux'
 
 class Main extends React.Component {
 
-componentDidMount() {
-  this.props.init()
-}
+  componentDidMount() {
+    this.props.init()
+  }
 
   render() {
     return (
@@ -69,6 +70,9 @@ componentDidMount() {
               <Route exact path="/admin" render={({ location, history }) => {
                 return <Admin location={location} history={history} />
               }} />
+              <Route exact path="/statistics" render={({ location, history }) => {
+                return <Statistics location={location} history={history} />
+              }} />
             </div>
           </BrowserRouter>
         </main>
@@ -78,11 +82,11 @@ componentDidMount() {
 }
 
 const mapDispatchToProps = {
-	init
+  init
 }
 
 const ConnectedMain = connect(
-	null,
-	mapDispatchToProps
+  null,
+  mapDispatchToProps
 )(Main)
 export default ConnectedMain
