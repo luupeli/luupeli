@@ -362,7 +362,7 @@ class GameSettings extends React.Component {
 							</div>
 						</div>
 						<div className="btn-group">
-							<button className="gobackbutton"><Link to='/'>Takaisin</Link></button>
+							<button className="gobackbutton"><Link to='/gamemode'>Takaisin</Link></button>
 						</div>
 					</div>
 				</div>
