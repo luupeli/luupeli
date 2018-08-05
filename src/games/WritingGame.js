@@ -55,7 +55,7 @@ class WritingGame extends React.Component {
     if (this.checkCorrectness() > 99) {
       points = points * 5
       correctness = 'Oikein'
-      this.setState({ streakWG: currentStreak + 1, bonus: currentBonus + 0.5 })
+      this.setState({ streakWG: currentStreak + 1, bonus: currentBonus + 1.0 })
       streakNote = currentBonus + 'x!'
       if (currentBonus < 1.5) {
         streakNote = ''
@@ -135,8 +135,8 @@ class WritingGame extends React.Component {
         document.documentElement.offsetWidth,
         document.documentElement.clientWidth
       )
-      if (windowWidth > 400) {
-        return 600
+      if (windowWidth > 1000) {
+        return 1000
       }
       return windowWidth - 40
     }
@@ -153,8 +153,8 @@ class WritingGame extends React.Component {
           <div className="intro">
             <CloudinaryContext cloudName="luupeli">
               <div className="height-restricted">
-                <Image id="bone-image" publicId={this.props.game.currentImage.url}>
-                  <Transformation width={imageWidth()} crop="fill" radius="20" />
+                <Image id="bone-image" publicId={this.props.game.currentImage.url+".png"}>
+                  <Transformation width={imageWidth()} crop="fill" format="png" radius="20" />
                 </Image>
               </div>
             </CloudinaryContext>
@@ -167,7 +167,7 @@ class WritingGame extends React.Component {
         </div>
         <div className="container">
           <div className="col-md-6 col-md-offset-3" id="info">
-            <h5>Vastausaikaa kulunut {Math.round(this.props.game.gameClock / 20, 1)}</h5>
+            
             <p>{this.props.game.currentImage.bone.description}</p>
             <p>Tätä kuvaa on yritetty {attempts} kertaa, niistä {correctAttempts} oikein. Oikeita vastauksia: {correctPercentile} % kaikista yrityksistä.</p>
             <p>(Oikea vastaus: {this.props.game.currentImage.bone.nameLatin})</p>
@@ -178,13 +178,13 @@ class WritingGame extends React.Component {
             <div className="intro" />
             <form
               className="input"
-              class="form-inline"
+              className="form-inline"
               id='gameForm'
               onSubmit={this.handleSubmit}
             >
               <div className="form-groupbd">
                 <input
-                  class="form-control"
+                  className="form-control"
                   id="gameTextInput"
                   type="text"
                   value={this.state.value}

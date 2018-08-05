@@ -116,7 +116,12 @@ class ImageMultipleChoiceGame extends React.Component {
     })
 
     choices = wrongs.concat(choices)
-
+    
+    if (this.props.game.gameClock<5) {
+    var shuffle = require('shuffle-array')
+    shuffle(choices, {'rng': this.props.game.totalscore+100})
+    }
+    
     if (this.state.value === '' || this.state.value === undefined) {
       return (
         <Row className="show-grid">
@@ -125,7 +130,7 @@ class ImageMultipleChoiceGame extends React.Component {
               <Col xs={12} md={6}>
                 <div className="height-restricted">
                   <CloudinaryContext cloudName="luupeli">
-                    <Image publicId={choice.url} onClick={() => this.handleSubmit(choice)}>
+                    <Image publicId={choice.url+".png"} onClick={() => this.handleSubmit(choice)}>
                       <Transformation background="#000000" height="250" width="350" crop="lpad" radius="20" />
                     </Image>
                   </CloudinaryContext>
@@ -143,7 +148,7 @@ class ImageMultipleChoiceGame extends React.Component {
             <Col xs={12} md={6}>
               <div className="height-restricted">
                 <CloudinaryContext cloudName="luupeli">
-                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
+                  <Image publicId={choice.url+".png"} value={choice.bone.nameLatin}>
                     <Transformation border="15px_solid_rgb:29ae00" background="#000000" height="235" width="335" crop="lpad" radius="20" />
                   </Image>
                 </CloudinaryContext>
@@ -155,7 +160,7 @@ class ImageMultipleChoiceGame extends React.Component {
             <Col xs={12} md={6}>
               <div className="height-restricted">
                 <CloudinaryContext cloudName="luupeli">
-                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
+                  <Image publicId={choice.url+".png"} value={choice.bone.nameLatin}>
                     <Transformation background="#000000" height="250" width="350" crop="lpad" radius="20" />
                   </Image>
                 </CloudinaryContext>
@@ -171,7 +176,7 @@ class ImageMultipleChoiceGame extends React.Component {
             <Col xs={12} md={6}>
               <div className="height-restricted">
                 <CloudinaryContext cloudName="luupeli">
-                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
+                  <Image publicId={choice.url+".png"} value={choice.bone.nameLatin}>
                     <Transformation border="15px_solid_rgb:29ae00" background="#000000" height="235" width="335" crop="lpad" radius="20" />
                   </Image>
                 </CloudinaryContext>
@@ -183,7 +188,7 @@ class ImageMultipleChoiceGame extends React.Component {
             <Col xs={12} md={6}>
               <div className="height-restricted">
                 <CloudinaryContext cloudName="luupeli">
-                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
+                  <Image publicId={choice.url+".png"} value={choice.bone.nameLatin}>
                     <Transformation border="15px_solid_rgb:ae0f0f" background="#000000" height="235" width="335" crop="lpad" radius="20" />
                   </Image>
                 </CloudinaryContext>
@@ -195,7 +200,7 @@ class ImageMultipleChoiceGame extends React.Component {
             <Col xs={12} md={6}>
               <div className="height-restricted">
                 <CloudinaryContext cloudName="luupeli">
-                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
+                  <Image publicId={choice.url+".png"} value={choice.bone.nameLatin}>
                     <Transformation background="#000000" height="250" width="350" crop="lpad" radius="20" />
                   </Image>
                 </CloudinaryContext>
@@ -218,9 +223,9 @@ class ImageMultipleChoiceGame extends React.Component {
           <div z-index="3" position="absolute">
             {this.answerButtons()}
           </div>
-          <div className="col-md-6 col-md-offset-3" id="info">
+          {/* <div className="col-md-6 col-md-offset-3" id="info">
             <h6>Vastausaikaa kulunut {Math.round(this.state.seconds / 10, 1)}</h6>
-          </div>
+          </div> */}
         </div>
       </div>
     )

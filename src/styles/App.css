@@ -479,7 +479,7 @@ div.transbox {
     filter: alpha(opacity=80); 
     max-height: 100%;
     overflow: hidden;
-    border: 2px solid var(--primary);
+    border: 5px solid var(--primary);
   
 }
 .gameplay .transbox {

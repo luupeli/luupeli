@@ -12,6 +12,7 @@ import gameSessionService from '../services/gameSessions'
 import bodyPartService from '../services/bodyParts'
 import animalService from '../services/animals'
 import { injectGlobal } from 'styled-components'
+import Sound from 'react-sound';
 /**
  * Gameloop is the parent component for 'hosting' different game modes of Luupeli.
  * Currently, two different game modes are supported.
@@ -28,6 +29,7 @@ class GameLoop extends React.Component {
             scoreSeconds: 0,
             streak: 0,
             bonus: 1.0,
+            introMusicHasFinished: false,
             currentScore: 0,
             currentScoreFlash: '',
             currentScoreFlashStyle: '',
@@ -38,6 +40,7 @@ class GameLoop extends React.Component {
             styleIndex: localStorage.getItem('styleIndex')
         }
         this.postGameSession = this.postGameSession.bind(this)
+        this.handleSongFinishedPlaying = this.handleSongFinishedPlaying.bind(this)
     };
 
 
@@ -96,6 +99,58 @@ class GameLoop extends React.Component {
                 console.log(error)
             })
     }
+
+    handleSongFinishedPlaying() {
+        this.setState({introMusicHasFinished:true})
+        
+    }
+
+handleSound() {
+    if (!this.state.introMusicHasFinished && this.props.game.gameLength===this.props.game.endCounter) {
+        return (
+				
+			<Sound
+			url="/sounds/393385__fred1712__chiptune-intro-1.wav"
+				playStatus={Sound.status.PLAYING}
+				// playFromPosition={0 /* in milliseconds */}
+				onLoading={this.handleSongLoading}
+				onPlaying={this.handleSongPlaying}
+				onFinishedPlaying={this.handleSongFinishedPlaying}
+			  />
+            )
+        }
+        if (this.props.game.gameLength>this.props.game.endCounter) {
+
+        
+     if (this.props.game.answers[this.props.game.gameLength-(this.props.game.endCounter+1)].score>0 && this.props.game.gameClock<36) {
+        return (
+				
+			<Sound
+			url="/sounds/391540__mativve__electro-success-sound.wav"
+				playStatus={Sound.status.PLAYING}
+				// playFromPosition={0 /* in milliseconds */}
+				onLoading={this.handleSongLoading}
+				onPlaying={this.handleSongPlaying}
+				onFinishedPlaying={this.handleSongFinishedPlaying}
+			  />
+			)
+    } else if (this.props.game.answers[this.props.game.gameLength-(this.props.game.endCounter+1)].score===0 && this.props.game.gameClock<6) {
+        return (
+				
+			<Sound
+			url="/sounds/142608__autistic-lucario__error.wav"
+				playStatus={Sound.status.PLAYING}
+				// playFromPosition={0 /* in milliseconds */}
+				onLoading={this.handleSongLoading}
+				onPlaying={this.handleSongPlaying}
+				onFinishedPlaying={this.handleSongFinishedPlaying}
+			  />
+			)
+    }
+}
+    
+}
+
     /**
      * Method for rendering the Gameloop page header (containing ProgressBar)
      */
@@ -197,12 +252,13 @@ class GameLoop extends React.Component {
         let scoreShown = this.props.game.totalScore - scoreActual + Math.min(scoreActual, Math.round(scoreActual * (this.props.game.gameClock / durationOfScoreRise)))
 
         return (
-
-
+            
+            
             <div className={this.state.allStyles[i].overlay}>
                 <div className={this.state.allStyles[i].background}>
                     <div className={this.state.allStyles[i].style}>
                         <div id="App" className="App">
+                        {this.handleSound()}
                             <div id="App" className="gameplay">
                                 <div
                                     className={this.state.allStyles[i].flairLayerA}>
@@ -223,19 +279,20 @@ class GameLoop extends React.Component {
                                         <div>
                                             <ScoreFlash ref={instance => this.wgmessage = instance} />
                                         </div>
-
                                         {this.gameLoop()}
 
                                     </div>
                                     <div className="game-score">
-                                        <div className="btn-group">
-                                            <div classNAme="gobackbutton">
+                                        {/* <div className="btn-group">
+                                            <div className="gobackbutton"> */}
                                                 <h3>SCORE {scoreShown}</h3>
-                                            </div>
+                                                <h5>TIME {Math.round(this.props.game.gameClock / 20, 1)}</h5>
+                                            {/* </div>
 
-                                        </div>
+                                        </div> */}
                                         {/* <div className="game-info"> */}
                                         {this.topPage()}
+                                        
                                     {/* </div> */}
                                     </div>
                                     </div>
