@@ -34,6 +34,6 @@ describe('GameSettings tests', () => {
 		const textContent = await page.$eval('#App', el => el.textContent)
 		await page.screenshot({ path: 'gameSettings2.png' })
 		await page.waitFor(500)
-		expect(textContent.includes("Koira")).toBe(true)
+		expect(textContent.toLowerCase().trim().includes("ca")).toBe(true)
 	}, 30000)
 })

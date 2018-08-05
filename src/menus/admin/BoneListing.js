@@ -32,8 +32,6 @@ class BoneListing extends React.Component {
 	componentDidMount() {
 		boneService.getAll()
 			.then((response) => {
-				console.log("bone response:")
-				console.log(response)
 				this.setState({ bones: response.data })
 			})
 			.catch((error) => {
@@ -53,8 +51,8 @@ class BoneListing extends React.Component {
 	}
 
 	handleAnimalChange(event) {
-		console.log(event.target.children[0].value)
 		let animals = this.state.selectedAnimals
+		console.log(animals)
 		if (animals.includes(event.target.children[0].value)) {
 			animals = animals.filter(a => a !== event.target.children[0].value)
 		} else {
@@ -78,7 +76,6 @@ class BoneListing extends React.Component {
 	}
 	
 	boneAnimalsToString(bone) {
-		console.log(bone)
 		var animalsString = ""
 		bone.animals.forEach((animal, i) => {
 			if (i === 0) {
@@ -110,8 +107,8 @@ class BoneListing extends React.Component {
 
 		// Filter by animals
 		if (this.state.selectedAnimals.length > 0) {
-			//bonesToShow = bonesToShow.filter(bone => bone.images.some(img => this.state.selectedAnimals.includes(img.animal)))
-			bonesToShow = bonesToShow.filter(bone => bone.animals.some(animal => this.state.selectedAnimals.includes(animal._id)))
+			bonesToShow = bonesToShow.filter(bone => bone.images.some(img => this.state.selectedAnimals.includes(img.animal)))
+			//bonesToShow = bonesToShow.filter(bone => bone.animals.some(animal => this.state.selectedAnimals.includes(animal._id)))
 		}
 
 		// Filter by search attribute (latin names and finnish name)

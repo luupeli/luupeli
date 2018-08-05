@@ -42,6 +42,7 @@ afterAll(async () => {
 	await page.goto('http://localhost:' + port + '/login')
 	await page.waitForSelector('#logout-button')
 	await page.click('#logout-button')
+	await page.close()
 	await browser.close()
 })
 
