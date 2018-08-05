@@ -1022,3 +1022,14 @@ https://codepen.io/George-Payne/pen/qOrxao
   max-height: 500px;
   position: fixed;
 }
+
+#error-message {
+  display:inline-block;
+  text-decoration:inherit;
+  margin-right:.2em;
+  text-align:center;
+  font-variant:normal;
+  text-transform:none;
+  line-height:1em;
+  margin-left:.2em;
+}
