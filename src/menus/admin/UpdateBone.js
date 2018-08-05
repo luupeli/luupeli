@@ -1,12 +1,12 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import boneService from '../services/bones'
-import imageService from '../services/images'
-import Message from '../games/Message'
+import boneService from '../../services/bones'
+import imageService from '../../services/images'
+import Message from '../../games/Message'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
 import { Grid, Row, Col, FormGroup, ControlLabel, FormControl, Label } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { setMessage } from '../reducers/messageReducer'
+import { setMessage } from '../../reducers/messageReducer'
 
 class UpdateBone extends React.Component {
 	constructor(props) {

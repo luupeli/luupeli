@@ -1,7 +1,7 @@
 import React from 'react'
-import usersService from '../services/users'
+import usersService from '../../services/users'
 import { Link } from 'react-router-dom'
-import '../styles/App.css'
+import '../../styles/App.css'
 
 class Register extends React.Component {
 	constructor(props) {

@@ -1,7 +1,7 @@
 import React from 'react'
-import loginService from '../services/login'
+import loginService from '../../services/login'
 import { Link } from 'react-router-dom'
-import '../styles/App.css'
+import '../../styles/App.css'
 
 class Login extends React.Component {
   constructor(props) {
