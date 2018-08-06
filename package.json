@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "codecov": "^3.0.4",
+    "cross-env": "^5.2.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "istanbul": "^0.4.5",

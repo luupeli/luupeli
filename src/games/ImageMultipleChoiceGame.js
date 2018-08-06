@@ -117,21 +117,21 @@ class ImageMultipleChoiceGame extends React.Component {
 
     choices = wrongs.concat(choices)
     
-    if (this.props.game.gameClock<5) {
-    var shuffle = require('shuffle-array')
-    shuffle(choices, {'rng': this.props.game.totalscore+100})
-    }
-    
+    // if (this.props.game.gameClock<5) {
+    // var shuffle = require('shuffle-array')
+    // shuffle(choices, {'rng': this.props.game.totalscore+100})
+    // }
+
     if (this.state.value === '' || this.state.value === undefined) {
       return (
         <Row className="show-grid">
           {choices.map(choice => {
             return (
               <Col xs={12} md={6}>
-                <div className="height-restricted">
+                <div className="multi-height-restricted">
                   <CloudinaryContext cloudName="luupeli">
-                    <Image publicId={choice.url+".png"} onClick={() => this.handleSubmit(choice)}>
-                      <Transformation background="#000000" height="250" width="350" crop="lpad" radius="20" />
+                    <Image publicId={choice.url} onClick={() => this.handleSubmit(choice)}>
+                      <Transformation background="#000000" height="250" width="350" crop="lpad"  />
                     </Image>
                   </CloudinaryContext>
                 </div>
@@ -146,9 +146,9 @@ class ImageMultipleChoiceGame extends React.Component {
         if (choice.correct) {
           return (
             <Col xs={12} md={6}>
-              <div className="height-restricted">
+              <div className="multi-height-restricted">
                 <CloudinaryContext cloudName="luupeli">
-                  <Image publicId={choice.url+".png"} value={choice.bone.nameLatin}>
+                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
                     <Transformation border="15px_solid_rgb:29ae00" background="#000000" height="235" width="335" crop="lpad" radius="20" />
                   </Image>
                 </CloudinaryContext>
@@ -158,9 +158,9 @@ class ImageMultipleChoiceGame extends React.Component {
         } else {
           return (
             <Col xs={12} md={6}>
-              <div className="height-restricted">
+              <div className="multi-height-restricted">
                 <CloudinaryContext cloudName="luupeli">
-                  <Image publicId={choice.url+".png"} value={choice.bone.nameLatin}>
+                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
                     <Transformation background="#000000" height="250" width="350" crop="lpad" radius="20" />
                   </Image>
                 </CloudinaryContext>
@@ -174,9 +174,9 @@ class ImageMultipleChoiceGame extends React.Component {
         if (choice.correct) {
           return (
             <Col xs={12} md={6}>
-              <div className="height-restricted">
+              <div className="multi-height-restricted">
                 <CloudinaryContext cloudName="luupeli">
-                  <Image publicId={choice.url+".png"} value={choice.bone.nameLatin}>
+                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
                     <Transformation border="15px_solid_rgb:29ae00" background="#000000" height="235" width="335" crop="lpad" radius="20" />
                   </Image>
                 </CloudinaryContext>
@@ -186,9 +186,9 @@ class ImageMultipleChoiceGame extends React.Component {
         } else if (this.state.value.id === choice.id) {
           return (
             <Col xs={12} md={6}>
-              <div className="height-restricted">
+              <div className="multi-height-restricted">
                 <CloudinaryContext cloudName="luupeli">
-                  <Image publicId={choice.url+".png"} value={choice.bone.nameLatin}>
+                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
                     <Transformation border="15px_solid_rgb:ae0f0f" background="#000000" height="235" width="335" crop="lpad" radius="20" />
                   </Image>
                 </CloudinaryContext>
@@ -198,9 +198,9 @@ class ImageMultipleChoiceGame extends React.Component {
         } else {
           return (
             <Col xs={12} md={6}>
-              <div className="height-restricted">
+              <div className="multi-height-restricted">
                 <CloudinaryContext cloudName="luupeli">
-                  <Image publicId={choice.url+".png"} value={choice.bone.nameLatin}>
+                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
                     <Transformation background="#000000" height="250" width="350" crop="lpad" radius="20" />
                   </Image>
                 </CloudinaryContext>
@@ -214,13 +214,13 @@ class ImageMultipleChoiceGame extends React.Component {
 
   render() {
     return (
-      <div className="bottom" z-index="3" position="absolute">
-        <div className="intro" z-index="3" position="absolute">
+      <div className="bottom" z-index="3" position="relative">
+        <div className="intro" z-index="3" position="relative">
           <h2>{this.props.game.currentImage.bone.nameLatin}, {this.props.game.currentImage.animal.name}</h2>
           <p>(klikkaa oikeaa kuvaa!)</p>
         </div>
-        <div className="container" z-index="3" position="absolute">
-          <div z-index="3" position="absolute">
+        <div className="container" z-index="3" position="relative">
+          <div z-index="3" position="relative">
             {this.answerButtons()}
           </div>
           {/* <div className="col-md-6 col-md-offset-3" id="info">

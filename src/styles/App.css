@@ -1091,6 +1091,23 @@ https://codepen.io/George-Payne/pen/qOrxao
   max-height: var(--image-height-restriction);/*50vh;*/
   max-width: 95%;
 }
+
+.multi-height-restricted {
+  height: 15vh;
+  width: 33vw;
+  flex-grow: 1; 
+  flex-wrap: wrap;
+
+}
+
+.multi-height-restricted img {
+  height: 20vh;
+  max-width: 33vw;
+  /* width: 33vw; */
+  flex-grow: 1; 
+  flex-wrap: wrap;
+}
+
 .gamepix img {
   max-height: 500px;
   position: fixed;
