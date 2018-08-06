@@ -31,3 +31,29 @@
 #info {
     text-align: center;
 }
+
+.listStyle {
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.labelStyle {
+    color: white;
+    background-color: #330066;
+}
+
+.titleStyle {
+    margin-bottom: 0px;
+    text-align: left;
+}
+.luunTiedot {
+    margin-top: 15px;
+    text-align: left;
+}
+
+.imgStyle {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 15px;
+}

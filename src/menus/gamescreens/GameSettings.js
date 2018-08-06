@@ -1,13 +1,13 @@
 import React from 'react'
 import { Redirect, Link } from 'react-router-dom'
-import Message from '../games/Message'
-import imageService from '../services/images'
-import bodyPartService from '../services/bodyParts'
-import animalService from '../services/animals'
+import Message from '../../games/Message'
+import imageService from '../../services/images'
+import bodyPartService from '../../services/bodyParts'
+import animalService from '../../services/animals'
 import { injectGlobal } from 'styled-components'
-import { gameInitialization } from '../reducers/gameReducer'
+import { gameInitialization } from '../../reducers/gameReducer'
 import { connect } from 'react-redux'
-import { setMessage } from '../reducers/messageReducer'
+import { setMessage } from '../../reducers/messageReducer'
 import emoji from 'node-emoji'
 
 /**
@@ -32,7 +32,9 @@ class GameSettings extends React.Component {
 			images: [],			   // used to store an array of images which meet the selection criteria
 			allStyles: JSON.parse(localStorage.getItem("allStyles")),
 			styleIndex: localStorage.getItem('styleIndex'),
-			user: null
+      user: null,
+      animals: [],
+      bodyParts: []
 		}
 
 		this.changeAnimal = this.changeAnimal.bind(this)
@@ -44,7 +46,7 @@ class GameSettings extends React.Component {
 		animalService.getAll()  // here we fill the allAnimals array and connect selected-attribute for each row 
 			.then(response => {
 				const animals = response.data.map(animal => {
-					return { ...animal, selected: false }
+					return { ...animal, selected: true }
 				})
 				/*
 				Here we try to fetch emojis for the animals.
@@ -79,7 +81,7 @@ class GameSettings extends React.Component {
 		bodyPartService.getAll()    // here we fill the allBodyParts array and connect selected-attribute for each row 
 			.then(response => {
 				const bodyParts = response.data.map(bodyPart => {
-					return { ...bodyPart, selected: false }
+					return { ...bodyPart, selected: true }
 				})
 				this.setState({ allBodyParts: bodyParts })
 			})
@@ -155,8 +157,8 @@ class GameSettings extends React.Component {
 	initializeGame() {
 		// Filtering selected animals and body parts
 		let chosenAnimals = this.state.allAnimals.filter(animal => animal.selected === true)
-		let chosenBodyParts = this.state.allBodyParts.filter(bodyPart => bodyPart.selected === true)
-
+    let chosenBodyParts = this.state.allBodyParts.filter(bodyPart => bodyPart.selected === true)
+    
 		console.log(this.state.allAnimals)
 		console.log(chosenAnimals)
 		console.log(chosenBodyParts)
@@ -181,14 +183,23 @@ class GameSettings extends React.Component {
 		pics = pics.filter(image => {
 			const bodyPartIds = chosenBodyParts.map(chosenBodyPart => chosenBodyPart.id)
 			return bodyPartIds.includes(image.bone.bodyPart)
-		})
+		})		
 		console.log(pics)
 
 		// If criteria doesn't fulfill the game won't launch
 		if (pics.length === 0) {
 			this.props.setMessage('Peliä ei voitu luoda halutuilla asetuksilla', 'danger')
 		} else {
-			this.setState({ images: pics })
+      for(let animal of chosenAnimals) {
+        delete animal.emoji
+        delete animal.selected
+      }
+      for (let bodyPart of chosenBodyParts) {
+        delete bodyPart.selected
+      }
+      this.setState({ images: pics })
+      this.setState({ animals : chosenAnimals })
+      this.setState({ bodyParts: chosenBodyParts })
 			this.setState({ redirect: true })
 		}
 		console.log(pics)
@@ -209,7 +220,8 @@ class GameSettings extends React.Component {
 		}`
 
 		if (this.state.redirect) {
-			this.props.gameInitialization(this.state.gameLength, this.state.images, this.state.user, this.props.location.state.gamemode)
+      this.props.gameInitialization(this.state.gameLength, this.state.images, this.state.user, 
+        this.props.location.state.gamemode, this.state.animals, this.state.bodyParts)
 			return (
 				<Redirect to={{
 					pathname: '/game',
@@ -224,12 +236,12 @@ class GameSettings extends React.Component {
 
 		// Creating an animal menu
 		const selectAnimal = this.state.allAnimals.map((animal, i) => {
-			return <label className="checkbox-inline"><input type="checkbox" id={"animal" + i} onClick={this.changeAnimal.bind(this, i)}></input>{animal.emoji}{animal.name}</label>
+			return <label className="checkbox-inline"><input type="checkbox" id={"animal" + i} defaultChecked onClick={this.changeAnimal.bind(this, i)}></input>{animal.emoji}{animal.name}</label>
 		})
 
 		// Creating a body part menu
 		const selectBodyPart = this.state.allBodyParts.map((bodyPart, i) => {
-			return <label className="checkbox-inline"><input type="checkbox" id={"bodyPart" + i} onClick={this.toggleCheck.bind(this, i)}></input>{bodyPart.name}</label>
+			return <label className="checkbox-inline"><input type="checkbox" id={"bodyPart" + i} defaultChecked onClick={this.toggleCheck.bind(this, i)}></input>{bodyPart.name}</label>
 		})
 
 		// As a general note about using forms w/ NodeJS... A single grouping of radio buttons (single choice) is identified by identical "name" parameter. Separate values within such a grouping are marked with distinct "value" parameters.
@@ -237,7 +249,7 @@ class GameSettings extends React.Component {
 			<div className={this.state.allStyles[i].overlay}>
 				<div className={this.state.allStyles[i].background}>
 					<div className={this.state.allStyles[i].style}>
-						<div id="App" className="App">
+						<div id="App" className="App menu">
 							<div
 								className={this.state.allStyles[i].flairLayerA}>
 							</div>
@@ -282,7 +294,6 @@ class GameSettings extends React.Component {
 													value="3"
 													onClick={this.changeGameLength.bind(this)}
 													name="length"
-													defaultChecked
 												/>
 												3
 											</label>
@@ -293,6 +304,7 @@ class GameSettings extends React.Component {
 													value="5"
 													onClick={this.changeGameLength.bind(this)}
 													name="length"
+													defaultChecked
 												/>
 												5
 											</label>
@@ -319,9 +331,8 @@ class GameSettings extends React.Component {
 													id="gameEasy"
 													value="easy"
 													name="difficultylevel"
-													defaultChecked
 												/>
-												Helppo
+												Luupää (helppo)
 											</label>
 											<label className="radio-inline">
 												<input
@@ -329,8 +340,9 @@ class GameSettings extends React.Component {
 													id="gameMedium"
 													value="medium"
 													name="difficultylevel"
+													defaultChecked
 												/>
-												Keskivaikea
+												Normaali
 											</label>
 											<label className="radio-inline">
 												<input
@@ -339,7 +351,7 @@ class GameSettings extends React.Component {
 													value="hard"
 													name="difficultylevel"
 												/>
-												Vaikea
+												Luunkova (vaikea)
 											</label>
 										</form>
 										<div className="btn-group wide settingspage GameButton">
@@ -350,7 +362,7 @@ class GameSettings extends React.Component {
 							</div>
 						</div>
 						<div className="btn-group">
-							<button className="gobackbutton"><Link to='/'>Takaisin</Link></button>
+							<button className="gobackbutton"><Link to='/gamemode'>Takaisin</Link></button>
 						</div>
 					</div>
 				</div>

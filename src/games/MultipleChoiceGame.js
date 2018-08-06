@@ -36,7 +36,7 @@ class MultipleChoiceGame extends React.Component {
     this.createMessage(event.target.value)
 
     //let points = (Math.round((this.checkCorrectness(event.target.value) * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((300 + Math.max(0, (300 - this.state.seconds))) / 600))) / 20
-    let points = Math.round((1000 + ((1000 + Math.max(0, (1000 - this.props.game.gameClock))) / 2000))) / 20
+    let points = Math.round((1000 + ((1000 + Math.max(0, (400 - this.props.game.gameClock))) / 800))) / 20
 
     if (this.checkCorrectness(event.target.value) > 99) {
       points = points * 10
@@ -192,8 +192,8 @@ class MultipleChoiceGame extends React.Component {
           <div className="intro">
             <CloudinaryContext cloudName="luupeli">
               <div className="height-restricted">
-                <Image publicId={this.props.game.currentImage.url}>
-                  <Transformation width={imageWidth()} crop="fill" radius="20" />
+                <Image publicId={this.props.game.currentImage.url+".png"}>
+                  <Transformation width={imageWidth()} format="png" crop="fill" radius="20" />
                 </Image>
               </div>
             </CloudinaryContext>
@@ -203,7 +203,7 @@ class MultipleChoiceGame extends React.Component {
         </div>
         <div className="container">
           <div className="col-md-6 col-md-offset-3" id="info">
-            <h6>Vastausaikaa kulunut {Math.round(this.state.seconds / 10, 1)}</h6>
+            {/* <h6>Vastausaikaa kulunut {Math.round(this.state.seconds / 10, 1)}</h6> */}
             <p>{this.props.game.currentImage.bone.description}</p>
           </div>
         </div>

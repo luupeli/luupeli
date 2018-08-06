@@ -1,14 +1,12 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import boneService from '../services/bones'
-import imageService from '../services/images'
-import bodyPartService from '../services/bodyParts'
-import animalService from '../services/animals'
-import Message from '../games/Message'
+import boneService from '../../services/bones'
+import imageService from '../../services/images'
+import Message from '../../games/Message'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
 import { Grid, Row, Col, FormGroup, ControlLabel, FormControl, Label } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { setMessage } from '../reducers/messageReducer'
+import { setMessage } from '../../reducers/messageReducer'
 
 class UpdateBone extends React.Component {
 	constructor(props) {
@@ -16,19 +14,14 @@ class UpdateBone extends React.Component {
 		this.state = {
 			notAdmin: false,
 			submitted: false,
-			boneId: this.props.location.state.boneId,
-			nameLatin: this.props.location.state.nameLatin,
-			name: this.props.location.state.name,
-			altNameLatin: this.props.location.state.altNameLatin,
-			description: this.props.location.state.description,
-			attempts: this.props.location.state.attempts,
-			correctAttempts: this.props.location.state.correctAttempts,
-			bodyPart: this.props.location.state.bodyPart,
-			boneAnimals: this.props.location.state.boneAnimals,
+			boneId: '',
+			nameLatin: '',
+			name: '',
+			altNameLatin: '',
+			description: '',
+			bodyPart: '',
 			newImages: [],
 			images: [],
-			animals: [],
-			bodyParts: [],
 			user: null
 		}
 		this.handleChange = this.handleChange.bind(this)
@@ -41,11 +34,10 @@ class UpdateBone extends React.Component {
 		this.handleImageChange = this.handleImageChange.bind(this)
 		this.validateNameLatin = this.validateNameLatin.bind(this)
 		this.validateImages = this.validateImages.bind(this)
-		this.fetchAnimals = this.fetchAnimals.bind(this)
-		this.fetchBodyparts = this.fetchBodyparts.bind(this)
 		this.uploadImage = this.uploadImage.bind(this)
 		this.updateImage = this.updateImage.bind(this)
 		this.postImage = this.postImage.bind(this)
+		this.postBone = this.postBone.bind(this)
 		this.updateBone = this.updateBone.bind(this)
 		this.getBoneAnimals = this.getBoneAnimals.bind(this)
 		this.failureMessage = this.failureMessage.bind(this)
@@ -55,18 +47,29 @@ class UpdateBone extends React.Component {
 	// GET images related to this bone from DB and store them in state for rendering.
 	// Add a deleted flag to each image to mark images the user wants to delete.
 	// GET animals and bodyParts and store them in state for later use.
-	componentDidMount() {
-		boneService.get(this.state.boneId)
-			.then((response) => {
-				const imagesWithDeletionFlag = response.data.images
-				imagesWithDeletionFlag.forEach((image) => image.deleted = false)
-				this.setState({ images: imagesWithDeletionFlag })
-			})
-			.catch((error) => {
-				console.log(error)
-			})
-		this.fetchAnimals()
-		this.fetchBodyparts()
+	async componentDidMount() {
+		if (this.props.boneId) {
+			try {
+				const bone = await boneService.get(this.props.boneId)
+				console.log(bone)
+				this.setState({
+					boneId: bone.data.id,
+					nameLatin: bone.data.nameLatin,
+					altNameLatin: bone.data.altNameLatin,
+					description: bone.data.description,
+					name: bone.data.name,
+					bodyPart: bone.data.bodyPart._id,
+					attempts: bone.data.attempts,
+					correctAttempts: bone.data.correctAttempts,
+					images: bone.data.images.map(img => {
+						return ({ ...img, deleted: false })
+					})
+				})
+			} catch (e) {
+				console.log(e)
+			}
+		}
+
 		const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
 		if (loggedUserJSON) {
 			const user = JSON.parse(loggedUserJSON)
@@ -81,8 +84,9 @@ class UpdateBone extends React.Component {
 	// Adds a new "empty file" to newImages list when user clicks a button to add more images.
 	// newImages is used to dynamically render correct amount of file & difficulty input elements in the update form
 	handleAddImage(event) {
-		const animal = this.state.animals.filter((animal) => animal.name === "Koira")[0]
-		const expandList = this.state.newImages.concat({ difficulty: "1", description: "", photographer: "", copyright: "", attempts: 0, correctAttempts: 0, handedness: "", animal: animal.id })
+		const animal = this.props.init.animals.filter((animal) => animal.name === "Ca")[0]
+		const expandList = this.state.newImages.concat({ difficulty: "1", description: "", photographer: "", 
+			copyright: "", attempts: 0, correctAttempts: 0, handedness: "", animal: animal.id })
 		this.setState({ newImages: expandList })
 	}
 	// Removes element at index i from this.state.newImages (and thus the corresponding file input element from the form)
@@ -99,7 +103,7 @@ class UpdateBone extends React.Component {
 		imageService.remove(this.state.images[i]._id)
 			.then((response) => {
 				console.log(response)
-				if (response.status !== 200) {
+				if (response.status !== 204) {
 					this.failureMessage()
 				}
 			})
@@ -113,27 +117,7 @@ class UpdateBone extends React.Component {
 	handleChange(event) {
 		this.setState({ [event.target.name]: event.target.value })
 	}
-	// GET all animals from database for later use
-	fetchAnimals() {
-		animalService.getAll()
-			.then((response) => {
-				this.setState({ animals: response.data })
-			})
-			.catch((error) => {
-				console.log(error)
-			})
-	}
-	// GET all bodyParts from database for later use
-	fetchBodyparts() {
-		bodyPartService.getAll()
-			.then((response) => {
-				console.log(response)
-				this.setState({ bodyParts: response.data })
-			})
-			.catch((error) => {
-				console.log(error)
-			})
-	}
+
 	// Marks or unmarks an image for deletion, depending on the previous state of deleted flag
 	markForDelete(i, event) {
 		const modifiedImages = this.state.images
@@ -161,6 +145,26 @@ class UpdateBone extends React.Component {
 				console.log(error)
 			})
 	}
+
+	// POST this bone to database
+	async postBone(boneAnimals) {
+		return await boneService.create({
+			nameLatin: this.state.nameLatin,
+			name: this.state.name,
+			altNameLatin: this.state.altNameLatin,
+			description: this.state.description,
+			animals: boneAnimals,
+			bodyPart: this.state.bodyPart
+		})
+			.then((response) => {
+				return response.data
+			})
+			.catch((error) => {
+				console.log(error)
+				this.props.setMessage('Tallentaminen epäonnistui :(', 'danger')
+			})
+	}
+
 	// POST an uploaded new image to database
 	postImage(i, imageUrl, bone) {
 		imageService.create({
@@ -209,13 +213,13 @@ class UpdateBone extends React.Component {
 	failureMessage() {
 		this.props.setMessage('Jokin meni pieleen.', 'danger')
 	}
+
 	// PUT updated fields of the bone to database
 	async updateBone(boneAnimals) {
-		const bodyPartObj = this.state.bodyParts.filter((bodyPart) => bodyPart.name === this.state.bodyPart)[0]
 		return await boneService.update(this.state.boneId, {
 			nameLatin: this.state.nameLatin,
 			name: this.state.name,
-			bodyPart: bodyPartObj.id,
+			bodyPart: this.state.bodyPart,
 			altNameLatin: this.state.altNameLatin,
 			description: this.state.description,
 			animals: boneAnimals
@@ -232,26 +236,10 @@ class UpdateBone extends React.Component {
 	}
 	// Generate and return a list of all animals related to this bone, with no duplicate animals
 	getBoneAnimals() {
-		var boneAnimals = []
-		var animalTally = this.state.animals
-		animalTally.forEach((animal) => animal.exists = false)
-		for (var i = 0; i < this.state.images.length; i++) {
-			const currAnimal = animalTally.filter((animal) => animal.id === this.state.images[i].animal)[0]
-			if (!currAnimal.exists) {
-				animalTally.map((animal) => { if (animal.name === currAnimal.name) { animal.exists = true } })
-				boneAnimals = boneAnimals.concat(currAnimal.id)
-			}
-		}
-		for (var k = 0; k < this.state.newImages.length; k++) {
-			if (this[`fileInput${k}`].files.length > 0) {
-				const currAnimal = animalTally.filter((animal) => animal.id === this.state.newImages[k].animal)[0]
-				if (!currAnimal.exists) {
-					animalTally.map((animal) => { if (animal.name === currAnimal.name) { animal.exists = true } })
-					boneAnimals = boneAnimals.concat(currAnimal.id)
-				}
-			}
-		}
-		return boneAnimals
+		let animals = this.state.images.map(img => img.animal)
+		animals = animals.concat(this.state.newImages.map(img => img.animal))
+		const withoutDuplicates = Array.from(new Set(animals))
+		return withoutDuplicates
 	}
 	// Sends bone-related values from this.state to the database.
 	// Updates difficulties for all images already in the database.
@@ -272,7 +260,13 @@ class UpdateBone extends React.Component {
 		var bone = {}
 		var imageUrl = ""
 		var boneAnimals = this.getBoneAnimals()
-		bone = await this.updateBone(boneAnimals)
+
+		if (this.props.boneId) {
+			bone = await this.updateBone(boneAnimals)
+		} else {
+			bone = await this.postBone(boneAnimals)
+		}
+
 		for (var j = 0; j < this.state.newImages.length; j++) {
 			if (this[`fileInput${j}`].files.length > 0) {
 				imageUrl = await this.uploadImage(j)
@@ -280,7 +274,25 @@ class UpdateBone extends React.Component {
 			}
 		}
 		// TODO: only show this message if there is no existing failure message
+		if (this.props.boneId) {
 		this.props.setMessage('Muutokset tallennettu.', 'success')
+		} else {
+		this.props.setMessage('Uusi luu lisätty! Voit nyt lisätä toisenkin luun tai palata nappulasta takaisin listausnäkymään.', 'success')
+		this.resetFields()
+		}
+	}
+
+	// Sets fields to default values in preparation for the addition of another new bone.
+	resetFields() {
+		this.setState({
+			nameLatin: '',
+			name: '',
+			altNameLatin: '',
+			description: '',
+			bodyPart: '',
+			newImages: [],
+			images: [],
+		})
 	}
 	// Delete this bone from DB.
 	// Set this.state.submitted to true in preparation for redirect to listing.
@@ -288,7 +300,8 @@ class UpdateBone extends React.Component {
 	handleDelete(event) {
 		boneService.remove(this.state.boneId)
 			.then((response) => {
-				if (response.status !== 200) {
+				console.log(response.status)
+				if (response.status !== 204) {
 					this.failureMessage()
 				} else {
 					this.setState({ submitted: true })
@@ -337,6 +350,24 @@ class UpdateBone extends React.Component {
 		}
 		reader.readAsDataURL(input.target.files[0])
 	}
+
+	textField(id, text, value, onChange) {
+		return (
+			<FormGroup controlId={id}>
+				<ControlLabel>{text}</ControlLabel>
+				<FormControl
+					type="text"
+					id={id}
+					name={id}
+					value={value}
+					placeholder={text}
+					onChange={onChange}
+				/>
+			</FormGroup>
+		)
+	}
+
+
 	// If this.state.submitted is true (i.e. bone data has been deleted), redirect to listing.
 	// Otherwise render bone update form.
 	render() {
@@ -349,28 +380,7 @@ class UpdateBone extends React.Component {
 				<Redirect to="/listing" />
 			)
 		}
-		const listStyle = {
-			padding: 20,
-			marginBottom: 20
-		}
-		const labelStyle = {
-			color: 'white',
-			backgroundColor: '#330066'
-		}
-		const titleStyle = {
-			marginBottom: 0,
-			textAlign: 'left',
-		}
-		const luunTiedot = {
-			marginTop: 15,
-			textAlign: 'left'
-		}
-		const imgStyle = {
-			display: 'block',
-			marginLeft: 'auto',
-			marginRight: 'auto',
-			marginBottom: 15
-		}
+
 		const imageWidth = () => {
 			const windowWidth = Math.max(
 				document.body.scrollWidth,
@@ -388,45 +398,15 @@ class UpdateBone extends React.Component {
 		const boneFields = () => {
 			return (
 				<div>
-					<Row className="show-grid" style={luunTiedot}>
+					<Row className="show-grid luunTiedot">
 						<Col xs={12} md={4}>
-							<FormGroup controlId="nameLatin">
-								<ControlLabel>Latinankielinen nimi</ControlLabel>
-								<FormControl
-									type="text"
-									id="nameLatin"
-									name="nameLatin"
-									value={this.state.nameLatin}
-									placeholder="Kirjoita latinankielinen nimi"
-									onChange={this.handleChange}
-								/>
-							</FormGroup>
+							{this.textField('nameLatin', 'Latinankielinen nimi', this.state.nameLatin, this.handleChange)}
 						</Col>
 						<Col xs={12} md={4}>
-							<FormGroup controlId="altNameLatin">
-								<ControlLabel>Vaihtoehtoinen latinankielinen nimi</ControlLabel>
-								<FormControl
-									type="text"
-									id="altNameLatin"
-									name="altNameLatin"
-									value={this.state.altNameLatin}
-									placeholder="Kirjoita vaihtoehtoinen latinankielinen nimi"
-									onChange={this.handleChange}
-								/>
-							</FormGroup>
+							{this.textField('altNameLatin', 'Vaihtoehtoinen latinankielinen nimi', this.state.altNameLatin, this.handleChange)}
 						</Col>
 						<Col xs={12} md={4}>
-							<FormGroup controlId="nameLatin">
-								<ControlLabel>Suomenkielinen nimi</ControlLabel>
-								<FormControl
-									type="text"
-									id="name"
-									name="name"
-									value={this.state.name}
-									placeholder="Kirjoita suomenkielinen nimi"
-									onChange={this.handleChange}
-								/>
-							</FormGroup>
+							{this.textField('name', 'Suomenkielinen nimi', this.state.name, this.handleChange)}
 						</Col>
 					</Row>
 					<Row className="show-grid">
@@ -441,29 +421,52 @@ class UpdateBone extends React.Component {
 									value={this.state.bodyPart}
 									onChange={this.handleChange}
 								>
-									<option value="Eturaaja">Eturaaja</option>
-									<option value="Takaraaja">Takaraaja</option>
-									<option value="Vartalo">Vartalo</option>
-									<option value="Pää">Pää</option>
+									{this.props.init.bodyParts.map(b => {
+										return (
+											<option key={b.id} value={b.id}>{b.name}</option>
+										)
+									})}
 								</FormControl>
 							</FormGroup>
 						</Col>
 						<Col xs={12} md={8}>
-							<FormGroup controlId="description">
-								<ControlLabel>Vapaamuotoinen kuvaus</ControlLabel>
-								<FormControl
-									type="text"
-									id="description"
-									name="description"
-									value={this.state.description}
-									placeholder="Kirjoita vapaamuotoinen kuvaus"
-									onChange={this.handleChange}
-								/>
-							</FormGroup>
+							{this.textField('description', 'Vapaamuotoinen kuvaus', this.state.description, this.handleChange)}
 						</Col>
 					</Row>
 				</div>
 			)
+		}
+
+		const saveButtons = () => {
+			if (this.props.boneId) {
+				return (
+					<div className="btn-toolbar">
+						<button
+							id="submitUpdateButton"
+							type="submit" className="btn btn-info pull-right">
+							Tallenna muutokset
+				</button>
+						<button
+							id="deleteBoneButton"
+							type="button"
+							onClick={this.handleDelete}
+							className="btn btn-danger pull-right">
+							Poista luu
+				</button>
+					</div>
+				)
+			} else {
+				return (
+					<div id="addBone" className="btn-toolbar">
+						<button
+							type="submit"
+							id="submitNewBoneButton"
+							className="btn btn-info pull-right">
+							Lisää luu
+						</button>
+					</div>
+				)
+			}
 		}
 
 		const imageFields = (i, handler, value) => {
@@ -482,7 +485,7 @@ class UpdateBone extends React.Component {
 									onChange={handler.bind(this, i)}
 								>
 									{
-										this.state.animals.map((animal, i) =>
+										this.props.init.animals.map((animal, i) =>
 											<option key={animal.id} value={animal.id}>
 												{animal.name}
 											</option>)
@@ -526,45 +529,15 @@ class UpdateBone extends React.Component {
 					</Row>
 					<Row className="show-grid">
 						<Col xs={12} md={6}>
-							<FormGroup controlId="photographer">
-								<ControlLabel>Valokuvaaja</ControlLabel>
-								<FormControl
-									type="text"
-									id="photographer"
-									name="photographer"
-									value={value.photographer}
-									placeholder="Valokuvaaja"
-									onChange={handler.bind(this, i)}
-								/>
-							</FormGroup>
+							{this.textField('photographer', 'Valokuvaaja', value.photographer, handler.bind(this, i))}
 						</Col>
 						<Col xs={12} md={6}>
-							<FormGroup controlId="copyright">
-								<ControlLabel>Tekijänoikeus</ControlLabel>
-								<FormControl
-									type="text"
-									id="copyright"
-									name="copyright"
-									value={value.copyright}
-									placeholder="Tekijänoikeus"
-									onChange={handler.bind(this, i)}
-								/>
-							</FormGroup>
+							{this.textField('copyright', 'Tekijänoikeus', value.copyright, handler.bind(this, i))}
 						</Col>
 					</Row>
 					<Row>
 						<Col xs={12} md={12}>
-							<FormGroup controlId="description">
-								<ControlLabel>Vapaamuotoinen kuvaus</ControlLabel>
-								<FormControl
-									type="text"
-									id="description"
-									name="description"
-									value={value.description}
-									placeholder="Kirjoita vapaamuotoinen kuvaus"
-									onChange={handler.bind(this, i)}
-								/>
-							</FormGroup>
+							{this.textField('description', 'Vapaamuotoinen kuvaus', value.description, handler.bind(this, i))}
 						</Col>
 					</Row>
 				</div>
@@ -589,21 +562,21 @@ class UpdateBone extends React.Component {
 						</Row>
 						<Row className="show-grid">
 							<Col xs={12} md={12} className="pull-left">
-								<h2 style={titleStyle}><Label style={labelStyle}>Luun tiedot</Label></h2>
+								<h2 className="titleStyle"><Label className="labelStyle">Luun tiedot</Label></h2>
 							</Col>
 						</Row>
 						<form onSubmit={this.handleSubmit} enctype="multipart/form-data">
 							{boneFields()}
 							<Row className="show-grid">
 								<Col xs={12} md={12} className="pull-left">
-									<h2 style={titleStyle}><Label style={labelStyle}>Kuvat</Label></h2>
+									<h2 className="titleStyle"><Label className="labelStyle">Kuvat</Label></h2>
 								</Col>
 							</Row>
-							{this.state.images.map((file, i) => <li key={file.id} id={"bone" + i} className="list-group-item clearfix" style={listStyle}>
+							{this.state.images.map((file, i) => <li key={file.id} id={"bone" + i} className="list-group-item clearfix listStyle">
 								{(this.state.images[i].deleted
 									? " (Poistetaan tallennuksen yhteydessä)" :
 									<Row className="show-grid">
-										<Col md={4} xs={12} style={imgStyle}>
+										<Col md={4} xs={12} className="imgStyle">
 											<CloudinaryContext cloudName="luupeli">
 												<Image publicId={file.url}>
 													<Transformation width={imageWidth()} crop="fill" />
@@ -631,14 +604,14 @@ class UpdateBone extends React.Component {
 							)}
 							<Row className="show-grid">
 								<Col xs={12} md={12} className="pull-left">
-									<h2 style={titleStyle}><Label style={labelStyle}>Uudet kuvat</Label></h2>
+									<h2 className="titleStyle"><Label className="labelStyle">Uudet kuvat</Label></h2>
 								</Col>
 							</Row>
 							<ul className="list-group">
 								{
 									this.state.newImages.map((file, i) =>
 										<li key={file.id}
-											className="list-group-item clearfix" style={listStyle}>
+											className="list-group-item clearfix listStyle">
 											<Row className="show-grid">
 												<Col md={4} xs={12}>
 													<img id="new_image" alt="bone" width={imageWidth()} />
@@ -676,20 +649,7 @@ class UpdateBone extends React.Component {
 									</span>
 								</li>
 							</ul>
-							<div className="btn-toolbar">
-								<button
-									id="submitUpdateButton"
-									type="submit" className="btn btn-info pull-right">
-									Tallenna muutokset
-								</button>
-								<button
-									id="deleteBoneButton"
-									type="button"
-									onClick={this.handleDelete}
-									className="btn btn-danger pull-right">
-									Poista luu
-								</button>
-							</div>
+							{saveButtons()}
 						</form>
 					</div>
 				</Grid>
@@ -702,8 +662,14 @@ const mapDispatchToProps = {
 	setMessage
 }
 
+const mapStateToProps = (state) => {
+	return {
+		init: state.init
+	}
+}
+
 const ConnectedUpdateBone = connect(
-	null,
+	mapStateToProps,
 	mapDispatchToProps
 )(UpdateBone)
 export default ConnectedUpdateBone

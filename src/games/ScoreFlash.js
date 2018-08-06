@@ -1,4 +1,5 @@
 import React from 'react';
+import Sound from 'react-sound';
 import { connect } from 'react-redux'
 import { Animated } from "react-animated-css";
 
@@ -8,6 +9,33 @@ import { Animated } from "react-animated-css";
  * The score flash originates from the scoreFlashReducer class. 
  */
 class ScoreFlash extends React.Component {
+
+	handleSound(gameClock, scoreRiseTime,scoreActual) {
+
+		var playbackspeed=1.0; 
+		if (scoreActual<500) {
+			playbackspeed=1.0-(scoreActual/100);
+		}
+		if (scoreActual>1000) {
+			playbackspeed=Math.min(4,1.0+(scoreActual/2500));
+		}
+		
+		if (gameClock<scoreRiseTime) {
+			return (
+				
+			<Sound
+			url="/sounds/253172__suntemple__retro-bonus-pickup-sfx.wav"
+				playStatus={Sound.status.PLAYING}
+				// playFromPosition={0 /* in milliseconds */}
+				playbackRate={playbackspeed}
+				onLoading={this.handleSongLoading}
+				onPlaying={this.handleSongPlaying}
+				onFinishedPlaying={this.handleSongFinishedPlaying}
+			  />
+			)
+		}
+	}
+
 	/**
 	 * The score flash is not properly styled yet. The idea is, that the more score the player receives, the "flashier" the effect.
 	 * Also, "zero points" should probably have some noticeable vfx as well.
@@ -17,10 +45,12 @@ class ScoreFlash extends React.Component {
 		const style = 'scoreflash'   // <--- PLACEHOLDER CSS EFFECT!!! {this.props.scoreflash.score}
 
 		const scoreActual = this.props.scoreflash.score 
-		const durationOfScoreRise = Math.min(150,(scoreActual/50) + 25)
+		const durationOfScoreRise = Math.min(30,(scoreActual/10) + 5)
 
 		let scoreShown =Math.min(scoreActual, Math.round(scoreActual*( this.props.game.gameClock /durationOfScoreRise)))
 
+		let scoreShownForDelayedSound =Math.min(scoreActual*1.4, Math.round(scoreActual*( this.props.game.gameClock /durationOfScoreRise)))
+		let durationOfScoreRiseForSound = Math.min(30,(scoreActual/10) + 5)+5
 		//	position="fixed"
 		
 		let rowtext = this.props.scoreflash.streak+'' +this.props.scoreflash.streakemoji+''+scoreShown//+ ''+this.props.scoreflash.streakemoji
@@ -29,7 +59,7 @@ class ScoreFlash extends React.Component {
 			rowtext=this.props.scoreflash.streakemoji+'VÄÄRIN!'+this.props.scoreflash.streakemoji
 		}
 
-		if (this.props.scoreflash !== undefined && this.props.game.gameClock<300 && this.props.scoreflash.scoreflash.length !== 0) {
+		if (this.props.scoreflash !== undefined && this.props.game.gameClock<60 && this.props.scoreflash.scoreflash.length !== 0) {
 			return (
 				<Animated animationIn="rubberBand faster" animationOut="zoomOut faster" isVisible={this.props.scoreflash.visibility}>
 					<div
@@ -42,6 +72,8 @@ class ScoreFlash extends React.Component {
 					>
 		 <h3>
 			{rowtext}
+			{/* {this.handleSound(scoreShownForDelayedSound,scoreActual)} */}
+			{this.handleSound(this.props.game.gameClock ,durationOfScoreRiseForSound,scoreActual)}
 		 </h3>
 					
 					</div>
@@ -51,15 +83,17 @@ class ScoreFlash extends React.Component {
 		
 		
 		
-		
-		else 		
-		
-		{
-			return (
-				
-			<br/>
-			)
+		else {
+			return null;
 		}
+		// else 		
+		
+		// {
+		// 	return (
+				
+		// 	<br/>
+		// 	)
+		// }
 	}
 
 
