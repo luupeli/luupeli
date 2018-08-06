@@ -7,6 +7,7 @@ import Home from './menus/Home'
 import GameSettings from './menus/GameSettings'
 import BoneListing from './menus/BoneListing'
 import UserListing from './menus/UserListing'
+import AddData from './menus/AddData'
 import User from './menus/User'
 import UpdateBone from './menus/UpdateBone'
 import Login from './menus/Login'
@@ -29,7 +30,10 @@ componentDidMount() {
         {/* <NavBar/> */}
         <main>
           <BrowserRouter>
-            <div>
+          <div>
+              <Route exact path="/add_data" render={({ location, history }) => {
+                return <AddData location={location} history={history} />
+              }} />
               <Route exact path="/" render={({ location, history }) => {
                 return <Home location={location} history={history} />
               }} />
