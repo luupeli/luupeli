@@ -128,7 +128,7 @@ class WritingGame extends React.Component {
   render() {
     
     const imageWidth = () => {              // Here we try to measure the window size in order to resize the bone image accordingly
-      const windowWidth = Math.max(
+      const windowWidth = Math.min(
         document.body.scrollWidth,
         document.documentElement.scrollWidth,
         document.body.offsetWidth,
@@ -138,23 +138,39 @@ class WritingGame extends React.Component {
       if (windowWidth > 1000) {
         return 1000
       }
-      return windowWidth - 40
+      return Math.round(windowWidth*0.7)
     }
+
+    const imageHeight = () => {              // Here we try to measure the window size in order to resize the bone image accordingly
+      const windowHeight = Math.min(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight,
+        document.documentElement.clientHeight
+      )
+      if (windowHeight > 1000) {
+        return 1000
+      }
+      return Math.round(windowHeight*0.7)
+    }
+
     let attempts = this.props.game.currentImage.attempts
     let correctAttempts = this.props.game.currentImage.correctAttempts
     let correctPercentile = Math.round(100 * (correctAttempts / attempts))
     if (isNaN(correctPercentile) || correctPercentile < 0) { correctPercentile = 0 }
     
-    
+    //{/* <Transformation width={imageWidth()} crop="fill" format="png" radius="20" /> */}
+      //            {/* <Transformation width={imageWidth()} crop="fill" format="png" radius="20" /> */}
 
     return (
       <div className="bottom">
         <div className="row" id="image-holder">
           <div className="intro">
             <CloudinaryContext cloudName="luupeli">
-              <div className="height-restricted">
-                <Image id="bone-image" publicId={this.props.game.currentImage.url+".png"}>
-                  <Transformation width={imageWidth()} crop="fill" format="png" radius="20" />
+              <div className="height-restricted" >
+                <Image id="bone-image" publicId={this.props.game.currentImage.url}     sizes="(min-width: 30em) 30em, 80vw">
+                  
                 </Image>
               </div>
             </CloudinaryContext>
@@ -165,39 +181,37 @@ class WritingGame extends React.Component {
             <h3 id="heading">{this.props.game.currentImage.bone.name}</h3></center>
           </div>
         </div>
-        <div className="container">
+        {/* <div className="container">
           <div className="col-md-6 col-md-offset-3" id="info">
-            
+             */}
             <p>{this.props.game.currentImage.bone.description}</p>
-            <p>Tätä kuvaa on yritetty {attempts} kertaa, niistä {correctAttempts} oikein. Oikeita vastauksia: {correctPercentile} % kaikista yrityksistä.</p>
+            {/* <p>Tätä kuvaa on yritetty {attempts} kertaa, niistä {correctAttempts} oikein. Oikeita vastauksia: {correctPercentile} % kaikista yrityksistä.</p> */}
+            <p>Img width: {imageWidth()} | height: {imageHeight()}</p>
+            <p>URL: {this.props.game.currentImage.url}</p>
             <p>(Oikea vastaus: {this.props.game.currentImage.bone.nameLatin})</p>
-          </div>
+          {/* </div>
         </div>
-        <div className="answer-input">
-          <div className="container">
-            <div className="intro" />
+         */}
+            <div className="game-answer-input"/>
             <form
-              className="input"
-              className="form-inline"
               id='gameForm'
               onSubmit={this.handleSubmit}
             >
-              <div className="form-groupbd">
+              <div className="game-text-input">
                 <input
-                  className="form-control"
                   id="gameTextInput"
                   type="text"
                   value={this.state.value}
                   onChange={this.handleChange}
                 />
               </div>
-              <div className={"btn-group" + this.state.style + " GameButton"}>
-                <button type="submit" id="submitButton">Vastaa</button>
+              <div className="btn-group">
+                <button classname="gobackbutton" type="submit" id="submitButton">Vastaa</button>
               </div>
+              
             </form>
           </div>
-        </div>
-      </div>
+
     )
   
   }
