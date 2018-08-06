@@ -14,7 +14,10 @@ class ImageMultipleChoiceGame extends React.Component {
     this.timer = 0;
     this.state = {
       value: '',
-      seconds: 0
+      seconds: 0,
+      choices: [],
+      wrongs: [],
+
     }
     this.handleSubmit = this.handleSubmit.bind(this)
   }
@@ -57,6 +60,7 @@ class ImageMultipleChoiceGame extends React.Component {
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
 
     this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 3, true)
+    this.setState({choices:[]})
 
     setTimeout(() => {
       this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(this.state.value), this.state.value.bone.nameLatin, this.state.seconds - 3, points)
@@ -104,28 +108,32 @@ class ImageMultipleChoiceGame extends React.Component {
   }
 
   answerButtons() {
-    let choices = [
+
+    if (this.state.choices.length<1) {
+
+    let choicesTemp = [
       {
         ...this.props.game.currentImage,
         correct: true
       }
     ]
 
-    const wrongs = this.props.game.wrongImageOptions.map(img => {
+    const wrongsTemp = this.props.game.wrongImageOptions.map(img => {
       return { ...img, correct: false }
     })
 
-    choices = wrongs.concat(choices)
+    choicesTemp = wrongsTemp.concat(choicesTemp)
     
     // if (this.props.game.gameClock<5) {
-    // var shuffle = require('shuffle-array')
-    // shuffle(choices, {'rng': this.props.game.totalscore+100})
+    var shuffle = require('shuffle-array')
+     shuffle(choicesTemp, {'rng': this.props.game.totalscore+100})
     // }
-
+    this.setState({choices: choicesTemp});
+  }
     if (this.state.value === '' || this.state.value === undefined) {
       return (
         <Row className="show-grid">
-          {choices.map(choice => {
+          {this.state.choices.map(choice => {
             return (
               <Col xs={12} md={6}>
                 <div className="multi-height-restricted">
@@ -142,7 +150,7 @@ class ImageMultipleChoiceGame extends React.Component {
         </Row>
       )
     } else if (this.state.value === this.props.game.currentImage.bone.nameLatin) {
-      return choices.map(choice => {
+      return this.state.choices.map(choice => {
         if (choice.correct) {
           return (
             <Col xs={12} md={6}>
@@ -170,7 +178,7 @@ class ImageMultipleChoiceGame extends React.Component {
         }
       })
     } else {
-      return choices.map(choice => {
+      return this.state.choices.map(choice => {
         if (choice.correct) {
           return (
             <Col xs={12} md={6}>

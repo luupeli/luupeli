@@ -59,9 +59,9 @@ class Home extends React.Component {
         flairLayerC: 'none',
         flairLayerB: 'none',
         flairLayerA: 'none',
-        highlight: 'DFDFFF',
+        highlight: '#DFDFFF',
         primary: '#BBBBFF',
-        secondary: '9999DD',
+        secondary: '#9999DD',
         tertiary: '#555599',
         overlay: null
       }],
