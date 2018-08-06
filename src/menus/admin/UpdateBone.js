@@ -1,12 +1,12 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import boneService from '../services/bones'
-import imageService from '../services/images'
-import Message from '../games/Message'
+import boneService from '../../services/bones'
+import imageService from '../../services/images'
+import Message from '../../games/Message'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
 import { Grid, Row, Col, FormGroup, ControlLabel, FormControl, Label } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { setMessage } from '../reducers/messageReducer'
+import { setMessage } from '../../reducers/messageReducer'
 
 class UpdateBone extends React.Component {
 	constructor(props) {
@@ -84,8 +84,9 @@ class UpdateBone extends React.Component {
 	// Adds a new "empty file" to newImages list when user clicks a button to add more images.
 	// newImages is used to dynamically render correct amount of file & difficulty input elements in the update form
 	handleAddImage(event) {
-		const animal = this.props.init.animals.filter((animal) => animal.name === "Koira")[0]
-		const expandList = this.state.newImages.concat({ difficulty: "1", description: "", photographer: "", copyright: "", attempts: 0, correctAttempts: 0, handedness: "", animal: animal.id })
+		const animal = this.props.init.animals.filter((animal) => animal.name === "Ca")[0]
+		const expandList = this.state.newImages.concat({ difficulty: "1", description: "", photographer: "", 
+			copyright: "", attempts: 0, correctAttempts: 0, handedness: "", animal: animal.id })
 		this.setState({ newImages: expandList })
 	}
 	// Removes element at index i from this.state.newImages (and thus the corresponding file input element from the form)

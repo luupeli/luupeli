@@ -98,7 +98,7 @@ class Home extends React.Component {
     this.setState({
       styleIndex: 0,
     })
-    
+
     const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
@@ -140,6 +140,8 @@ class Home extends React.Component {
       this.setState({ redirect: true, redirectTo: '/register' })
     } else if (event.target.id === 'adminPageButton') {
       this.setState({ redirect: true, redirectTo: '/admin' })
+    } else if (event.target.id === 'profilePageButton') {
+      this.setState({ redirect: true, redirectTo: '/users/' + this.state.user.id })
     }
   }
 
@@ -185,6 +187,24 @@ class Home extends React.Component {
             </button>
           </Col>
         </Row>
+      )
+    } else if (this.state.user !== null) {
+      return (
+        <Row className="show-grid">
+          <Col>
+            <button
+              id="profilePageButton"
+              className="menu-button"
+              onClick={this.proceedToSelect}>
+              Profiili
+            </button>
+          </Col>
+        </Row>
+      )
+    } else {
+      return (
+        <div>
+        </div>
       )
     }
   }
@@ -273,55 +293,55 @@ class Home extends React.Component {
 
     return (
       <div id="homeMenu" className="App">
-       <div className="menu">
-        <div className={this.state.overlay}>
-          <div className={this.state.background}>
-            <div id="styleName" className={this.state.style}>
-              <div
-                className={this.state.flairLayerA}>
-              </div>
-              <div
-                className={this.state.flairLayerB}>
-              </div>
-              <div
-                className={this.state.flairLayerC}>
-              </div>
-              <div
-                className={this.state.flairLayerD}>
-              </div>
-              <h1 className="game-title">Luupeli</h1>
-              <Row className="show-grid">
-                <Col xs={10} xsOffset={1} md={4} sm={4} mdOffset={4} smOffset={4}>
-                  <Row className="show-grid">
-                    <Col>
-                      <button
-                        className="menu-button gamelink"
-                        id="proceedToSelectGameMode"
-                        onClick={this.proceedToSelect}>
-                        Pelaa
+        <div className="menu">
+          <div className={this.state.overlay}>
+            <div className={this.state.background}>
+              <div id="styleName" className={this.state.style}>
+                <div
+                  className={this.state.flairLayerA}>
+                </div>
+                <div
+                  className={this.state.flairLayerB}>
+                </div>
+                <div
+                  className={this.state.flairLayerC}>
+                </div>
+                <div
+                  className={this.state.flairLayerD}>
+                </div>
+                <h1 className="game-title">Luupeli</h1>
+                <Row className="show-grid">
+                  <Col xs={10} xsOffset={1} md={4} sm={4} mdOffset={4} smOffset={4}>
+                    <Row className="show-grid">
+                      <Col>
+                        <button
+                          className="menu-button gamelink"
+                          id="proceedToSelectGameMode"
+                          onClick={this.proceedToSelect}>
+                          Pelaa
                        </button>
-                    </Col>
-                  </Row>
-                  {this.adminButtons()}
-                  {this.loggedInButtons()}
-                  <Row className="show-grid">
-                    <button
-                      id="themeChangeButton"
-                      className="menu-button"
-                      onClick={this.changeCss}>
-                      Vaihda teema
+                      </Col>
+                    </Row>
+                    {this.adminButtons()}
+                    {this.loggedInButtons()}
+                    <Row className="show-grid">
+                      <button
+                        id="themeChangeButton"
+                        className="menu-button"
+                        onClick={this.changeCss}>
+                        Vaihda teema
                     </button>
-                  </Row>
-                  <p>
-                    Teema: {this.state.style}
-                  </p>
-                  <div className={this.state.style} />
-                </Col>
-              </Row>
+                    </Row>
+                    <p>
+                      Teema: {this.state.style}
+                    </p>
+                    <div className={this.state.style} />
+                  </Col>
+                </Row>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
     )
   }

@@ -3,6 +3,7 @@ require('dotenv').config()
 
 const username = process.env.USERNAME
 const password = process.env.PASSWORD
+const port = process.env.PORT
 
 let browser
 let page
@@ -15,7 +16,7 @@ beforeAll(async () => {
 	page = await browser.newPage()
 	await page.setViewport({ width: 1280, height: 800 })
 	// Navigates to home
-	await page.goto('http://localhost:3000')
+	await page.goto('http://localhost:' + port)
 	// Waits for a button to render
 	await page.waitForSelector('#homeMenuLoginButton')
 	// Navigates to login screen
@@ -31,16 +32,17 @@ beforeAll(async () => {
 }, 30000)
 
 beforeEach(async () => {
-	await page.goto('http://localhost:3000/listing')
+	await page.goto('http://localhost:' + port + '/listing')
 	// Click on first listed bone to navigate to update form
 	await page.waitForSelector('#bone0')
 	await page.click('#bone0')
 })
 
 afterAll(async () => {
-	await page.goto('http://localhost:3000/login')
+	await page.goto('http://localhost:' + port + '/login')
 	await page.waitForSelector('#logout-button')
 	await page.click('#logout-button')
+	await page.close()
 	await browser.close()
 })
 

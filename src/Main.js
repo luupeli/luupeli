@@ -1,18 +1,20 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 import GameLoop from './games/GameLoop'
-import SelectGameMode from './menus/SelectGameMode'
-import EndScreen from './menus/EndScreen'
+import SelectGameMode from './menus/gamescreens/SelectGameMode'
+import EndScreen from './menus/gamescreens/EndScreen'
 import Home from './menus/Home'
-import GameSettings from './menus/GameSettings'
-import BoneListing from './menus/BoneListing'
-import UserListing from './menus/UserListing'
+
+import GameSettings from './menus/gamescreens/GameSettings'
+import BoneListing from './menus/admin/BoneListing'
+import UserListing from './menus/admin/UserListing'
+import User from './menus/admin/User'
+import UpdateBone from './menus/admin/UpdateBone'
+import Login from './menus/login/Login'
+import Register from './menus/login/Register'
+import Admin from './menus/admin/Admin'
+import Statistics from './menus/admin/Statistics'
 import AddData from './menus/AddData'
-import User from './menus/User'
-import UpdateBone from './menus/UpdateBone'
-import Login from './menus/Login'
-import Register from './menus/Register'
-import Admin from './menus/Admin'
 import NavBar from './menus/NavBar'
 import { BrowserRouter } from 'react-router-dom'
 import { init } from './reducers/initializeRecuder'
@@ -20,9 +22,9 @@ import { connect } from 'react-redux'
 
 class Main extends React.Component {
 
-componentDidMount() {
-  this.props.init()
-}
+  componentDidMount() {
+    this.props.init()
+  }
 
   render() {
     return (
@@ -73,6 +75,9 @@ componentDidMount() {
               <Route exact path="/admin" render={({ location, history }) => {
                 return <Admin location={location} history={history} />
               }} />
+              <Route exact path="/statistics" render={({ location, history }) => {
+                return <Statistics location={location} history={history} />
+              }} />
             </div>
           </BrowserRouter>
         </main>
@@ -82,11 +87,11 @@ componentDidMount() {
 }
 
 const mapDispatchToProps = {
-	init
+  init
 }
 
 const ConnectedMain = connect(
-	null,
-	mapDispatchToProps
+  null,
+  mapDispatchToProps
 )(Main)
 export default ConnectedMain

@@ -1,7 +1,7 @@
 import React from 'react'
-import usersService from '../services/users'
+import usersService from '../../services/users'
 import { Link } from 'react-router-dom'
-import '../styles/App.css'
+import '../../styles/App.css'
 
 class Register extends React.Component {
 	constructor(props) {
@@ -37,7 +37,7 @@ class Register extends React.Component {
 		// we can try to create a new user. This might fail,
 		// if, for example, the password is too short.
 		// Backend handles these checks. A new user is created through userService.
-		if (this.checkPasswordMatch) {
+		if (this.checkPasswordMatch(this.state.password, this.state.repeatPassword)) {
 			try {
 				const user = await usersService.create({
 					username: this.state.username,
@@ -111,6 +111,7 @@ class Register extends React.Component {
 										</p>
 									</div>
 									<div className="login-clean">
+									<span id="error-message">{this.state.error}</span>
 										<form onSubmit={this.signUp}>
 											<div className="align-center">
 												<div className="form-group">
