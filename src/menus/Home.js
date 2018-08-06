@@ -241,6 +241,7 @@ class Home extends React.Component {
           <Row className="show-grid">
             <Col>
               <button
+                id='logout-button'
                 className='menu-button'
                 onClick={this.logOut}>
                 Kirjaudu ulos
