@@ -34,7 +34,6 @@ class WritingGame extends React.Component {
 
   handleChange(event) {
     this.setState({ value: event.target.value })
-    console.log(this.state.value)
   }
   /**
    * As the player submits the answer, the points will be calculated, gameplay stats will be stored and player message and score flash balloon will be generated.

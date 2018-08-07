@@ -23,7 +23,7 @@ class GameSettings extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			gameLength: 3,
+			gameLength: 5,
 			gamemode: '',
 			redirect: false,
 			allImages: [],		   // used to store an array of alla known images

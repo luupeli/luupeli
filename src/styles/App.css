@@ -1022,3 +1022,47 @@ https://codepen.io/George-Payne/pen/qOrxao
   max-height: 500px;
   position: fixed;
 }
+
+.text-bg {
+	background-color:rgba(0, 0, 0, 0.5);
+}
+
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
+
+.grade-mark-good {
+	color: green;
+	font-size: 4rem;
+	position: absolute;
+  bottom: 8px;
+  right: 16px;
+}
+
+.grade-mark-okay {
+	color: orange;
+	font-size: 4rem;
+	position: absolute;
+  bottom: 8px;
+  right: 16px;
+}
+
+.grade-mark-bad {
+	color: red;
+	font-size: 4rem;
+	position: absolute;
+  bottom: 8px;
+  right: 16px;
+}
+.progress {
+	height: 3rem;
+}
+
+.progress-bar {
+	font-size: 1.7rem;
+	text-align: center;
+	padding-top: 5px;
+}

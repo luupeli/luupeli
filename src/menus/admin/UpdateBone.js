@@ -333,7 +333,7 @@ class UpdateBone extends React.Component {
 		if (this.state.nameLatin.length >= 1) {
 			return true
 		}
-		this.props.setMessage('Anni latinankielinen nimi.', 'danger')
+		this.props.setMessage('Anna latinankielinen nimi.', 'danger')
 		return false
 	}
 	// TODO: check that the bone has at least one image
