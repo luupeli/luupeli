@@ -1,6 +1,6 @@
 import React from 'react'
 import loginService from '../../services/login'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import '../../styles/App.css'
 
 class Login extends React.Component {
@@ -10,6 +10,7 @@ class Login extends React.Component {
       allStyles: JSON.parse(localStorage.getItem("allStyles")),
       styleIndex: localStorage.getItem('styleIndex'),
       error: null,
+      redirect: false,
       username: '',
       password: '',
       user: null
@@ -46,6 +47,7 @@ class Login extends React.Component {
         password: '',
         user
       })
+      this.setState({ redirect: true })
       // If we get here, the attempt to log in was unsuccessful.
     } catch (error) {
       console.log(error)
@@ -86,6 +88,7 @@ class Login extends React.Component {
     if (this.state.user === null) {
       return (
         <div className="login-clean">
+          <span id="error-message">{this.state.error}</span>
           <form onSubmit={this.login}>
             <h2 className="sr-only">Placeholder #1</h2>
             <div className="form-group">
@@ -132,6 +135,11 @@ class Login extends React.Component {
   }
 
   render() {
+    if (this.state.redirect) {
+      return (
+        <Redirect to="/" />
+      )
+    }
     let i = this.state.styleIndex
     return (
       <div className={this.state.allStyles[i].overlay}>

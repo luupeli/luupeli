@@ -32,11 +32,11 @@ class UserListing extends React.Component {
 		if (loggedUserJSON) {
 			const user = JSON.parse(loggedUserJSON)
 			if (user.role !== "ADMIN") {
-				this.setState({ redirect: true, redirectTo: '/login' })
+				this.setState({ redirect: true, redirectTo: '/' })
 			}
 			this.setState({ user })
 		} else {
-			this.setState({ redirect: true, redirectTo: '/login' })
+			this.setState({ redirect: true, redirectTo: '/' })
 		}
 	}
 

@@ -373,7 +373,7 @@ class UpdateBone extends React.Component {
 	render() {
 		if (this.state.notAdmin) {
 			return (
-				<Redirect to="/login" />
+				<Redirect to="/" />
 			)
 		} else if (this.state.submitted) {
 			return (

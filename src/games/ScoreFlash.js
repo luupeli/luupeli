@@ -83,15 +83,17 @@ class ScoreFlash extends React.Component {
 		
 		
 		
-		
-		else 		
-		
-		{
-			return (
-				
-			<br/>
-			)
+		else {
+			return null;
 		}
+		// else 		
+		
+		// {
+		// 	return (
+				
+		// 	<br/>
+		// 	)
+		// }
 	}
 
 

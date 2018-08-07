@@ -42,7 +42,7 @@ class User extends React.Component {
 		if (loggedUserJSON) {
 			const user = JSON.parse(loggedUserJSON)
 			if (user.role !== "ADMIN" && user.id !== this.state.userId) {
-				this.setState({ redirect: true, redirectTo: '/login' })
+				this.setState({ redirect: true, redirectTo: '/' })
 			}
 			this.setState({ user })
 			if (user.role === "ADMIN") {

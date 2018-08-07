@@ -209,7 +209,7 @@ class EndScreen extends React.Component {
     const wrongPortion = (wrongAnswers.length/this.props.game.answers.length) * 100
 
     return (
-      <div className='Appbd'>
+      <div className='Appbd menu-background'>
         <div>
 					<div className="btn-group" role="group">
 						<button type="button" className="btn btn-secondary" onClick={this.proceedToReplay}>Pelaa uudestaan</button>
