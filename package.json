@@ -36,7 +36,8 @@
     "xlsjs": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "NODE_ENV=production react-scripts start",
+    "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "NODE_ENV=test react-scripts test --env=jsdom --coverage --collectCoverageFrom=**/src/menus/*.js --collectCoverageFrom=**/src/games/*.js",
     "eject": "react-scripts eject",
