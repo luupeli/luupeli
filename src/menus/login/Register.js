@@ -118,6 +118,7 @@ class Register extends React.Component {
 													<label for="username">Käyttäjätunnus:</label>
 													<input
 														className="form-control"
+														id="username-form"
 														type="text"
 														name="username"
 														placeholder="Käyttäjätunnus..."
@@ -141,6 +142,7 @@ class Register extends React.Component {
 													<label for="pass">Salasana:</label>
 													<input
 														className="form-control"
+														id="password-form"
 														type="password"
 														name="password"
 														placeholder="Salasana..."
@@ -153,6 +155,7 @@ class Register extends React.Component {
 													<label for="pass2">Toista salasana:</label>
 													<input
 														className="form-control"
+														id="repeat-password-form"
 														type="password"
 														name="repeatPassword"
 														placeholder="Toista salasana..."
@@ -164,6 +167,7 @@ class Register extends React.Component {
 												<div className="form-group btn-group">
 													<button
 														className="btn btn-block"
+														id="signup-button"
 														type="submit">
 														Luo tili
 													</button>
@@ -178,7 +182,7 @@ class Register extends React.Component {
 							</div>
 							<div className="btn-group">
 								<Link to='/'>
-									<button className="gobackbutton">Etusivulle</button>
+									<button id="back-button" className="gobackbutton">Etusivulle</button>
 								</Link>
 							</div>
 						</div>
