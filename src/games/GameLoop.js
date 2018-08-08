@@ -63,7 +63,7 @@ class GameLoop extends React.Component {
      */
     componentWillMount() {
 
-        this.interval = setInterval(() => this.tick(), 50);
+        this.interval = setInterval(() => this.tick(), 100);
     }
     /**
      * At component unmount the interval needs to be cleared.
@@ -209,9 +209,7 @@ class GameLoop extends React.Component {
                 document.documentElement.offsetWidth,
                 document.documentElement.clientWidth
             )
-            // if (windowWidth > 1000) {
-            //     return 1000
-            // }
+
             return Math.round(windowWidth * 1.0)
         }
 
@@ -223,9 +221,6 @@ class GameLoop extends React.Component {
                 document.documentElement.offsetHeight,
                 document.documentElement.clientHeight
             )
-            // if (windowHeight > 1000) {
-            //     return 1000
-            // }
             return Math.round(windowHeight * 1.0)
         }
 
