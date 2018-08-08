@@ -6,9 +6,9 @@ Status](https://travis-ci.org/luupeli/luupeli.svg?branch=master)](https://travis
 
 [The project on Heroku](http://luupeli.herokuapp.com/)
 
-## Seuraava asiakastapaaminen: 14.8. klo 10-13 (asiakas saapuu klo 11)
+## Seuraava asiakastapaaminen: 14.8. klo 14.30-17.00 (asiakas saapuu klo 15)
 
-### Ryhmätapaamiset heinäkuussa:
-* Ma klo 12-16
-* Ti klo 12-16
+### Ryhmätapaamiset elokuussa:
+* Ma klo 17.45-
+* Ti klo 16.15-
 
