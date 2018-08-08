@@ -75,6 +75,13 @@ animation: Button-Gradient 3.23s ease infinite;
 
 }
 
+.gameplay input {
+  padding: 0.75vh;
+  background-color: var(--tertiary);
+  border: 2px solid var(--primary);;
+  border-radius: 5px;
+}
+
 .navbar { margin-bottom: 0 }
 
 .App {
@@ -172,6 +179,9 @@ animation: Button-Gradient 3.23s ease infinite;
  -webkit-animation: Button-Gradient 0.75s ease infinite;
  -moz-animation: Button-Gradient 0.75s ease infinite;
  animation: Button-Gradient 0.75s ease infinite;
+}
+.game-answer-input .gobackbutton {
+  padding: 5px;
 }
 
 .scoreview {
@@ -392,15 +402,117 @@ div.dual-layout {
 }
 
 
-
+/* 
 div.row {
   z-index:1;
   
+} */
+
+/* .row {
+  display: flex;
 }
 
-.answer-input {
-  background-color: transparent;
+.column {
+  flex: 50%;
+} */
+
+.gameplay .game-score {
+  width: 20vw;
+  height: 90vh;
+  /* display: flex; */
+  flex-grow: 1; 
+  flex-wrap: wrap;
+  margin: 10px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  border: 5px solid var(--primary);
 }
+
+.gameplay .game-mainview {
+  width: 20vw;
+  height: 90vh;
+  /* display: flex; */
+  flex-grow: 4;
+  flex-wrap: wrap;
+  margin: 10px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  border: 5px solid var(--primary);
+}
+
+.gameplay .game-score-mobile {
+  width: 95vw;
+  height: 20vh;
+  flex-grow: 1; 
+  margin: 10px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  border: 5px solid var(--primary);
+  display: flex;
+  align-items: stretch;
+}
+
+.gameplay .game-mainview-mobile {
+  width: 95vw;
+  height: 70vh;
+  flex-grow: 1;
+  margin: 10px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  border: 5px solid var(--primary);
+  display: flex;
+  align-items: stretch;
+}
+
+
+
+.gameplay .game-info {
+  width: 100vw;
+  height: 20vh;
+  flex-grow: 1;
+  margin: 5px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+.gameplay .img {
+  width: 80%;
+}
+.gameplay .game-answer-input {
+  max-width: 95%!important;
+  background: transparent!important;
+  display: inline-block;
+  align-items: center;
+}
+.gameplay .game-text-input {
+  border: 5px!important;
+  padding: 5px!important;
+  max-width: 100%!important;
+  min-width: 200px!important;
+  background: var(--tertiary)!important;
+  max-height: 12vh!important;
+}
+
+.gameplay .col-md-6 {
+  width: 80%;
+  }
+  .gameplay .col-md-offset-3 {
+  margin-left: 10%;
+  }
+
+/* .answer-input {
+  background-color: transparent;
+} */
 
 div.scoreflash {
   position: absolute;
@@ -426,7 +538,14 @@ div.transbox {
     filter: alpha(opacity=80); 
     max-height: 100%;
     overflow: hidden;
+    border: 5px solid var(--primary);
   
+}
+.gameplay .transbox {
+  display: flex;
+  align-items: stretch;
+  /* display: inline-block;
+  align-items: center; */
 }
 
 .steel .transbox {
@@ -451,8 +570,8 @@ div.transbox p {
   }
 
 form {
-    color: #C6CBF5;
-
+    /* color: var(--tertiary); */
+    display: inline-block;
 }
 
 
@@ -495,6 +614,9 @@ form {
   position: absolute;
   width:100%;
   height:100%;
+      overflow-x: scroll;
+    overflow-y: scroll;
+    overflow: scroll;
 }
 
 body {
@@ -510,9 +632,13 @@ body {
         #000000 80vh);
      */
     background-size: 100% 100%;
-    overflow-x: scroll;
+    /* overflow-x: scroll;
     overflow-y: scroll;
-    overflow: scroll;
+    overflow: scroll; */
+
+    overflow-x: hidden;
+    overflow-y: hidden;
+    overflow: hidden;
 }
 
 .background-fallout {
@@ -956,11 +1082,44 @@ https://codepen.io/George-Payne/pen/qOrxao
   transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
-.height-restricted img {
-  max-height: 45vh;
-  max-width: 80vw;
+.height-restricted {
+  margin-top: 3vh;
+  height: var(--image-height-restriction);/*50vh;*/
 }
+
+.height-restricted img {
+  max-height: var(--image-height-restriction);/*50vh;*/
+  max-width: 95%;
+}
+
+.multi-height-restricted {
+  height: 15vh;
+  width: 33vw;
+  flex-grow: 1; 
+  flex-wrap: wrap;
+
+}
+
+.multi-height-restricted img {
+  height: 20vh;
+  max-width: 33vw;
+  /* width: 33vw; */
+  flex-grow: 1; 
+  flex-wrap: wrap;
+}
+
 .gamepix img {
   max-height: 500px;
   position: fixed;
+}
+
+#error-message {
+  display:inline-block;
+  text-decoration:inherit;
+  margin-right:.2em;
+  text-align:center;
+  font-variant:normal;
+  text-transform:none;
+  line-height:1em;
+  margin-left:.2em;
 }

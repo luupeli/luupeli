@@ -1,6 +1,8 @@
 const puppeteer = require('puppeteer')
 const assert = require('assert')
 
+const port = process.env.PORT
+
 let browser
 let page
 
@@ -17,15 +19,15 @@ const retry = (fn, ms) => new Promise(resolve => {
 
 beforeAll(async () => {
   browser = await puppeteer.launch({ args: ['--no-sandbox --disable-http2'] })
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000
   page = await browser.newPage()
   await page.setViewport({ width: 1280, height: 800 })
-  await page.goto('http://localhost:3000')
+  await page.goto('http://localhost:' + port)
 })
 
 beforeEach(async () => {
   page = await browser.newPage()
-  await page.goto('http://localhost:3000/gamemode')
+  await page.goto('http://localhost:' + port + '/gamemode')
 })
 
 afterEach(async () => {
@@ -40,12 +42,13 @@ describe("SelectGameMode tests", () => {
 
   it('should open page', async () => {
     page = await browser.newPage()
-    const response = await retry(() => page.goto('http://localhost:3000'), 1000)
+    const response = await retry(() => page.goto('http://localhost:' + port), 1000)
     //Does it need to be 200?
     assert.equal(response.status(), 304)
   })
 
   test('page renders', async () => {
+	await page.waitForSelector('#gameBody')
     const textContent = await page.$eval('#gameBody', el => el.textContent)
     console.log(textContent)
     expect(textContent.toLowerCase().includes("luupelimuoto")).toBe(true)

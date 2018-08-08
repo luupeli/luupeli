@@ -192,8 +192,8 @@ class MultipleChoiceGame extends React.Component {
           <div className="intro">
             <CloudinaryContext cloudName="luupeli">
               <div className="height-restricted">
-                <Image publicId={this.props.game.currentImage.url}>
-                  <Transformation width={imageWidth()} crop="fill" radius="20" />
+                <Image publicId={this.props.game.currentImage.url+".png"}>
+                  <Transformation width={imageWidth()} format="png" crop="fill" radius="20" />
                 </Image>
               </div>
             </CloudinaryContext>
@@ -203,7 +203,7 @@ class MultipleChoiceGame extends React.Component {
         </div>
         <div className="container">
           <div className="col-md-6 col-md-offset-3" id="info">
-            <h6>Vastausaikaa kulunut {Math.round(this.state.seconds / 10, 1)}</h6>
+            {/* <h6>Vastausaikaa kulunut {Math.round(this.state.seconds / 10, 1)}</h6> */}
             <p>{this.props.game.currentImage.bone.description}</p>
           </div>
         </div>
