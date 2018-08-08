@@ -204,9 +204,9 @@ class EndScreen extends React.Component {
     const almostCorrectAnswers = this.props.game.answers.filter(ans => ans.correctness > 70 && ans.correctness < 100)
     const wrongAnswers = this.props.game.answers.filter(ans => ans.correctness <= 70)
     
-    const correctPortion = (correctAnswers.length/this.props.game.answers.length) * 100
-    const almostCorrectPortion = (almostCorrectAnswers.length/this.props.game.answers.length) * 100
-    const wrongPortion = (wrongAnswers.length/this.props.game.answers.length) * 100
+    const correctPortion = Math.round((correctAnswers.length/this.props.game.answers.length)) * 100
+    const almostCorrectPortion = Math.round((almostCorrectAnswers.length/this.props.game.answers.length)) * 100
+    const wrongPortion = Math.round((wrongAnswers.length/this.props.game.answers.length)) * 100
 
     return (
       <div className='Appbd menu-background'>
