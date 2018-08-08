@@ -63,7 +63,7 @@ class GameLoop extends React.Component {
      */
     componentWillMount() {
 
-        this.interval = setInterval(() => this.tick(), 100);
+        this.interval = setInterval(() => this.tick(), 200);
     }
     /**
      * At component unmount the interval needs to be cleared.
