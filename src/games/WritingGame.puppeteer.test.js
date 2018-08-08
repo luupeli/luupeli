@@ -65,7 +65,7 @@ describe('WritingGame tests', () => {
 		// await page.screenshot({ path: 'end.png', fullPage: true });
 		const textContent = await page.$eval('#endScreenTitle', el => el.textContent)
 
-		expect(textContent.toLowerCase().includes("lopputulos")).toBe(true)
+		expect(textContent.toLowerCase().includes("vastauksesi")).toBe(true)
 	}, 40000)
 
 	async function playRounds(gameLength) {

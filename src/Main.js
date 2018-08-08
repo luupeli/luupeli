@@ -4,6 +4,7 @@ import GameLoop from './games/GameLoop'
 import SelectGameMode from './menus/gamescreens/SelectGameMode'
 import EndScreen from './menus/gamescreens/EndScreen'
 import Home from './menus/Home'
+
 import GameSettings from './menus/gamescreens/GameSettings'
 import BoneListing from './menus/admin/BoneListing'
 import UserListing from './menus/admin/UserListing'
@@ -13,6 +14,7 @@ import Login from './menus/login/Login'
 import Register from './menus/login/Register'
 import Admin from './menus/admin/Admin'
 import Statistics from './menus/admin/Statistics'
+import AddData from './menus/AddData'
 import NavBar from './menus/NavBar'
 import { BrowserRouter } from 'react-router-dom'
 import { init } from './reducers/initializeRecuder'
@@ -30,7 +32,10 @@ class Main extends React.Component {
         {/* <NavBar/> */}
         <main>
           <BrowserRouter>
-            <div>
+          <div>
+              <Route exact path="/add_data" render={({ location, history }) => {
+                return <AddData location={location} history={history} />
+              }} />
               <Route exact path="/" render={({ location, history }) => {
                 return <Home location={location} history={history} />
               }} />

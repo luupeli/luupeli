@@ -300,6 +300,10 @@ h2 {
   font-family: 'Press start 2p', sans-serif;
 }
 
+.steel h3, .steel h4, .steel h5, .steel h6, .steel p {
+  font-family: 'Russo One', sans-serif!important;
+}
+
 h3 {
   font-size:calc(1.25vw + 1.25vh + 1.0vmin);
   -webkit-background-clip: text;
@@ -516,17 +520,18 @@ div.row {
 
 div.scoreflash {
   position: absolute;
-  width: 22vw;
-  height: 16vh;
+  width: 28vw;
+  height: 20vh;
   z-index: 1000;
-  margin-left: 42vw; 
+  margin-left: 38vw; 
   margin-top: 25vh;
-  border-radius: 50%;
-  background-color: #aaa;
+  border-radius: 40%;
+  border: 5px solid var(--highlight);
+  background-color: var(--tertiary);
   box-shadow:
-      0 0 60px 30px #fff, 
-      0 0 100px 60px  rgba(236, 0, 199, 0.75), 
-      0 0 160px 90px rgba(173, 78, 165, 0.33) ,
+      0 0 60px 30px var(--primary), 
+      0 0 100px 60px var(--secondary), 
+      0 0 160px 90px var(--tertiary) ,
       0 0 240px 120px transparent;
 }
 
@@ -1111,6 +1116,55 @@ https://codepen.io/George-Payne/pen/qOrxao
 .gamepix img {
   max-height: 500px;
   position: fixed;
+}
+
+.text-bg {
+	background-color:rgba(0, 0, 0, 0.5);
+}
+
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
+
+.grade-mark-good {
+	color: green;
+	font-size: 4rem;
+	position: absolute;
+  bottom: 8px;
+  right: 16px;
+}
+
+.grade-mark-okay {
+	color: orange;
+	font-size: 4rem;
+	position: absolute;
+  bottom: 8px;
+  right: 16px;
+}
+
+.grade-mark-bad {
+	color: red;
+	font-size: 4rem;
+	position: absolute;
+  bottom: 8px;
+  right: 16px;
+}
+.progress {
+	height: 3rem;
+}
+
+.progress-bar {
+	font-size: 1.7rem;
+	text-align: center;
+	padding-top: 5px;
+}
+
+.steel img {
+  -webkit-filter: sepia(0.8);
+  filter: sepia(0.8);
 }
 
 #error-message {
