@@ -164,7 +164,7 @@ class Login extends React.Component {
               </div>
               <div className="btn-group">
                 <Link to='/'>
-                  <button className="gobackbutton">Etusivulle</button>
+                  <button id='back-button' className="gobackbutton">Etusivulle</button>
                 </Link>
               </div>
             </div>
