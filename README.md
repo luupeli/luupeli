@@ -10,5 +10,5 @@ Status](https://travis-ci.org/luupeli/luupeli.svg?branch=master)](https://travis
 
 ### Ryhmätapaamiset elokuussa:
 * Ma klo 17.45-
-* Ti klo 16.15-
+* Ke klo 16.15-
 
