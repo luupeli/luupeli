@@ -58,10 +58,27 @@ class WritingGame extends React.Component {
     if (this.props.game.gameClock < 200) {
       points = points * ((400 - this.props.game.gameClock) / 40)
     }
+
+    if (this.props.game.gameDifficulty==='easy') {
+      points = points * 0.5
+      points = points * Math.max(0.2,this.state.easyDifficultyPenalty)
+      if (this.state.partialEasyAnswer===this.props.game.currentImage.bone.nameLatin) {
+        points = points * 0.25
+      }
+      if (points<20) {
+        points=20
+      }
+    }
+
+    let hardBonus= 0.0
+    if (this.props.game.gameDifficulty==='hard') {
+      hardBonus = 1.0
+    }
+
     if (this.checkCorrectness() > 99) {
       points = points * 5
       correctness = 'Oikein'
-      this.setState({ streakWG: currentStreak + 1, bonus: currentBonus + 1.0 })
+      this.setState({ streakWG: currentStreak + 1, bonus: currentBonus + 1.0 + hardBonus, value: '',previousRevealClock: 0,partialEasyAnswer: '__',easyDifficultyPenalty:1.0  })
       streakNote = currentBonus + 'x!'
       if (currentBonus < 1.5) {
         streakNote = ''
@@ -70,7 +87,12 @@ class WritingGame extends React.Component {
       streakEmoji = streakEmoji.get('fire')
       console.log(streakEmoji)
     } else {
-      this.setState({ streakWG: 0, bonus: 1.0 })
+
+      if (this.props.game.gameDifficulty==='hard') {
+        points = 40 * currentBonus
+      }
+
+      this.setState({ streakWG: 0, bonus: 1.0, value: '',previousRevealClock: 0,partialEasyAnswer: '__',easyDifficultyPenalty:1.0  })
       streakNote = ''
       if (this.checkCorrectness() < 1) {
         streakEmoji = require('node-emoji')
@@ -80,14 +102,7 @@ class WritingGame extends React.Component {
     if (this.checkCorrectness() > 85) {
       points = points * 2 * currentBonus
     }
-
-    if (this.props.game.gameDifficulty==='easy') {
-      points = points * 0.75
-      points = points / this.state.easyDifficultyPenalty
-      if (points<100) {
-        points=100
-      }
-    }
+   
 
     points = Math.round(points / 20) * 20
     if (this.checkCorrectness() <= 70) {
@@ -98,7 +113,7 @@ class WritingGame extends React.Component {
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
     this.props.setScoreFlash(points, streakNote,streakEmoji,scoreFlashRowtext, 'success',3,true)
     
-    this.setState({ value: '',previousRevealClock: 0,partialEasyAnswer: '__' })
+    //this.setState({ value: '',previousRevealClock: 0,partialEasyAnswer: '__' })
     this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(), this.state.value, this.props.game.gameClock, points)
     this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
     this.props.setWrongImageOptions(this.props.game.currentImage, this.props.game.images)
@@ -175,7 +190,7 @@ class WritingGame extends React.Component {
           newPartial = newPartial+this.props.game.currentImage.bone.nameLatin.charAt(i)
           if (!skipState) {
             if (this.state.partialEasyAnswer.charAt(i)==='_') {
-          addPenalty = 2.0/(this.props.game.currentImage.bone.nameLatin.length/2)
+          addPenalty = 0.02+Math.max(0,Math.min(((50-(this.props.game.currentImage.bone.nameLatin.length*2))/1000),0.06))
             }
           }
         } else if (!skipState) {
@@ -186,7 +201,7 @@ class WritingGame extends React.Component {
         
         
      //   newPartial[randomIndex] =this.props.game.currentImage.bone.nameLatin[randomIndex]
-        this.setState( { previousRevealClock: this.props.game.gameClock, partialEasyAnswer: newPartial, easyDifficultyPenalty: this.state.easyDifficultyPenalty+addPenalty})
+        this.setState( { previousRevealClock: this.props.game.gameClock, partialEasyAnswer: newPartial, easyDifficultyPenalty: this.state.easyDifficultyPenalty-addPenalty})
         console.log('new partial on nyt : '+newPartial)
         }
 
@@ -244,6 +259,12 @@ class WritingGame extends React.Component {
     } else {
       cheat = '(Oikea vastaus: '+this.props.game.currentImage.bone.nameLatin
     }
+    let description = this.props.game.currentImage.bone.description
+    let name =  this.props.game.currentImage.bone.name
+
+    if (this.props.game.gameDifficulty==='hard') {
+      name = 'LUU-5!'
+    }
 
     return (
       <div className="bottom">
@@ -251,8 +272,10 @@ class WritingGame extends React.Component {
           <div className="intro">
             <CloudinaryContext cloudName="luupeli">
               <div className="height-restricted" >
-                <Image id="bone-image" publicId={this.props.game.currentImage.url}     sizes="(min-width: 30em) 30em, 80vw">
-                  
+                <Image id="bone-image" publicId={this.props.game.currentImage.url}>
+
+                    <Transformation width={imageWidth()}/>
+                    
                 </Image>
               </div>
             </CloudinaryContext>
@@ -260,13 +283,13 @@ class WritingGame extends React.Component {
         </div>
         <div className="row">
           <div><center>
-            <h3 id="heading">{this.props.game.currentImage.bone.name}</h3></center>
+            <h3 id="heading">{name}</h3></center>
           </div>
         </div>
         {/* <div className="container">
           <div className="col-md-6 col-md-offset-3" id="info">
              */}
-            <p>{this.props.game.currentImage.bone.description}</p>
+            <p>{description}</p>
             {/* <p>Tätä kuvaa on yritetty {attempts} kertaa, niistä {correctAttempts} oikein. Oikeita vastauksia: {correctPercentile} % kaikista yrityksistä.</p> */}
             <p>Img width: {imageWidth()} | height: {imageHeight()}</p>
             <p>URL: {this.props.game.currentImage.url}</p>
