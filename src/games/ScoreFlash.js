@@ -20,7 +20,7 @@ class ScoreFlash extends React.Component {
 			playbackspeed=Math.min(4,1.0+(scoreActual/2500));
 		}
 		
-		if (gameClock<scoreRiseTime) {
+		if (gameClock<scoreRiseTime &&  this.props.game.playSound) {
 			return (
 				
 			<Sound

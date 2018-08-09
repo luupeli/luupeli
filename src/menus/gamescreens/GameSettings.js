@@ -34,9 +34,13 @@ class GameSettings extends React.Component {
 			styleIndex: localStorage.getItem('styleIndex'),
       user: null,
       animals: [],
-      bodyParts: []
+	  bodyParts: [],
+	  playSound: true,
+	  gameDifficulty: 'medium'
 		}
 
+		this.changeGameDifficulty = this.changeGameDifficulty.bind(this)
+		this.changeSoundSetting = this.changeSoundSetting.bind(this)
 		this.changeAnimal = this.changeAnimal.bind(this)
 		this.toggleCheck = this.toggleCheck.bind(this)
 		this.atLeastOneBodyPartIsSelected = this.atLeastOneBodyPartIsSelected.bind(this)
@@ -107,6 +111,31 @@ class GameSettings extends React.Component {
 		this.setState({ gameLength: [event.target.value] })
 		console.log('Pelin pituus on nyt ... ' + this.state.gameLength)
 	}
+
+	changeGameDifficulty(event) {
+		if (event.target.value==='easy') {
+			this.setState({ gameDifficulty: 'easy' }) 
+		}
+		if (event.target.value==='medium') {
+			this.setState({ gameDifficulty: 'medium' }) 
+		}
+		if (event.target.value==='hard') {
+			this.setState({ gameDifficulty: 'hard' }) 
+		}
+	}
+
+	changeSoundSetting(event) {
+		
+		if (event.target.value==="true") {
+
+		   this.setState({ playSound: true }) 
+		} 
+		else  {
+
+		   this.setState({ playSound: false }) 
+		}
+	}
+
 
 	changeAnimal(i, event) {
 		const animals = this.state.allAnimals
@@ -197,10 +226,11 @@ class GameSettings extends React.Component {
       for (let bodyPart of chosenBodyParts) {
         delete bodyPart.selected
       }
-      this.setState({ images: pics })
-      this.setState({ animals : chosenAnimals })
-      this.setState({ bodyParts: chosenBodyParts })
-			this.setState({ redirect: true })
+    //   this.setState({ images: pics })
+    //   this.setState({ animals : chosenAnimals })
+    //   this.setState({ bodyParts: chosenBodyParts })
+	// 		this.setState({ redirect: true })
+	this.setState({ images: pics,animals : chosenAnimals, bodyParts: chosenBodyParts, redirect: true })
 		}
 		console.log(pics)
 
@@ -221,7 +251,7 @@ class GameSettings extends React.Component {
 
 		if (this.state.redirect) {
       this.props.gameInitialization(this.state.gameLength, this.state.images, this.state.user, 
-        this.props.location.state.gamemode, this.state.animals, this.state.bodyParts)
+        this.props.location.state.gamemode, this.state.animals, this.state.bodyParts,this.state.playSound, this.state.gameDifficulty)
 			return (
 				<Redirect to={{
 					pathname: '/game',
@@ -330,6 +360,7 @@ class GameSettings extends React.Component {
 													type="radio"
 													id="gameEasy"
 													value="easy"
+													onClick={this.changeGameDifficulty.bind(this)}
 													name="difficultylevel"
 												/>
 												Luupää (helppo)
@@ -340,19 +371,51 @@ class GameSettings extends React.Component {
 													id="gameMedium"
 													value="medium"
 													name="difficultylevel"
+													onClick={this.changeGameDifficulty.bind(this)}
 													defaultChecked
 												/>
-												Normaali
+												Luunkova
 											</label>
 											<label className="radio-inline">
 												<input
 													type="radio"
 													id="gameHard"
 													value="hard"
+													onClick={this.changeGameDifficulty.bind(this)}
 													name="difficultylevel"
 												/>
-												Luunkova (vaikea)
+												Luu-5 (vaikea)
 											</label>
+										</form>
+										
+									</div>
+								</div>
+								<div className="container">
+									<div className="col-md-12">
+										<h3 className="form-header">Äänet:</h3>
+										<form>
+											<label className="radio-inline">
+												<input
+													type="radio"
+													id="soundsOn"
+													value="true"
+													name="sound"
+													defaultChecked
+													onClick={this.changeSoundSetting.bind(this)}
+												/>
+												Päällä
+											</label>
+											<label className="radio-inline">
+												<input
+													type="radio"
+													id="soundsOff"
+													value="false"
+													name="sound"
+													onClick={this.changeSoundSetting.bind(this)}
+												/>
+												Pois
+											</label>
+											
 										</form>
 										<div className="btn-group wide settingspage GameButton">
 											<button id="luupeliinButton" onClick={this.atLeastOneBodyPartIsSelected}>Luupeliin >></button>

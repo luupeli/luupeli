@@ -12,7 +12,8 @@ const initialState = {
         answers: [],
         totalSeconds: '',
         gameClock:0,
-        
+        playSound: false,
+        gameDifficulty: "medium"
     }
 }
 
@@ -24,7 +25,7 @@ const gameReducer = (store = initialState.game, action) => {
               wrongAnswerOptions: action.wrongAnswerOptions, currentImage: action.currentImage, user: action.user,
                totalScore: action.totalScore, gameLength: action.gameLength, endCounter: action.endCounter, 
                totalSeconds: action.totalSeconds, images: action.images, animals: action.animals, 
-               bodyparts: action.bodyparts, answers: action.answer, gamemode: action.gamemode }
+               bodyparts: action.bodyparts, answers: action.answer, gamemode: action.gamemode,playSound: action.playSound,gameDifficulty: action.gameDifficulty }
     }
     if (action.type === 'SET_ANSWER') {
         console.log(action)
@@ -50,10 +51,14 @@ const gameReducer = (store = initialState.game, action) => {
         
         return { ...store, gameClock: store.gameClock+1 }
     }
+    if (action.type === 'TOGGLE_SOUND') {
+        
+        return { ...store, playSound: store.playSound+1 }
+    }
     return store
 }
 
-export const gameInitialization = (gameLength, images, user, gamemode, animals, bodyparts) => {
+export const gameInitialization = (gameLength, images, user, gamemode, animals, bodyparts, playSound,gameDifficulty) => {
     const imageToAsk = selectNextImage(undefined, images);
     const wrongAnswerOptions = selectWrongAnswerOptions(images, imageToAsk)
     const wrongImageOptions = selectWrongImageOptions(images, imageToAsk)
@@ -77,7 +82,9 @@ export const gameInitialization = (gameLength, images, user, gamemode, animals, 
         user: user,
         totalSeconds: 0,
         totalScore: 0,
-        gameClock:0 
+        gameClock:0,
+        playSound:playSound,
+        gameDifficulty: gameDifficulty
     }
 }
 
@@ -130,6 +137,13 @@ export const advanceGameClock = () => {
         type: 'ADVANCE_GAMECLOCK'
     }
 }
+
+export const toggleSound = () => {
+    return {
+        type: 'TOGGLE_SOUND'
+    }
+}
+
 
 export default gameReducer
 

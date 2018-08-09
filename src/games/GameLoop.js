@@ -6,7 +6,7 @@ import WritingGame from './WritingGame'
 import MultipleChoiceGame from './MultipleChoiceGame'
 import ImageMultipleChoiceGame from './ImageMultipleChoiceGame'
 import { connect } from 'react-redux'
-import { gameInitialization, setAnswer, advanceGameClock } from '../reducers/gameReducer'
+import { gameInitialization, setAnswer, advanceGameClock,toggleSound } from '../reducers/gameReducer'
 import { ProgressBar } from 'react-bootstrap'
 import gameSessionService from '../services/gameSessions'
 import bodyPartService from '../services/bodyParts'
@@ -64,7 +64,7 @@ class GameLoop extends React.Component {
      */
     componentWillMount() {
 
-        this.interval = setInterval(() => this.tick(), 200);
+        this.interval = setInterval(() => this.tick(), 50);
     }
     /**
      * At component unmount the interval needs to be cleared.
@@ -111,7 +111,9 @@ class GameLoop extends React.Component {
     }
 
     handleSound() {
-        if (!this.state.introMusicHasFinished && this.props.game.gameLength === this.props.game.endCounter) {
+        if (this.props.game.playSound) {
+
+        if (!this.state.introMusicHasFinished && this.props.game.gameLength === this.props.game.endCounter ) {
             return (
 
                 <Sound
@@ -153,7 +155,10 @@ class GameLoop extends React.Component {
                 )
             }
         }
-
+    }
+    else {
+        return null
+    }
     }
 
     /**
@@ -399,7 +404,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
     gameInitialization,
     setAnswer,
-    advanceGameClock
+    advanceGameClock,
+    toggleSound
 }
 
 const ConnectedGameLoop = connect(
