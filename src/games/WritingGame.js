@@ -30,6 +30,7 @@ class WritingGame extends React.Component {
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    window.onunload = function () { window.location.href = '/' }
   }
 
   handleChange(event) {

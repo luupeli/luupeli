@@ -41,6 +41,7 @@ class GameLoop extends React.Component {
         }
         this.postGameSession = this.postGameSession.bind(this)
         this.handleSongFinishedPlaying = this.handleSongFinishedPlaying.bind(this)
+        window.onunload = function () { window.location.href = '/' }
     };
 
 

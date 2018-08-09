@@ -129,6 +129,7 @@ class Home extends React.Component {
     console.log('new style index is now: ' + next)
     window.location.reload()
     window.onunload = function () { window.location.href = '/' }
+
   }
 
   proceedToSelect(event) {

@@ -24,6 +24,8 @@ class AddData extends React.Component {
 		this.sendAnimalsAndBodyParts = this.sendAnimalsAndBodyParts.bind(this)
 		this.sendBones = this.sendBones.bind(this)
 		this.sendImages = this.sendImages.bind(this)
+
+		window.onunload = function () { window.location.href = '/' }
 	}
 
 	async componentDidMount() {
