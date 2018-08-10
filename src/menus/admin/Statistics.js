@@ -42,8 +42,8 @@ class Statistics extends React.Component {
 	}
 
 	setStats(response) {
-		this.setState({ gameSessions: response.data })
-		this.setState({ gameSessionsFiltered: response.data })
+		this.setState({ gameSessions: response.data },
+				{ gameSessionsFiltered: response.data })
 		this.setTimePlayed()
 		this.setGameModes()
 	}
@@ -66,9 +66,9 @@ class Statistics extends React.Component {
 		let multipleChoiceGame = this.state.gameSessionsFiltered.filter(session => {
 			return session.mode === "monivalintapeli"
 		}).length
-		this.setState({ writingGameCount: writingGame })
-		this.setState({ mixedGameCount: mixedGame })
-		this.setState({ multipleChoiceGameCount: multipleChoiceGame })
+		this.setState({ writingGameCount: writingGame }, 
+					{ mixedGameCount: mixedGame }, 
+					{ multipleChoiceGameCount: multipleChoiceGame })
 	}
 
 	render() {

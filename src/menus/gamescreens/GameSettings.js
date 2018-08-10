@@ -105,6 +105,7 @@ class GameSettings extends React.Component {
 
 	changeGameLength(event) {
 		this.setState({ gameLength: [event.target.value] })
+		console.log(typeof this.state.gameLength)
 		console.log('Pelin pituus on nyt ... ' + this.state.gameLength)
 	}
 
@@ -291,7 +292,7 @@ class GameSettings extends React.Component {
 												<input
 													type="radio"
 													id="gameLengthShort"
-													value="3"
+													value={3}
 													onClick={this.changeGameLength.bind(this)}
 													name="length"
 												/>
@@ -301,7 +302,7 @@ class GameSettings extends React.Component {
 												<input
 													type="radio"
 													id="gameLengthMedium"
-													value="5"
+													value={5}
 													onClick={this.changeGameLength.bind(this)}
 													name="length"
 													defaultChecked
@@ -312,13 +313,44 @@ class GameSettings extends React.Component {
 												<input
 													type="radio"
 													id="gameLengthLong"
-													value="7"
+													value={7}
 													onClick={this.changeGameLength.bind(this)}
 													name="length"
 												/>
 												7
 											</label>
 										</form>
+									</div>
+								</div>
+								<div className="container">
+									<div className="col-md-12">
+									<h3 className="form-header">Luupelin pituus:</h3>
+									<select>
+										<option value="volvo">Volvo</option>
+										<option value="saab">Saab</option>
+										<option value="opel">Opel</option>
+										<option value="audi">Audi</option>
+										<option value="volvo">Volvo</option>
+										<option value="saab">Saab</option>
+										<option value="opel">Opel</option>
+										<option value="audi">Audi</option>
+										<option value="volvo">Volvo</option>
+										<option value="saab">Saab</option>
+										<option value="opel">Opel</option>
+										<option value="audi">Audi</option>
+										<option value="volvo">Volvo</option>
+										<option value="saab">Saab</option>
+										<option value="opel">Opel</option>
+										<option value="audi">Audi</option>
+										<option value="volvo">Volvo</option>
+										<option value="saab">Saab</option>
+										<option value="opel">Opel</option>
+										<option value="audi">Audi</option>
+										<option value="volvo">Volvo</option>
+										<option value="saab">Saab</option>
+										<option value="opel">Opel</option>
+										<option value="audi">Audi</option>
+									</select>
 									</div>
 								</div>
 								<div className="container">

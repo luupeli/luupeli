@@ -223,9 +223,9 @@ class EndScreen extends React.Component {
           <h1 className='h2' id="endScreenTitle">Vastauksesi olivat:</h1>
           <div id="resultsText">
             <ProgressBar label={`answerPortions`}>
-							<ProgressBar bsStyle="success" now={correctPortion} label={`Täysin oikein ${correctPortion}%`} key={1} />
-							<ProgressBar bsStyle="warning" now={almostCorrectPortion} label={`Melkein oikein ${almostCorrectPortion}%`} key={2} />
-							<ProgressBar bsStyle="danger" now={wrongPortion} label={`Väärin ${wrongPortion}%`} key={3} />
+							<ProgressBar bsStyle="success" now={correctPortion} label={`Täysin oikein ${Math.round(correctPortion)}%`} key={1} />
+							<ProgressBar bsStyle="warning" now={almostCorrectPortion} label={`Melkein oikein ${Math.round(almostCorrectPortion)}%`} key={2} />
+							<ProgressBar bsStyle="danger" now={wrongPortion} label={`Väärin ${Math.round(wrongPortion)}%`} key={3} />
             </ProgressBar>
             {this.renderAnswers()}
           </div>
