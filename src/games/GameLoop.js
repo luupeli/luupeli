@@ -6,11 +6,12 @@ import WritingGame from './WritingGame'
 import MultipleChoiceGame from './MultipleChoiceGame'
 import ImageMultipleChoiceGame from './ImageMultipleChoiceGame'
 import { connect } from 'react-redux'
-import { gameInitialization, setAnswer, advanceGameClock,toggleSound } from '../reducers/gameReducer'
+import { gameInitialization, setAnswer, advanceGameClock } from '../reducers/gameReducer'
 import { ProgressBar } from 'react-bootstrap'
 import gameSessionService from '../services/gameSessions'
 import bodyPartService from '../services/bodyParts'
 import animalService from '../services/animals'
+import answerService from '../services/answers'
 import { injectGlobal } from 'styled-components'
 import Sound from 'react-sound';
 /**
@@ -41,7 +42,6 @@ class GameLoop extends React.Component {
         }
         this.postGameSession = this.postGameSession.bind(this)
         this.handleSongFinishedPlaying = this.handleSongFinishedPlaying.bind(this)
-        window.onunload = function () { window.location.href = '/' }
     };
 
 
@@ -84,25 +84,18 @@ class GameLoop extends React.Component {
     postGameSession() {
         let userToBePosted
         if (this.state.user !== null) {
-            userToBePosted: this.state.user.id
+            userToBePosted = this.state.user.id
         }
         gameSessionService.create({
             user: userToBePosted,
-            mode: this.props.game.gamemode,
+            gamemode: this.props.game.gamemode,
+            answers: this.props.game.answers,
             length: this.props.game.gameLength,
-            difficulty: this.props.game.difficulty,
+            gameDifficulty: this.props.game.gameDifficulty,
             animals: this.props.game.animals.map(animal => animal.id),
             bodyparts: this.props.game.bodyparts.map(bodypart => bodypart.id),
-            correctAnswerCount: this.props.game.answers.filter(ans => ans.correctness === 100).length,
-            almostCorrectAnswerCount: this.props.game.answers.filter(ans => ans.correctness > 70 && ans.correctness < 100).length,
             seconds: this.props.game.totalSeconds / 20
         })
-            .then((response) => {
-                console.log(response)
-            })
-            .catch((error) => {
-                console.log(error)
-            })
     }
 
     handleSongFinishedPlaying() {
@@ -111,9 +104,7 @@ class GameLoop extends React.Component {
     }
 
     handleSound() {
-        if (this.props.game.playSound) {
-
-        if (!this.state.introMusicHasFinished && this.props.game.gameLength === this.props.game.endCounter ) {
+        if (!this.state.introMusicHasFinished && this.props.game.gameLength === this.props.game.endCounter) {
             return (
 
                 <Sound
@@ -155,10 +146,7 @@ class GameLoop extends React.Component {
                 )
             }
         }
-    }
-    else {
-        return null
-    }
+
     }
 
     /**
@@ -215,7 +203,9 @@ class GameLoop extends React.Component {
                 document.documentElement.offsetWidth,
                 document.documentElement.clientWidth
             )
-
+            // if (windowWidth > 1000) {
+            //     return 1000
+            // }
             return Math.round(windowWidth * 1.0)
         }
 
@@ -227,6 +217,9 @@ class GameLoop extends React.Component {
                 document.documentElement.offsetHeight,
                 document.documentElement.clientHeight
             )
+            // if (windowHeight > 1000) {
+            //     return 1000
+            // }
             return Math.round(windowHeight * 1.0)
         }
 
@@ -404,8 +397,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
     gameInitialization,
     setAnswer,
-    advanceGameClock,
-    toggleSound
+    advanceGameClock
 }
 
 const ConnectedGameLoop = connect(
