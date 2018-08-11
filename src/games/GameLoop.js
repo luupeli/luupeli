@@ -201,7 +201,7 @@ class GameLoop extends React.Component {
     responsiveLayout(scoreShown) {
 
         const imageWidthR = () => {              // Here we try to measure the window size in order to resize the bone image accordingly
-            const windowWidth = Math.min(
+            const windowWidth = Math.max(
                 document.body.scrollWidth,
                 document.documentElement.scrollWidth,
                 document.body.offsetWidth,
@@ -213,7 +213,7 @@ class GameLoop extends React.Component {
         }
 
         const imageHeightR = () => {              // Here we try to measure the window size in order to resize the bone image accordingly
-            const windowHeight = Math.min(
+            const windowHeight = Math.max(
                 document.body.scrollHeight,
                 document.documentElement.scrollHeight,
                 document.body.offsetHeight,

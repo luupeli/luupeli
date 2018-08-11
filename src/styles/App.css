@@ -156,7 +156,8 @@ animation: Button-Gradient 3.23s ease infinite;
 }
 
 .score-board .col-md-offset-3 {
-  margin-left: 0!important;
+  /* margin-left: 0!important; */
+  margin: auto;
 }
 
 
@@ -632,7 +633,7 @@ form {
 .form-header {
     color:  var(--highlight);
     font-size:calc(1.4vw + 0.8vh + 0.6vmin);
-    margin-bottom:calc(1.1vw + 1.1vh + 0.5vmin);
+    /* margin-bottom:calc(1.1vw + 1.1vh + 0.5vmin); */
     
 }
 
