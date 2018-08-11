@@ -6,6 +6,7 @@ import skelly from '../skelly'
 import { injectGlobal } from 'styled-components'
 import { Row, Col } from 'react-bootstrap'
 import RandomTextGenerator from 'react-scrolling-text';
+import { Animated } from "react-animated-css";
 
 /**
  * This is the index page for the site. You can for example login from here or start creating the game.
@@ -376,11 +377,163 @@ class Home extends React.Component {
                     <div className={this.state.style} />
                   </Col>
                 </Row>
+                <div className="home-highscore-top">
+                
+                <Animated animationIn="bounceInUp slower" animationInDelay="1000" isVisible={true}>
+		            <h3>
+			          TOP 10 LUUPÄÄT
+		            </h3>
+				      </Animated>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
+              
+              
+              <Animated animationIn="bounceInUp slower" animationInDelay="3000" isVisible={true}>
+              <div className="home-highscore">
+              <div className="score">
+                <h5>
+			          1. Luu Skywalker
+                </h5>
+		            </div>
+                <div className="score">
+                  <h5>
+                10 000
+                  </h5>
+                  </div>
+                  </div>    
+				      </Animated>
+   
+              <Animated animationIn="bounceInUp slower" animationInDelay="4000" isVisible={true}>
+              <div className="home-highscore">
+              <div className="score">
+                <h5>
+			          2. Luuno Turhapuro
+                </h5>
+		            </div>
+                <div className="score">
+                  <h5>
+                9 000
+                  </h5>
+                  </div>
+                  </div>    
+				      </Animated>
+              <Animated animationIn="bounceInUp slower" animationInDelay="5000" isVisible={true}>
+              <div className="home-highscore">
+              <div className="score">
+                <h5>
+			          3. Princess Luua
+                </h5>
+		            </div>
+                <div className="score">
+                  <h5>
+                7 500
+                  </h5>
+                  </div>
+                  </div>    
+				      </Animated>
+              <Animated animationIn="bounceInUp slower" animationInDelay="6000" isVisible={true}>
+              <div className="home-highscore">
+              <div className="score">
+                <h5>
+			          4. Luuntietäjä
+                </h5>
+		            </div>
+                <div className="score">
+                  <h5>
+                6 660
+                  </h5>
+                  </div>
+                  </div>    
+				      </Animated>
+              <Animated animationIn="bounceInUp slower" animationInDelay="7000" isVisible={true}>
+              <div className="home-highscore">
+              <div className="score">
+                <h5>
+			          5. Sorbusten ritari 
+                </h5>
+		            </div>
+                <div className="score">
+                  <h5>
+                5 000
+                  </h5>
+                  </div>
+                  </div>    
+				      </Animated>
+              <Animated animationIn="bounceInUp slower" animationInDelay="8000" isVisible={true}>
+              <div className="home-highscore">
+              <div className="score">
+                <h5>
+			          6. Keisari Luupatine
+                </h5>
+		            </div>
+                <div className="score">
+                  <h5>
+                4 000
+                  </h5>
+                  </div>
+                  </div>    
+				      </Animated>
+              <Animated animationIn="bounceInUp slower" animationInDelay="9000" isVisible={true}>
+              <div className="home-highscore">
+              <div className="score">
+                <h5>
+			          7. Mr. Kitiini
+                </h5>
+		            </div>
+                <div className="score">
+                  <h5>
+                3 000
+                  </h5>
+                  </div>
+                  </div>    
+				      </Animated>
+              <Animated animationIn="bounceInUp slower" animationInDelay="9800" isVisible={true}>
+              <div className="home-highscore">
+              <div className="score">
+                <h5>
+			          8. Luufemma
+                </h5>
+		            </div>
+                <div className="score">
+                  <h5>
+                2 500
+                  </h5>
+                  </div>
+                  </div>    
+				      </Animated>
+              <Animated animationIn="bounceInUp slower" animationInDelay="10500" isVisible={true}>
+              <div className="home-highscore">
+              <div className="score">
+                <h5>
+			          9. Luunkerääjä
+                </h5>
+		            </div>
+                <div className="score">
+                  <h5>
+                1 500
+                  </h5>
+                  </div>
+                  </div>    
+				      </Animated>
+              <Animated animationIn="bounceInUp slower" animationInDelay="11200" isVisible={true}>
+              <div className="home-highscore">
+              <div className="score">
+                <h5>
+			          10. Luubi-Wan Luunobi
+                </h5>
+		            </div>
+                <div className="score">
+                  <h5>
+                1 000
+                  </h5>
+                  </div>
+                  </div>    
+				      </Animated>
+          
+              </div>
+              </div>
+              </div>
+              </div>
+              </div>
     )
   }
 }
