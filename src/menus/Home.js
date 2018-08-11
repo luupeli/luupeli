@@ -5,6 +5,7 @@ import '../styles/Crt.css'
 import skelly from '../skelly'
 import { injectGlobal } from 'styled-components'
 import { Row, Col } from 'react-bootstrap'
+import RandomTextGenerator from 'react-scrolling-text';
 
 /**
  * This is the index page for the site. You can for example login from here or start creating the game.
@@ -107,6 +108,7 @@ class Home extends React.Component {
         this.setState({ admin: true })
       }
     }
+
   }
 
   // This event chooses the next css style settings from the list
@@ -212,6 +214,27 @@ class Home extends React.Component {
     }
   }
 
+  gameTitle() {
+
+      if (this.state.style==='fallout') {
+        return (
+          <h1 className="game-title">
+          <RandomTextGenerator
+          charList={['é', 'ä', 'í', 'ƒ', 'ñ', '*', 'π', '[', ']', 'k', '¥', 'å']}
+          text={'Luupeli'}
+          interval={24}
+          timePerChar={240}
+          />
+          </h1>
+        )
+      }
+      else {
+      return (
+        <h1 className="game-title">Luupeli</h1>
+      )
+    }
+  }
+
   loggedInButtons() {
     if (this.state.user === null) {
       return (
@@ -313,7 +336,8 @@ class Home extends React.Component {
                 <div
                   className={this.state.flairLayerD}>
                 </div>
-                <h1 className="game-title">Luupeli</h1>
+                
+                {this.gameTitle()}
                 <Row className="show-grid">
                   <Col xs={10} xsOffset={1} md={4} sm={4} mdOffset={4} smOffset={4}>
                     <Row className="show-grid">

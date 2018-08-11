@@ -101,6 +101,7 @@ class WritingGame extends React.Component {
     }
     if (this.checkCorrectness() > 85) {
       points = points * 2 * currentBonus
+      
     }
    
 
@@ -135,7 +136,12 @@ class WritingGame extends React.Component {
    * Also, disregarding case is not proper, as the latin names ARE case-sensitive.
    */
   checkCorrectness() {
-    return 100 * StringSimilarity.compareTwoStrings(this.props.game.currentImage.bone.nameLatin.toLowerCase(), this.state.value.toLowerCase()); // calculate similarity   
+    var playerAnswer = this.state.value.toLowerCase().replace(", "," ja ").replace(" & "," ja ")
+    var latinName = this.props.game.currentImage.bone.nameLatin.toLowerCase().replace(" & "," ja ")
+
+    return 100 * StringSimilarity.compareTwoStrings(playerAnswer,latinName); // calculate similarity   
+      //return 100 * StringSimilarity.compareTwoStrings(this.props.game.currentImage.bone.nameLatin.toLowerCase(), this.state.value.toLowerCase()); // calculate similarity   
+
   }
 
   /**
@@ -257,7 +263,7 @@ class WritingGame extends React.Component {
     if (this.props.game.gameDifficulty==='easy') {
       cheat = this.state.partialEasyAnswer
     } else {
-      cheat = '(Oikea vastaus: '+this.props.game.currentImage.bone.nameLatin
+      cheat = this.props.game.currentImage.bone.nameLatin
     }
     let description = this.props.game.currentImage.bone.description
     let name =  this.props.game.currentImage.bone.name
@@ -281,18 +287,18 @@ class WritingGame extends React.Component {
             </CloudinaryContext>
           </div>
         </div>
-        <div className="row">
+        {/* <div className="row"> */}
           <div><center>
             <h3 id="heading">{name}</h3></center>
           </div>
-        </div>
+        {/* </div> */}
         {/* <div className="container">
           <div className="col-md-6 col-md-offset-3" id="info">
              */}
             <p>{description}</p>
             {/* <p>Tätä kuvaa on yritetty {attempts} kertaa, niistä {correctAttempts} oikein. Oikeita vastauksia: {correctPercentile} % kaikista yrityksistä.</p> */}
-            <p>Img width: {imageWidth()} | height: {imageHeight()}</p>
-            <p>URL: {this.props.game.currentImage.url}</p>
+            {/* <p>Img width: {imageWidth()} | height: {imageHeight()}</p> */}
+            {/* <p>URL: {this.props.game.currentImage.url}</p> */}
             <p>{cheat}</p>
           {/* </div>
         </div>

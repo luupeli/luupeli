@@ -298,7 +298,7 @@ class GameSettings extends React.Component {
 							<div className="transbox">
 								<div className="container">
 									<div className="col-md-12">
-										<h3 className="form-header">Valitse eläin:</h3>
+										<h4 className="form-header">Valitse eläin</h4>
 										<form>
 											{selectAnimal}
 										</form>
@@ -306,7 +306,7 @@ class GameSettings extends React.Component {
 								</div>
 								<div className="container">
 									<div className="col-md-12">
-										<h3 className="form-header">Valitse ruumiinosa:</h3>
+										<h4 className="form-header">Valitse ruumiinosa</h4>
 										<form>
 											{selectBodyPart}
 										</form>
@@ -314,7 +314,7 @@ class GameSettings extends React.Component {
 								</div>
 								<div className="container">
 									<div className="col-md-12">
-										<h3 className="form-header">Luupelin pituus:</h3>
+										<h4 className="form-header">Luupelin pituus:</h4>
 										<form>
 											<label className="radio-inline">
 												<input
@@ -352,7 +352,7 @@ class GameSettings extends React.Component {
 								</div>
 								<div className="container">
 									<div className="col-md-12">
-										<h3 className="form-header">Vaikeusaste:</h3>
+										<h4 className="form-header">Vaikeusaste</h4>
 										<form>
 											<label className="radio-inline">
 												<input
@@ -362,7 +362,7 @@ class GameSettings extends React.Component {
 													onClick={this.changeGameDifficulty.bind(this)}
 													name="difficultylevel"
 												/>
-												Luupää (helppo)
+												Luupää
 											</label>
 											<label className="radio-inline">
 												<input
@@ -383,7 +383,7 @@ class GameSettings extends React.Component {
 													onClick={this.changeGameDifficulty.bind(this)}
 													name="difficultylevel"
 												/>
-												Luu-5 (vaikea)
+												Luu-5
 											</label>
 										</form>
 
@@ -391,7 +391,7 @@ class GameSettings extends React.Component {
 								</div>
 								<div className="container">
 									<div className="col-md-12">
-										<h3 className="form-header">Äänet:</h3>
+										<h4 className="form-header">Äänet</h4>
 										<form>
 											<label className="radio-inline">
 												<input

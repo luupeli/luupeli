@@ -12,6 +12,8 @@ import gameSessionService from '../services/gameSessions'
 import answerService from '../services/answers'
 import { injectGlobal } from 'styled-components'
 import Sound from 'react-sound';
+
+
 /**
  * Gameloop is the parent component for 'hosting' different game modes of Luupeli.
  * Currently, two different game modes are supported.
@@ -171,21 +173,23 @@ class GameLoop extends React.Component {
 
 
         return (
-            <div width="95%">
+            <div className="score-board">
 
                 {/* <div className="container"> */}
                 {/* <div className="row"> */}
-                <h6>{correctAnswers.length}/{this.props.game.gameLength}</h6>
-                <div className="col-md-6 col-md-offset-3">
+                
+                <div className="col-md-6 col-md-offset-3 center-block">
+                <h3>{correctAnswers.length}/{this.props.game.gameLength}</h3>
                     <ProgressBar label={`moi`}>
-                        {progressBar}
+                    {progressBar}
                     </ProgressBar>
+                    <h3>SCORE {scoreShown}</h3>
+                <h5>TIME {Math.round(this.props.game.gameClock / 20, 1)}</h5>
                 </div>
 
 
 
-                <h3>SCORE {scoreShown}</h3>
-                <h5>TIME {Math.round(this.props.game.gameClock / 20, 1)}</h5>
+          
             </div>
             // </div>
             // </div>
@@ -195,7 +199,7 @@ class GameLoop extends React.Component {
     responsiveLayout(scoreShown) {
 
         const imageWidthR = () => {              // Here we try to measure the window size in order to resize the bone image accordingly
-            const windowWidth = Math.min(
+            const windowWidth = Math.max(
                 document.body.scrollWidth,
                 document.documentElement.scrollWidth,
                 document.body.offsetWidth,
@@ -207,7 +211,7 @@ class GameLoop extends React.Component {
         }
 
         const imageHeightR = () => {              // Here we try to measure the window size in order to resize the bone image accordingly
-            const windowHeight = Math.min(
+            const windowHeight = Math.max(
                 document.body.scrollHeight,
                 document.documentElement.scrollHeight,
                 document.body.offsetHeight,
@@ -218,10 +222,23 @@ class GameLoop extends React.Component {
             return Math.round(windowHeight * 1.0)
         }
 
-        if (imageWidthR() > imageHeightR() && imageWidthR() > 1000) {
+        
+
+        if ((imageWidthR() > imageHeightR() && imageWidthR() > 1000) || imageWidthR() > imageHeightR()*1.6)  {
+            var progressWidth = Math.round((imageWidthR())*0.20);
+
+            var gameBorder = Math.round(Math.min(7,(progressWidth*5)/100));
+            
+            var heightRestriction = 50;
+            if (imageHeightR()<500) {
+                heightRestriction = 40;
+            }
+
             injectGlobal`
             :root {  
-                --image-height-restriction: 50vh;
+                --image-height-restriction: ${heightRestriction}vh;
+                --progress-max-width: ${progressWidth}px;
+                --game-border: ${gameBorder}px;
               }
             }`
 
@@ -241,10 +258,12 @@ class GameLoop extends React.Component {
                 </div>
             )
         } else {
-
+            var progressWidth = Math.round((imageWidthR())*0.75);
             injectGlobal`
             :root {  
                 --image-height-restriction: 33vh;
+                --progress-max-width: ${progressWidth}px;
+                --game-border: ${gameBorder}px;
               }
             }`
 
