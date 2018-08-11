@@ -52,7 +52,7 @@ class EndScreen extends React.Component {
 	//Reinitialize a game with same settings as previous game played
 	proceedToReplay(event) {
 		this.props.gameInitialization(this.props.game.gameLength, this.props.game.images, this.props.game.user, 
-        this.props.game.gamemode, this.props.game.animals, this.props.game.bodyparts)
+        this.props.game.gamemode, this.props.game.animals, this.props.game.bodyparts, this.props.game.playSound, this.props.game.gameDifficulty)
 		this.setState({ redirect: true })
 		this.setState({ redirectTo: '/game' })
 	}
