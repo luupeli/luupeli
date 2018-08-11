@@ -232,8 +232,10 @@ class GameLoop extends React.Component {
             var gameBorder = Math.round(Math.min(7,(progressWidth*5)/100));
             
             var heightRestriction = 50;
-            if (imageHeightR()<500) {
+            if (imageHeightR()<641) {
                 heightRestriction = 40;
+            } else if (imageHeightR()<801) {
+                heightRestriction = 45;
             }
 
             injectGlobal`
@@ -242,6 +244,10 @@ class GameLoop extends React.Component {
                 --progress-max-width: ${progressWidth}px;
                 --game-border: ${gameBorder}px;
               }
+              .score-board .col-md-offset-3 {
+                margin: auto;
+              }
+              
             }`
 
             return (
@@ -267,6 +273,10 @@ class GameLoop extends React.Component {
                 --progress-max-width: ${progressWidth}px;
                 --game-border: ${gameBorder}px;
               }
+              .score-board .col-md-offset-3 {
+                margin-left: 0!important; 
+              }
+              
             }`
 
             return (
