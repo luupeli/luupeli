@@ -83,12 +83,8 @@ class GameLoop extends React.Component {
     }
 
     postGameSession() {
-        let userToBePosted
-        if (this.state.user !== null) {
-            userToBePosted = this.state.user.id
-        }
         gameSessionService.create({
-            user: userToBePosted,
+            user: this.props.game.user !== null ? this.props.game.user.id : null,
             gamemode: this.props.game.gamemode,
             answers: this.props.game.answers,
             length: this.props.game.gameLength,
