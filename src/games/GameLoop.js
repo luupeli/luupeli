@@ -159,13 +159,13 @@ class GameLoop extends React.Component {
         if (this.props.game.answers !== undefined) {
             correctAnswers = this.props.game.answers.filter(ans => ans.correctness === 100)
 
-            progressBar = this.props.game.answers.map(ans => {
+            progressBar = this.props.game.answers.map((ans, i) => {
                 if (ans.correctness === 100) {
-                    return <ProgressBar active bsStyle="success" now={(1 / this.props.game.gameLength) * 100} key={ans.image.id} />
+                    return <ProgressBar active bsStyle="success" now={(1 / this.props.game.gameLength) * 100} key={i} />
                 } else if (ans.correctness > 70 && ans.correctness < 100) {
-                    return <ProgressBar active bsStyle="warning" now={(1 / this.props.game.gameLength) * 100} key={ans.image.id} />
+                    return <ProgressBar active bsStyle="warning" now={(1 / this.props.game.gameLength) * 100} key={i} />
                 } else {
-                    return <ProgressBar active bsStyle="danger" now={(1 / this.props.game.gameLength) * 100} key={ans.image.id} />
+                    return <ProgressBar active bsStyle="danger" now={(1 / this.props.game.gameLength) * 100} key={i} />
                 }
             })
         }

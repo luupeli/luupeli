@@ -13,7 +13,8 @@ class SelectGameMode extends React.Component {
       redirect: false,
       gamemode: '',
       allStyles: JSON.parse(localStorage.getItem("allStyles")),
-      styleIndex: localStorage.getItem('styleIndex')
+      styleIndex: localStorage.getItem('styleIndex'),
+      user: null
     }
     this.proceedToSettings = this.proceedToSettings.bind(this)
     this.proceedToMain = this.proceedToMain.bind(this)

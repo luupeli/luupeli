@@ -4,7 +4,7 @@ const initialState = {
         surpriseGameMode: '',
         gamemode: '',
         gameLength: '',
-        endCounter: '',
+        endCounter: 1,
         currentImage: '',
         wrongAnswerOptions: [],
         wrongImageOptions: [],
@@ -108,6 +108,7 @@ export const setAnswer = (image, correctness, answer, seconds, score) => {
 // When the previous question is answered, this call will choose the image for the next question.
 export const setImageToAsk = (images, answers) => {
     const imageToAsk = selectNextImage(answers, images);
+    console.log(answers + '!!!')
     return {
         type: 'SET_IMAGE_TO_ASK',
         currentImage: imageToAsk
@@ -188,7 +189,7 @@ Then we use those images that correctness is less than correctness average. The 
  */
 function selectNextImage(answers, images) {
     let noAskedImages;
-    if (!answers === undefined) {
+    if (answers !== undefined) {
         noAskedImages = images.filter(img => !answers.some(ans => ans.image.id === img.id));
     }
     else {
@@ -204,7 +205,7 @@ function selectNextImage(answers, images) {
         let count = values.length
         values = values.reduce((previous, current) => current += previous)
         values /= count
-        let haveToLearn = answers.filter(ans => ans.correctness < values)
+        let haveToLearn = answers.filter(ans => ans.correctness <= values)
         haveToLearn = haveToLearn.map(ans => ans.image)
         imageToAsk = haveToLearn[Math.floor(Math.random() * haveToLearn.length)]
     }
