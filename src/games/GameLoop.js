@@ -9,8 +9,6 @@ import { connect } from 'react-redux'
 import { gameInitialization, setAnswer, advanceGameClock, toggleSound } from '../reducers/gameReducer'
 import { ProgressBar } from 'react-bootstrap'
 import gameSessionService from '../services/gameSessions'
-import bodyPartService from '../services/bodyParts'
-import animalService from '../services/animals'
 import answerService from '../services/answers'
 import { injectGlobal } from 'styled-components'
 import Sound from 'react-sound';
@@ -287,6 +285,10 @@ class GameLoop extends React.Component {
                 } else {
                     return <ImageMultipleChoiceGame />
                 }
+            } else if (this.props.game.gamemode === 'harjoitustentti') {
+                return (
+                    <WritingGame/>
+                )
             } else {
                 if (this.props.game.surpriseGameMode <= 1) {
                     return <MultipleChoiceGame />
