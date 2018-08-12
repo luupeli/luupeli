@@ -85,7 +85,7 @@ class MultipleChoiceGame extends React.Component {
 * This method returns 100 if the answer is correct and 0 if the answer is incorrect.
 */
   checkCorrectness(answer) {
-    if (answer.correct) {
+    if (this.props.game.currentImage.bone.nameLatin.toLowerCase() === answer.toLowerCase()) {
       return 100
     } else {
       return 0

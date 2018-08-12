@@ -73,7 +73,7 @@ class ImageMultipleChoiceGame extends React.Component {
   }
 
   checkCorrectness(image) {
-    if (image.correct) {
+    if (this.props.game.currentImage.id === image.id) {
       return 100
     } else {
       return 0
