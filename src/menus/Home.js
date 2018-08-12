@@ -121,7 +121,7 @@ class Home extends React.Component {
     this.getBestPlayers()
   }
       /**
-     * With the component mounting, the game time measuring tick() is set at 50 milliseconds.
+     * With the component mounting, the game time measuring tick() is set at 1000 milliseconds.
      */
     componentWillMount() {
 
@@ -219,12 +219,14 @@ class Home extends React.Component {
       return (
         <Row className="show-grid">
           <Col>
+          <Animated animationIn="bounceInRight" animationInDelay={50} isVisible={true}>
             <button
               id="adminPageButton"
               className="menu-button"
               onClick={this.proceedToSelect}>
               Ylläpitäjälle
             </button>
+            </Animated>
           </Col>
         </Row>
       )
@@ -232,12 +234,14 @@ class Home extends React.Component {
       return (
         <Row className="show-grid">
           <Col>
+          <Animated animationIn="bounceInRight" animationInDelay={50} isVisible={true}>
             <button
               id="profilePageButton"
               className="menu-button"
               onClick={this.proceedToSelect}>
               Profiili
             </button>
+            </Animated>
           </Col>
         </Row>
       )
@@ -276,22 +280,26 @@ class Home extends React.Component {
         <div>
           <Row className="show-grid">
             <Col>
+            <Animated animationIn="bounceInLeft" animationInDelay={100} isVisible={true}>
               <button
                 id="homeMenuLoginButton"
                 className="menu-button"
                 onClick={this.proceedToSelect}>
                 Kirjaudu sisään
               </button>
+              </Animated>
             </Col>
           </Row>
           <Row className="show-grid">
             <Col>
+            <Animated animationIn="bounceInRight" animationInDelay={200} isVisible={true}>
               <button
                 id="homeMenuSignUpButton"
                 className="menu-button"
                 onClick={this.proceedToSelect}>
                 Luo käyttäjätili
               </button>
+              </Animated>
             </Col>
           </Row>
         </div>
@@ -301,12 +309,14 @@ class Home extends React.Component {
         <div>
           <Row className="show-grid">
             <Col>
+            <Animated animationIn="bounceInLeft" animationInDelay={150} isVisible={true}>
               <button
                 id='logout-button'
                 className='menu-button'
                 onClick={this.logOut}>
                 Kirjaudu ulos
               </button>
+              </Animated>
             </Col>
           </Row>
         </div>
@@ -596,33 +606,39 @@ musicPlayer() {
                   <Col xs={10} xsOffset={1} md={4} sm={4} mdOffset={4} smOffset={4}>
                     <Row className="show-grid">
                       <Col>
+                      <Animated animationIn="bounceInLeft" animationInDelay={0} isVisible={true}>
                         <button
                           className="menu-button gamelink"
                           id="proceedToSelectGameMode"
                           onClick={this.proceedToSelect}>
                           Pelaa
                        </button>
+                       </Animated>
                       </Col>
                     </Row>
                     {this.adminButtons()}
                     {this.loggedInButtons()}
                     <Row className="show-grid">
                       <Col>
+                      <Animated animationIn="bounceInLeft" animationInDelay={300} isVisible={true}>
                         <button
                           className="menu-button"
                           id="bestPlayers"
                           onClick={this.proceedToSelect}>
                           &#9733; Pistetaulukko &#9733;
                        </button>
+                       </Animated>
                       </Col>
                     </Row>
                     <Row className="show-grid">
+                    <Animated animationIn="bounceInRight" animationInDelay={500} isVisible={true}>
                       <button
                         id="themeChangeButton"
                         className="menu-button"
                         onClick={this.changeCss}>
                         Vaihda teema
                     </button>
+                    </Animated>
                     </Row>
                     <p>
                       Teema: {this.state.style}
