@@ -325,350 +325,139 @@ class Home extends React.Component {
 
   attractMode() {
     
+    var effects= [];
+    effects.push('bounceOutLeft faster')
+    effects.push('bounceOutRight faster')
+    let heartEmoji = emoji.get('yellow_heart')
 
-    if (this.state.attractMode%60<20) {
-      
+    if (this.state.attractMode%80<=20) {
+      var scores = [];
+      var scorers= [];
+      scorers.push('Luu Skywalker'); scorers.push('Luuno Turhapuro'); scorers.push('Princess Luua'); scorers.push('Sorbusten Ritari'); scorers.push('Keisari Luupatine'); scorers.push('Mr. Kitiini'); scorers.push('Bonefish!'); scorers.push('Luufemma'); scorers.push('Luubi-Wan Luunobi'); scorers.push('Luunkerääjä')
+
+      const placeholderScores = scorers.map((scoree,i) =>
+      <Animated animationIn="bounceInUp slower" animationOut={effects[i%2]} animationInDelay={1500+(i*500)}  animationOutDelay={i*50} isVisible={this.state.attractAnimation}>
+            <div className="home-highscore">
+         <div className="score">
+          <h5>
+        {i+1}. {scoree}
+        </h5>
+        </div>
+        <div className="score">
+                  <h5>
+                {10000-(i*740)+(Math.round(this.state.attractMode/80)*(2000-(i*40)))}
+                  </h5>
+                  </div>
+                  </div>   
+          
+      </Animated>
+     )
 
       return (
         <div>
     <div className="home-highscore-top">
                 
-                <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay="1500" animationOutDelay="0" isVisible={this.state.attractAnimation}>
+                <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay="1000" animationOutDelay="0" isVisible={this.state.attractAnimation}>
 		            <h3>
 			          TOP 10 LUUPÄÄT
 		            </h3>
 				      </Animated>
               </div>
+              {placeholderScores}
               
-              
-              <Animated animationIn="bounceInUp slower" animationOut="bounceOutLeft faster" animationInDelay="2000"  animationOutDelay="50" isVisible={this.state.attractAnimation}>
-              <div className="home-highscore">
-              <div className="score">
-                <h5>
-			          1. Luu Skywalker
-                </h5>
-		            </div>
-                <div className="score">
-                  <h5>
-                10 000
-                  </h5>
-                  </div>
-                  </div>    
-				      </Animated>
-   
-              <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay="2500" animationOutDelay="100" isVisible={this.state.attractAnimation}>
-              <div className="home-highscore">
-              <div className="score">
-                <h5>
-			          2. Luuno Turhapuro
-                </h5>
-		            </div>
-                <div className="score">
-                  <h5>
-                9 000
-                  </h5>
-                  </div>
-                  </div>    
-				      </Animated>
-              <Animated animationIn="bounceInUp slower" animationOut="bounceOutLeft faster" animationInDelay="3000" animationOutDelay="150" isVisible={this.state.attractAnimation}>
-              <div className="home-highscore">
-              <div className="score">
-                <h5>
-			          3. Princess Luua
-                </h5>
-		            </div>
-                <div className="score">
-                  <h5>
-                7 500
-                  </h5>
-                  </div>
-                  </div>    
-				      </Animated>
-              <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay="3500" animationOutDelay="200" isVisible={this.state.attractAnimation}>
-              <div className="home-highscore">
-              <div className="score">
-                <h5>
-			          4. Luuntietäjä
-                </h5>
-		            </div>
-                <div className="score">
-                  <h5>
-                6 660
-                  </h5>
-                  </div>
-                  </div>    
-				      </Animated>
-              <Animated animationIn="bounceInUp slower" animationOut="bounceOutLeft faster" animationInDelay="4000" animationOutDelay="250" isVisible={this.state.attractAnimation}>
-              <div className="home-highscore">
-              <div className="score">
-                <h5>
-			          5. Sorbusten ritari 
-                </h5>
-		            </div>
-                <div className="score">
-                  <h5>
-                5 000
-                  </h5>
-                  </div>
-                  </div>    
-				      </Animated>
-              <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster"  animationInDelay="4500"  animationOutDelay="300" isVisible={this.state.attractAnimation}>
-              <div className="home-highscore">
-              <div className="score">
-                <h5>
-			          6. Keisari Luupatine
-                </h5>
-		            </div>
-                <div className="score">
-                  <h5>
-                4 000
-                  </h5>
-                  </div>
-                  </div>    
-				      </Animated>
-              <Animated animationIn="bounceInUp slower"  animationOut="bounceOutLeft faster" animationInDelay="5000"  animationOutDelay="350" isVisible={this.state.attractAnimation}>
-              <div className="home-highscore">
-              <div className="score">
-                <h5>
-			          7. Mr. Kitiini
-                </h5>
-		            </div>
-                <div className="score">
-                  <h5>
-                3 000
-                  </h5>
-                  </div>
-                  </div>    
-				      </Animated>
-              <Animated animationIn="bounceInUp slower"  animationOut="bounceOutRight faster" animationInDelay="5500"  animationOutDelay="400" isVisible={this.state.attractAnimation}>
-              <div className="home-highscore">
-              <div className="score">
-                <h5>
-			          8. Luufemma
-                </h5>
-		            </div>
-                <div className="score">
-                  <h5>
-                2 500
-                  </h5>
-                  </div>
-                  </div>    
-				      </Animated>
-              <Animated animationIn="bounceInUp slower"  animationOut="bounceOutLeft faster" animationInDelay="6000" animationOutDelay="450"  isVisible={this.state.attractAnimation}>
-              <div className="home-highscore">
-              <div className="score">
-                <h5>
-			          9. Luunkerääjä
-                </h5>
-		            </div>
-                <div className="score">
-                  <h5>
-                1 500
-                  </h5>
-                  </div>
-                  </div>    
-				      </Animated>
-              <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay="6500" animationOutDelay="500" isVisible={this.state.attractAnimation}>
-              <div className="home-highscore">
-              <div className="score">
-                <h5>
-			          10. Luubi-Wan Luunobi
-                </h5>
-		            </div>
-                <div className="score">
-                  <h5>
-                1 000
-                  </h5>
-                  </div>
-                  </div>    
-				      </Animated>
               </div>
               )
     } 
-    else if (this.state.attractMode%60<40) {
-      
+  
+    
+    
+ else {
 
-      let heartEmoji = emoji.get('yellow_heart')
+  
+   var lines = [];
+   var heading = ''
+
+   if (this.state.attractMode%80<=40) {
+    heading='CREDITS'
+    lines.push('Helena Parviainen')
+    lines.push('Kerem Atak')
+    lines.push('Peppi Mattsson')
+    lines.push('Timo Leskinen')
+    lines.push('Tuomas Honkala')
+    lines.push('Ville Hänninen')
+    lines.push('Toteutettu ohjelmistotuotantoprojektina')
+    lines.push('Helsingin Yliopiston Tietojenkäsittelytieteen laitokselle '+heartEmoji)
+   }
+   else if (this.state.attractMode%80<=60) {
+    heading='Luupeli features music and sfx from Freesound.org'
+    lines.push('Chiptune Intro #1 by Fred1712')
+    lines.push('Electro success sound by Mativve')
+    lines.push('Error.wav by Autistic Lucario')
+    lines.push('Retro Bonus Pickup SFX by suntemple')
+    lines.push('Cool Chill Beat Loop by monkeyman535')
+    lines.push('Used under Creative Commons (CC) license')
+    lines.push('The Luupeli devs kindly thank these content creators!')
+   }
+
+   else if (this.state.attractMode%240<=80) {
+     heading='LUUPELI TIEDOTTAA'
+   lines.push('Miksi sinä vielä luet tätä?')
+   lines.push('Mene pelaamaan siitä!')
+   lines.push('Opettele uusi luu!')
+   lines.push('...')
+   lines.push('Jaa minäkö?')
+   lines.push('Olisin mieluummin purjehtimassa!')
+   } else if (this.state.attractMode%240<=160) {
+    heading='LUUPELI MUISTUTTAA'
+    lines.push('Laiska tyäs huomiseen lykkää.')
+    lines.push('Laiskalla hiki syödessä, vilu työtä tehdessä.')
+    lines.push('Laiska ei sua, ahkera sua yltäkyllin')
+    lines.push('...')
+    lines.push('Se ei pelaa, joka pelkää.')
+   }  else if (this.state.attractMode%240<=240) {
+    heading='LUUPELI ANELEE'
+    lines.push('Haluan, että lopetat näiden lukemisen.')
+    lines.push('Tämä alkaa tämän jälkeen alusta.')
+    lines.push('Tuhlaat aikaasi jos jäät katsomaan tuleeko näitä lisää.')
+    lines.push('Ei tule.')
+    lines.push('Pelaa Luupeliä.')
+   }
+
+   
+
+   const rollingMessage = lines.map((line,i) =>
+   <Animated animationIn="bounceInUp slower" animationOut={effects[i%2]} animationInDelay={1500+(i*500)}  animationOutDelay={i*50} isVisible={this.state.attractAnimation}>
+         <div className="home-highscore">
+      <div className="score">
+       <h5>
+     {line}
+     </h5>
+     </div>
+     </div>
+       
+   </Animated>
+  )
 
       return (
+
         <div>
         <div className="home-highscore-top">
-                
-        <Animated animationIn="bounceInUp slower" animationOut="bounceOutLeft faster" animationInDelay="1500" animationOutDelay="0" isVisible={this.state.attractAnimation}>
-        <h3>
-        CREDITS
-        </h3>
-      </Animated>
-      </div>
-      <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay="2000"  animationOutDelay="50" isVisible={this.state.attractAnimation}>
-      <div className="home-highscore">
-      <div className="score">
-        <h5>
-        Helena Parviainen
-        </h5>
-        </div>
-          </div>    
-      </Animated>
-      <Animated animationIn="bounceInUp slower" animationOut="bounceOutLeft faster" animationInDelay="2500"  animationOutDelay="100" isVisible={this.state.attractAnimation}>
-      <div className="home-highscore">
-      <div className="score">
-        <h5>
-        Kerem Atak
-        </h5>
-        </div>
-          </div>    
-      </Animated>
-      <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay="3000"  animationOutDelay="150" isVisible={this.state.attractAnimation}>
-      <div className="home-highscore">
-      <div className="score">
-        <h5>
-        Peppi Mattsson
-        </h5>
-        </div>
-          </div>    
-      </Animated>
-      <Animated animationIn="bounceInUp slower" animationOut="bounceOutLeft faster" animationInDelay="3500"  animationOutDelay="200" isVisible={this.state.attractAnimation}>
-      <div className="home-highscore">
-      <div className="score">
-        <h5>
-        Timo Leskinen
-        </h5>
-        </div>
-          </div>    
-      </Animated>
-      <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay="4000"  animationOutDelay="250" isVisible={this.state.attractAnimation}>
-      <div className="home-highscore">
-      <div className="score">
-        <h5>
-        Tuomas Honkala
-        </h5>
-        </div>
-          </div>    
-      </Animated>
-      <Animated animationIn="bounceInUp slower" animationOut="bounceOutLeft faster" animationInDelay="4500"  animationOutDelay="300" isVisible={this.state.attractAnimation}>
-      <div className="home-highscore">
-      <div className="score">
-        <h5>
-        Ville Hänninen
-        </h5>
-        </div>
-          </div>    
-      </Animated>
-      <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay="5000"  animationOutDelay="350" isVisible={this.state.attractAnimation}>
-      <div className="home-highscore">
-      <div className="score">
-        <h6>
-        Toteutettu ohjelmistotuotantoprojektina
-        </h6>
-        </div>
-          </div>    
-      </Animated>
-      <Animated animationIn="bounceInUp slower" animationOut="bounceOutLeft faster" animationInDelay="5500"  animationOutDelay="400" isVisible={this.state.attractAnimation}>
-      <div className="home-highscore">
-      <div className="score">
-        <h6>
-        Helsingin Yliopiston
-        </h6>
-        </div>
-          </div>    
-      </Animated>
-      <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay="6000"  animationOutDelay="450" isVisible={this.state.attractAnimation}>
-      <div className="home-highscore">
-      <div className="score">
-        <h6>
-        {heartEmoji}Tietojenkäsittelytieteen laitokselle {heartEmoji}
-        </h6>
-        </div>
-          </div>    
-      </Animated>
-
-</div>
+                    
+                    <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay="1000" animationOutDelay="0" isVisible={this.state.attractAnimation}>
+                    <h3>
+                    {heading}
+                    </h3>
+                  </Animated>
+                  </div>
+              {rollingMessage}
+                  </div>
       )
-
-    } 
-    
-      return (
-        <div>
-        <div className="home-highscore-top">
-                
-        <Animated animationIn="bounceInUp slower" animationOut="bounceOutLeft faster" animationInDelay="1500" animationOutDelay="0" isVisible={this.state.attractAnimation}>
-        <h4>
-        Luupeli features music and sfx from Freesound.org
-        </h4>
-      </Animated>
-      </div>
-      <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay="2000"  animationOutDelay="50" isVisible={this.state.attractAnimation}>
-      <div className="home-highscore">
-      <div className="score">
-        <h5>
-        Chiptune Intro #1 by Fred1712
-        </h5>
-        </div>
-          </div>    
-      </Animated>
-      <Animated animationIn="bounceInUp slower" animationOut="bounceOutLeft faster" animationInDelay="2500"  animationOutDelay="100" isVisible={this.state.attractAnimation}>
-      <div className="home-highscore">
-      <div className="score">
-        <h5>
-        Electro success sound by Mativve
-        </h5>
-        </div>
-          </div>    
-      </Animated>
-      <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay="3000"  animationOutDelay="150" isVisible={this.state.attractAnimation}>
-      <div className="home-highscore">
-      <div className="score">
-        <h5>
-        Error.wav by Autistic Lucario
-        </h5>
-        </div>
-          </div>    
-      </Animated>
-      <Animated animationIn="bounceInUp slower" animationOut="bounceOutLeft faster" animationInDelay="3500"  animationOutDelay="200" isVisible={this.state.attractAnimation}>
-      <div className="home-highscore">
-      <div className="score">
-        <h5>
-        Retro Bonus Pickup SFX by suntemple
-        </h5>
-        </div>
-          </div>    
-      </Animated>
-      <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay="4000"  animationOutDelay="250" isVisible={this.state.attractAnimation}>
-      <div className="home-highscore">
-      <div className="score">
-        <h5>
-        Cool Chill Beat Loop by monkeyman535
-        </h5>
-        </div>
-          </div>    
-      </Animated>
-      <Animated animationIn="bounceInUp slower" animationOut="bounceOutLeft faster" animationInDelay="5000"  animationOutDelay="300" isVisible={this.state.attractAnimation}>
-      <div className="home-highscore">
-      <div className="score">
-        <h5>
-        Used under Creative Commons (CC) license
-        </h5>
-        </div>
-          </div>    
-      </Animated>
-      <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay="6000"  animationOutDelay="350" isVisible={this.state.attractAnimation}>
-      <div className="home-highscore">
-      <div className="score">
-        <h5>
-        The Luupeli devs kindly thank these content creators!
-        </h5>
-        </div>
-          </div>    
-      </Animated>
-      </div>
-      )
-    
-
   }
+}
 
   render() {
     if (process.env.NODE_ENV !== 'test') {
-      skelly()
+      // skelly()
     }
     if (this.state.redirect) {
       this.setState({ redirect: false })
