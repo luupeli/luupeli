@@ -9,8 +9,6 @@ import { connect } from 'react-redux'
 import { gameInitialization, setAnswer, advanceGameClock, toggleSound } from '../reducers/gameReducer'
 import { ProgressBar } from 'react-bootstrap'
 import gameSessionService from '../services/gameSessions'
-import bodyPartService from '../services/bodyParts'
-import animalService from '../services/animals'
 import answerService from '../services/answers'
 import { injectGlobal } from 'styled-components'
 import Sound from 'react-sound';
@@ -161,13 +159,13 @@ class GameLoop extends React.Component {
         if (this.props.game.answers !== undefined) {
             correctAnswers = this.props.game.answers.filter(ans => ans.correctness === 100)
 
-            progressBar = this.props.game.answers.map(ans => {
+            progressBar = this.props.game.answers.map((ans, i) => {
                 if (ans.correctness === 100) {
-                    return <ProgressBar active bsStyle="success" now={(1 / this.props.game.gameLength) * 100} key={ans.image.id} />
+                    return <ProgressBar active bsStyle="success" now={(1 / this.props.game.gameLength) * 100} key={i} />
                 } else if (ans.correctness > 70 && ans.correctness < 100) {
-                    return <ProgressBar active bsStyle="warning" now={(1 / this.props.game.gameLength) * 100} key={ans.image.id} />
+                    return <ProgressBar active bsStyle="warning" now={(1 / this.props.game.gameLength) * 100} key={i} />
                 } else {
-                    return <ProgressBar active bsStyle="danger" now={(1 / this.props.game.gameLength) * 100} key={ans.image.id} />
+                    return <ProgressBar active bsStyle="danger" now={(1 / this.props.game.gameLength) * 100} key={i} />
                 }
             })
         }
@@ -334,6 +332,10 @@ class GameLoop extends React.Component {
                 } else {
                     return <ImageMultipleChoiceGame />
                 }
+            } else if (this.props.game.gamemode === 'harjoitustentti') {
+                return (
+                    <WritingGame/>
+                )
             } else {
                 if (this.props.game.surpriseGameMode <= 1) {
                     return <MultipleChoiceGame />

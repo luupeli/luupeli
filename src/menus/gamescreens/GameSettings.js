@@ -263,8 +263,7 @@ class GameSettings extends React.Component {
 					pathname: '/game',
 					state: {
 						allStyles: this.state.allStyles,
-						styleIndex: this.state.styleIndex,
-						gamemode: this.state.gamemode
+						styleIndex: this.state.styleIndex
 					}
 				}} />
 			)

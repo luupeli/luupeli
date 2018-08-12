@@ -4,7 +4,7 @@ const initialState = {
         surpriseGameMode: '',
         gamemode: '',
         gameLength: '',
-        endCounter: '',
+        endCounter: 1,
         currentImage: '',
         wrongAnswerOptions: [],
         wrongImageOptions: [],
@@ -108,6 +108,7 @@ export const setAnswer = (image, correctness, answer, seconds, score) => {
 // When the previous question is answered, this call will choose the image for the next question.
 export const setImageToAsk = (images, answers) => {
     const imageToAsk = selectNextImage(answers, images);
+    console.log(answers + '!!!')
     return {
         type: 'SET_IMAGE_TO_ASK',
         currentImage: imageToAsk
@@ -155,13 +156,26 @@ function selectWrongAnswerOptions(images, currentImage) {
     let allLatinNames = images.map(img => img.bone.nameLatin);
     allLatinNames = Array.from(new Set(allLatinNames));
     allLatinNames = allLatinNames.filter(answer => answer !== currentImage.bone.nameLatin);
-    const selectedAnswers = [];
+    let selectedAnswers = [];
     const numberOfButtons = Math.min(3, allLatinNames.length);
     while (selectedAnswers.length < numberOfButtons) {
         const index = Math.floor(Math.random() * allLatinNames.length);
         selectedAnswers.push(allLatinNames[index]);
         allLatinNames.splice(index, 1);
     }
+
+    selectedAnswers = selectedAnswers.map(ans => {
+        return ({
+            nameLatin: ans, correct: false
+        })
+    })
+    const correctAns = { nameLatin: currentImage.bone.nameLatin, correct: true }
+    selectedAnswers.push(correctAns)
+
+    var shuffle = require('shuffle-array')
+    shuffle(selectedAnswers)
+    console.log(correctAns)
+    console.log(selectedAnswers)
     return selectedAnswers;
 }
 
@@ -171,13 +185,25 @@ function selectWrongAnswerOptions(images, currentImage) {
 */ 
 function selectWrongImageOptions(images, currentImage) {
     const allImages = images.filter(img => !((img.animal === currentImage.animal) && (img.bone === currentImage.bone)));
-    const selectedImages = [];
+    let selectedImages = [];
     const numberOfImages = Math.min(3, allImages.length);
     while (selectedImages.length < numberOfImages) {
         const index = Math.floor(Math.random() * allImages.length);
         selectedImages.push(allImages[index]);
         allImages.splice(index, 1);
     }
+    selectedImages = selectedImages.map(image => {
+        return ({
+            ...image, correct: false
+        })
+    })
+    const correctImg = { ...currentImage, correct: true }
+    selectedImages.push(correctImg)
+
+    var shuffle = require('shuffle-array')
+    shuffle(selectedImages)
+    console.log(correctImg)
+    console.log(selectedImages)
     return selectedImages;
 }
 
@@ -188,7 +214,7 @@ Then we use those images that correctness is less than correctness average. The 
  */
 function selectNextImage(answers, images) {
     let noAskedImages;
-    if (!answers === undefined) {
+    if (answers !== undefined) {
         noAskedImages = images.filter(img => !answers.some(ans => ans.image.id === img.id));
     }
     else {
@@ -204,7 +230,7 @@ function selectNextImage(answers, images) {
         let count = values.length
         values = values.reduce((previous, current) => current += previous)
         values /= count
-        let haveToLearn = answers.filter(ans => ans.correctness < values)
+        let haveToLearn = answers.filter(ans => ans.correctness <= values)
         haveToLearn = haveToLearn.map(ans => ans.image)
         imageToAsk = haveToLearn[Math.floor(Math.random() * haveToLearn.length)]
     }

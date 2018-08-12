@@ -61,7 +61,7 @@ class ImageMultipleChoiceGame extends React.Component {
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
 
     this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 3, true)
-    this.setState({choices:[]})
+    this.setState({ choices: [] })
 
     setTimeout(() => {
       this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(this.state.value), this.state.value.bone.nameLatin, this.state.seconds - 3, points)
@@ -108,117 +108,51 @@ class ImageMultipleChoiceGame extends React.Component {
     }
   }
 
-  answerButtons() {
-
-    if (this.state.choices.length<1) {
-
-    let choicesTemp = [
-      {
-        ...this.props.game.currentImage,
-        correct: true
+  style(choice) {
+    if (choice.correct && choice === this.state.value) {
+      return {
+        borderStyle: 'solid',
+        borderWidth: 20,
+        borderRadius: 30,
+        borderColor: 'green'
       }
-    ]
-
-    const wrongsTemp = this.props.game.wrongImageOptions.map(img => {
-      return { ...img, correct: false }
-    })
-
-    choicesTemp = wrongsTemp.concat(choicesTemp)
-    
-    // if (this.props.game.gameClock<5) {
-    var shuffle = require('shuffle-array')
-     shuffle(choicesTemp, {'rng': this.props.game.totalscore+100})
-    // }
-    this.setState({choices: choicesTemp});
-  }
-    if (this.state.value === '' || this.state.value === undefined) {
-      return (
-        <Row className="show-grid">
-          {this.state.choices.map(choice => {
-            return (
-              <Col xs={12} md={6}>
-                <div className="multi-height-restricted">
-                  <CloudinaryContext cloudName="luupeli">
-                    <Image publicId={choice.url} onClick={() => this.handleSubmit(choice)}>
-                      <Transformation background="#000000" height="250" width="350" crop="lpad"  />
-                    </Image>
-                  </CloudinaryContext>
-                </div>
-              </Col>
-            )
-          }
-          )}
-        </Row>
-      )
-    } else if (this.state.value === this.props.game.currentImage.bone.nameLatin) {
-      return this.state.choices.map(choice => {
-        if (choice.correct) {
-          return (
-            <Col xs={12} md={6}>
-              <div className="multi-height-restricted">
-                <CloudinaryContext cloudName="luupeli">
-                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
-                    <Transformation border="15px_solid_rgb:29ae00" background="#000000" height="235" width="335" crop="lpad" radius="20" />
-                  </Image>
-                </CloudinaryContext>
-              </div>
-            </Col>
-          )
-        } else {
-          return (
-            <Col xs={12} md={6}>
-              <div className="multi-height-restricted">
-                <CloudinaryContext cloudName="luupeli">
-                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
-                    <Transformation background="#000000" height="250" width="350" crop="lpad" radius="20" />
-                  </Image>
-                </CloudinaryContext>
-              </div>
-            </Col>
-          )
-        }
-      })
-    } else {
-      return this.state.choices.map(choice => {
-        if (choice.correct) {
-          return (
-            <Col xs={12} md={6}>
-              <div className="multi-height-restricted">
-                <CloudinaryContext cloudName="luupeli">
-                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
-                    <Transformation border="15px_solid_rgb:29ae00" background="#000000" height="235" width="335" crop="lpad" radius="20" />
-                  </Image>
-                </CloudinaryContext>
-              </div>
-            </Col>
-          )
-        } else if (this.state.value.id === choice.id) {
-          return (
-            <Col xs={12} md={6}>
-              <div className="multi-height-restricted">
-                <CloudinaryContext cloudName="luupeli">
-                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
-                    <Transformation border="15px_solid_rgb:ae0f0f" background="#000000" height="235" width="335" crop="lpad" radius="20" />
-                  </Image>
-                </CloudinaryContext>
-              </div>
-            </Col>
-          )
-        } else {
-          return (
-            <Col xs={12} md={6}>
-              <div className="multi-height-restricted">
-                <CloudinaryContext cloudName="luupeli">
-                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
-                    <Transformation background="#000000" height="250" width="350" crop="lpad" radius="20" />
-                  </Image>
-                </CloudinaryContext>
-              </div>
-            </Col>
-          )
-        }
-      })
+    } else if (choice.correct === false && choice === this.state.value) {
+      return {
+        borderStyle: 'solid',
+        borderWidth: 20,
+        borderRadius: 30,
+        borderColor: 'red'
+      }
     }
+    if (choice.correct === true && '' !== this.state.value && choice !== this.state.value) {
+      return {
+        borderStyle: 'solid',
+        borderWidth: 20,
+        borderRadius: 30,
+        borderColor: 'green'  
+      }
+    }
+  }
+
+  answerButtons() {
+    return (
+      <Row className="show-grid">
+        {this.props.game.wrongImageOptions.map(choice => {
+          return (
+            <Col xs={12} md={6}>
+              <div className="multi-height-restricted" style={this.style(choice)}>
+                <CloudinaryContext cloudName="luupeli">
+                  <Image publicId={choice.url} onClick={() => this.handleSubmit(choice)}>
+                    <Transformation background="#000000" height="250" width="350" crop="lpad" />
+                  </Image>
+                </CloudinaryContext>
+              </div>
+            </Col>
+          )
+        }
+        )}
+      </Row>
+    )
   }
 
   render() {

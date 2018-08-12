@@ -1,6 +1,9 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 import { Row, Col } from 'react-bootstrap'
+import imageService from '../../services/images'
+import { gameInitialization } from '../../reducers/gameReducer'
+import { connect } from 'react-redux'
 
 class SelectGameMode extends React.Component {
 
@@ -10,10 +13,12 @@ class SelectGameMode extends React.Component {
       redirect: false,
       gamemode: '',
       allStyles: JSON.parse(localStorage.getItem("allStyles")),
-      styleIndex: localStorage.getItem('styleIndex')
+      styleIndex: localStorage.getItem('styleIndex'),
+      user: null
     }
     this.proceedToSettings = this.proceedToSettings.bind(this)
     this.proceedToMain = this.proceedToMain.bind(this)
+    this.proceedToExam = this.proceedToExam.bind(this)
     window.onunload = function () { window.location.href = '/' };
   }
 
@@ -23,6 +28,19 @@ class SelectGameMode extends React.Component {
       const user = JSON.parse(loggedUserJSON)
       this.setState({ user })
     }
+
+    imageService.getAll()  // here we fill the image array
+      .then(response => {
+        const imagesWithBone = response.data.filter(image => image.bone !== undefined)
+        this.setState({ images: imagesWithBone })
+      })
+  }
+
+  proceedToExam(event) {
+    this.props.gameInitialization(15, this.state.images, this.state.user,
+      event.target.value, this.props.init.animals, this.props.init.bodyParts, false, 'hard')
+      this.setState({ redirect: true })
+      this.setState({ redirectTo: '/game' })
   }
 
   proceedToSettings(event) {
@@ -98,12 +116,23 @@ class SelectGameMode extends React.Component {
                   </Row>
                   <Row className="show-grid">
                     <Col>
-                    <button
+                      <button
                         className="menu-button"
                         id="mixedGameButton"
                         value="sekapeli"
                         onClick={this.proceedToSettings}>
                         Sekapeli
+                      </button>
+                    </Col>
+                  </Row>
+                  <Row className="show-grid">
+                    <Col>
+                      <button
+                        className="menu-button"
+                        id="examButton"
+                        value="harjoitustentti"
+                        onClick={this.proceedToExam}>
+                        Harjoitustentti
                       </button>
                     </Col>
                   </Row>
@@ -125,4 +154,19 @@ class SelectGameMode extends React.Component {
   }
 }
 
-export default SelectGameMode
+const mapStateToProps = (state) => {
+	return {
+    game: state.game,
+    init: state.init
+	}
+}
+
+const mapDispatchToProps = {
+	gameInitialization
+}
+
+const ConnectedSelectGameMode = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(SelectGameMode)
+export default ConnectedSelectGameMode
