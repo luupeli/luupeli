@@ -19,12 +19,20 @@ class MultipleChoiceGame extends React.Component {
     this.timer = 0;
     this.state = {
       value: '',
-      seconds: 0,
-      currentStreak: 0,
-      currentBonus: 0
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     window.onunload = function () { window.location.href = '/' }
+
+  }
+
+  componentDidMount() {
+      this.props.setWrongAnswerOptions(this.props.game.images, this.props.game.answers)
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.game.endCounter !== prevProps.game.endCounter) {
+      this.props.setWrongAnswerOptions(this.props.game.images, this.props.game.answers)
+    }
   }
 
   /**
@@ -67,17 +75,12 @@ class MultipleChoiceGame extends React.Component {
       this.setState({ streakMCG: 0, bonus: 1.0 })
     }
 
-
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
-
-    this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 3, true)
+    this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 5, true)
 
     setTimeout(() => {
-      this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(this.state.value), this.state.value, this.state.seconds - 3, points)
+      this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(this.state.value), this.state.value, this.props.game.gameClock, points)
       this.setState({ value: '' })
-      this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
-      this.props.setWrongImageOptions(this.props.game.currentImage, this.props.game.images)
-      this.props.setWrongAnswerOptions(this.props.game.currentImage, this.props.game.images)
     }, 3000)
   }
 
@@ -129,32 +132,16 @@ class MultipleChoiceGame extends React.Component {
  * This method generates the buttons to be displayed. If the answer is correct, the selected button is green. 
  * If wrongly answered, the selected button is red and the correct answer is green.
 */
-  answerButtons() {
-    const choices = this.props.game.wrongAnswerOptions
-    if (this.state.value === '' || this.state.value === undefined) {
-      return (
-        choices.map(choice => <Button bsStyle='info' value={choice.nameLatin} onClick={this.handleSubmit}>{choice.nameLatin}</Button>
-        )
-      )
-    } else if (this.state.value === this.props.game.currentImage.bone.nameLatin) {
-      return choices.map(choice => {
-        if (choice.correct) {
-          return <Button bsStyle='success' disabled={true} value={choice.nameLatin}>{choice.nameLatin}</Button>
-        } else {
-          return <Button bsStyle='info' disabled={true} value={choice.nameLatin}>{choice.nameLatin}</Button>
-        }
-      })
-    } else {
-      return choices.map(choice => {
-        if (choice.correct) {
-          return <Button bsStyle='success' disabled={true} value={choice.nameLatin}>{choice.nameLatin}</Button>
-        } else if (this.state.value === choice.nameLatin) {
-          return <Button bsStyle='danger' disabled={true} value={choice.nameLatin}>{choice.nameLatin}</Button>
-        } else {
-          return <Button bsStyle='info' disabled={true} value={choice.nameLatin}>{choice.nameLatin}</Button>
-        }
-      })
+  style(choice) {
+    if (choice.correct && choice.nameLatin === this.state.value) {
+      return 'success'
+    } else if (choice.correct === false && choice.nameLatin === this.state.value) {
+      return 'danger'
     }
+    if (choice.correct === true && '' !== this.state.value && choice.nameLatin !== this.state.value) {
+      return 'success'
+    }
+    return 'info'
   }
 
   render() {
@@ -188,17 +175,10 @@ class MultipleChoiceGame extends React.Component {
         </div>
         <div className="row">
         </div>
-        <div className="container">
-          <div className="col-md-6 col-md-offset-3" id="info">
-            {/* <h6>Vastausaikaa kulunut {Math.round(this.state.seconds / 10, 1)}</h6> */}
-            <p>{this.props.game.currentImage.bone.description}</p>
-          </div>
-        </div>
-        <div className="answer-input">
           <div className="container">
             <div className="intro" />
-            {this.answerButtons()}
-          </div>
+            {this.props.game.wrongAnswerOptions.map(choice => <Button bsStyle={this.style(choice)} disabled={'' !== this.state.value} value={choice.nameLatin} onClick={this.handleSubmit}>{choice.nameLatin}</Button>)}
+            <p>Oikea vastaus: {this.props.game.currentImage.bone.nameLatin}</p>
         </div>
       </div>
     )

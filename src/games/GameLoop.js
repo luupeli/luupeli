@@ -1,3 +1,4 @@
+
 import { Redirect } from 'react-router-dom'
 import React from 'react'
 import Message from './Message'
@@ -9,7 +10,6 @@ import { connect } from 'react-redux'
 import { gameInitialization, setAnswer, advanceGameClock, toggleSound } from '../reducers/gameReducer'
 import { ProgressBar } from 'react-bootstrap'
 import gameSessionService from '../services/gameSessions'
-import answerService from '../services/answers'
 import { injectGlobal } from 'styled-components'
 import Sound from 'react-sound';
 
