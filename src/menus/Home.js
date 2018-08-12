@@ -396,7 +396,7 @@ class Home extends React.Component {
     lines.push('Retro Bonus Pickup SFX by suntemple')
     lines.push('Cool Chill Beat Loop by monkeyman535')
     lines.push('Used under Creative Commons (CC) license')
-    lines.push('The Luupeli devs kindly thank these content creators!')
+    lines.push('The Luupeli devs kindly thank these content creators! '+heartEmoji)
    }
 
    else if (this.state.attractMode%240<=80) {
@@ -417,10 +417,10 @@ class Home extends React.Component {
    }  else if (this.state.attractMode%240<=240) {
     heading='LUUPELI ANELEE'
     lines.push('Haluan, että lopetat näiden lukemisen.')
-    lines.push('Tämä alkaa tämän jälkeen alusta.')
+    lines.push('Kierros alkaa näiden tekstien jälkeen alusta.')
     lines.push('Tuhlaat aikaasi jos jäät katsomaan tuleeko näitä lisää.')
     lines.push('Ei tule.')
-    lines.push('Pelaa Luupeliä.')
+    lines.push('Pelaa Luupeliä! '+heartEmoji)
    }
 
    
