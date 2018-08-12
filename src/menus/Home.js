@@ -467,7 +467,7 @@ class Home extends React.Component {
     let strawberry = emoji.get('strawberry')
     let mushroom = emoji.get('mushroom')
 
-    heading='KERÄÄ BONUKSET'
+    heading='HEDELMÄBONUKSET'
     lines.push(watermelon+' ...... 5 000 pts')
     lines.push(cherries+' ..... 10 000 pts')
     lines.push(grapes+' ..... 25 000 pts')
