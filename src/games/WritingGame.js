@@ -6,6 +6,8 @@ import { setMessage } from '../reducers/messageReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
 import emoji from 'node-emoji'
+import { Animated } from "react-animated-css";
+
 /**
  * WritingGame (run under Gameloop.js) is the standard game mode of Luupeli.
  * In WritingGame, the player needs to correctly identify each bone image shown. The identification is done by typing in the latin name of the bone.
@@ -29,7 +31,8 @@ class WritingGame extends React.Component {
       fullEasyAnswer: '',
       partialEasyAnswer: '__',
       previousRevealClock: 0,
-      easyDifficultyPenalty: 1.0
+      easyDifficultyPenalty: 1.0,
+      animationActive:true
       
     }
     this.getRandomInt = this.getRandomInt.bind(this)
@@ -78,7 +81,7 @@ class WritingGame extends React.Component {
     if (this.checkCorrectness() > 99) {
       points = points * 5
       correctness = 'Oikein'
-      this.setState({ streakWG: currentStreak + 1, bonus: currentBonus + 1.0 + hardBonus, value: '',previousRevealClock: 0,partialEasyAnswer: '__',easyDifficultyPenalty:1.0  })
+      this.setState({ animationActive:false, streakWG: currentStreak + 1, bonus: currentBonus + 1.0 + hardBonus, value: '',previousRevealClock: 0,partialEasyAnswer: '__',easyDifficultyPenalty:1.0  })
       streakNote = currentBonus + 'x!'
       if (currentBonus < 1.5) {
         streakNote = ''
@@ -92,7 +95,7 @@ class WritingGame extends React.Component {
         points = 40 * currentBonus
       }
 
-      this.setState({ streakWG: 0, bonus: 1.0, value: '',previousRevealClock: 0,partialEasyAnswer: '__',easyDifficultyPenalty:1.0  })
+      this.setState({animationActive:false,  streakWG: 0, bonus: 1.0, value: '',previousRevealClock: 0,partialEasyAnswer: '__',easyDifficultyPenalty:1.0  })
       streakNote = ''
       if (this.checkCorrectness() < 1) {
         streakEmoji = require('node-emoji')
@@ -116,10 +119,15 @@ class WritingGame extends React.Component {
     
     //this.setState({ value: '',previousRevealClock: 0,partialEasyAnswer: '__' })
     this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(), this.state.value, this.props.game.gameClock, points)
-    this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
+    
+  
+    setTimeout(() => {
+      this.setState({animationActive:true})
+      this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
     this.props.setWrongImageOptions(this.props.game.currentImage, this.props.game.images)
     this.props.setWrongAnswerOptions(this.props.game.currentImage, this.props.game.images)
     this.createMessage(points)  
+  }, 2000)
   
     // let newPartial =''
     // for (var i = 0; i< this.props.game.currentImage.bone.nameLatin.length; i++) {
@@ -128,6 +136,7 @@ class WritingGame extends React.Component {
     // this.setState( {fullEasyAnswer: this.props.game.currentImage.bone.nameLatin,partialEasyAnswer: newPartial})
     
   }
+
   
   /**
    * This method measures the "correctness" (or similarity) of the answer string compared to the actual latin name string.
@@ -214,10 +223,16 @@ class WritingGame extends React.Component {
       }
   }
 
+  
+
   /**
    * Notice that the bone images are fethched from Cloudinary, with a resize transformation done based on the measured window size.
    */
   render() {
+
+    
+    
+    
 
     if (this.props.game.gameClock>60 && this.props.game.gameDifficulty==='easy') {
       this.revealPartialAnswer()
@@ -278,28 +293,33 @@ class WritingGame extends React.Component {
           <div className="intro">
             <CloudinaryContext cloudName="luupeli">
               <div className="height-restricted" >
+              <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationOutDelay="1000" isVisible={this.state.animationActive}>
                 <Image id="bone-image" publicId={this.props.game.currentImage.url}>
 
                     <Transformation width={imageWidth()}/>
                     
                 </Image>
-              </div>
+                </Animated>
+                </div>
             </CloudinaryContext>
           </div>
         </div>
         {/* <div className="row"> */}
-          <div><center>
+          <div>
+          <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1250"  animationOutDelay="1250" isVisible={this.state.animationActive}>
+          <center>
             <h3 id="heading">{name}</h3></center>
+            </Animated>
           </div>
-        {/* </div> */}
-        {/* <div className="container">
-          <div className="col-md-6 col-md-offset-3" id="info">
-             */}
+          <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1500"  animationOutDelay="1500" isVisible={this.state.animationActive}>
             <p>{description}</p>
+            </Animated>
             {/* <p>Tätä kuvaa on yritetty {attempts} kertaa, niistä {correctAttempts} oikein. Oikeita vastauksia: {correctPercentile} % kaikista yrityksistä.</p> */}
             {/* <p>Img width: {imageWidth()} | height: {imageHeight()}</p> */}
             {/* <p>URL: {this.props.game.currentImage.url}</p> */}
+            <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1750" animationOutDelay="1750" isVisible={this.state.animationActive}>
             <p>{cheat}</p>
+            </Animated>
           {/* </div>
         </div>
          */}

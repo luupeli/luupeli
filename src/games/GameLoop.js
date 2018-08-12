@@ -260,14 +260,15 @@ class GameLoop extends React.Component {
 
             return (
                  <div className={responsive}>
+                
                 <div className="transbox">
-                    <div>
-                        <ScoreFlash ref={instance => this.wgmessage = instance} />
-                    </div>
+                    
                     
                     <div className="game-mainview">
                         {/* <p>{imageWidthR()},{imageHeightR()}</p> */}
-
+                        <div>
+                        <ScoreFlash ref={instance => this.wgmessage = instance} />
+                    </div> 
                         {this.gameLoop()}
                     </div>
                     
@@ -275,6 +276,7 @@ class GameLoop extends React.Component {
                         {this.topPage(scoreShown, true)}
                     </div>
                 </div>
+                
                 </div> 
             )
         } else {

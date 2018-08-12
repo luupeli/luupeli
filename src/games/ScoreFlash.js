@@ -68,7 +68,7 @@ class ScoreFlash extends React.Component {
 						text-align="center"
 						vertical-align="middle"
 						line-height="90px"
-					
+						z-index="1000"
 					>
 		 <h3>
 			{rowtext}

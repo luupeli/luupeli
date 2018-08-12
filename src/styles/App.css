@@ -138,9 +138,11 @@ animation: Button-Gradient 3.23s ease infinite;
  animation: Button-Gradient 3.23s ease infinite;
 
 }
-
+.forty .game-score .col-md-6,.fortyfive .game-score .col-md-6,.fifty .game-score .col-md-6{
+  width: 60%!important;
+}
 .score-board {
-  margin-left: 0!important;
+  /* margin-left: 0!important; */
 }
 
 .score-board h1,.score-board h2,.score-board h3,.score-board h4,.score-board h5,.score-board h6 {

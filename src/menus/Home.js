@@ -694,8 +694,8 @@ class Home extends React.Component {
     return (
       <div id="homeMenu" className="App">
       <Sound
-			  url="/sounds/351717__monkeyman535__cool-chill-beat-loop.mp3"
-				playStatus={Sound.status.PLAYING}
+      url="/sounds/351717__monkeyman535__cool-chill-beat-loop.wav"
+        playStatus={Sound.status.PLAYING}
 				// playFromPosition={0 /* in milliseconds */}
 				onLoading={this.handleSongLoading}
 				onPlaying={this.handleSongPlaying}
