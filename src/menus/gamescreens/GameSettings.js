@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import { setMessage } from '../../reducers/messageReducer'
 import emoji from 'node-emoji'
 
+
 /**
  * GameSettings is the menu directly prior to a WritingGame session.
  * A game session will be based on the selections made by user in the GameSettings menu.
@@ -252,7 +253,12 @@ class GameSettings extends React.Component {
 		if (this.state.redirect) {
 			this.props.gameInitialization(this.state.gameLength, this.state.images, this.state.user,
 				this.props.location.state.gamemode, this.state.animals, this.state.bodyParts, this.state.playSound, this.state.gameDifficulty)
+				
+				
+				
 			return (
+				
+
 				<Redirect to={{
 					pathname: '/game',
 					state: {

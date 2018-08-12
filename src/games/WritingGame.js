@@ -273,7 +273,7 @@ class WritingGame extends React.Component {
     }
 
     return (
-      <div className="bottom">
+      <div className="bottomxxx">
         <div className="row" id="image-holder">
           <div className="intro">
             <CloudinaryContext cloudName="luupeli">

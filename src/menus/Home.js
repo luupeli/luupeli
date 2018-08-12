@@ -496,7 +496,7 @@ class Home extends React.Component {
                 
         <Animated animationIn="bounceInUp slower" animationOut="bounceOutLeft faster" animationInDelay="1500" animationOutDelay="0" isVisible={this.state.attractAnimation}>
         <h3>
-        LUUPELI CREDITS
+        CREDITS
         </h3>
       </Animated>
       </div>
@@ -504,7 +504,7 @@ class Home extends React.Component {
       <div className="home-highscore">
       <div className="score">
         <h5>
-        Helena
+        Helena Parviainen
         </h5>
         </div>
           </div>    
@@ -513,7 +513,7 @@ class Home extends React.Component {
       <div className="home-highscore">
       <div className="score">
         <h5>
-        Kerem
+        Kerem Atak
         </h5>
         </div>
           </div>    
@@ -522,7 +522,7 @@ class Home extends React.Component {
       <div className="home-highscore">
       <div className="score">
         <h5>
-        Peppi
+        Peppi Mattsson
         </h5>
         </div>
           </div>    
@@ -531,7 +531,7 @@ class Home extends React.Component {
       <div className="home-highscore">
       <div className="score">
         <h5>
-        Timo
+        Timo Leskinen
         </h5>
         </div>
           </div>    
@@ -540,7 +540,7 @@ class Home extends React.Component {
       <div className="home-highscore">
       <div className="score">
         <h5>
-        Tuomas
+        Tuomas Honkala
         </h5>
         </div>
           </div>    
@@ -549,7 +549,7 @@ class Home extends React.Component {
       <div className="home-highscore">
       <div className="score">
         <h5>
-        Ville
+        Ville Hänninen
         </h5>
         </div>
           </div>    
@@ -694,7 +694,7 @@ class Home extends React.Component {
     return (
       <div id="homeMenu" className="App">
       <Sound
-			url="/sounds/351717__monkeyman535__cool-chill-beat-loop.mp3"
+			  url="/sounds/351717__monkeyman535__cool-chill-beat-loop.mp3"
 				playStatus={Sound.status.PLAYING}
 				// playFromPosition={0 /* in milliseconds */}
 				onLoading={this.handleSongLoading}

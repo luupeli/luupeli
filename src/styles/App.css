@@ -148,7 +148,9 @@ animation: Button-Gradient 3.23s ease infinite;
 }
 
 .score-board .col-md-6 {
+  /*
   width: var(--progress-max-width)!important;/*--max-progress66vw!important;*/
+  
   padding: 0!important;
   display: inline-block;
   /* display: flex;
@@ -157,9 +159,18 @@ animation: Button-Gradient 3.23s ease infinite;
 
 .score-board .col-md-offset-3 {
   /* margin-left: 0!important; */
-  margin: auto;
+  /* margin: auto; */
 }
 
+.forty .score-board .col-md6,.fortyfive .score-board .col-md6,.fifty .score-board .col-md6 {
+  width:var(--progress-max-width-fifty)
+}
+.thirtythree .score-board .col-md6 {
+  width: 100%;
+}
+.thirtythree .score-board .col-md6 .progress {
+width:var(--progress-max-width-thirtythree)
+}
 
 #submitButton {
   font-size:calc(1.7vw + 0.9vh + 0.6vmin)!important;
@@ -363,11 +374,11 @@ h4 {
 
 
 h5 {
-  font-size:calc(0.85vw + 0.45vh + 0.6vmin);
+  font-size:calc(0.95vw + 0.45vh + 0.6vmin);
 }
   
 h6 {
-  font-size:calc(0.7vw + 0.3vh + 0.45vmin);
+  font-size:calc(0.85vw + 0.3vh + 0.5vmin);
 }
 
 
@@ -375,6 +386,11 @@ h3, h4, h5, h6 {
   text-transform: uppercase;
   font-weight: 600;
   color: var(--highlight) !important;
+}
+
+p {
+  font-size:calc(1.25vw + 0.35vh + 0.35vmin);
+  letter-spacing: 0!important;
 }
 
 .fallout p {
@@ -490,7 +506,7 @@ div.row {
 }
 
 .gameplay .game-score-mobile {
-  width: 85vw;
+  /* width: 85vw; */
   height: 20vh;
   flex-grow: 1; 
   margin: 10px;
@@ -504,7 +520,7 @@ div.row {
 }
 
 .gameplay .game-mainview-mobile {
-  width: 85vw;
+  /* width: 85vw; */
   height: 65vh;
   flex-grow: 1;
   margin: 10px;
@@ -549,7 +565,7 @@ div.row {
 }
 
 .gameplay .col-md-6 {
-  width: 80%;
+  /* width: 80%; */
   }
   .gameplay .col-md-offset-3 {
   margin-left: 10%;
@@ -611,7 +627,7 @@ div.transbox {
 
 div.transbox p {
     margin: 1%;
-    font-weight: bold;
+    /* font-weight: bold; */
     color: var(--highlight) !important;
   }
 
@@ -1130,15 +1146,47 @@ https://codepen.io/George-Payne/pen/qOrxao
   transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
-.height-restricted {
+.thirtythree .height-restricted {
   margin-top: 3vh;
-  height: var(--image-height-restriction);/*50vh;*/
+  height: 33vh;
 }
 
-.height-restricted img {
-  max-height: var(--image-height-restriction);/*50vh;*/
-  max-width: 79vw;
+.thirtythree .height-restricted img {
+  max-height: 33vh;
+  max-width: 90%;/* 79vw;*/
 }
+
+
+.forty .height-restricted {
+  margin-top: 3vh;
+  height: 40vh;/*var(--image-height-restriction);/*50vh;*/
+}
+
+.forty .height-restricted img {
+  max-height: 40vh;/*var(--image-height-restriction);/*50vh;*/
+  max-width: 90%;/* 79vw;*/
+}
+
+.fortyfive .height-restricted {
+  margin-top: 3vh;
+  height: 45vh;/*var(--image-height-restriction);/*50vh;*/
+}
+
+.fortyfive .height-restricted img {
+  max-height: 45vh;/*var(--image-height-restriction);/*50vh;*/
+  max-width: 90%;/* 79vw;*/
+}
+
+.fifty .height-restricted {
+  margin-top: 3vh;
+  height: 50vh;/*var(--image-height-restriction);/*50vh;*/
+}
+
+.fifty .height-restricted img {
+  max-height: 50vh;/*var(--image-height-restriction);/*50vh;*/
+  max-width: 90%;/* 79vw;*/
+}
+
 
 .multi-height-restricted {
   height: 15vh;
@@ -1196,11 +1244,26 @@ https://codepen.io/George-Payne/pen/qOrxao
   right: 16px;
 }
 .progress {
-  
   height: 3rem;
   /* width: 100%!important; */
-  width: var(--progress-max-width)!important;
   height: 10px!important;
+}
+
+.thirtythree {
+  width:100%;
+}
+
+.thirtythree .progress{
+  width: var(--progress-max-width-thirtythree)!important;
+}
+.forty .progress{
+  width: var(--progress-max-width-forty)!important;
+}
+.forty .progress{
+  width: var(--progress-max-width-fortyfive)!important;
+}
+.fifty .progress{
+  width: var(--progress-max-width-fifty)!important;
 }
 
 .progress-bar {

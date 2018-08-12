@@ -226,68 +226,86 @@ class GameLoop extends React.Component {
 
         
 
-        if ((imageWidthR() > imageHeightR() && imageWidthR() > 1000) || imageWidthR() > imageHeightR()*1.6)  {
+        if ((imageWidthR() > imageHeightR() && imageWidthR() > 1000) || imageWidthR() > imageHeightR()*1.3)  {
             var progressWidth = Math.round((imageWidthR())*0.20);
 
             var gameBorder = Math.round(Math.min(7,(progressWidth*5)/100));
             
+            var responsive='fifty'
+
             var heightRestriction = 50;
-            if (imageHeightR()<641) {
+            if (imageHeightR()<641  || imageWidthR()*1.3<imageHeightR()) {
                 heightRestriction = 40;
-            } else if (imageHeightR()<801) {
+                responsive = 'forty'
+            } else if (imageHeightR()<801 ) {
                 heightRestriction = 45;
+                responsive = 'fortyfive'
             }
 
+            
             injectGlobal`
             :root {  
-                --image-height-restriction: ${heightRestriction}vh;
-                --progress-max-width: ${progressWidth}px;
+            
+                --progress-max-width-forty: ${progressWidth}px;
+                --progress-max-width-fortyfive: ${progressWidth}px;
+                --progress-max-width-fifty: ${progressWidth}px;
                 --game-border: ${gameBorder}px;
               }
               .score-board .col-md-offset-3 {
-                margin: auto;
+                margin: ${Math.round(progressWidth/7)}px!important;
               }
               
             }`
 
+        
+            /* REMOVED FROM INJECTION:   --image-height-restriction: ${heightRestriction}vh;*/
+
             return (
+                 <div className={responsive}>
                 <div className="transbox">
                     <div>
                         <ScoreFlash ref={instance => this.wgmessage = instance} />
                     </div>
+                    
                     <div className="game-mainview">
                         {/* <p>{imageWidthR()},{imageHeightR()}</p> */}
 
                         {this.gameLoop()}
                     </div>
+                    
                     <div className="game-score">
                         {this.topPage(scoreShown, true)}
                     </div>
                 </div>
+                </div> 
             )
         } else {
             var progressWidth = Math.round((imageWidthR())*0.75);
             injectGlobal`
             :root {  
-                --image-height-restriction: 33vh;
+                
                 --progress-max-width: ${progressWidth}px;
+                --progress-max-width-thirtythree: ${Math.round(progressWidth*0.5)}px;
                 --game-border: ${gameBorder}px;
               }
               .score-board .col-md-offset-3 {
                 margin-left: 0!important; 
+                margin-top: 5px!important;
               }
               
             }`
-
+            /* REMOVED FROM INJECTION:   --image-height-restriction: 33vh;*/
             return (
-                <div>
+                <div className="thirtythree">
                     <div className="transbox" margin="5">
                         <div>
                             <ScoreFlash ref={instance => this.wgmessage = instance} />
                         </div>
+                        <div className="thirtythree">
                         <div className="game-mainview-mobile">
                             {/* <p>{imageWidthR()},{imageHeightR()}</p> */}
                             {this.gameLoop()}
+                        </div>
                         </div>
                     </div>
                     <div className="transbox" margin="5">
