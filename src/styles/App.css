@@ -1210,10 +1210,10 @@ https://codepen.io/George-Payne/pen/qOrxao
   height: 10px!important;
 }
 
-.steel img {
+/* .steel img {
   -webkit-filter: sepia(0.8);
   filter: sepia(0.8);
-}
+} */
 
 #error-message {
   display:inline-block;
@@ -1224,4 +1224,26 @@ https://codepen.io/George-Payne/pen/qOrxao
   text-transform:none;
   line-height:1em;
   margin-left:.2em;
+}
+
+.home-highscore-top {
+  margin-top: 10px;
+}
+.home-highscore {
+  display:flex;
+  flex-wrap: nowrap;
+  margin-left: 25%;
+}
+  .home-highscore>div {
+  flex: 0 50%;
+}
+
+.home-highscore .score {
+  width: 100%;
+}
+
+
+.home-highscore h4, .home-highscore h5, .home-highscore h6{
+  margin-top: 2px!important;
+  text-align: left;
 }
