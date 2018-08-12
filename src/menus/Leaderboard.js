@@ -34,6 +34,8 @@ class Leaderboard extends React.Component {
 			})
 	}
 
+	
+
 	bestPlayersAuxiliaryMethod() {
 		var top20AllTime = []
 		var i

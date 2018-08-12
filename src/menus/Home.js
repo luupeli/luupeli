@@ -8,7 +8,9 @@ import { Row, Col } from 'react-bootstrap'
 import RandomTextGenerator from 'react-scrolling-text';
 import { Animated } from "react-animated-css";
 import emoji from 'node-emoji'
-import Sound from 'react-sound';
+import Sound from 'react-sound'
+import userStatistics from '../services/userStatistics'
+
 
 /**
  * This is the index page for the site. You can for example login from here or start creating the game.
@@ -84,7 +86,9 @@ class Home extends React.Component {
       user: null,
       admin: false,
       attractMode: 0,
-      attractAnimation:true
+      attractAnimation:true,
+      loopTheMusic:false,
+      bestPlayers:[]
     }
 
     // The method sets the first style as default if none are chosen.
@@ -97,6 +101,7 @@ class Home extends React.Component {
     this.changeCss = this.changeCss.bind(this)
     this.proceedToSelect = this.proceedToSelect.bind(this)
     this.setThemeColors = this.setThemeColors.bind(this)
+   
   }
 
   // If someone is logged in he will be set in the state as the user
@@ -113,7 +118,7 @@ class Home extends React.Component {
         this.setState({ admin: true })
       }
     }
-
+    this.getBestPlayers()
   }
       /**
      * With the component mounting, the game time measuring tick() is set at 50 milliseconds.
@@ -323,7 +328,25 @@ class Home extends React.Component {
     }
   }
 
+  getBestPlayers() {
+		
+    
+		userStatistics.getTop50()
+			.then((response) => {
+        this.setState({bestPlayers: response.data })
+        console.log(this.state.bestPlayers)
+				
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+
+    
+    
+}
+
   attractMode() {
+    
     
     var effects= [];
     effects.push('bounceOutLeft faster')
@@ -333,19 +356,34 @@ class Home extends React.Component {
     if (this.state.attractMode%80<=20) {
       var scores = [];
       var scorers= [];
-      scorers.push('Luu Skywalker'); scorers.push('Luuno Turhapuro'); scorers.push('Princess Luua'); scorers.push('Sorbusten Ritari'); scorers.push('Keisari Luupatine'); scorers.push('Mr. Kitiini'); scorers.push('Bonefish!'); scorers.push('Luufemma'); scorers.push('Luubi-Wan Luunobi'); scorers.push('Luunkerääjä')
 
-      const placeholderScores = scorers.map((scoree,i) =>
+      var trueScorers = [];
+
+      if (this.state.bestPlayers.length>10) {
+       trueScorers = this.state.bestPlayers.slice(0, 10 + 1)
+      } else {
+        trueScorers = this.state.bestPlayers
+      }
+       
+      
+      scorers.push('Luu Skywalker'); scorers.push('Luuno Turhapuro'); scorers.push('Princess Luua'); scorers.push('Sorbusten Ritari'); scorers.push('Keisari Luupatine'); scorers.push('Mr. Kitiini'); scorers.push('Bonefish!'); scorers.push('Luufemma'); scorers.push('Luubi-Wan Luunobi'); scorers.push('Luunkerääjä')
+      
+    
+      
+
+      // const placeholderScores = scorers.map((scoree,i) =>
+      const placeholderScores = trueScorers.map((scoree,i) =>
       <Animated animationIn="bounceInUp slower" animationOut={effects[i%2]} animationInDelay={1500+(i*500)}  animationOutDelay={i*50} isVisible={this.state.attractAnimation}>
             <div className="home-highscore">
          <div className="score">
           <h5>
-        {i+1}. {scoree}
+        {i+1}. {scoree.user.username.toUpperCase()}
         </h5>
         </div>
         <div className="score">
                   <h5>
-                {10000-(i*740)+(Math.round(this.state.attractMode/80)*(2000-(i*40)))}
+                {/* {10000-(i*740)+(Math.round(this.state.attractMode/80)*(2000-(i*40)))} */}
+                {scoree.total}
                   </h5>
                   </div>
                   </div>   
@@ -357,9 +395,9 @@ class Home extends React.Component {
         <div>
     <div className="home-highscore-top">
                 
-                <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay="1000" animationOutDelay="0" isVisible={this.state.attractAnimation}>
+                <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay={1000} animationOutDelay={0} isVisible={this.state.attractAnimation}>
 		            <h3>
-			          TOP 10 LUUPÄÄT
+			          TOP {trueScorers.length} LUUPÄÄT
 		            </h3>
 				      </Animated>
               </div>
@@ -399,7 +437,7 @@ class Home extends React.Component {
     lines.push('The Luupeli devs kindly thank these content creators! '+heartEmoji)
    }
 
-   else if (this.state.attractMode%240<=80) {
+   else if (this.state.attractMode%320<=80) {
      heading='LUUPELI TIEDOTTAA'
    lines.push('Miksi sinä vielä luet tätä?')
    lines.push('Mene pelaamaan siitä!')
@@ -407,21 +445,37 @@ class Home extends React.Component {
    lines.push('...')
    lines.push('Jaa minäkö?')
    lines.push('Olisin mieluummin purjehtimassa!')
-   } else if (this.state.attractMode%240<=160) {
+   } else if (this.state.attractMode%320<=160) {
     heading='LUUPELI MUISTUTTAA'
     lines.push('Laiska tyäs huomiseen lykkää.')
     lines.push('Laiskalla hiki syödessä, vilu työtä tehdessä.')
     lines.push('Laiska ei sua, ahkera sua yltäkyllin')
     lines.push('...')
     lines.push('Se ei pelaa, joka pelkää.')
-   }  else if (this.state.attractMode%240<=240) {
+   }  else if (this.state.attractMode%320<=240) {
     heading='LUUPELI ANELEE'
     lines.push('Haluan, että lopetat näiden lukemisen.')
     lines.push('Kierros alkaa näiden tekstien jälkeen alusta.')
     lines.push('Tuhlaat aikaasi jos jäät katsomaan tuleeko näitä lisää.')
     lines.push('Ei tule.')
     lines.push('Pelaa Luupeliä! '+heartEmoji)
+   } else if (this.state.attractMode%320<=320) {
+    let watermelon = emoji.get('watermelon')
+    let cherries = emoji.get('cherries')
+    let grapes = emoji.get('grapes')
+    let banana = emoji.get('banana')
+    let strawberry = emoji.get('strawberry')
+    let mushroom = emoji.get('mushroom')
+
+    heading='KERÄÄ BONUKSET'
+    lines.push(watermelon+' ...... 5 000 pts')
+    lines.push(cherries+' ..... 10 000 pts')
+    lines.push(grapes+' ..... 25 000 pts')
+    lines.push(banana+' ..... 50 000 pts')
+    lines.push(strawberry+' .... 250 000 pts')
+    lines.push(mushroom+' ....... SECRET!!')
    }
+
 
    
 
@@ -443,7 +497,7 @@ class Home extends React.Component {
         <div>
         <div className="home-highscore-top">
                     
-                    <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay="1000" animationOutDelay="0" isVisible={this.state.attractAnimation}>
+                    <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay={1000} animationOutDelay={0} isVisible={this.state.attractAnimation}>
                     <h3>
                     {heading}
                     </h3>
@@ -454,6 +508,41 @@ class Home extends React.Component {
       )
   }
 }
+startTheMusic () {
+   this.setState({loopTheMusic: true})
+}
+
+musicPlayer() {
+  if (this.state.loopTheMusic) {
+  return (
+    <Sound
+    url="/sounds/351717__monkeyman535__cool-chill-beat-loop.wav"
+      playStatus={Sound.status.PLAYING}
+      // playFromPosition={0 /* in milliseconds */}
+      onLoading={this.handleSongLoading}
+      onPlaying={this.handleSongPlaying}
+      onFinishedPlaying={this.handleSongFinishedPlaying}
+      loop={this.state.loopTheMusic}
+      />
+
+  )}
+  else if (!this.state.loopTheMusic) {
+    return (
+      <Sound
+      url="/sounds/351717__monkeyman535__cool-chill-beat-loop.wav"
+        playStatus={Sound.status.STOPPED}
+        // playFromPosition={0 /* in milliseconds */}
+        onLoading={this.handleSongLoading}
+        onLoad={this.startTheMusic()}
+        onPlaying={this.handleSongPlaying}
+        onFinishedPlaying={this.handleSongFinishedPlaying}
+        loop={this.state.loopTheMusic}
+        />
+  
+    )
+  } else {return null}
+}
+
 
   render() {
     if (process.env.NODE_ENV !== 'test') {
@@ -462,6 +551,7 @@ class Home extends React.Component {
     if (this.state.redirect) {
       this.setState({ redirect: false })
       return (
+        
         <Redirect to=
           {
             {
@@ -479,19 +569,11 @@ class Home extends React.Component {
     // This index will pick the proper style from style list
     let i = parseInt(localStorage.getItem('styleIndex'), 10)
     this.setThemeColors(i)
+     
 
     return (
       <div id="homeMenu" className="App">
-      <Sound
-      url="/sounds/351717__monkeyman535__cool-chill-beat-loop.wav"
-        playStatus={Sound.status.PLAYING}
-				// playFromPosition={0 /* in milliseconds */}
-				onLoading={this.handleSongLoading}
-				onPlaying={this.handleSongPlaying}
-        onFinishedPlaying={this.handleSongFinishedPlaying}
-        loop="true"
-			  />
-
+      {this.musicPlayer()}
         <div className="menu">
           <div className={this.state.overlay}>
             <div className={this.state.background}>
