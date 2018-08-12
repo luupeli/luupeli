@@ -430,7 +430,7 @@ class Home extends React.Component {
          <div className="home-highscore">
       <div className="score">
        <h5>
-     {line}
+     {line.toUpperCase()}
      </h5>
      </div>
      </div>
