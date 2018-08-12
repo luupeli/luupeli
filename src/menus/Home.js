@@ -8,6 +8,7 @@ import { Row, Col } from 'react-bootstrap'
 import RandomTextGenerator from 'react-scrolling-text';
 import { Animated } from "react-animated-css";
 import emoji from 'node-emoji'
+import Sound from 'react-sound';
 
 /**
  * This is the index page for the site. You can for example login from here or start creating the game.
@@ -636,7 +637,7 @@ class Home extends React.Component {
       <div className="home-highscore">
       <div className="score">
         <h5>
-        Used under Creative Commons (CC) license
+        Cool Chill Beat Loop by monkeyman535
         </h5>
         </div>
           </div>    
@@ -645,7 +646,16 @@ class Home extends React.Component {
       <div className="home-highscore">
       <div className="score">
         <h5>
-        The Luupeli devteam kindly thanks these content creators for their contribution!
+        Used under Creative Commons (CC) license
+        </h5>
+        </div>
+          </div>    
+      </Animated>
+      <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay="6000"  animationOutDelay="350" isVisible={this.state.attractAnimation}>
+      <div className="home-highscore">
+      <div className="score">
+        <h5>
+        The Luupeli devs kindly thank these content creators!
         </h5>
         </div>
           </div>    
@@ -683,6 +693,16 @@ class Home extends React.Component {
 
     return (
       <div id="homeMenu" className="App">
+      <Sound
+			url="/sounds/351717__monkeyman535__cool-chill-beat-loop.mp3"
+				playStatus={Sound.status.PLAYING}
+				// playFromPosition={0 /* in milliseconds */}
+				onLoading={this.handleSongLoading}
+				onPlaying={this.handleSongPlaying}
+        onFinishedPlaying={this.handleSongFinishedPlaying}
+        loop="true"
+			  />
+
         <div className="menu">
           <div className={this.state.overlay}>
             <div className={this.state.background}>
