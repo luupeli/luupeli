@@ -457,7 +457,7 @@ class Home extends React.Component {
 
   render() {
     if (process.env.NODE_ENV !== 'test') {
-      // skelly()
+     // skelly()
     }
     if (this.state.redirect) {
       this.setState({ redirect: false })
