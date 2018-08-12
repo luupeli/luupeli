@@ -85,7 +85,7 @@ class MultipleChoiceGame extends React.Component {
 * This method returns 100 if the answer is correct and 0 if the answer is incorrect.
 */
   checkCorrectness(answer) {
-    if (this.props.game.currentImage.bone.nameLatin.toLowerCase() === answer.toLowerCase()) {
+    if (answer.correct) {
       return 100
     } else {
       return 0
@@ -130,21 +130,7 @@ class MultipleChoiceGame extends React.Component {
  * If wrongly answered, the selected button is red and the correct answer is green.
 */
   answerButtons() {
-    let choices = [
-      {
-        nameLatin: this.props.game.currentImage.bone.nameLatin,
-        correct: true
-      }
-    ]
-
-    const wrongs = this.props.game.wrongAnswerOptions.map(nameLatin => {
-      return { nameLatin: nameLatin, correct: false }
-    })
-
-    choices = wrongs.concat(choices)
-
-    // NOTE: The correct answer is all the time at the right corner. We have to sort answer option on some way.
-
+    const choices = this.props.game.wrongAnswerOptions
     if (this.state.value === '' || this.state.value === undefined) {
       return (
         choices.map(choice => <Button bsStyle='info' value={choice.nameLatin} onClick={this.handleSubmit}>{choice.nameLatin}</Button>
@@ -193,7 +179,7 @@ class MultipleChoiceGame extends React.Component {
           <div className="intro">
             <CloudinaryContext cloudName="luupeli">
               <div className="height-restricted">
-                <Image publicId={this.props.game.currentImage.url+".png"}>
+                <Image publicId={this.props.game.currentImage.url + ".png"}>
                   <Transformation width={imageWidth()} format="png" crop="fill" radius="20" />
                 </Image>
               </div>

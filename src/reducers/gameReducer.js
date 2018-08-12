@@ -156,13 +156,26 @@ function selectWrongAnswerOptions(images, currentImage) {
     let allLatinNames = images.map(img => img.bone.nameLatin);
     allLatinNames = Array.from(new Set(allLatinNames));
     allLatinNames = allLatinNames.filter(answer => answer !== currentImage.bone.nameLatin);
-    const selectedAnswers = [];
+    let selectedAnswers = [];
     const numberOfButtons = Math.min(3, allLatinNames.length);
     while (selectedAnswers.length < numberOfButtons) {
         const index = Math.floor(Math.random() * allLatinNames.length);
         selectedAnswers.push(allLatinNames[index]);
         allLatinNames.splice(index, 1);
     }
+
+    selectedAnswers = selectedAnswers.map(ans => {
+        return ({
+            nameLatin: ans, correct: false
+        })
+    })
+    const correctAns = { nameLatin: currentImage.bone.nameLatin, correct: true }
+    selectedAnswers.push(correctAns)
+
+    var shuffle = require('shuffle-array')
+    shuffle(selectedAnswers)
+    console.log(correctAns)
+    console.log(selectedAnswers)
     return selectedAnswers;
 }
 
@@ -172,13 +185,25 @@ function selectWrongAnswerOptions(images, currentImage) {
 */ 
 function selectWrongImageOptions(images, currentImage) {
     const allImages = images.filter(img => !((img.animal === currentImage.animal) && (img.bone === currentImage.bone)));
-    const selectedImages = [];
+    let selectedImages = [];
     const numberOfImages = Math.min(3, allImages.length);
     while (selectedImages.length < numberOfImages) {
         const index = Math.floor(Math.random() * allImages.length);
         selectedImages.push(allImages[index]);
         allImages.splice(index, 1);
     }
+    selectedImages = selectedImages.map(image => {
+        return ({
+            ...image, correct: false
+        })
+    })
+    const correctImg = { ...currentImage, correct: true }
+    selectedImages.push(correctImg)
+
+    var shuffle = require('shuffle-array')
+    shuffle(selectedImages)
+    console.log(correctImg)
+    console.log(selectedImages)
     return selectedImages;
 }
 
