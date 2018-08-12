@@ -1210,10 +1210,10 @@ https://codepen.io/George-Payne/pen/qOrxao
   height: 10px!important;
 }
 
-.steel img {
+/* .steel img {
   -webkit-filter: sepia(0.8);
   filter: sepia(0.8);
-}
+} */
 
 #error-message {
   display:inline-block;
@@ -1243,7 +1243,7 @@ https://codepen.io/George-Payne/pen/qOrxao
 }
 
 
-.home-highscore h5 {
+.home-highscore h4, .home-highscore h5, .home-highscore h6{
   margin-top: 2px!important;
   text-align: left;
 }
