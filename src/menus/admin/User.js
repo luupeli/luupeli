@@ -1,5 +1,6 @@
 import React from 'react'
 import userService from '../../services/users'
+import userStatistics from '../../services/userStatistics'
 import { Link, Redirect } from 'react-router-dom'
 
 class User extends React.Component {
@@ -13,7 +14,8 @@ class User extends React.Component {
 			//Some information about the user being viewed below
 			viewedUserName: '',
 			viewedUserEmail: '',
-			//user is just the user viewing this page (admin!), nothing to do with the user
+			totalGames: '',
+			//user is just the user viewing this page, nothing to do with the user
 			//being viewed
 			user: null,
 			goBackTo: '/'
@@ -34,6 +36,12 @@ class User extends React.Component {
 			})
 			.catch((error) => {
 				console.log(error)
+			})
+		userStatistics.getTotalGamesForIndividual(this.props.userId)
+			.then((response) => {
+				this.setState({
+					totalGames: response.data
+				})
 			})
 		//And this is just for setting the user, although unless the user is an admin
 		//or the very user this user page belongs to, they're going to need to gtfo
@@ -72,11 +80,8 @@ class User extends React.Component {
 				</Link>
 				<font size="4"><div>
 					<h2>Käyttäjä {this.state.viewedUserName}</h2>
-					<p>Sähköposti: {this.state.viewedUserEmail}</p><br></br>
-					<p>Peliä pelattu kaikkiaan: 3 min 36 s</p>
-					<p>Pelattuja pelejä: 23</p>
-					<p>Oikeita vastauksia: 52 joista suurin osa alueella eturaaja, koira</p>
-					<p>Vääriä vastauksia: 17 joista suurin osa alueella pää, hevonen</p>
+					<p>Sähköposti: {this.state.viewedUserEmail}</p>
+					<p>Pelattuja pelejä: {this.state.totalGames.length}</p>
 				</div>
 				</font>
 			</div >
