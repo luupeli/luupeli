@@ -54,7 +54,7 @@ class WritingGame extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.game.endCounter !== prevProps.game.endCounter) {
       this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
-      this.props.startGameClock()
+      //this.props.startGameClock()
     }
   }
 

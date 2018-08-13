@@ -11,7 +11,8 @@ import { ProgressBar } from 'react-bootstrap'
 import gameSessionService from '../services/gameSessions'
 import { injectGlobal } from 'styled-components'
 import Sound from 'react-sound';
-
+import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
+import { Animated } from "react-animated-css";
 
 /**
  * Gameloop is the parent component for 'hosting' different game modes of Luupeli.
@@ -40,6 +41,9 @@ class GameLoop extends React.Component {
             currentScoreFlashVisibility: false,
             allStyles: JSON.parse(localStorage.getItem("allStyles")),
             styleIndex: localStorage.getItem('styleIndex'),
+            previousImage: '',
+            previousUrl: 'none'
+            
         }
 
 
@@ -48,6 +52,8 @@ class GameLoop extends React.Component {
         this.handleSongFinishedPlaying = this.handleSongFinishedPlaying.bind(this)
         window.onunload = function () { window.location.href = '/' }
         this.gameClockUnits = this.gameClockUnits.bind(this)
+        this.reminderOfPreviousImage = this.reminderOfPreviousImage.bind(this)
+        
         
     };
 
@@ -74,9 +80,18 @@ class GameLoop extends React.Component {
     * This is done simply to make the time-based scoring feel more granular.
     */
     tick() {
+        if (this.state.seconds===1 && this.state.previousImage==='') {
+            this.setState({ seconds: this.getElapsedTime(),previousImage: this.props.game.currentImage})
+        } 
+        else if (this.state.seconds===1 && this.props.game.currentImage.url!==this.state.previousImage.url) {
+            this.setState({ seconds: this.getElapsedTime(),previousImage: this.props.game.currentImage})
+        } else {
         this.setState({ seconds: this.getElapsedTime()});
+        }
         //  this.props.advanceGameClock()
     }
+
+
     getElapsedTime() {
         let stoppedAt
         if (this.props.game.stoppedAt === undefined) {
@@ -94,7 +109,7 @@ class GameLoop extends React.Component {
      * With the component mounting, the game time measuring tick() is set at 50 milliseconds.
      */
     componentWillMount() {
-
+        
         this.interval = setInterval(() => this.tick(), 200);
     }
     /**
@@ -154,7 +169,7 @@ class GameLoop extends React.Component {
     /**
      * Method for rendering the Gameloop page header (containing ProgressBar)
      */
-    topPage(scoreShown) {
+    topPage(scoreShown,progressWidth) {
         let progressBar = <ProgressBar bsStyle="info" now={0} key={0} />
         let correctAnswers = []
         if (this.props.game.answers !== undefined) {
@@ -173,6 +188,7 @@ class GameLoop extends React.Component {
         // console.log('gameclock() ...')
         // console.log(
 
+       
 
         return (
             <div className="score-board">
@@ -188,15 +204,55 @@ class GameLoop extends React.Component {
                     <h3>SCORE {scoreShown}</h3>
                     <h5>STAMP TIME {this.state.seconds}</h5>
                     <h5>STAMP UNITS {this.gameClockUnits()}</h5>
+                    {this.reminderOfPreviousImage(progressWidth)}
                 </div>
-
-
+                
+                
+                
 
 
             </div>
             // </div>
             // </div>
         )
+    }
+
+    reminderOfPreviousImage(progressWidth) {
+        if (this.state.previousImage!==null && this.state.previousImage!=='' && this.props.game.gamemode === 'kirjoituspeli' && this.props.game.endCounter<this.props.game.gameLength) {
+            if (this.state.previousImage.bone.nameLatin!==this.props.game.currentImage.bone.nameLatin) {
+            var animationActive=false
+            if (this.state.seconds>=2) {
+                animationActive=true
+            }
+
+            return (
+                <div>
+                    <Animated animationIn="fedeIn" animationOut="fadeOut faster" animationInDelay="100" animationOutDelay="100" isVisible={animationActive}>
+                   <h5> </h5>
+                    <h5>EDELLINEN</h5>
+                    <h6>{this.state.previousImage.bone.nameLatin}</h6>
+                    </Animated>
+                <div className="intro">
+                <CloudinaryContext cloudName="luupeli">
+                  <div className="height-restricted" >
+                    <Animated animationIn="fedeIn" animationOut="fadeOut faster" animationInDelaya="100" animationOutDelay="100" isVisible={animationActive}>
+                      <Image id="bone-image" publicId={this.state.previousImage.url}>
+    
+                        <Transformation width="250" height="150" crop="scale" effect="grayscale"/>
+    
+                      </Image>
+                    </Animated>
+                  </div>
+                </CloudinaryContext>
+              
+              </div>
+    </div>
+            )
+        }
+    }
+        
+            return null
+        
     }
 
     responsiveLayout(scoreShown) {
@@ -277,7 +333,7 @@ class GameLoop extends React.Component {
                         </div>
 
                         <div className="game-score">
-                            {this.topPage(scoreShown, true)}
+                            {this.topPage(scoreShown,progressWidth, true)}
                         </div>
                     </div>
 
@@ -314,7 +370,7 @@ class GameLoop extends React.Component {
                     </div>
                     <div className="transbox" margin="5">
                         <div className="game-score-mobile">
-                            {this.topPage(scoreShown, false)}
+                            {this.topPage(scoreShown,progressWidth, false)}
                         </div>
                     </div>
                 </div>
