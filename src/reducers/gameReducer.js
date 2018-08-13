@@ -20,8 +20,6 @@ const initialState = {
 }
 
 const gameReducer = (store = initialState.game, action) => {
-    // console.log(action.type)
-    var newStartTime = (new Date).getTime();
     if (action.type === 'INIT_GAME') {
         console.log(action)
         return {
@@ -81,8 +79,6 @@ export const gameInitialization = (gameLength, images, user, gamemode, animals, 
     console.log(animals)
     console.log(bodyparts)
 
-    var startTime = (new Date).getTime();
-    console.log('time:' + startTime)
     return {
         type: 'INIT_GAME',
         gameLength: gameLength,
@@ -101,8 +97,7 @@ export const gameInitialization = (gameLength, images, user, gamemode, animals, 
         totalScore: 0,
         gameClock: 0,
         playSound: playSound,
-        gameDifficulty: gameDifficulty,
-        startTime: startTime,
+        gameDifficulty: gameDifficulty
     }
 }
 

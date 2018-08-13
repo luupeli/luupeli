@@ -136,6 +136,7 @@ class ImageMultipleChoiceGame extends React.Component {
             if (choice.correct) {
               return 'Oikea vastaus ylhäältä laskettuna: ' + i + '(laskenta alkaa nollasta)'
             }
+          return null
           })}
         </div>
         <div className="container" z-index="3" position="relative">

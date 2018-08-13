@@ -41,7 +41,6 @@ class ScoreFlash extends React.Component {
 	 * Also, "zero points" should probably have some noticeable vfx as well.
 	 */
 	render() {
-		// const style = 'alert alert-' + `${this.props.scoreflash.style}`
 		const style = 'scoreflash'   // <--- PLACEHOLDER CSS EFFECT!!! {this.props.scoreflash.score}
 		const gameClock = Math.round(((new Date).getTime() - this.props.game.startTime) / 50)
 		const scoreActual = this.props.scoreflash.score
@@ -86,14 +85,6 @@ class ScoreFlash extends React.Component {
 		else {
 			return null;
 		}
-		// else 		
-
-		// {
-		// 	return (
-
-		// 	<br/>
-		// 	)
-		// }
 	}
 
 

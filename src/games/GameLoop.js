@@ -1,7 +1,6 @@
 
 import { Redirect } from 'react-router-dom'
 import React from 'react'
-import Message from './Message'
 import ScoreFlash from './ScoreFlash'
 import WritingGame from './WritingGame'
 import MultipleChoiceGame from './MultipleChoiceGame'

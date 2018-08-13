@@ -1,6 +1,6 @@
 import React from 'react'
 import userStatistics from '../services/userStatistics'
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Row, Col } from 'react-bootstrap'
 
 class Leaderboard extends React.Component {
@@ -40,7 +40,7 @@ class Leaderboard extends React.Component {
 		var top20AllTime = []
 		var i
 		for (i = 0; i < 20; i++) {
-			if (this.state.top50[i] != undefined) {
+			if (this.state.top50[i] !== undefined) {
 				top20AllTime[i] = i + 1 + '. ' + this.state.top50[i].user.username
 				+ ' (' + this.state.top50[i].total + ' pistettä)'
 			} else {

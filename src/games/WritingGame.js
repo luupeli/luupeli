@@ -221,7 +221,6 @@ class WritingGame extends React.Component {
           newPartial = newPartial + '_'
         }
 
-
         //   newPartial[randomIndex] =this.props.game.currentImage.bone.nameLatin[randomIndex]
         this.setState({ previousRevealClock: gameClock, partialEasyAnswer: newPartial, easyDifficultyPenalty: this.state.easyDifficultyPenalty - addPenalty })
         // console.log('new partial on nyt : ' + newPartial)
