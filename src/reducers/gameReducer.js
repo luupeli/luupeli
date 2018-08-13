@@ -9,9 +9,9 @@ const initialState = {
         wrongAnswerOptions: [],
         wrongImageOptions: [],
         images: [],
-        answers: [],
+        answers: undefined,
         totalSeconds: '',
-        gameClock:0,
+        gameClock: 0,
         playSound: false,
         gameDifficulty: "medium",
         startTime: ''
@@ -43,19 +43,19 @@ const gameReducer = (store = initialState.game, action) => {
     }
     if (action.type === 'SET_WRONG_ANSWER_OPTIONS') {
         console.log(action)
-        return { ...store, wrongAnswerOptions: action.wrongAnswerOptions }
+        return { ...store, wrongAnswerOptions: action.wrongAnswerOptions, currentImage: action.currentImage }
     }
     if (action.type === 'SET_WRONG_IMAGE_OPTIONS') {
         console.log(action)
-        return { ...store, wrongImageOptions: action.wrongImageOptions }
+        return { ...store, wrongImageOptions: action.wrongImageOptions, currentImage: action.currentImage }
     }
     if (action.type === 'ADVANCE_GAMECLOCK') {
         
         return { ...store, gameClock: store.gameClock+1 }
     }
     if (action.type === 'TOGGLE_SOUND') {
-        
-        return { ...store, playSound: store.playSound+1 }
+
+        return { ...store, playSound: store.playSound + 1 }
     }
      if (action.type === 'RESET_GAMECLOCK') {
          return {...store, startTime: (new Date).getTime()}
@@ -64,7 +64,8 @@ const gameReducer = (store = initialState.game, action) => {
     return store
 }
 
-export const gameInitialization = (gameLength, images, user, gamemode, animals, bodyparts, playSound,gameDifficulty) => {
+
+export const gameInitialization = (gameLength, images, user, gamemode, animals, bodyparts, playSound, gameDifficulty) => {
     const imageToAsk = selectNextImage(undefined, images);
     const wrongAnswerOptions = selectWrongAnswerOptions(images, imageToAsk)
     const wrongImageOptions = selectWrongImageOptions(images, imageToAsk)
@@ -88,7 +89,7 @@ export const gameInitialization = (gameLength, images, user, gamemode, animals, 
         images: images,
         animals: animals,
         bodyparts: bodyparts,
-        answers: [],
+        answers: undefined,
         gamemode: gamemode,
         user: user,
         totalSeconds: 0,
@@ -128,20 +129,24 @@ export const setImageToAsk = (images, answers) => {
 }
 
 // When the previous question is answered, this call will choose incorrect answer options for multiple choice game mode (MultipleChoiceGame).
-export const setWrongAnswerOptions = (currentImage, images) => {
-    const wrongAnswerOptions = selectWrongAnswerOptions(images, currentImage);
+export const setWrongAnswerOptions = (images, answers) => {
+    const imageToAsk = selectNextImage(answers, images);
+    const wrongAnswerOptions = selectWrongAnswerOptions(images, imageToAsk);
     return {
         type: 'SET_WRONG_ANSWER_OPTIONS',
-        wrongAnswerOptions: wrongAnswerOptions
+        wrongAnswerOptions: wrongAnswerOptions,
+        currentImage: imageToAsk
     }
 }
 
 // When the previous question is answered, this call will choose incorrect image options for multiple choice game mode (ImageMultipleChoiceGame).
-export const setWrongImageOptions = (currentImage, images) => {
-    const wrongImageOptions = selectWrongImageOptions(images, currentImage);
+export const setWrongImageOptions = (images, answers) => {
+    const imageToAsk = selectNextImage(answers, images);
+    const wrongImageOptions = selectWrongImageOptions(images, imageToAsk);
     return {
         type: 'SET_WRONG_IMAGE_OPTIONS',
-        wrongImageOptions: wrongImageOptions
+        wrongImageOptions: wrongImageOptions,
+        currentImage: imageToAsk
     }
 }
 
@@ -180,7 +185,7 @@ export default gameReducer
 /** This method defines the wrong answer options. We only use the bones that match the game settings. 
  * The bones are chosen randomly. If there are too few bones, the answer options will be less than three.
  * The correct answer can not be among the wrong answers.
-*/ 
+*/
 function selectWrongAnswerOptions(images, currentImage) {
     let allLatinNames = images.map(img => img.bone.nameLatin);
     allLatinNames = Array.from(new Set(allLatinNames));
@@ -213,7 +218,7 @@ function selectWrongAnswerOptions(images, currentImage) {
 /** This method defines the wrong image options. We only use the images that match the game settings. 
  * The images are chosen randomly. If there are too few images, the image options will be less than three.
  * The correct answer can not be among the wrong answers.
-*/ 
+*/
 function selectWrongImageOptions(images, currentImage) {
     const allImages = images.filter(img => !((img.animal === currentImage.animal) && (img.bone === currentImage.bone)));
     let selectedImages = [];
@@ -267,4 +272,3 @@ function selectNextImage(answers, images) {
     }
     return imageToAsk;
 }
-

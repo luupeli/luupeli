@@ -1,7 +1,7 @@
 import React from 'react'
 import StringSimilarity from 'string-similarity'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
-import { setAnswer, setImageToAsk, setWrongAnswerOptions, setWrongImageOptions } from '../reducers/gameReducer'
+import { setAnswer, setImageToAsk,setWrongAnswerOptions,setWrongImageOptions } from '../reducers/gameReducer'
 import { setMessage } from '../reducers/messageReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
@@ -45,6 +45,15 @@ class WritingGame extends React.Component {
   }
 
   gameClockUnits() {return Math.round(((new Date).getTime()-this.props.game.startTime)/50)}
+  componentDidMount() {
+    this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.game.endCounter !== prevProps.game.endCounter) {
+      this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
+    }
+  }
 
   handleChange(event) {
     this.setState({ value: event.target.value })
@@ -60,7 +69,9 @@ class WritingGame extends React.Component {
     let streakNote = ''
     let streakEmoji = emoji.get('yellow_heart')
     let correctness = 'Melkein oikein'
-    let points = (Math.round((this.checkCorrectness() * Math.max(20, this.props.game.currentImage.bone.nameLatin.length - 3)) * ((900 + Math.max(0, (900 - this.gameClockUnits()))) / 1800))) / 20
+    let correctnessN = this.checkCorrectness()
+
+    let points = (Math.round((correctnessN * Math.max(20, this.props.game.currentImage.bone.nameLatin.length - 3)) * ((900 + Math.max(0, (900 - this.gameClockUnits()))) / 1800))) / 20
 
 
 
@@ -95,7 +106,7 @@ class WritingGame extends React.Component {
 
     }
 
-    if (this.checkCorrectness() > 99) {
+    if (correctnessN > 99) {
       points = points * 5
       correctness = 'Oikein'
       this.setState({ animationActive: false, streakWG: currentStreak + 1, bonus: currentBonus + 1.0 + hardBonus, value: '', previousRevealClock: 0, partialEasyAnswer: '__', easyDifficultyPenalty: 1.0 })
@@ -114,19 +125,19 @@ class WritingGame extends React.Component {
 
       this.setState({ animationActive: false, streakWG: 0, bonus: 1.0, value: '', previousRevealClock: 0, partialEasyAnswer: '__', easyDifficultyPenalty: 1.0 })
       streakNote = ''
-      if (this.checkCorrectness() < 1) {
+      if (correctnessN < 1) {
         streakEmoji = require('node-emoji')
         streakEmoji = streakEmoji.get('poop')
       }
     }
-    if (this.checkCorrectness() > 85) {
+    if (correctnessN > 85) {
       points = points * 2 * currentBonus
 
     }
   
 
     points = Math.round(points / 20) * 20
-    if (this.checkCorrectness() <= 70) {
+    if (correctnessN <= 70) {
       correctness = 'Väärin'
       points = 0
     }
@@ -142,8 +153,8 @@ class WritingGame extends React.Component {
     setTimeout(() => {
       this.setState({ animationActive: true })
       this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
-      this.props.setWrongImageOptions(this.props.game.currentImage, this.props.game.images)
-      this.props.setWrongAnswerOptions(this.props.game.currentImage, this.props.game.images)
+      // this.props.setWrongImageOptions(this.props.game.currentImage, this.props.game.images)
+    //  this.props.setWrongAnswerOptions(this.props.game.currentImage, this.props.game.images)
       this.createMessage(points)
     }, 2000)
 
@@ -368,6 +379,8 @@ class WritingGame extends React.Component {
         </form>
         <h6>debug: {this.props.game.currentImage.bone.nameLatin}</h6>
       </div>
+
+    
 
     )
 
