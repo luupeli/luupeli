@@ -67,7 +67,7 @@ class WritingGame extends React.Component {
    */
   handleSubmit(event) {
     event.preventDefault()
-    this.props.stopGameClock()
+    this.props.startGameClock()
     this.setState({ lastValue: this.state.value })
     let currentStreak = this.state.streakWG
     let currentBonus = this.state.bonus
@@ -159,7 +159,7 @@ class WritingGame extends React.Component {
       console.log('AFTER timeout!! ' + this.gameClockUnits())
       this.props.setAnswer(answerCurrentImage, answerCorrectness, this.state.value, this.props.game.gameClock, points)
       this.setState({ animationActive: true, lastValue: undefined })
-    }, 5000
+    }, 2000
     );
 
 
@@ -362,7 +362,7 @@ class WritingGame extends React.Component {
           <div className="intro">
             <CloudinaryContext cloudName="luupeli">
               <div className="height-restricted" >
-                <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationOutDelay="4500" isVisible={this.state.animationActive}>
+                <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationOutDelay="0" isVisible={this.state.animationActive}>
                   <Image id="bone-image" publicId={this.props.game.currentImage.url}>
 
                     <Transformation width={imageWidth()} />
@@ -375,15 +375,15 @@ class WritingGame extends React.Component {
         </div>
         {/* <div className="row"> */}
         <div>
-          <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="550" animationOutDelay="4500" isVisible={this.state.animationActive}>
+          <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="550" animationOutDelay="250" isVisible={this.state.animationActive}>
             <center>
               <h3 id="heading">{name}</h3></center>
           </Animated>
         </div>
-        <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1500" animationOutDelay="4500" isVisible={this.state.animationActive}>
+        <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1500" animationOutDelay="500" isVisible={this.state.animationActive}>
           <p>{description}</p>
         </Animated>
-        <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1750" animationOutDelay="4500" isVisible={this.state.animationActive}>
+        <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1750" animationOutDelay="1500" isVisible={this.state.animationActive}>
           <p>{cheat}</p>
         </Animated>
         {/* </div>
