@@ -9,6 +9,8 @@ import RandomTextGenerator from 'react-scrolling-text';
 import { Animated } from "react-animated-css";
 import emoji from 'node-emoji'
 import Sound from 'react-sound'
+import soundManager2 from 'soundmanager2'
+
 import userStatistics from '../services/userStatistics'
 
 
@@ -96,7 +98,7 @@ class Home extends React.Component {
     if (localStorage.getItem('styleIndex') === null) {
       localStorage.setItem('styleIndex', 0)
     }
-
+    //soundManager.setup({ url: '/path/to/swfs/', ignoreMobileRestrictions: true });
     localStorage.setItem('allStyles', JSON.stringify(this.state.allStyles))   // Array must be converted to JSON before storing it into localStorage!
     this.changeCss = this.changeCss.bind(this)
     this.proceedToSelect = this.proceedToSelect.bind(this)
@@ -119,6 +121,8 @@ class Home extends React.Component {
       }
     }
     this.getBestPlayers()
+    
+    
   }
       /**
      * With the component mounting, the game time measuring tick() is set at 1000 milliseconds.
@@ -135,7 +139,7 @@ class Home extends React.Component {
   }
 
   tick() {
-    if (this.state.attractMode%20>16) {
+    if (this.state.attractMode%20>16 || (this.state.attractMode%80>8 && this.state.attractMode%80<10)) {
       this.setState({attractMode:this.state.attractMode+1,attractAnimation:false})
     } else {
       this.setState({attractMode:this.state.attractMode+1,attractAnimation:true})
@@ -375,6 +379,8 @@ class Home extends React.Component {
         trueScorers = this.state.bestPlayers
       }
        
+      var firstHalf = trueScorers.slice(0, 5 )
+      var secondHalf =trueScorers.slice(5, 10 + 1)
       
       scorers.push('Luu Skywalker'); scorers.push('Luuno Turhapuro'); scorers.push('Princess Luua'); scorers.push('Sorbusten Ritari'); scorers.push('Keisari Luupatine'); scorers.push('Mr. Kitiini'); scorers.push('Bonefish!'); scorers.push('Luufemma'); scorers.push('Luubi-Wan Luunobi'); scorers.push('Luunkerääjä')
       
@@ -382,7 +388,7 @@ class Home extends React.Component {
       
 
       // const placeholderScores = scorers.map((scoree,i) =>
-      const placeholderScores = trueScorers.map((scoree,i) =>
+      const placeholderScoresFirst = firstHalf.map((scoree,i) =>
       <Animated animationIn="bounceInUp slower" animationOut={effects[i%2]} animationInDelay={1500+(i*500)}  animationOutDelay={i*50} isVisible={this.state.attractAnimation}>
             <div className="home-highscore">
          <div className="score">
@@ -400,19 +406,43 @@ class Home extends React.Component {
           
       </Animated>
      )
+     const placeholderScoresLast = secondHalf.map((scoree,i) =>
+     <Animated animationIn="bounceInUp slower" animationOut={effects[i%2]} animationInDelay={500+(i*500)}  animationOutDelay={(i*50)} isVisible={this.state.attractAnimation}>
+           <div className="home-highscore">
+        <div className="score">
+         <h5>
+       {i+6}. {scoree.user.username.toUpperCase()}
+       </h5>
+       </div>
+       <div className="score">
+                 <h5>
+               {/* {10000-(i*740)+(Math.round(this.state.attractMode/80)*(2000-(i*40)))} */}
+               {scoree.total}
+                 </h5>
+                 </div>
+                 </div>   
+         
+     </Animated>
+    )
+    var titleVisible = true
+    if (this.state.attractMode%80>=15) {titleVisible=this.state.attractAnimation}
+    
+    var showScores = placeholderScoresFirst
+    if (this.state.attractMode%80>=10) {
+      showScores = placeholderScoresLast
+    }
 
       return (
         <div>
     <div className="home-highscore-top">
                 
-                <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay={1000} animationOutDelay={0} isVisible={this.state.attractAnimation}>
+                <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay={1000} animationOutDelay={0} isVisible={titleVisible}>
 		            <h3>
 			          TOP {trueScorers.length} LUUPÄÄT
 		            </h3>
 				      </Animated>
               </div>
-              {placeholderScores}
-              
+              {showScores}
               </div>
               )
     } 
@@ -579,7 +609,11 @@ musicPlayer() {
     // This index will pick the proper style from style list
     let i = parseInt(localStorage.getItem('styleIndex'), 10)
     this.setThemeColors(i)
-     
+
+    var loggedText = 'Anonyymi pelaaja'
+    if (this.state.user !== null) {
+      loggedText = 'Tervetuloa, '+ this.state.user.username+'!'
+    }
 
     return (
       <div id="homeMenu" className="App">
@@ -636,13 +670,13 @@ musicPlayer() {
                         id="themeChangeButton"
                         className="menu-button"
                         onClick={this.changeCss}>
-                        Vaihda teema
+                        Teema: {this.state.style}
                     </button>
                     </Animated>
                     </Row>
-                    <p>
-                      Teema: {this.state.style}
-                    </p>
+                    <h6>
+                    {loggedText}
+                    </h6>
                     <div className={this.state.style} />
                   </Col>
                 </Row>

@@ -44,15 +44,15 @@ class GameLoop extends React.Component {
         }
          
         
-    
+        
         this.postGameSession = this.postGameSession.bind(this)
         this.handleSongFinishedPlaying = this.handleSongFinishedPlaying.bind(this)
         window.onunload = function () { window.location.href = '/' }
         this.gameClockSeconds = this.gameClockSeconds.bind(this)
         this.gameClockUnits = this.gameClockUnits.bind(this)
-
+        
     };
-
+    
     gameClockUnits() {return Math.round(((new Date).getTime()-this.props.game.startTime)/50)}
     gameClockSeconds()  {return  Math.round(((new Date).getTime()-this.props.game.startTime)/1000)}
     

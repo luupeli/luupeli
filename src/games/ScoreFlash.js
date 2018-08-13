@@ -11,7 +11,6 @@ import { Animated } from "react-animated-css";
 class ScoreFlash extends React.Component {
 
 	handleSound(gameClock, scoreRiseTime,scoreActual) {
-
 		var playbackspeed=1.0; 
 		if (scoreActual<500) {
 			playbackspeed=1.0-(scoreActual/100);
