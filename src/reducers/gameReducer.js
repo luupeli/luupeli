@@ -19,8 +19,6 @@ const initialState = {
 }
 
 const gameReducer = (store = initialState.game, action) => {
-   // console.log(action.type)
-   var newStartTime = (new Date).getTime();
     if (action.type === 'INIT_GAME') {
         console.log(action)
         return { ...store, surpriseGameMode: action.surpriseGameMode, wrongImageOptions: action.wrongImageOptions, 
@@ -58,7 +56,7 @@ const gameReducer = (store = initialState.game, action) => {
         return { ...store, playSound: store.playSound + 1 }
     }
      if (action.type === 'RESET_GAMECLOCK') {
-         return {...store, startTime: (new Date).getTime()}
+         return {...store, startTime: (new Date()).getTime()}
          
     }
     return store
@@ -76,7 +74,7 @@ export const gameInitialization = (gameLength, images, user, gamemode, animals, 
     console.log(animals)
     console.log(bodyparts)
 
-    var startTime = (new Date).getTime();
+    var startTime = (new Date()).getTime();
     console.log('time:' +startTime)
     return {
         type: 'INIT_GAME',

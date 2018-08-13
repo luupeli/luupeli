@@ -1,7 +1,7 @@
 import React from 'react'
 import StringSimilarity from 'string-similarity'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
-import { setAnswer, resetGameClock,setImageToAsk,setWrongAnswerOptions,setWrongImageOptions } from '../reducers/gameReducer'
+import { setAnswer, resetGameClock, setImageToAsk, setWrongAnswerOptions, setWrongImageOptions } from '../reducers/gameReducer'
 import { setMessage } from '../reducers/messageReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
@@ -44,7 +44,7 @@ class WritingGame extends React.Component {
     window.onunload = function () { window.location.href = '/' }
   }
 
-  gameClockUnits() {return Math.round(((new Date).getTime()-this.props.game.startTime)/50)}
+  gameClockUnits() { return Math.round(((new Date()).getTime() - this.props.game.startTime) / 50) }
   componentDidMount() {
     this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
   }
@@ -75,28 +75,28 @@ class WritingGame extends React.Component {
 
 
 
-    if (this.gameClockUnits() < 200 &&  (StringSimilarity.compareTwoStrings(this.state.partialEasyAnswer.toLowerCase(), this.props.game.currentImage.bone.nameLatin.toLowerCase()) <0.90)) {
+    if (this.gameClockUnits() < 200 && (StringSimilarity.compareTwoStrings(this.state.partialEasyAnswer.toLowerCase(), this.props.game.currentImage.bone.nameLatin.toLowerCase()) < 0.90)) {
       points = points * ((400 - this.gameClockUnits()) / 40)
-    } 
+    }
 
     if (this.props.game.gameDifficulty === 'hard' && this.props.game.gameLength > this.props.game.endCounter && this.state.bonus < 1.5) {
       points = points * 0.15 // Here we strongly penalize the 'hard mode' player for answering PREVIOUSLY incorrectly
       points = 10;
     }
 
-    let easyBonusPenalizer=0
+    let easyBonusPenalizer = 0
 
     if (this.props.game.gameDifficulty === 'easy') {
       points = points * 0.5
       points = points * Math.max(0.2, this.state.easyDifficultyPenalty)
-      if (StringSimilarity.compareTwoStrings(this.state.partialEasyAnswer.toLowerCase(), this.props.game.currentImage.bone.nameLatin.toLowerCase()) >0.9) {
+      if (StringSimilarity.compareTwoStrings(this.state.partialEasyAnswer.toLowerCase(), this.props.game.currentImage.bone.nameLatin.toLowerCase()) > 0.9) {
         points = points * 0.25
       }
       if (points < 20) {
         points = 20
       }
-      if (currentBonus>1.99) {
-        currentBonus=2.0
+      if (currentBonus > 1.99) {
+        currentBonus = 2.0
       }
     }
 
@@ -134,7 +134,7 @@ class WritingGame extends React.Component {
       points = points * 2 * currentBonus
 
     }
-  
+
 
     points = Math.round(points / 20) * 20
     if (correctnessN <= 70) {
@@ -146,21 +146,22 @@ class WritingGame extends React.Component {
     this.props.resetGameClock()
     this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 3, true)
 
-    
+
     let answerMoment = this.gameClockUnits()
     let answerCurrentImage = this.props.game.currentImage
     let answerCorrectness = this.checkCorrectness()
 
-    
-    console.log('BEFORE TIMEOUT: '+this.gameClockUnits())
-    setTimeout(() =>  {
-      console.log('AFTER timeout!! '+this.gameClockUnits())
-      this.props.setAnswer(answerCurrentImage, answerCorrectness, this.state.value,answerMoment, points)
+
+    console.log('BEFORE TIMEOUT: ' + this.gameClockUnits())
+    setTimeout(() => {
+      console.log('AFTER timeout!! ' + this.gameClockUnits())
+      this.props.setAnswer(answerCurrentImage, answerCorrectness, this.state.value, answerMoment, points)
       this.setState({ animationActive: true })
       this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
       // this.props.setWrongImageOptions(this.props.game.currentImage, this.props.game.images)
-    //  this.props.setWrongAnswerOptions(this.props.game.currentImage, this.props.game.images)
-      this.createMessage(points)},2000
+      //  this.props.setWrongAnswerOptions(this.props.game.currentImage, this.props.game.images)
+      this.createMessage(points)
+    }, 2000
     );
 
 
@@ -225,7 +226,7 @@ class WritingGame extends React.Component {
     }
     const gameClock = this.gameClockUnits()
     if (this.getRandomInt(0, 25) < 1 + gameClock / 400 && gameClock - this.state.previousRevealClock > 7) {
-      
+
       let randomIndex = this.getRandomInt(0, this.props.game.currentImage.bone.nameLatin.length);
       let newPartial = ''
       let addPenalty = 0.0
@@ -246,7 +247,6 @@ class WritingGame extends React.Component {
           newPartial = newPartial + '_'
         }
 
-
         //   newPartial[randomIndex] =this.props.game.currentImage.bone.nameLatin[randomIndex]
         this.setState({ previousRevealClock: gameClock, partialEasyAnswer: newPartial, easyDifficultyPenalty: this.state.easyDifficultyPenalty - addPenalty })
         // console.log('new partial on nyt : ' + newPartial)
@@ -255,16 +255,10 @@ class WritingGame extends React.Component {
     }
   }
 
-
-
   /**
    * Notice that the bone images are fethched from Cloudinary, with a resize transformation done based on the measured window size.
    */
   render() {
-
-
-
-
 
     if (this.gameClockUnits() > 60 && this.props.game.gameDifficulty === 'easy') {
       this.revealPartialAnswer()
@@ -309,8 +303,8 @@ class WritingGame extends React.Component {
     let cheat = ''
     if (this.props.game.gameDifficulty === 'easy') {
       cheat = this.state.partialEasyAnswer
-    } 
-    
+    }
+
     if (!this.state.animationActive) {
       cheat = this.props.game.currentImage.bone.nameLatin
     } else {
@@ -321,12 +315,10 @@ class WritingGame extends React.Component {
     let name = this.props.game.currentImage.bone.name
     if (this.props.game.gameDifficulty === 'hard') {
       name = 'LUU-5!'
-      if (this.props.game.gameLength==15) {
+      if (this.props.game.gameLength === 15) {
         name = 'TENTTI!'
       }
-    } 
-    
-   
+    }
 
     return (
       <div className="bottomxxx">
@@ -385,7 +377,7 @@ class WritingGame extends React.Component {
         <h6>debug: {this.props.game.currentImage.bone.nameLatin}</h6>
       </div>
 
-    
+
 
     )
 
