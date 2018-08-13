@@ -10,28 +10,28 @@ import { Animated } from "react-animated-css";
  */
 class ScoreFlash extends React.Component {
 
-	handleSound(gameClock, scoreRiseTime,scoreActual) {
+	handleSound(gameClock, scoreRiseTime, scoreActual) {
 
-		var playbackspeed=1.0; 
-		if (scoreActual<500) {
-			playbackspeed=1.0-(scoreActual/100);
+		var playbackspeed = 1.0;
+		if (scoreActual < 500) {
+			playbackspeed = 1.0 - (scoreActual / 100);
 		}
-		if (scoreActual>1000) {
-			playbackspeed=Math.min(4,1.0+(scoreActual/2500));
+		if (scoreActual > 1000) {
+			playbackspeed = Math.min(4, 1.0 + (scoreActual / 2500));
 		}
-		
-		if (gameClock<scoreRiseTime &&  this.props.game.playSound) {
+
+		if (gameClock < scoreRiseTime && this.props.game.playSound) {
 			return (
-				
-			<Sound
-			url="/sounds/253172__suntemple__retro-bonus-pickup-sfx.wav"
-				playStatus={Sound.status.PLAYING}
-				// playFromPosition={0 /* in milliseconds */}
-				playbackRate={playbackspeed}
-				onLoading={this.handleSongLoading}
-				onPlaying={this.handleSongPlaying}
-				onFinishedPlaying={this.handleSongFinishedPlaying}
-			  />
+
+				<Sound
+					url="/sounds/253172__suntemple__retro-bonus-pickup-sfx.wav"
+					playStatus={Sound.status.PLAYING}
+					// playFromPosition={0 /* in milliseconds */}
+					playbackRate={playbackspeed}
+					onLoading={this.handleSongLoading}
+					onPlaying={this.handleSongPlaying}
+					onFinishedPlaying={this.handleSongFinishedPlaying}
+				/>
 			)
 		}
 	}
@@ -43,23 +43,23 @@ class ScoreFlash extends React.Component {
 	render() {
 		// const style = 'alert alert-' + `${this.props.scoreflash.style}`
 		const style = 'scoreflash'   // <--- PLACEHOLDER CSS EFFECT!!! {this.props.scoreflash.score}
-		const gameClock = Math.round(((new Date).getTime()-this.props.game.startTime)/50)
-		const scoreActual = this.props.scoreflash.score 
-		const durationOfScoreRise = Math.min(30,(scoreActual/10) + 5)
-		console.log('scoreFlash: gameclock: '+gameClock)
-		let scoreShown =Math.min(scoreActual, Math.round(scoreActual*( gameClock /durationOfScoreRise)))
+		const gameClock = Math.round(((new Date).getTime() - this.props.game.startTime) / 50)
+		const scoreActual = this.props.scoreflash.score
+		const durationOfScoreRise = Math.min(30, (scoreActual / 10) + 5)
+		console.log('scoreFlash: gameclock: ' + gameClock)
+		let scoreShown = Math.min(scoreActual, Math.round(scoreActual * (gameClock / durationOfScoreRise)))
 
-		let scoreShownForDelayedSound =Math.min(scoreActual*1.4, Math.round(scoreActual*( gameClock /durationOfScoreRise)))
-		let durationOfScoreRiseForSound = Math.min(30,(scoreActual/10) + 5)+5
+		let scoreShownForDelayedSound = Math.min(scoreActual * 1.4, Math.round(scoreActual * (gameClock / durationOfScoreRise)))
+		let durationOfScoreRiseForSound = Math.min(30, (scoreActual / 10) + 5) + 5
 		//	position="fixed"
-		
-		let rowtext = this.props.scoreflash.streak+'' +this.props.scoreflash.streakemoji+''+scoreShown//+ ''+this.props.scoreflash.streakemoji
-		
+
+		let rowtext = this.props.scoreflash.streak + '' + this.props.scoreflash.streakemoji + '' + scoreShown//+ ''+this.props.scoreflash.streakemoji
+
 		if (scoreActual === 0) {
-			rowtext=this.props.scoreflash.streakemoji+'VÄÄRIN!'+this.props.scoreflash.streakemoji
+			rowtext = this.props.scoreflash.streakemoji + 'VÄÄRIN!' + this.props.scoreflash.streakemoji
 		}
 
-		if (this.props.scoreflash !== undefined && gameClock<60 && this.props.scoreflash.scoreflash.length !== 0) {
+		if (this.props.scoreflash !== undefined && this.props.game.stoppedAt && this.props.scoreflash.scoreflash.length !== 0) {
 			return (
 				<Animated animationIn="rubberBand faster" animationOut="zoomOut faster" isVisible={this.props.scoreflash.visibility}>
 					<div
@@ -70,27 +70,27 @@ class ScoreFlash extends React.Component {
 						line-height="90px"
 						z-index="1000"
 					>
-		 <h3>
-			{rowtext}
-			{/* {this.handleSound(scoreShownForDelayedSound,scoreActual)} */}
-			{this.handleSound(gameClock ,durationOfScoreRiseForSound,scoreActual)}
-		 </h3>
-					
+						<h3>
+							{rowtext}
+							{/* {this.handleSound(scoreShownForDelayedSound,scoreActual)} */}
+							{this.handleSound(gameClock, durationOfScoreRiseForSound, scoreActual)}
+						</h3>
+
 					</div>
 				</Animated>
 			)
 		}
-		
-		
-		
+
+
+
 		else {
 			return null;
 		}
 		// else 		
-		
+
 		// {
 		// 	return (
-				
+
 		// 	<br/>
 		// 	)
 		// }

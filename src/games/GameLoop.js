@@ -7,7 +7,7 @@ import WritingGame from './WritingGame'
 import MultipleChoiceGame from './MultipleChoiceGame'
 import ImageMultipleChoiceGame from './ImageMultipleChoiceGame'
 import { connect } from 'react-redux'
-import { gameInitialization, setAnswer, advanceGameClock, getGameClock, resetGameClock, toggleSound } from '../reducers/gameReducer'
+import { gameInitialization, setAnswer, advanceGameClock, getGameClock, toggleSound } from '../reducers/gameReducer'
 import { ProgressBar } from 'react-bootstrap'
 import gameSessionService from '../services/gameSessions'
 import { injectGlobal } from 'styled-components'
@@ -20,7 +20,7 @@ import Sound from 'react-sound';
  */
 class GameLoop extends React.Component {
 
-    
+
 
     constructor(props) {
         super(props);
@@ -42,40 +42,61 @@ class GameLoop extends React.Component {
             allStyles: JSON.parse(localStorage.getItem("allStyles")),
             styleIndex: localStorage.getItem('styleIndex'),
         }
-         
-        
-    
+
+
+
         this.postGameSession = this.postGameSession.bind(this)
         this.handleSongFinishedPlaying = this.handleSongFinishedPlaying.bind(this)
         window.onunload = function () { window.location.href = '/' }
-        this.gameClockSeconds = this.gameClockSeconds.bind(this)
         this.gameClockUnits = this.gameClockUnits.bind(this)
 
     };
 
-    gameClockUnits() {return Math.round(((new Date).getTime()-this.props.game.startTime)/50)}
-    gameClockSeconds()  {return  Math.round(((new Date).getTime()-this.props.game.startTime)/1000)}
-    
-
-    /**
-   * Here we increase the game's internal clock by one unit each tick. 
-   * "seconds" refers to the time spent answering the current question, while
-   * "secondsTotal" refers to the total time spent answering all the questions so far.
-   * 
-   * The tick is currently set at 100 milliseconds meaning that 1 actual second is actually 10 tick-seconds.
-   * This is done simply to make the time-based scoring feel more granular.
-   */
-    tick() {
-
-        this.props.advanceGameClock()
+    gameClockUnits() {
+        let stoppedAt
+        if (this.props.game.stoppedAt === undefined) {
+            stoppedAt = new Date().getTime()
+        } else {
+            stoppedAt = this.props.game.stoppedAt
+        }
+        if (!this.props.game.startedAt) {
+            return 0;
+        } else {
+            return Math.round((stoppedAt - this.props.game.startedAt) / 50);
+        }
     }
 
+    /**
+    * Here we increase the game's internal clock by one unit each tick. 
+    * "seconds" refers to the time spent answering the current question, while
+    * "secondsTotal" refers to the total time spent answering all the questions so far.
+    * 
+    * The tick is currently set at 100 milliseconds meaning that 1 actual second is actually 10 tick-seconds.
+    * This is done simply to make the time-based scoring feel more granular.
+    */
+    tick() {
+        this.setState({ seconds: this.getElapsedTime()});
+        //  this.props.advanceGameClock()
+    }
+    getElapsedTime() {
+        let stoppedAt
+        if (this.props.game.stoppedAt === undefined) {
+            stoppedAt = new Date().getTime()
+        } else {
+            stoppedAt = this.props.game.stoppedAt
+        }
+        if (!this.props.game.startedAt) {
+            return 0;
+        } else {
+            return Math.round((stoppedAt - this.props.game.startedAt) / 1000);
+        }
+    }
     /**
      * With the component mounting, the game time measuring tick() is set at 50 milliseconds.
      */
     componentWillMount() {
 
-        this.interval = setInterval(() => this.tick(), 250);
+        this.interval = setInterval(() => this.tick(), 200);
     }
     /**
      * At component unmount the interval needs to be cleared.
@@ -125,35 +146,6 @@ class GameLoop extends React.Component {
                     />
                 )
             }
-            if (this.props.game.gameLength > this.props.game.endCounter) {
-
-
-                if (this.props.game.answers[this.props.game.gameLength - (this.props.game.endCounter + 1)].score > 0 && this.gameClockUnits() < 36) {
-                    return (
-
-                        <Sound
-                            url="/sounds/391540__mativve__electro-success-sound.wav"
-                            playStatus={Sound.status.PLAYING}
-                            // playFromPosition={0 /* in milliseconds */}
-                            onLoading={this.handleSongLoading}
-                            onPlaying={this.handleSongPlaying}
-                            onFinishedPlaying={this.handleSongFinishedPlaying}
-                        />
-                    )
-                } else if (this.props.game.answers[this.props.game.gameLength - (this.props.game.endCounter + 1)].score === 0 && this.gameClockUnits() < 6) {
-                    return (
-
-                        <Sound
-                            url="/sounds/142608__autistic-lucario__error.wav"
-                            playStatus={Sound.status.PLAYING}
-                            // playFromPosition={0 /* in milliseconds */}
-                            onLoading={this.handleSongLoading}
-                            onPlaying={this.handleSongPlaying}
-                            onFinishedPlaying={this.handleSongFinishedPlaying}
-                        />
-                    )
-                }
-            }
         }
         else {
             return null
@@ -179,30 +171,29 @@ class GameLoop extends React.Component {
                 }
             })
         }
-// console.log('gameclock() ...')
+        // console.log('gameclock() ...')
         // console.log(
-       
+
 
         return (
             <div className="score-board">
 
                 {/* <div className="container"> */}
                 {/* <div className="row"> */}
-                
+
                 <div className="col-md-6 col-md-offset-3 center-block">
-                <h3>{correctAnswers.length}/{this.props.game.gameLength}</h3>
+                    <h3>{correctAnswers.length}/{this.props.game.gameLength}</h3>
                     <ProgressBar label={`moi`}>
-                    {progressBar}
+                        {progressBar}
                     </ProgressBar>
                     <h3>SCORE {scoreShown}</h3>
-                <h5>TICK TIME {Math.round(this.props.game.gameClock / 20, 1)}</h5>
-                <h5>STAMP TIME {this.gameClockSeconds()}</h5>
-                <h5>STAMP UNITS {this.gameClockUnits()}</h5>
+                    <h5>STAMP TIME {this.state.seconds}</h5>
+                    <h5>STAMP UNITS {this.gameClockUnits()}</h5>
                 </div>
 
 
 
-          
+
             </div>
             // </div>
             // </div>
@@ -235,25 +226,25 @@ class GameLoop extends React.Component {
             return Math.round(windowHeight * 1.0)
         }
 
-        
 
-        if ((imageWidthR() > imageHeightR() && imageWidthR() > 1000) || imageWidthR() > imageHeightR()*1.3)  {
-            var progressWidth = Math.round((imageWidthR())*0.20);
 
-            var gameBorder = Math.round(Math.min(7,(progressWidth*5)/100));
-            
-            var responsive='fifty'
+        if ((imageWidthR() > imageHeightR() && imageWidthR() > 1000) || imageWidthR() > imageHeightR() * 1.3) {
+            var progressWidth = Math.round((imageWidthR()) * 0.20);
+
+            var gameBorder = Math.round(Math.min(7, (progressWidth * 5) / 100));
+
+            var responsive = 'fifty'
 
             var heightRestriction = 50;
-            if (imageHeightR()<641  || imageWidthR()*1.3<imageHeightR()) {
+            if (imageHeightR() < 641 || imageWidthR() * 1.3 < imageHeightR()) {
                 heightRestriction = 40;
                 responsive = 'forty'
-            } else if (imageHeightR()<801 ) {
+            } else if (imageHeightR() < 801) {
                 heightRestriction = 45;
                 responsive = 'fortyfive'
             }
 
-            
+
             injectGlobal`
             :root {  
             
@@ -263,43 +254,43 @@ class GameLoop extends React.Component {
                 --game-border: ${gameBorder}px;
               }
               .score-board .col-md-offset-3 {
-                margin: ${Math.round(progressWidth/7)}px!important;
+                margin: ${Math.round(progressWidth / 7)}px!important;
               }
               
             }`
 
-        
+
             /* REMOVED FROM INJECTION:   --image-height-restriction: ${heightRestriction}vh;*/
 
             return (
-                 <div className={responsive}>
-                
-                <div className="transbox">
-                    
-                    
-                    <div className="game-mainview">
-                        {/* <p>{imageWidthR()},{imageHeightR()}</p> */}
-                        <div>
-                        <ScoreFlash ref={instance => this.wgmessage = instance} />
-                    </div> 
-                    
-                        {this.gameLoop()}
+                <div className={responsive}>
+
+                    <div className="transbox">
+
+
+                        <div className="game-mainview">
+                            {/* <p>{imageWidthR()},{imageHeightR()}</p> */}
+                            <div>
+                                <ScoreFlash ref={instance => this.wgmessage = instance} />
+                            </div>
+
+                            {this.gameLoop()}
+                        </div>
+
+                        <div className="game-score">
+                            {this.topPage(scoreShown, true)}
+                        </div>
                     </div>
-                    
-                    <div className="game-score">
-                        {this.topPage(scoreShown, true)}
-                    </div>
+
                 </div>
-                
-                </div> 
             )
         } else {
-            var progressWidth = Math.round((imageWidthR())*0.75);
+            var progressWidth = Math.round((imageWidthR()) * 0.75);
             injectGlobal`
             :root {  
                 
                 --progress-max-width: ${progressWidth}px;
-                --progress-max-width-thirtythree: ${Math.round(progressWidth*0.5)}px;
+                --progress-max-width-thirtythree: ${Math.round(progressWidth * 0.5)}px;
                 --game-border: ${gameBorder}px;
               }
               .score-board .col-md-offset-3 {
@@ -316,10 +307,10 @@ class GameLoop extends React.Component {
                             <ScoreFlash ref={instance => this.wgmessage = instance} />
                         </div>
                         <div className="thirtythree">
-                        <div className="game-mainview-mobile">
-                            {/* <p>{imageWidthR()},{imageHeightR()}</p> */}
-                            {this.gameLoop()}
-                        </div>
+                            <div className="game-mainview-mobile">
+                                {/* <p>{imageWidthR()},{imageHeightR()}</p> */}
+                                {this.gameLoop()}
+                            </div>
                         </div>
                     </div>
                     <div className="transbox" margin="5">
@@ -337,7 +328,7 @@ class GameLoop extends React.Component {
      * Method for rendering selected game mode
      */
     gameLoop() {
-        if (this.props.game.endCounter >= 0) {
+        if (this.props.game.endCounter > 0) {
             if (this.props.game.gamemode === 'kirjoituspeli') {
                 return (
                     <WritingGame />
@@ -350,7 +341,7 @@ class GameLoop extends React.Component {
                 }
             } else if (this.props.game.gamemode === 'harjoitustentti') {
                 return (
-                    <WritingGame/>
+                    <WritingGame />
                 )
             } else {
                 if (this.props.game.surpriseGameMode <= 1) {
@@ -362,7 +353,7 @@ class GameLoop extends React.Component {
                 }
             }
         }
-        
+
     }
 
     /**
@@ -396,7 +387,7 @@ class GameLoop extends React.Component {
 
         const scoreActual = this.props.scoreflash.score
         const durationOfScoreRise = Math.min(30, (scoreActual / 10) + 5)
-        let scoreShown = this.props.game.totalScore  + Math.min(scoreActual, Math.round(scoreActual * (this.gameClockUnits() / durationOfScoreRise)))
+        let scoreShown = this.props.game.totalScore + Math.min(scoreActual, Math.round(scoreActual * (this.gameClockUnits() / durationOfScoreRise)))
 
         return (
 
@@ -423,7 +414,7 @@ class GameLoop extends React.Component {
 
 
 
-                                
+
                                 {this.responsiveLayout(scoreShown)}
 
 
@@ -460,8 +451,7 @@ const mapDispatchToProps = {
     setAnswer,
     toggleSound,
     advanceGameClock,
-    getGameClock,
-    resetGameClock
+    getGameClock
 }
 
 const ConnectedGameLoop = connect(

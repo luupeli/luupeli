@@ -1,11 +1,12 @@
 import React from 'react'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
-import { setAnswer, setImageToAsk, setWrongAnswerOptions, setWrongImageOptions } from '../reducers/gameReducer'
+import { setAnswer, setImageToAsk, setWrongAnswerOptions, setWrongImageOptions, startGameClock, stopGameClock } from '../reducers/gameReducer'
 import { setMessage } from '../reducers/messageReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
 import { Button } from 'react-bootstrap'
 import emoji from 'node-emoji'
+import AnswerSounds from './AnswerSounds'
 
 /**
  * MultipleChoiceGame (run under Gameloop.js) is one of game mode of Luupeli.
@@ -18,7 +19,7 @@ class MultipleChoiceGame extends React.Component {
     super(props);
     this.timer = 0;
     this.state = {
-      value: '',
+      value: undefined,
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     window.onunload = function () { window.location.href = '/' }
@@ -26,12 +27,14 @@ class MultipleChoiceGame extends React.Component {
   }
 
   componentDidMount() {
-      this.props.setWrongAnswerOptions(this.props.game.images, this.props.game.answers)
+    this.props.setWrongAnswerOptions(this.props.game.images, this.props.game.answers)
+    this.props.startGameClock()
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.game.endCounter !== prevProps.game.endCounter) {
       this.props.setWrongAnswerOptions(this.props.game.images, this.props.game.answers)
+      this.props.startGameClock()
     }
   }
 
@@ -41,9 +44,9 @@ class MultipleChoiceGame extends React.Component {
  */
   handleSubmit(event) {
     event.preventDefault()
+    this.props.stopGameClock()
     this.setState({ value: event.target.value })
-    this.createMessage(event.target.value)
-    let gameClock = Math.round(((new Date).getTime()-this.props.game.startTime)/50)
+    let gameClock = Math.round(((new Date).getTime() - this.props.game.startTime) / 50)
     //let points = (Math.round((this.checkCorrectness(event.target.value) * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((300 + Math.max(0, (300 - this.state.seconds))) / 600))) / 20
     let points = Math.round((1000 + ((1000 + Math.max(0, (400 - gameClock))) / 800))) / 20
 
@@ -80,7 +83,7 @@ class MultipleChoiceGame extends React.Component {
 
     setTimeout(() => {
       this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(this.state.value), this.state.value, this.props.game.gameClock, points)
-      this.setState({ value: '' })
+      this.setState({ value: undefined })
     }, 3000)
   }
 
@@ -95,39 +98,6 @@ class MultipleChoiceGame extends React.Component {
     }
   }
 
-  tick() {
-    this.setState(prevState => ({
-      seconds: prevState.seconds + 1,
-    }));
-  }
-
-  componentWillMount() {
-    this.interval = setInterval(() => this.tick(), 100);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-
-  createMessage(answer) {
-    this.setState({
-      seconds: 0
-    })
-
-    const correctness = this.checkCorrectness(answer)
-
-    if (correctness === 100) {
-      this.props.setMessage('Oikein!', 'success', 3)
-
-    } else {
-
-      this.props.setMessage('Väärin! Oikea vastaus oli ' + this.props.game.currentImage.bone.nameLatin, 'danger', 3)
-
-    }
-
-
-  }
-
   /**
  * This method generates the buttons to be displayed. If the answer is correct, the selected button is green. 
  * If wrongly answered, the selected button is red and the correct answer is green.
@@ -138,7 +108,7 @@ class MultipleChoiceGame extends React.Component {
     } else if (choice.correct === false && choice.nameLatin === this.state.value) {
       return 'danger'
     }
-    if (choice.correct === true && '' !== this.state.value && choice.nameLatin !== this.state.value) {
+    if (choice.correct === true && undefined !== this.state.value && choice.nameLatin !== this.state.value) {
       return 'success'
     }
     return 'info'
@@ -160,8 +130,17 @@ class MultipleChoiceGame extends React.Component {
       return windowWidth - 40
     }
 
+    const sounds = () => {
+      if (this.state.value !== undefined) {
+        return (
+          <AnswerSounds correctness={this.checkCorrectness(this.state.value)} />
+        )
+      }
+    }
+
     return (
       <div className="bottom">
+      {sounds()}
         <div className="row" id="image-holder">
           <div className="intro">
             <CloudinaryContext cloudName="luupeli">
@@ -175,10 +154,10 @@ class MultipleChoiceGame extends React.Component {
         </div>
         <div className="row">
         </div>
-          <div className="container">
-            <div className="intro" />
-            {this.props.game.wrongAnswerOptions.map(choice => <Button bsStyle={this.style(choice)} disabled={'' !== this.state.value} value={choice.nameLatin} onClick={this.handleSubmit}>{choice.nameLatin}</Button>)}
-            <p>Oikea vastaus: {this.props.game.currentImage.bone.nameLatin}</p>
+        <div className="container">
+          <div className="intro" />
+          {this.props.game.wrongAnswerOptions.map(choice => <Button bsStyle={this.style(choice)} disabled={undefined !== this.state.value} value={choice.nameLatin} onClick={this.handleSubmit}>{choice.nameLatin}</Button>)}
+          <p>Oikea vastaus: {this.props.game.currentImage.bone.nameLatin}</p>
         </div>
       </div>
     )
@@ -197,7 +176,9 @@ const mapDispatchToProps = {
   setWrongAnswerOptions,
   setWrongImageOptions,
   setMessage,
-  setScoreFlash
+  setScoreFlash,
+  startGameClock,
+  stopGameClock
 }
 
 const ConnectedMultipleChoiceGame = connect(
