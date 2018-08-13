@@ -6,6 +6,7 @@ import { Grid, Row, Col, FormGroup, ControlLabel, FormControl, Label } from 'rea
 import emoji from 'node-emoji'
 import { gameInitialization } from '../../reducers/gameReducer'
 import { ProgressBar } from 'react-bootstrap'
+import Sound from 'react-sound';
 
 /**
  * EndScreen is the game over/results screen of Luupeli.
@@ -52,7 +53,7 @@ class EndScreen extends React.Component {
 	//Reinitialize a game with same settings as previous game played
 	proceedToReplay(event) {
 		this.props.gameInitialization(this.props.game.gameLength, this.props.game.images, this.props.game.user, 
-        this.props.game.gamemode, this.props.game.animals, this.props.game.bodyparts)
+        this.props.game.gamemode, this.props.game.animals, this.props.game.bodyparts, this.props.game.playSound, this.props.game.gameDifficulty)
 		this.setState({ redirect: true })
 		this.setState({ redirectTo: '/game' })
 	}
@@ -209,7 +210,17 @@ class EndScreen extends React.Component {
     const wrongPortion = Math.round((wrongAnswers.length/this.props.game.answers.length)) * 100
 
     return (
+			
       <div className='Appbd menu-background'>
+			 <Sound
+      url="/sounds/351717__monkeyman535__cool-chill-beat-loop.wav"
+        playStatus={Sound.status.PLAYING}
+				// playFromPosition={0 /* in milliseconds */}
+				onLoading={this.handleSongLoading}
+				onPlaying={this.handleSongPlaying}
+        onFinishedPlaying={this.handleSongFinishedPlaying}
+        loop="true"
+			  />
         <div>
 					<div className="btn-group" role="group">
 						<button type="button" className="btn btn-secondary" onClick={this.proceedToReplay}>Pelaa uudestaan</button>

@@ -14,9 +14,11 @@ class Message extends React.Component {
 				</div>
 			)
 		} else {
-			return (
-				<br />
-			)
+			return null
+			
+			// (
+			// 	<br />
+			// )
 		}
 	}
 }

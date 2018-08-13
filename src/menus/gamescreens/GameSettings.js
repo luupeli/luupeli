@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import { setMessage } from '../../reducers/messageReducer'
 import emoji from 'node-emoji'
 
+
 /**
  * GameSettings is the menu directly prior to a WritingGame session.
  * A game session will be based on the selections made by user in the GameSettings menu.
@@ -32,11 +33,15 @@ class GameSettings extends React.Component {
 			images: [],			   // used to store an array of images which meet the selection criteria
 			allStyles: JSON.parse(localStorage.getItem("allStyles")),
 			styleIndex: localStorage.getItem('styleIndex'),
-      user: null,
-      animals: [],
-      bodyParts: []
+			user: null,
+			animals: [],
+			bodyParts: [],
+			playSound: true,
+			gameDifficulty: 'medium'
 		}
 
+		this.changeGameDifficulty = this.changeGameDifficulty.bind(this)
+		this.changeSoundSetting = this.changeSoundSetting.bind(this)
 		this.changeAnimal = this.changeAnimal.bind(this)
 		this.toggleCheck = this.toggleCheck.bind(this)
 		this.atLeastOneBodyPartIsSelected = this.atLeastOneBodyPartIsSelected.bind(this)
@@ -63,7 +68,7 @@ class GameSettings extends React.Component {
 						console.log(emo)
 						animals[key].emoji = emo
 					}
-					if (animals[key].name.toLowerCase() === 'hevonen') {	
+					if (animals[key].name.toLowerCase() === 'hevonen') {
 						emo = emo.get('horse')
 						console.log(emo)
 						animals[key].emoji = emo
@@ -104,9 +109,34 @@ class GameSettings extends React.Component {
 	}
 
 	changeGameLength(event) {
-		this.setState({ gameLength: [event.target.value] })
+		this.setState({ gameLength: event.target.value })
 		console.log('Pelin pituus on nyt ... ' + this.state.gameLength)
 	}
+
+	changeGameDifficulty(event) {
+		if (event.target.value === 'easy') {
+			this.setState({ gameDifficulty: 'easy' })
+		}
+		if (event.target.value === 'medium') {
+			this.setState({ gameDifficulty: 'medium' })
+		}
+		if (event.target.value === 'hard') {
+			this.setState({ gameDifficulty: 'hard' })
+		}
+	}
+
+	changeSoundSetting(event) {
+
+		if (event.target.value === "true") {
+
+			this.setState({ playSound: true })
+		}
+		else {
+
+			this.setState({ playSound: false })
+		}
+	}
+
 
 	changeAnimal(i, event) {
 		const animals = this.state.allAnimals
@@ -157,8 +187,8 @@ class GameSettings extends React.Component {
 	initializeGame() {
 		// Filtering selected animals and body parts
 		let chosenAnimals = this.state.allAnimals.filter(animal => animal.selected === true)
-    let chosenBodyParts = this.state.allBodyParts.filter(bodyPart => bodyPart.selected === true)
-    
+		let chosenBodyParts = this.state.allBodyParts.filter(bodyPart => bodyPart.selected === true)
+
 		console.log(this.state.allAnimals)
 		console.log(chosenAnimals)
 		console.log(chosenBodyParts)
@@ -183,24 +213,25 @@ class GameSettings extends React.Component {
 		pics = pics.filter(image => {
 			const bodyPartIds = chosenBodyParts.map(chosenBodyPart => chosenBodyPart.id)
 			return bodyPartIds.includes(image.bone.bodyPart)
-		})		
+		})
 		console.log(pics)
 
 		// If criteria doesn't fulfill the game won't launch
 		if (pics.length === 0) {
 			this.props.setMessage('Peliä ei voitu luoda halutuilla asetuksilla', 'danger')
 		} else {
-      for(let animal of chosenAnimals) {
-        delete animal.emoji
-        delete animal.selected
-      }
-      for (let bodyPart of chosenBodyParts) {
-        delete bodyPart.selected
-      }
-      this.setState({ images: pics })
-      this.setState({ animals : chosenAnimals })
-      this.setState({ bodyParts: chosenBodyParts })
-			this.setState({ redirect: true })
+			for (let animal of chosenAnimals) {
+				delete animal.emoji
+				delete animal.selected
+			}
+			for (let bodyPart of chosenBodyParts) {
+				delete bodyPart.selected
+			}
+			//   this.setState({ images: pics })
+			//   this.setState({ animals : chosenAnimals })
+			//   this.setState({ bodyParts: chosenBodyParts })
+			// 		this.setState({ redirect: true })
+			this.setState({ images: pics, animals: chosenAnimals, bodyParts: chosenBodyParts, redirect: true })
 		}
 		console.log(pics)
 
@@ -220,16 +251,20 @@ class GameSettings extends React.Component {
 		}`
 
 		if (this.state.redirect) {
-      this.props.gameInitialization(this.state.gameLength, this.state.images, this.state.user, 
-        this.props.location.state.gamemode, this.state.animals, this.state.bodyParts)
+			this.props.gameInitialization(this.state.gameLength, this.state.images, this.state.user,
+				this.props.location.state.gamemode, this.state.animals, this.state.bodyParts, this.state.playSound, this.state.gameDifficulty)
+				
+				
+				
 			return (
+				
+
 				<Redirect to={{
 					pathname: '/game',
 					state: {
 						allStyles: this.state.allStyles,
-						styleIndex: this.state.styleIndex,
-						gamemode: this.state.gamemode
-					  }
+						styleIndex: this.state.styleIndex
+					}
 				}} />
 			)
 		}
@@ -269,7 +304,7 @@ class GameSettings extends React.Component {
 							<div className="transbox">
 								<div className="container">
 									<div className="col-md-12">
-										<h3 className="form-header">Valitse eläin:</h3>
+										<h4 className="form-header">Valitse eläin</h4>
 										<form>
 											{selectAnimal}
 										</form>
@@ -277,7 +312,7 @@ class GameSettings extends React.Component {
 								</div>
 								<div className="container">
 									<div className="col-md-12">
-										<h3 className="form-header">Valitse ruumiinosa:</h3>
+										<h4 className="form-header">Valitse ruumiinosa</h4>
 										<form>
 											{selectBodyPart}
 										</form>
@@ -285,7 +320,7 @@ class GameSettings extends React.Component {
 								</div>
 								<div className="container">
 									<div className="col-md-12">
-										<h3 className="form-header">Luupelin pituus:</h3>
+										<h4 className="form-header">Luupelin pituus:</h4>
 										<form>
 											<label className="radio-inline">
 												<input
@@ -323,16 +358,17 @@ class GameSettings extends React.Component {
 								</div>
 								<div className="container">
 									<div className="col-md-12">
-										<h3 className="form-header">Vaikeusaste:</h3>
+										<h4 className="form-header">Vaikeusaste</h4>
 										<form>
 											<label className="radio-inline">
 												<input
 													type="radio"
 													id="gameEasy"
 													value="easy"
+													onClick={this.changeGameDifficulty.bind(this)}
 													name="difficultylevel"
 												/>
-												Luupää (helppo)
+												Luupää
 											</label>
 											<label className="radio-inline">
 												<input
@@ -340,19 +376,51 @@ class GameSettings extends React.Component {
 													id="gameMedium"
 													value="medium"
 													name="difficultylevel"
+													onClick={this.changeGameDifficulty.bind(this)}
 													defaultChecked
 												/>
-												Normaali
+												Luunkova
 											</label>
 											<label className="radio-inline">
 												<input
 													type="radio"
 													id="gameHard"
 													value="hard"
+													onClick={this.changeGameDifficulty.bind(this)}
 													name="difficultylevel"
 												/>
-												Luunkova (vaikea)
+												Luu-5
 											</label>
+										</form>
+
+									</div>
+								</div>
+								<div className="container">
+									<div className="col-md-12">
+										<h4 className="form-header">Äänet</h4>
+										<form>
+											<label className="radio-inline">
+												<input
+													type="radio"
+													id="soundsOn"
+													value="true"
+													name="sound"
+													defaultChecked
+													onClick={this.changeSoundSetting.bind(this)}
+												/>
+												Päällä
+											</label>
+											<label className="radio-inline">
+												<input
+													type="radio"
+													id="soundsOff"
+													value="false"
+													name="sound"
+													onClick={this.changeSoundSetting.bind(this)}
+												/>
+												Pois
+											</label>
+
 										</form>
 										<div className="btn-group wide settingspage GameButton">
 											<button id="luupeliinButton" onClick={this.atLeastOneBodyPartIsSelected}>Luupeliin >></button>

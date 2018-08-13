@@ -4,7 +4,6 @@ import { setAnswer, setImageToAsk, setWrongImageOptions, setWrongAnswerOptions }
 import { setMessage } from '../reducers/messageReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
-import { Row, Col } from 'react-bootstrap'
 import emoji from 'node-emoji'
 
 class ImageMultipleChoiceGame extends React.Component {
@@ -13,31 +12,42 @@ class ImageMultipleChoiceGame extends React.Component {
     super(props);
     this.timer = 0;
     this.state = {
-      value: '',
-      seconds: 0,
-      choices: [],
-      wrongs: [],
-
+      selectedId: '',
+      selectedImage: '',
     }
     this.handleSubmit = this.handleSubmit.bind(this)
+    window.onunload = function () { window.location.href = '/' }
+
+  }
+
+  componentDidMount() {
+    this.props.setWrongImageOptions(this.props.game.images, this.props.game.answers)
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.game.endCounter !== prevProps.game.endCounter) {
+      this.props.setWrongImageOptions(this.props.game.images, this.props.game.answers)
+    }
   }
 
   handleSubmit(image) {
-    this.setState({ value: image })
-    this.createMessage(image)
+    this.setState({
+      selectedId: image.id,
+      selectedImage: image
+    })
+    const correctness = this.checkCorrectness(image)
 
     let points = (Math.round((this.checkCorrectness(image) * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((300 + Math.max(0, (300 - this.state.seconds))) / 600))) / 20
 
-    if (this.checkCorrectness(image) > 99) {
+    if (correctness > 99) {
       points = points * 10
     }
     points = Math.round(points / 20) * 20
 
-    if (this.checkCorrectness(image) < 70) {
+    if (correctness < 70) {
       points = 0
     }
 
-    const correctness = this.checkCorrectness(image)
     let streakEmoji = require('node-emoji')
     streakEmoji = emoji.get('yellow_heart')
     let streakNote = ''
@@ -60,19 +70,16 @@ class ImageMultipleChoiceGame extends React.Component {
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
 
     this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 3, true)
-    this.setState({choices:[]})
+    this.setState({ choices: [] })
 
     setTimeout(() => {
-      this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(this.state.value), this.state.value.bone.nameLatin, this.state.seconds - 3, points)
-      this.setState({ value: '' })
-      this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
-      this.props.setWrongImageOptions(this.props.game.currentImage, this.props.game.images)
-      this.props.setWrongAnswerOptions(this.props.game.currentImage, this.props.game.images)
-    }, 5000)
+      this.props.setAnswer(this.props.game.currentImage, correctness, this.state.selectedImage.bone.nameLatin, this.props.game.gameClock, points)
+      this.setState({ selectedId: '', selectedImage: '' })
+    }, 3000)
   }
 
   checkCorrectness(image) {
-    if (this.props.game.currentImage.id === image.id) {
+    if (image.correct) {
       return 100
     } else {
       return 0
@@ -107,116 +114,29 @@ class ImageMultipleChoiceGame extends React.Component {
     }
   }
 
-  answerButtons() {
-
-    if (this.state.choices.length<1) {
-
-    let choicesTemp = [
-      {
-        ...this.props.game.currentImage,
-        correct: true
+  style(choice) {
+    if (choice.correct && choice.id === this.state.selectedId) {
+      return {
+        borderStyle: 'solid',
+        borderWidth: 20,
+        borderRadius: 30,
+        borderColor: 'green'
       }
-    ]
-
-    const wrongsTemp = this.props.game.wrongImageOptions.map(img => {
-      return { ...img, correct: false }
-    })
-
-    choicesTemp = wrongsTemp.concat(choicesTemp)
-    
-    // if (this.props.game.gameClock<5) {
-    var shuffle = require('shuffle-array')
-     shuffle(choicesTemp, {'rng': this.props.game.totalscore+100})
-    // }
-    this.setState({choices: choicesTemp});
-  }
-    if (this.state.value === '' || this.state.value === undefined) {
-      return (
-        <Row className="show-grid">
-          {this.state.choices.map(choice => {
-            return (
-              <Col xs={12} md={6}>
-                <div className="multi-height-restricted">
-                  <CloudinaryContext cloudName="luupeli">
-                    <Image publicId={choice.url} onClick={() => this.handleSubmit(choice)}>
-                      <Transformation background="#000000" height="250" width="350" crop="lpad"  />
-                    </Image>
-                  </CloudinaryContext>
-                </div>
-              </Col>
-            )
-          }
-          )}
-        </Row>
-      )
-    } else if (this.state.value === this.props.game.currentImage.bone.nameLatin) {
-      return this.state.choices.map(choice => {
-        if (choice.correct) {
-          return (
-            <Col xs={12} md={6}>
-              <div className="multi-height-restricted">
-                <CloudinaryContext cloudName="luupeli">
-                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
-                    <Transformation border="15px_solid_rgb:29ae00" background="#000000" height="235" width="335" crop="lpad" radius="20" />
-                  </Image>
-                </CloudinaryContext>
-              </div>
-            </Col>
-          )
-        } else {
-          return (
-            <Col xs={12} md={6}>
-              <div className="multi-height-restricted">
-                <CloudinaryContext cloudName="luupeli">
-                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
-                    <Transformation background="#000000" height="250" width="350" crop="lpad" radius="20" />
-                  </Image>
-                </CloudinaryContext>
-              </div>
-            </Col>
-          )
-        }
-      })
-    } else {
-      return this.state.choices.map(choice => {
-        if (choice.correct) {
-          return (
-            <Col xs={12} md={6}>
-              <div className="multi-height-restricted">
-                <CloudinaryContext cloudName="luupeli">
-                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
-                    <Transformation border="15px_solid_rgb:29ae00" background="#000000" height="235" width="335" crop="lpad" radius="20" />
-                  </Image>
-                </CloudinaryContext>
-              </div>
-            </Col>
-          )
-        } else if (this.state.value.id === choice.id) {
-          return (
-            <Col xs={12} md={6}>
-              <div className="multi-height-restricted">
-                <CloudinaryContext cloudName="luupeli">
-                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
-                    <Transformation border="15px_solid_rgb:ae0f0f" background="#000000" height="235" width="335" crop="lpad" radius="20" />
-                  </Image>
-                </CloudinaryContext>
-              </div>
-            </Col>
-          )
-        } else {
-          return (
-            <Col xs={12} md={6}>
-              <div className="multi-height-restricted">
-                <CloudinaryContext cloudName="luupeli">
-                  <Image publicId={choice.url} value={choice.bone.nameLatin}>
-                    <Transformation background="#000000" height="250" width="350" crop="lpad" radius="20" />
-                  </Image>
-                </CloudinaryContext>
-              </div>
-            </Col>
-          )
-        }
-      })
+    } else if (choice.correct === false && choice.id === this.state.selectedId) {
+      return {
+        borderStyle: 'solid',
+        borderWidth: 20,
+        borderRadius: 30,
+        borderColor: 'red'
+      }
+    }
+    if (choice.correct && '' !== this.state.selectedId && choice.id !== this.state.selectedId) {
+      return {
+        borderStyle: 'solid',
+        borderWidth: 20,
+        borderRadius: 30,
+        borderColor: 'green'
+      }
     }
   }
 
@@ -226,14 +146,29 @@ class ImageMultipleChoiceGame extends React.Component {
         <div className="intro" z-index="3" position="relative">
           <h2>{this.props.game.currentImage.bone.nameLatin}, {this.props.game.currentImage.animal.name}</h2>
           <p>(klikkaa oikeaa kuvaa!)</p>
+          {this.props.game.wrongImageOptions.map((choice, i) => {
+            if (choice.correct) {
+              return 'Oikea vastaus ylhäältä laskettuna: ' + i + '(laskenta alkaa nollasta)'
+            }
+          })}
         </div>
         <div className="container" z-index="3" position="relative">
           <div z-index="3" position="relative">
-            {this.answerButtons()}
+
+            {this.props.game.wrongImageOptions.map(choice => {
+              return (
+                <div className="multi-height-restricted" style={this.style(choice)}>
+                  <CloudinaryContext cloudName="luupeli">
+                    <Image publicId={choice.url} onClick={() => this.handleSubmit(choice)}>
+                      <Transformation background="#000000" height="250" width="350" crop="lpad" />
+                    </Image>
+                  </CloudinaryContext>
+                </div>
+              )
+            }
+            )}
+
           </div>
-          {/* <div className="col-md-6 col-md-offset-3" id="info">
-            <h6>Vastausaikaa kulunut {Math.round(this.state.seconds / 10, 1)}</h6>
-          </div> */}
         </div>
       </div>
     )

@@ -26,6 +26,8 @@
      color:var(--primary);
 }
 
+
+
 .page-title {
   display: block;
   width: 100%;
@@ -51,7 +53,7 @@
      -moz-border-radius: 9px;
    margin-bottom: 15px;
    border-radius: 15px;
-   font-size:calc(0.9vw + 0.9vh + .5vmin);/*10vh;/*24px;*/
+   font-size:calc(0.9vw + 0.5vh + .5vmin);/*10vh;/*24px;*/
    cursor: pointer;
    width: 100%;
    padding: 1.0vh 1.25vw;/*20px 24px;*/
@@ -88,7 +90,16 @@ animation: Button-Gradient 3.23s ease infinite;
     /*font-family: "Verdana";*/
     font-family: 'Changa One', cursive;
     text-align: center;
+    letter-spacing: 0px!important;
 }
+
+.App .fallout{
+  font-family: 'Press start 2p', sans-serif;
+  /* font-family: 'VT323', sans-serif; */
+  text-align: center;
+  letter-spacing: 0px!important;
+}
+
 .deep-blue App {
   text-align: center;
 
@@ -103,7 +114,7 @@ animation: Button-Gradient 3.23s ease infinite;
       -moz-border-radius: 9px;
     margin-bottom: 15px;
     border-radius: 15px;
-    font-size:calc(0.9vw + 0.9vh + .5vmin);/*10vh;/*24px;*/
+    font-size:calc(0.9vw + 0.5vh + .5vmin);/*10vh;/*24px;*/
     cursor: pointer;
     width: 100%;
     display: block; 
@@ -127,6 +138,49 @@ animation: Button-Gradient 3.23s ease infinite;
  animation: Button-Gradient 3.23s ease infinite;
 
 }
+.forty .game-score .col-md-6,.fortyfive .game-score .col-md-6,.fifty .game-score .col-md-6{
+  width: 60%!important;
+}
+.score-board {
+  /* margin-left: 0!important; */
+}
+
+.score-board h1,.score-board h2,.score-board h3,.score-board h4,.score-board h5,.score-board h6 {
+  margin-top: 10px!important;
+}
+
+.score-board .col-md-6 {
+  /*
+  width: var(--progress-max-width)!important;/*--max-progress66vw!important;*/
+  
+  padding: 0!important;
+  display: inline-block;
+  /* display: flex;
+  justify-content: center; */
+}
+
+.score-board .col-md-offset-3 {
+  /* margin-left: 0!important; */
+  /* margin: auto; */
+}
+
+.forty .score-board .col-md6,.fortyfive .score-board .col-md6,.fifty .score-board .col-md6 {
+  width:var(--progress-max-width-fifty)
+}
+.thirtythree .score-board .col-md6 {
+  width: 100%;
+}
+.thirtythree .score-board .col-md6 .progress {
+width:var(--progress-max-width-thirtythree)
+}
+
+#submitButton {
+  font-size:calc(1.7vw + 0.9vh + 0.6vmin)!important;
+  margin-top: 5px!important;
+  width: 50vw!important;
+  height: 8vh!important;
+}
+
 .blood-dragon .menu-button button {
   border: 8px solid var(--primary);
   
@@ -161,15 +215,15 @@ animation: Button-Gradient 3.23s ease infinite;
 .gobackbutton {
     /* float: left;*/
     position: fixed; 
-    font-size:calc(0.6vw + 0.6vh + .4vmin)!important;
+    font-size:calc(0.6vw + 0.4vh + .4vmin)!important;
     bottom: 5vh !important;
     left: 0.8vw !important;
-    max-width: calc(10*(0.6vw + 0.6vh + .4vmin)) !important;
+    max-width: calc(10*(0.6vw + 0.4vh + .4vmin))!important;
 
     white-space:nowrap;
     margin-bottom: 5px;
     border-radius: 5px;
-    font-size:calc(.79vw + .79vh + .75vmin);
+    font-size:calc(.79vw + .49vh + .75vmin);
     cursor: pointer;
     display: inline-block;
     padding: 0.5vh 0.69vw!important;
@@ -187,15 +241,15 @@ animation: Button-Gradient 3.23s ease infinite;
 .scoreview {
   /* float: left;*/
   position: fixed; 
-  font-size:calc(0.6vw + 0.6vh + .4vmin)!important;
+  font-size:calc(0.6vw + 0.4vh + .4vmin)!important;
   margin-top: 5vh !important;
   margin-left: 0.8vw !important;
-  max-width: calc(10*(0.6vw + 0.6vh + .4vmin)) !important;
+  max-width: calc(10*(0.6vw + 0.4vh + .4vmin)) !important;
 
   white-space:nowrap;
   margin-bottom: 5px;
   border-radius: 5px;
-  font-size:calc(.79vw + .79vh + .75vmin);
+  font-size:calc(.79vw + .49vh + .75vmin);
   cursor: pointer;
   display: inline-block;
   padding: 0.5vh 0.69vw!important;
@@ -222,7 +276,7 @@ h1 {
     width: 100%;
     color: #C6CBF5;
     font-family: 'Press start 2p', sans-serif;
-    font-size:calc(3vw + 3vh + 2.5vmin);
+    font-size:calc(3vw + 2vh + 2.0vmin);
     font-weight: 1000;
     line-height: 1.2;
     left: 50vw;
@@ -277,7 +331,7 @@ h1 {
 
 h2 {
     color: #C6CBF5;
-    font-size:calc(2vw + 2vh + 1vmin);
+    font-size:calc(2vw + 1.2vh + 0.7vmin);
     font-weight: 700;
     line-height: 1.2;
     left: 50vw;
@@ -305,7 +359,7 @@ h2 {
 }
 
 h3 {
-  font-size:calc(1.25vw + 1.25vh + 1.0vmin);
+  font-size:calc(1.25vw + 0.75vh + 0.8vmin);
   -webkit-background-clip: text;
   -webkit-text-fill-color:  var(--highlight);
   -webkit-text-stroke-width: 0.75px;
@@ -313,7 +367,7 @@ h3 {
 }
 
 h4 {
-  font-size:calc(1.05vw + 1.05vh + 0.8vmin);
+  font-size:calc(1.05vw + 0.65vh + 0.6vmin);
   -webkit-background-clip: text;
   -webkit-text-fill-color:  var(--highlight);
   -webkit-text-stroke-width: 0.5px;
@@ -322,11 +376,11 @@ h4 {
 
 
 h5 {
-  font-size:calc(0.85vw + 0.85vh + 0.7vmin);
+  font-size:calc(0.95vw + 0.45vh + 0.6vmin);
 }
   
 h6 {
-  font-size:calc(0.7vw + 0.7vh + 0.55vmin);
+  font-size:calc(0.85vw + 0.3vh + 0.5vmin);
 }
 
 
@@ -334,6 +388,11 @@ h3, h4, h5, h6 {
   text-transform: uppercase;
   font-weight: 600;
   color: var(--highlight) !important;
+}
+
+p {
+  font-size:calc(1.25vw + 0.35vh + 0.35vmin);
+  letter-spacing: 0!important;
 }
 
 .fallout p {
@@ -445,11 +504,11 @@ div.row {
   align-items: center;
   justify-content: center;
   border-radius: 15px;
-  border: 5px solid var(--primary);
+  border: var(--game-border) solid var(--primary);
 }
 
 .gameplay .game-score-mobile {
-  width: 95vw;
+  /* width: 85vw; */
   height: 20vh;
   flex-grow: 1; 
   margin: 10px;
@@ -463,8 +522,8 @@ div.row {
 }
 
 .gameplay .game-mainview-mobile {
-  width: 95vw;
-  height: 70vh;
+  /* width: 85vw; */
+  height: 65vh;
   flex-grow: 1;
   margin: 10px;
   text-align: center;
@@ -508,7 +567,7 @@ div.row {
 }
 
 .gameplay .col-md-6 {
-  width: 80%;
+  /* width: 80%; */
   }
   .gameplay .col-md-offset-3 {
   margin-left: 10%;
@@ -570,13 +629,14 @@ div.transbox {
 
 div.transbox p {
     margin: 1%;
-    font-weight: bold;
+    /* font-weight: bold; */
     color: var(--highlight) !important;
   }
 
 form {
     /* color: var(--tertiary); */
     display: inline-block;
+    letter-spacing: 0!important;
 }
 
 
@@ -590,8 +650,8 @@ form {
 
 .form-header {
     color:  var(--highlight);
-    font-size:calc(1.4vw + 1.4vh + 0.7vmin);
-    margin-bottom:calc(1.1vw + 1.1vh + 0.5vmin);
+    font-size:calc(1.4vw + 0.8vh + 0.6vmin);
+    /* margin-bottom:calc(1.1vw + 1.1vh + 0.5vmin); */
     
 }
 
@@ -603,7 +663,7 @@ form {
 
 
 .settingspage {
-    font-size:calc(0.7vw + 0.7vh + 0.5vmin);
+    font-size:calc(0.7vw + 0.5vh + 0.5vmin);
     margin-top:calc(1.3vw + 1.3vh + 0.7vmin);
     /*font-size: 20px;
     margin-top: 60px;*/
@@ -644,6 +704,7 @@ body {
     overflow-x: hidden;
     overflow-y: hidden;
     overflow: hidden;
+    /* font-size: 12px!important; */
 }
 
 .background-fallout {
@@ -1087,15 +1148,47 @@ https://codepen.io/George-Payne/pen/qOrxao
   transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
-.height-restricted {
+.thirtythree .height-restricted {
   margin-top: 3vh;
-  height: var(--image-height-restriction);/*50vh;*/
+  height: 33vh;
 }
 
-.height-restricted img {
-  max-height: var(--image-height-restriction);/*50vh;*/
-  max-width: 95%;
+.thirtythree .height-restricted img {
+  max-height: 33vh;
+  max-width: 90%;/* 79vw;*/
 }
+
+
+.forty .height-restricted {
+  margin-top: 3vh;
+  height: 40vh;/*var(--image-height-restriction);/*50vh;*/
+}
+
+.forty .height-restricted img {
+  max-height: 40vh;/*var(--image-height-restriction);/*50vh;*/
+  max-width: 90%;/* 79vw;*/
+}
+
+.fortyfive .height-restricted {
+  margin-top: 3vh;
+  height: 45vh;/*var(--image-height-restriction);/*50vh;*/
+}
+
+.fortyfive .height-restricted img {
+  max-height: 45vh;/*var(--image-height-restriction);/*50vh;*/
+  max-width: 90%;/* 79vw;*/
+}
+
+.fifty .height-restricted {
+  margin-top: 3vh;
+  height: 50vh;/*var(--image-height-restriction);/*50vh;*/
+}
+
+.fifty .height-restricted img {
+  max-height: 50vh;/*var(--image-height-restriction);/*50vh;*/
+  max-width: 90%;/* 79vw;*/
+}
+
 
 .multi-height-restricted {
   height: 15vh;
@@ -1153,19 +1246,39 @@ https://codepen.io/George-Payne/pen/qOrxao
   right: 16px;
 }
 .progress {
-	height: 3rem;
+  height: 3rem;
+  /* width: 100%!important; */
+  height: 10px!important;
+}
+
+.thirtythree {
+  width:100%;
+}
+
+.thirtythree .progress{
+  width: var(--progress-max-width-thirtythree)!important;
+}
+.forty .progress{
+  width: var(--progress-max-width-forty)!important;
+}
+.forty .progress{
+  width: var(--progress-max-width-fortyfive)!important;
+}
+.fifty .progress{
+  width: var(--progress-max-width-fifty)!important;
 }
 
 .progress-bar {
 	font-size: 1.7rem;
 	text-align: center;
-	padding-top: 5px;
+  padding-top: 5px!important;
+  height: 10px!important;
 }
 
-.steel img {
+/* .steel img {
   -webkit-filter: sepia(0.8);
   filter: sepia(0.8);
-}
+} */
 
 #error-message {
   display:inline-block;
@@ -1176,4 +1289,26 @@ https://codepen.io/George-Payne/pen/qOrxao
   text-transform:none;
   line-height:1em;
   margin-left:.2em;
+}
+
+.home-highscore-top {
+  margin-top: 10px;
+}
+.home-highscore {
+  display:flex;
+  flex-wrap: nowrap;
+  margin-left: 25%;
+}
+  .home-highscore>div {
+  flex: 0 50%;
+}
+
+.home-highscore .score {
+  width: 100%;
+}
+
+
+.home-highscore h4, .home-highscore h5, .home-highscore h6{
+  margin-top: 2px!important;
+  text-align: left;
 }

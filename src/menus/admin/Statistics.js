@@ -42,8 +42,7 @@ class Statistics extends React.Component {
 	}
 
 	setStats(response) {
-		this.setState({ gameSessions: response.data })
-		this.setState({ gameSessionsFiltered: response.data })
+		this.setState({ gameSessions: response.data,gameSessionsFiltered: response.data })
 		this.setTimePlayed()
 		this.setGameModes()
 	}
