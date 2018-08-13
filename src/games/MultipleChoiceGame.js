@@ -35,9 +35,9 @@ class MultipleChoiceGame extends React.Component {
     event.preventDefault()
     this.setState({ value: event.target.value })
     this.createMessage(event.target.value)
-
+    let gameClock = Math.round(((new Date).getTime()-this.props.game.startTime)/50)
     //let points = (Math.round((this.checkCorrectness(event.target.value) * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((300 + Math.max(0, (300 - this.state.seconds))) / 600))) / 20
-    let points = Math.round((1000 + ((1000 + Math.max(0, (400 - this.props.game.gameClock))) / 800))) / 20
+    let points = Math.round((1000 + ((1000 + Math.max(0, (400 - gameClock))) / 800))) / 20
 
     if (this.checkCorrectness(event.target.value) > 99) {
       points = points * 10

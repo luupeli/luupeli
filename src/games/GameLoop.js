@@ -6,7 +6,7 @@ import WritingGame from './WritingGame'
 import MultipleChoiceGame from './MultipleChoiceGame'
 import ImageMultipleChoiceGame from './ImageMultipleChoiceGame'
 import { connect } from 'react-redux'
-import { gameInitialization, setAnswer, advanceGameClock, toggleSound } from '../reducers/gameReducer'
+import { gameInitialization, setAnswer, advanceGameClock, getGameClock, resetGameClock, toggleSound } from '../reducers/gameReducer'
 import { ProgressBar } from 'react-bootstrap'
 import gameSessionService from '../services/gameSessions'
 import answerService from '../services/answers'
@@ -19,6 +19,8 @@ import Sound from 'react-sound';
  * Currently, two different game modes are supported.
  */
 class GameLoop extends React.Component {
+
+    
 
     constructor(props) {
         super(props);
@@ -38,14 +40,22 @@ class GameLoop extends React.Component {
             currentScoreFlashCutOff: 0,
             currentScoreFlashVisibility: false,
             allStyles: JSON.parse(localStorage.getItem("allStyles")),
-            styleIndex: localStorage.getItem('styleIndex')
+            styleIndex: localStorage.getItem('styleIndex'),
         }
+         
+        
+    
         this.postGameSession = this.postGameSession.bind(this)
         this.handleSongFinishedPlaying = this.handleSongFinishedPlaying.bind(this)
         window.onunload = function () { window.location.href = '/' }
+        this.gameClockSeconds = this.gameClockSeconds.bind(this)
+        this.gameClockUnits = this.gameClockUnits.bind(this)
+
     };
 
-
+    gameClockUnits() {return Math.round(((new Date).getTime()-this.props.game.startTime)/50)}
+    gameClockSeconds()  {return  Math.round(((new Date).getTime()-this.props.game.startTime)/1000)}
+    
 
     /**
    * Here we increase the game's internal clock by one unit each tick. 
@@ -65,7 +75,7 @@ class GameLoop extends React.Component {
      */
     componentWillMount() {
 
-        this.interval = setInterval(() => this.tick(), 50);
+        this.interval = setInterval(() => this.tick(), 250);
     }
     /**
      * At component unmount the interval needs to be cleared.
@@ -118,7 +128,7 @@ class GameLoop extends React.Component {
             if (this.props.game.gameLength > this.props.game.endCounter) {
 
 
-                if (this.props.game.answers[this.props.game.gameLength - (this.props.game.endCounter + 1)].score > 0 && this.props.game.gameClock < 36) {
+                if (this.props.game.answers[this.props.game.gameLength - (this.props.game.endCounter + 1)].score > 0 && this.gameClockUnits() < 36) {
                     return (
 
                         <Sound
@@ -130,7 +140,7 @@ class GameLoop extends React.Component {
                             onFinishedPlaying={this.handleSongFinishedPlaying}
                         />
                     )
-                } else if (this.props.game.answers[this.props.game.gameLength - (this.props.game.endCounter + 1)].score === 0 && this.props.game.gameClock < 6) {
+                } else if (this.props.game.answers[this.props.game.gameLength - (this.props.game.endCounter + 1)].score === 0 && this.gameClockUnits() < 6) {
                     return (
 
                         <Sound
@@ -169,8 +179,9 @@ class GameLoop extends React.Component {
                 }
             })
         }
-
-
+// console.log('gameclock() ...')
+        // console.log(
+       
 
         return (
             <div className="score-board">
@@ -184,7 +195,9 @@ class GameLoop extends React.Component {
                     {progressBar}
                     </ProgressBar>
                     <h3>SCORE {scoreShown}</h3>
-                <h5>TIME {Math.round(this.props.game.gameClock / 20, 1)}</h5>
+                <h5>TICK TIME {Math.round(this.props.game.gameClock / 20, 1)}</h5>
+                <h5>STAMP TIME {this.gameClockSeconds()}</h5>
+                <h5>STAMP UNITS {this.gameClockUnits()}</h5>
                 </div>
 
 
@@ -269,6 +282,7 @@ class GameLoop extends React.Component {
                         <div>
                         <ScoreFlash ref={instance => this.wgmessage = instance} />
                     </div> 
+                    
                         {this.gameLoop()}
                     </div>
                     
@@ -323,7 +337,7 @@ class GameLoop extends React.Component {
      * Method for rendering selected game mode
      */
     gameLoop() {
-        if (this.props.game.endCounter > 0) {
+        if (this.props.game.endCounter >= 0) {
             if (this.props.game.gamemode === 'kirjoituspeli') {
                 return (
                     <WritingGame />
@@ -348,6 +362,7 @@ class GameLoop extends React.Component {
                 }
             }
         }
+        
     }
 
     /**
@@ -381,7 +396,7 @@ class GameLoop extends React.Component {
 
         const scoreActual = this.props.scoreflash.score
         const durationOfScoreRise = Math.min(30, (scoreActual / 10) + 5)
-        let scoreShown = this.props.game.totalScore - scoreActual + Math.min(scoreActual, Math.round(scoreActual * (this.props.game.gameClock / durationOfScoreRise)))
+        let scoreShown = this.props.game.totalScore - scoreActual + Math.min(scoreActual, Math.round(scoreActual * (this.gameClockUnits() / durationOfScoreRise)))
 
         return (
 
@@ -408,7 +423,7 @@ class GameLoop extends React.Component {
 
 
 
-
+                                
                                 {this.responsiveLayout(scoreShown)}
 
 
@@ -444,7 +459,9 @@ const mapDispatchToProps = {
     gameInitialization,
     setAnswer,
     toggleSound,
-    advanceGameClock
+    advanceGameClock,
+    getGameClock,
+    resetGameClock
 }
 
 const ConnectedGameLoop = connect(

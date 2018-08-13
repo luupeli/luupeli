@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import emoji from 'node-emoji'
 import { Animated } from "react-animated-css";
 
+
 /**
  * WritingGame (run under Gameloop.js) is the standard game mode of Luupeli.
  * In WritingGame, the player needs to correctly identify each bone image shown. The identification is done by typing in the latin name of the bone.
@@ -32,15 +33,18 @@ class WritingGame extends React.Component {
       partialEasyAnswer: '__',
       previousRevealClock: 0,
       easyDifficultyPenalty: 1.0,
-      animationActive:true
-      
+      animationActive: true
+
     }
     this.getRandomInt = this.getRandomInt.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.revealPartialAnswer = this.revealPartialAnswer.bind(this)
+    this.gameClockUnits = this.gameClockUnits.bind(this)
     window.onunload = function () { window.location.href = '/' }
   }
+
+  gameClockUnits() {return Math.round(((new Date).getTime()-this.props.game.startTime)/50)}
 
   handleChange(event) {
     this.setState({ value: event.target.value })
@@ -56,32 +60,45 @@ class WritingGame extends React.Component {
     let streakNote = ''
     let streakEmoji = emoji.get('yellow_heart')
     let correctness = 'Melkein oikein'
-    let points = (Math.round((this.checkCorrectness() * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((900 + Math.max(0, (900 - this.props.game.gameClock))) / 1800))) / 20
-    
-    if (this.props.game.gameClock < 200) {
-      points = points * ((400 - this.props.game.gameClock) / 40)
+    let points = (Math.round((this.checkCorrectness() * Math.max(20, this.props.game.currentImage.bone.nameLatin.length - 3)) * ((900 + Math.max(0, (900 - this.gameClockUnits()))) / 1800))) / 20
+
+
+
+    if (this.gameClockUnits() < 200 &&  (StringSimilarity.compareTwoStrings(this.state.partialEasyAnswer.toLowerCase(), this.props.game.currentImage.bone.nameLatin.toLowerCase()) <0.90)) {
+      points = points * ((400 - this.gameClockUnits()) / 40)
+    } 
+
+    if (this.props.game.gameDifficulty === 'hard' && this.props.game.gameLength > this.props.game.endCounter && this.state.bonus < 1.5) {
+      points = points * 0.15 // Here we strongly penalize the 'hard mode' player for answering PREVIOUSLY incorrectly
+      points = 10;
     }
 
-    if (this.props.game.gameDifficulty==='easy') {
+    let easyBonusPenalizer=0
+
+    if (this.props.game.gameDifficulty === 'easy') {
       points = points * 0.5
-      points = points * Math.max(0.2,this.state.easyDifficultyPenalty)
-      if (this.state.partialEasyAnswer===this.props.game.currentImage.bone.nameLatin) {
+      points = points * Math.max(0.2, this.state.easyDifficultyPenalty)
+      if (StringSimilarity.compareTwoStrings(this.state.partialEasyAnswer.toLowerCase(), this.props.game.currentImage.bone.nameLatin.toLowerCase()) >0.9) {
         points = points * 0.25
       }
-      if (points<20) {
-        points=20
+      if (points < 20) {
+        points = 20
+      }
+      if (currentBonus>1.99) {
+        currentBonus=2.0
       }
     }
 
-    let hardBonus= 0.0
-    if (this.props.game.gameDifficulty==='hard') {
+    let hardBonus = 0.0
+    if (this.props.game.gameDifficulty === 'hard') {
       hardBonus = 1.0
+
     }
 
     if (this.checkCorrectness() > 99) {
       points = points * 5
       correctness = 'Oikein'
-      this.setState({ animationActive:false, streakWG: currentStreak + 1, bonus: currentBonus + 1.0 + hardBonus, value: '',previousRevealClock: 0,partialEasyAnswer: '__',easyDifficultyPenalty:1.0  })
+      this.setState({ animationActive: false, streakWG: currentStreak + 1, bonus: currentBonus + 1.0 + hardBonus, value: '', previousRevealClock: 0, partialEasyAnswer: '__', easyDifficultyPenalty: 1.0 })
       streakNote = currentBonus + 'x!'
       if (currentBonus < 1.5) {
         streakNote = ''
@@ -91,11 +108,11 @@ class WritingGame extends React.Component {
       console.log(streakEmoji)
     } else {
 
-      if (this.props.game.gameDifficulty==='hard') {
+      if (this.props.game.gameDifficulty === 'hard') {
         points = 40 * currentBonus
       }
 
-      this.setState({animationActive:false,  streakWG: 0, bonus: 1.0, value: '',previousRevealClock: 0,partialEasyAnswer: '__',easyDifficultyPenalty:1.0  })
+      this.setState({ animationActive: false, streakWG: 0, bonus: 1.0, value: '', previousRevealClock: 0, partialEasyAnswer: '__', easyDifficultyPenalty: 1.0 })
       streakNote = ''
       if (this.checkCorrectness() < 1) {
         streakEmoji = require('node-emoji')
@@ -104,40 +121,36 @@ class WritingGame extends React.Component {
     }
     if (this.checkCorrectness() > 85) {
       points = points * 2 * currentBonus
-      
+
     }
-   
+  
 
     points = Math.round(points / 20) * 20
     if (this.checkCorrectness() <= 70) {
       correctness = 'Väärin'
       points = 0
     }
-    
+
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
-    this.props.setScoreFlash(points, streakNote,streakEmoji,scoreFlashRowtext, 'success',3,true)
+    this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 3, true)
+
     
-    //this.setState({ value: '',previousRevealClock: 0,partialEasyAnswer: '__' })
-    this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(), this.state.value, this.props.game.gameClock, points)
-    
-  
+    this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(), this.state.value, this.gameClockUnits(), points)
+
+
+
     setTimeout(() => {
-      this.setState({animationActive:true})
+      this.setState({ animationActive: true })
       this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
-    this.props.setWrongImageOptions(this.props.game.currentImage, this.props.game.images)
-    this.props.setWrongAnswerOptions(this.props.game.currentImage, this.props.game.images)
-    this.createMessage(points)  
-  }, 2000)
-  
-    // let newPartial =''
-    // for (var i = 0; i< this.props.game.currentImage.bone.nameLatin.length; i++) {
-    //   newPartial = newPartial+'_'
-    // }
-    // this.setState( {fullEasyAnswer: this.props.game.currentImage.bone.nameLatin,partialEasyAnswer: newPartial})
-    
+      this.props.setWrongImageOptions(this.props.game.currentImage, this.props.game.images)
+      this.props.setWrongAnswerOptions(this.props.game.currentImage, this.props.game.images)
+      this.createMessage(points)
+    }, 2000)
+
+
   }
 
-  
+
   /**
    * This method measures the "correctness" (or similarity) of the answer string compared to the actual latin name string.
    * The similarity is scaled from 0 to 100, with 100 being a 100 % correct answer.
@@ -145,11 +158,11 @@ class WritingGame extends React.Component {
    * Also, disregarding case is not proper, as the latin names ARE case-sensitive.
    */
   checkCorrectness() {
-    var playerAnswer = this.state.value.toLowerCase().replace(", "," ja ").replace(" & "," ja ")
-    var latinName = this.props.game.currentImage.bone.nameLatin.toLowerCase().replace(" & "," ja ")
+    var playerAnswer = this.state.value.toLowerCase().replace(", ", " ja ").replace(" & ", " ja ")
+    var latinName = this.props.game.currentImage.bone.nameLatin.toLowerCase().replace(" & ", " ja ")
 
-    return 100 * StringSimilarity.compareTwoStrings(playerAnswer,latinName); // calculate similarity   
-      //return 100 * StringSimilarity.compareTwoStrings(this.props.game.currentImage.bone.nameLatin.toLowerCase(), this.state.value.toLowerCase()); // calculate similarity   
+    return 100 * StringSimilarity.compareTwoStrings(playerAnswer, latinName); // calculate similarity   
+    //return 100 * StringSimilarity.compareTwoStrings(this.props.game.currentImage.bone.nameLatin.toLowerCase(), this.state.value.toLowerCase()); // calculate similarity   
 
   }
 
@@ -176,68 +189,71 @@ class WritingGame extends React.Component {
     }
   }
 
-  
-/**
- * As demonstrated on Mozilla.org's Javascript reference
- * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
- * @param {*} min minimum value for the random int
- * @param {*} max max value for the random int
- */
-   getRandomInt(min, max) {
+
+  /**
+   * As demonstrated on Mozilla.org's Javascript reference
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+   * @param {*} min minimum value for the random int
+   * @param {*} max max value for the random int
+   */
+  getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
   }
 
   revealPartialAnswer() {
-      let skipState = false;
-      if (this.state.partialEasyAnswer.length<3) {
-        skipState =true
-      }
-
-      if (this.getRandomInt(0,25)<1+this.props.game.gameClock/400 && this.props.game.gameClock-this.state.previousRevealClock>7) {
-        console.log('päästiin arvontaan')
-        let randomIndex = this.getRandomInt(0,this.props.game.currentImage.bone.nameLatin.length);
-        let newPartial = ''
-        let addPenalty = 0.0
-        for (var i = 0; i< this.props.game.currentImage.bone.nameLatin.length; i++) {
-          if (i===randomIndex || this.props.game.currentImage.bone.nameLatin.charAt(i)===' ') {
-          newPartial = newPartial+this.props.game.currentImage.bone.nameLatin.charAt(i)
+    let skipState = false;
+    if (this.state.partialEasyAnswer.length < 3) {
+      skipState = true
+    }
+    const gameClock = this.gameClockUnits()
+    if (this.getRandomInt(0, 25) < 1 + gameClock / 400 && gameClock - this.state.previousRevealClock > 7) {
+      
+      let randomIndex = this.getRandomInt(0, this.props.game.currentImage.bone.nameLatin.length);
+      let newPartial = ''
+      let addPenalty = 0.0
+      for (var i = 0; i < this.props.game.currentImage.bone.nameLatin.length; i++) {
+        if (i === randomIndex || this.props.game.currentImage.bone.nameLatin.charAt(i) === ' ') {
+          newPartial = newPartial + this.props.game.currentImage.bone.nameLatin.charAt(i)
           if (!skipState) {
-            if (this.state.partialEasyAnswer.charAt(i)==='_') {
-          addPenalty = 0.02+Math.max(0,Math.min(((50-(this.props.game.currentImage.bone.nameLatin.length*2))/1000),0.06))
+            if (this.state.partialEasyAnswer.charAt(i) === '_') {
+              addPenalty = 0.02/*05+Math.max(0,Math.min(((50-(this.props.game.currentImage.bone.nameLatin.length*2))/1000),0.06))*/
+              if (this.props.game.currentImage.bone.nameLatin.length < 10) {
+                addPenalty = addPenalty * 2;
+              }
             }
           }
         } else if (!skipState) {
-              newPartial = newPartial+this.state.partialEasyAnswer.charAt(i)
+          newPartial = newPartial + this.state.partialEasyAnswer.charAt(i)
         } else {
-          newPartial = newPartial+'_'
-        }
-        
-        
-     //   newPartial[randomIndex] =this.props.game.currentImage.bone.nameLatin[randomIndex]
-        this.setState( { previousRevealClock: this.props.game.gameClock, partialEasyAnswer: newPartial, easyDifficultyPenalty: this.state.easyDifficultyPenalty-addPenalty})
-        console.log('new partial on nyt : '+newPartial)
+          newPartial = newPartial + '_'
         }
 
+
+        //   newPartial[randomIndex] =this.props.game.currentImage.bone.nameLatin[randomIndex]
+        this.setState({ previousRevealClock: gameClock, partialEasyAnswer: newPartial, easyDifficultyPenalty: this.state.easyDifficultyPenalty - addPenalty })
+        // console.log('new partial on nyt : ' + newPartial)
       }
+
+    }
   }
 
-  
+
 
   /**
    * Notice that the bone images are fethched from Cloudinary, with a resize transformation done based on the measured window size.
    */
   render() {
 
-    
-    
-    
 
-    if (this.props.game.gameClock>60 && this.props.game.gameDifficulty==='easy') {
+
+
+
+    if (this.gameClockUnits() > 60 && this.props.game.gameDifficulty === 'easy') {
       this.revealPartialAnswer()
     }
-    
+
     const imageWidth = () => {              // Here we try to measure the window size in order to resize the bone image accordingly
       const windowWidth = Math.min(
         document.body.scrollWidth,
@@ -249,7 +265,7 @@ class WritingGame extends React.Component {
       if (windowWidth > 1000) {
         return 1000
       }
-      return Math.round(windowWidth*0.7)
+      return Math.round(windowWidth * 0.7)
     }
 
     const imageHeight = () => {              // Here we try to measure the window size in order to resize the bone image accordingly
@@ -263,29 +279,38 @@ class WritingGame extends React.Component {
       if (windowHeight > 1000) {
         return 1000
       }
-      return Math.round(windowHeight*0.7)
+      return Math.round(windowHeight * 0.7)
     }
 
     let attempts = this.props.game.currentImage.attempts
     let correctAttempts = this.props.game.currentImage.correctAttempts
     let correctPercentile = Math.round(100 * (correctAttempts / attempts))
     if (isNaN(correctPercentile) || correctPercentile < 0) { correctPercentile = 0 }
-    
+
     //{/* <Transformation width={imageWidth()} crop="fill" format="png" radius="20" /> */}
-      //            {/* <Transformation width={imageWidth()} crop="fill" format="png" radius="20" /> */}
+    //            {/* <Transformation width={imageWidth()} crop="fill" format="png" radius="20" /> */}
 
     let cheat = ''
-    if (this.props.game.gameDifficulty==='easy') {
+    if (this.props.game.gameDifficulty === 'easy') {
       cheat = this.state.partialEasyAnswer
-    } else {
+    } 
+    
+    if (!this.state.animationActive) {
       cheat = this.props.game.currentImage.bone.nameLatin
+    } else {
+      cheat = '???'
     }
-    let description = this.props.game.currentImage.bone.description
-    let name =  this.props.game.currentImage.bone.name
 
-    if (this.props.game.gameDifficulty==='hard') {
+    let description = this.props.game.currentImage.bone.description
+    let name = this.props.game.currentImage.bone.name
+    if (this.props.game.gameDifficulty === 'hard') {
       name = 'LUU-5!'
-    }
+      if (this.props.game.gameLength==15) {
+        name = 'TENTTI!'
+      }
+    } 
+    
+   
 
     return (
       <div className="bottomxxx">
@@ -293,58 +318,59 @@ class WritingGame extends React.Component {
           <div className="intro">
             <CloudinaryContext cloudName="luupeli">
               <div className="height-restricted" >
-              <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationOutDelay="1000" isVisible={this.state.animationActive}>
-                <Image id="bone-image" publicId={this.props.game.currentImage.url}>
+                <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationOutDelay="1000" isVisible={this.state.animationActive}>
+                  <Image id="bone-image" publicId={this.props.game.currentImage.url}>
 
-                    <Transformation width={imageWidth()}/>
-                    
-                </Image>
+                    <Transformation width={imageWidth()} />
+
+                  </Image>
                 </Animated>
-                </div>
+              </div>
             </CloudinaryContext>
           </div>
         </div>
         {/* <div className="row"> */}
-          <div>
-          <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1250"  animationOutDelay="1250" isVisible={this.state.animationActive}>
-          <center>
-            <h3 id="heading">{name}</h3></center>
-            </Animated>
-          </div>
-          <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1500"  animationOutDelay="1500" isVisible={this.state.animationActive}>
-            <p>{description}</p>
-            </Animated>
-            {/* <p>Tätä kuvaa on yritetty {attempts} kertaa, niistä {correctAttempts} oikein. Oikeita vastauksia: {correctPercentile} % kaikista yrityksistä.</p> */}
-            {/* <p>Img width: {imageWidth()} | height: {imageHeight()}</p> */}
-            {/* <p>URL: {this.props.game.currentImage.url}</p> */}
-            <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1750" animationOutDelay="1750" isVisible={this.state.animationActive}>
-            <p>{cheat}</p>
-            </Animated>
-          {/* </div>
+        <div>
+          <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1250" animationOutDelay="1250" isVisible={this.state.animationActive}>
+            <center>
+              <h3 id="heading">{name}</h3></center>
+          </Animated>
+        </div>
+        <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1500" animationOutDelay="1500" isVisible={this.state.animationActive}>
+          <p>{description}</p>
+        </Animated>
+        {/* <p>Tätä kuvaa on yritetty {attempts} kertaa, niistä {correctAttempts} oikein. Oikeita vastauksia: {correctPercentile} % kaikista yrityksistä.</p> */}
+        {/* <p>Img width: {imageWidth()} | height: {imageHeight()}</p> */}
+        {/* <p>URL: {this.props.game.currentImage.url}</p> */}
+        <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1750" animationOutDelay="1750" isVisible={this.state.animationActive}>
+          <p>{cheat}</p>
+        </Animated>
+        {/* </div>
         </div>
          */}
-            <div className="game-answer-input"/>
-            <form
-              id='gameForm'
-              onSubmit={this.handleSubmit}
-            >
-              <div className="game-text-input">
-                <input
-                  id="gameTextInput"
-                  type="text"
-                  value={this.state.value}
-                  onChange={this.handleChange}
-                />
-              </div>
-              <div className="btn-group">
-                <button classname="gobackbutton" type="submit" id="submitButton">Vastaa</button>
-              </div>
-              
-            </form>
+        <div className="game-answer-input" />
+        <form
+          id='gameForm'
+          onSubmit={this.handleSubmit}
+        >
+          <div className="game-text-input">
+            <input
+              id="gameTextInput"
+              type="text"
+              value={this.state.value}
+              onChange={this.handleChange}
+            />
+          </div>
+          <div className="btn-group">
+            <button classname="gobackbutton" type="submit" id="submitButton">Vastaa</button>
           </div>
 
+        </form>
+        <h6>debug: {this.props.game.currentImage.bone.nameLatin}</h6>
+      </div>
+
     )
-  
+
   }
 }
 
@@ -357,7 +383,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   setAnswer,
   setImageToAsk,
-  setWrongAnswerOptions, 
+  setWrongAnswerOptions,
   setWrongImageOptions,
   setMessage,
   setScoreFlash
