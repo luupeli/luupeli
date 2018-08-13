@@ -148,7 +148,7 @@ export const setImagesToMultipleChoiceGame = (images, answers) => {
     const imageToAsk = selectNextImage(answers, images);
     const wrongAnswerOptions = selectWrongAnswerOptions(images, imageToAsk);
     return {
-        type: 'SET_IMAGES_TO_IMAGE_MULTIPLE',
+        type: 'SET_IMAGES_TO_MULTIPLE',
         wrongAnswerOptions: wrongAnswerOptions,
         currentImage: imageToAsk
     }
@@ -159,7 +159,7 @@ export const setImagesToImageMultipleChoiceGame = (images, answers) => {
     const imageToAsk = selectNextImage(answers, images);
     const wrongImageOptions = selectWrongImageOptions(images, imageToAsk);
     return {
-        type: 'SET_IMAGES_TO_MULTIPLE',
+        type: 'SET_IMAGES_TO_IMAGE_MULTIPLE',
         wrongImageOptions: wrongImageOptions,
         currentImage: imageToAsk
     }
