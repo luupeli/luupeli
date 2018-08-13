@@ -1,12 +1,12 @@
 import React from 'react'
 import StringSimilarity from 'string-similarity'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
-import { setAnswer, resetGameClock, setImageToAsk, setWrongAnswerOptions, setWrongImageOptions } from '../reducers/gameReducer'
-import { setMessage } from '../reducers/messageReducer'
+import { setAnswer, setImageToWritingGame, startGameClock, stopGameClock } from '../reducers/gameReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
 import emoji from 'node-emoji'
 import { Animated } from "react-animated-css";
+import Sounds from './AnswerSounds'
 
 
 /**
@@ -21,6 +21,7 @@ class WritingGame extends React.Component {
     this.timer = 0;
     this.state = {
       value: '',
+      lastValue: undefined,
       streakWG: 0,
       bonus: 1.0,
       currentScore: 0,
@@ -44,14 +45,16 @@ class WritingGame extends React.Component {
     window.onunload = function () { window.location.href = '/' }
   }
 
-  gameClockUnits() { return Math.round(((new Date()).getTime() - this.props.game.startTime) / 50) }
+  gameClockUnits() { return Math.round(((new Date).getTime() - this.props.game.startedAt) / 50) }
   componentDidMount() {
-    this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
+    this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
+    this.props.startGameClock()
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.game.endCounter !== prevProps.game.endCounter) {
-      this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
+      this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
+      this.props.startGameClock()
     }
   }
 
@@ -64,14 +67,16 @@ class WritingGame extends React.Component {
    */
   handleSubmit(event) {
     event.preventDefault()
+    this.props.stopGameClock()
+    this.setState({ lastValue: this.state.value })
     let currentStreak = this.state.streakWG
     let currentBonus = this.state.bonus
     let streakNote = ''
     let streakEmoji = emoji.get('yellow_heart')
     let correctness = 'Melkein oikein'
-    let correctnessN = this.checkCorrectness()
+    let answerCorrectness = this.checkCorrectness(this.state.value)
 
-    let points = (Math.round((correctnessN * Math.max(20, this.props.game.currentImage.bone.nameLatin.length - 3)) * ((900 + Math.max(0, (900 - this.gameClockUnits()))) / 1800))) / 20
+    let points = (Math.round((answerCorrectness * Math.max(20, this.props.game.currentImage.bone.nameLatin.length - 3)) * ((900 + Math.max(0, (900 - this.gameClockUnits()))) / 1800))) / 20
 
 
 
@@ -106,7 +111,7 @@ class WritingGame extends React.Component {
 
     }
 
-    if (correctnessN > 99) {
+    if (answerCorrectness > 99) {
       points = points * 5
       correctness = 'Oikein'
       this.setState({ animationActive: false, streakWG: currentStreak + 1, bonus: currentBonus + 1.0 + hardBonus, value: '', previousRevealClock: 0, partialEasyAnswer: '__', easyDifficultyPenalty: 1.0 })
@@ -125,43 +130,36 @@ class WritingGame extends React.Component {
 
       this.setState({ animationActive: false, streakWG: 0, bonus: 1.0, value: '', previousRevealClock: 0, partialEasyAnswer: '__', easyDifficultyPenalty: 1.0 })
       streakNote = ''
-      if (correctnessN < 1) {
+      if (answerCorrectness < 1) {
         streakEmoji = require('node-emoji')
         streakEmoji = streakEmoji.get('poop')
       }
     }
-    if (correctnessN > 85) {
+    if (answerCorrectness > 85) {
       points = points * 2 * currentBonus
 
     }
 
 
     points = Math.round(points / 20) * 20
-    if (correctnessN <= 70) {
+    if (answerCorrectness <= 70) {
       correctness = 'Väärin'
       points = 0
     }
 
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
-    this.props.resetGameClock()
     this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 3, true)
 
 
     let answerMoment = this.gameClockUnits()
     let answerCurrentImage = this.props.game.currentImage
-    let answerCorrectness = this.checkCorrectness()
-
 
     console.log('BEFORE TIMEOUT: ' + this.gameClockUnits())
     setTimeout(() => {
       console.log('AFTER timeout!! ' + this.gameClockUnits())
-      this.props.setAnswer(answerCurrentImage, answerCorrectness, this.state.value, answerMoment, points)
-      this.setState({ animationActive: true })
-      this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
-      // this.props.setWrongImageOptions(this.props.game.currentImage, this.props.game.images)
-      //  this.props.setWrongAnswerOptions(this.props.game.currentImage, this.props.game.images)
-      this.createMessage(points)
-    }, 2000
+      this.props.setAnswer(answerCurrentImage, answerCorrectness, this.state.value, this.props.game.gameClock, points)
+      this.setState({ animationActive: true, lastValue: undefined })
+    }, 5000
     );
 
 
@@ -174,38 +172,14 @@ class WritingGame extends React.Component {
    * This method should probably be developed further, perhaps with similarity being measured on a word-to-word basis rather than as a full string.
    * Also, disregarding case is not proper, as the latin names ARE case-sensitive.
    */
-  checkCorrectness() {
-    var playerAnswer = this.state.value.toLowerCase().replace(", ", " ja ").replace(" & ", " ja ")
+  checkCorrectness(answer) {
+    var playerAnswer = answer.toLowerCase().replace(", ", " ja ").replace(" & ", " ja ")
     var latinName = this.props.game.currentImage.bone.nameLatin.toLowerCase().replace(" & ", " ja ")
 
     return 100 * StringSimilarity.compareTwoStrings(playerAnswer, latinName); // calculate similarity   
     //return 100 * StringSimilarity.compareTwoStrings(this.props.game.currentImage.bone.nameLatin.toLowerCase(), this.state.value.toLowerCase()); // calculate similarity   
 
   }
-
-  /**
-   * Here we generate a message for the player which indicates how correct the answer was.
-   * Answers with similarity of 70 or more are considered as "almost correct" and awarded some points.
-   * Answers with similarity of 100 are considered as truly correct.
-   * 
-   * @param {*} points ... the amount of points awarded for the answer.
-   */
-  createMessage(points) {
-    this.setState({
-      seconds: 0
-    })
-
-    const similarity = this.checkCorrectness()
-
-    if (this.props.game.currentImage.bone.nameLatin.toLowerCase() === this.state.value.toLowerCase()) {
-      this.props.setMessage('Oikein! ' + points + ' pistettä!', 'success')
-    } else if (similarity > 70) {
-      this.props.setMessage('Melkein oikein! ' + points + ' pistettä! (similarity: ' + similarity.toPrecision(2) + '). Vastasit: ' + this.state.value.toLowerCase() + '. Oikea vastaus oli ' + this.props.game.currentImage.bone.nameLatin.toLowerCase(), 'warning')
-    } else {
-      this.props.setMessage('Väärin (similarity: ' + similarity.toPrecision(2) + ')! Oikea vastaus oli ' + this.props.game.currentImage.bone.nameLatin.toLowerCase(), 'danger')
-    }
-  }
-
 
   /**
    * As demonstrated on Mozilla.org's Javascript reference
@@ -259,6 +233,66 @@ class WritingGame extends React.Component {
    * Notice that the bone images are fethched from Cloudinary, with a resize transformation done based on the measured window size.
    */
   render() {
+
+    const answerInput = () => {
+      if (this.state.lastValue === undefined) {
+        return (
+          <div>
+            <div className="game-text-input">
+              <input
+                id="gameTextInput"
+                type="text"
+                value={this.state.value}
+                onChange={this.handleChange}
+              />
+            </div>
+            <div className="btn-group">
+              <button classname="gobackbutton" type="submit" id="submitButton">Vastaa</button>
+            </div>
+          </div>
+        )
+      } else {
+        if (this.checkCorrectness(this.state.lastValue) > 99) {
+          return (
+            <div>
+              <div className="game-text-input" style={{ color: 'green' }}>
+                <Sounds correctness={this.checkCorrectness(this.state.lastValue)} />
+                <input
+                  id="gameTextInput"
+                  type="text"
+                  value={this.state.lastValue}
+                  onChange={this.handleChange}
+                  disabled
+                />
+              </div>
+              <div className="btn-group">
+                <button classname="gobackbutton" disabled id="submitButton">Vastaa</button>
+              </div>
+            </div>
+          )
+        } else {
+          return (
+            <div>
+              <div className="game-text-input" style={{ color: 'red' }}>
+                <Sounds correctness={this.checkCorrectness(this.state.lastValue)} />
+                <input
+                  id="gameTextInput"
+                  type="text"
+                  value={this.state.lastValue}
+                  onChange={this.handleChange}
+                  disabled
+                />
+              </div>
+              <div className="btn-group">
+                <button classname="gobackbutton" disabled  id="submitButton">Vastaa</button>
+              </div>
+            </div>
+          )
+        }
+      }
+    }
+
+
 
     if (this.gameClockUnits() > 60 && this.props.game.gameDifficulty === 'easy') {
       this.revealPartialAnswer()
@@ -315,10 +349,12 @@ class WritingGame extends React.Component {
     let name = this.props.game.currentImage.bone.name
     if (this.props.game.gameDifficulty === 'hard') {
       name = 'LUU-5!'
-      if (this.props.game.gameLength === 15) {
+      if (this.props.game.gameLength == 15) {
         name = 'TENTTI!'
       }
     }
+
+
 
     return (
       <div className="bottomxxx">
@@ -326,7 +362,7 @@ class WritingGame extends React.Component {
           <div className="intro">
             <CloudinaryContext cloudName="luupeli">
               <div className="height-restricted" >
-                <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationOutDelay="0" isVisible={this.state.animationActive}>
+                <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationOutDelay="4500" isVisible={this.state.animationActive}>
                   <Image id="bone-image" publicId={this.props.game.currentImage.url}>
 
                     <Transformation width={imageWidth()} />
@@ -339,18 +375,15 @@ class WritingGame extends React.Component {
         </div>
         {/* <div className="row"> */}
         <div>
-          <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="550" animationOutDelay="250" isVisible={this.state.animationActive}>
+          <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="550" animationOutDelay="4500" isVisible={this.state.animationActive}>
             <center>
               <h3 id="heading">{name}</h3></center>
           </Animated>
         </div>
-        <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1500" animationOutDelay="500" isVisible={this.state.animationActive}>
+        <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1500" animationOutDelay="4500" isVisible={this.state.animationActive}>
           <p>{description}</p>
         </Animated>
-        {/* <p>Tätä kuvaa on yritetty {attempts} kertaa, niistä {correctAttempts} oikein. Oikeita vastauksia: {correctPercentile} % kaikista yrityksistä.</p> */}
-        {/* <p>Img width: {imageWidth()} | height: {imageHeight()}</p> */}
-        {/* <p>URL: {this.props.game.currentImage.url}</p> */}
-        <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1750" animationOutDelay="1500" isVisible={this.state.animationActive}>
+        <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1750" animationOutDelay="4500" isVisible={this.state.animationActive}>
           <p>{cheat}</p>
         </Animated>
         {/* </div>
@@ -361,21 +394,10 @@ class WritingGame extends React.Component {
           id='gameForm'
           onSubmit={this.handleSubmit}
         >
-          <div className="game-text-input">
-            <input
-              id="gameTextInput"
-              type="text"
-              value={this.state.value}
-              onChange={this.handleChange}
-            />
-          </div>
-          <div className="btn-group">
-            <button classname="gobackbutton" type="submit" id="submitButton">Vastaa</button>
-          </div>
-
+          {answerInput()}
         </form>
         <h6>debug: {this.props.game.currentImage.bone.nameLatin}</h6>
-      </div>
+      </div >
 
 
 
@@ -392,12 +414,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   setAnswer,
-  setImageToAsk,
-  setWrongAnswerOptions,
-  setWrongImageOptions,
-  setMessage,
+  setImageToWritingGame,
   setScoreFlash,
-  resetGameClock
+  startGameClock,
+  stopGameClock
 }
 
 const ConnectedWritingGame = connect(

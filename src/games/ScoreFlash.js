@@ -41,9 +41,8 @@ class ScoreFlash extends React.Component {
 	 * Also, "zero points" should probably have some noticeable vfx as well.
 	 */
 	render() {
-		// const style = 'alert alert-' + `${this.props.scoreflash.style}`
 		const style = 'scoreflash'   // <--- PLACEHOLDER CSS EFFECT!!! {this.props.scoreflash.score}
-		const gameClock = Math.round(((new Date()).getTime() - this.props.game.startTime) / 50)
+		const gameClock = Math.round(((new Date).getTime() - this.props.game.startTime) / 50)
 		const scoreActual = this.props.scoreflash.score
 		const durationOfScoreRise = Math.min(30, (scoreActual / 10) + 5)
 		console.log('scoreFlash: gameclock: ' + gameClock)
@@ -59,7 +58,7 @@ class ScoreFlash extends React.Component {
 			rowtext = this.props.scoreflash.streakemoji + 'VÄÄRIN!' + this.props.scoreflash.streakemoji
 		}
 
-		if (this.props.scoreflash !== undefined && gameClock < 60 && this.props.scoreflash.scoreflash.length !== 0) {
+		if (this.props.scoreflash !== undefined && this.props.game.stoppedAt && this.props.scoreflash.scoreflash.length !== 0) {
 			return (
 				<Animated animationIn="rubberBand faster" animationOut="zoomOut faster" isVisible={this.props.scoreflash.visibility}>
 					<div
@@ -86,14 +85,6 @@ class ScoreFlash extends React.Component {
 		else {
 			return null;
 		}
-		// else 		
-
-		// {
-		// 	return (
-
-		// 	<br/>
-		// 	)
-		// }
 	}
 
 
