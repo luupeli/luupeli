@@ -1,6 +1,6 @@
 import React from 'react'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
-import { setAnswer, setImageToAsk, setWrongAnswerOptions, setWrongImageOptions, startGameClock, stopGameClock } from '../reducers/gameReducer'
+import { setAnswer, setImagesToMultipleChoiceGame, startGameClock, stopGameClock } from '../reducers/gameReducer'
 import { setMessage } from '../reducers/messageReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
@@ -27,13 +27,13 @@ class MultipleChoiceGame extends React.Component {
   }
 
   componentDidMount() {
-    this.props.setWrongAnswerOptions(this.props.game.images, this.props.game.answers)
+    this.props.setImagesToMultipleChoiceGame(this.props.game.images, this.props.game.answers)
     this.props.startGameClock()
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.game.endCounter !== prevProps.game.endCounter) {
-      this.props.setWrongAnswerOptions(this.props.game.images, this.props.game.answers)
+      this.props.setImagesToMultipleChoiceGame(this.props.game.images, this.props.game.answers)
       this.props.startGameClock()
     }
   }
@@ -172,9 +172,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   setAnswer,
-  setImageToAsk,
-  setWrongAnswerOptions,
-  setWrongImageOptions,
+  setImagesToMultipleChoiceGame,
   setMessage,
   setScoreFlash,
   startGameClock,

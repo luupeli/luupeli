@@ -38,15 +38,15 @@ const gameReducer = (store = initialState.game, action) => {
             return { ...store, surpriseGameMode: action.surpriseGameMode, answers: store.answers.concat(action.answer), endCounter: store.endCounter - 1, gameClock: 0, totalSeconds: store.totalSeconds + action.totalSeconds, totalScore: store.totalScore + action.totalScore }
         }
     }
-    if (action.type === 'SET_IMAGE_TO_ASK') {
+    if (action.type === 'SET_IMAGE_TO_WRITING_GAME') {
         console.log(action)
         return { ...store, currentImage: action.currentImage }
     }
-    if (action.type === 'SET_WRONG_ANSWER_OPTIONS') {
+    if (action.type === 'SET_IMAGES_TO_MULTIPLE') {
         console.log(action)
         return { ...store, wrongAnswerOptions: action.wrongAnswerOptions, currentImage: action.currentImage }
     }
-    if (action.type === 'SET_WRONG_IMAGE_OPTIONS') {
+    if (action.type === 'SET_IMAGES_TO_IMAGE_MULTIPLE') {
         console.log(action)
         return { ...store, wrongImageOptions: action.wrongImageOptions, currentImage: action.currentImage }
     }
@@ -133,33 +133,33 @@ export const setAnswer = (image, correctness, answer, seconds, score) => {
 }
 
 // When the previous question is answered, this call will choose the image for the next question.
-export const setImageToAsk = (images, answers) => {
+export const setImageToWritingGame = (images, answers) => {
 
     const imageToAsk = selectNextImage(answers, images);
     console.log(answers + '!!!')
     return {
-        type: 'SET_IMAGE_TO_ASK',
+        type: 'SET_IMAGE_TO_WRITING_GAME',
         currentImage: imageToAsk
     }
 }
 
 // When the previous question is answered, this call will choose incorrect answer options for multiple choice game mode (MultipleChoiceGame).
-export const setWrongAnswerOptions = (images, answers) => {
+export const setImagesToMultipleChoiceGame = (images, answers) => {
     const imageToAsk = selectNextImage(answers, images);
     const wrongAnswerOptions = selectWrongAnswerOptions(images, imageToAsk);
     return {
-        type: 'SET_WRONG_ANSWER_OPTIONS',
+        type: 'SET_IMAGES_TO_IMAGE_MULTIPLE',
         wrongAnswerOptions: wrongAnswerOptions,
         currentImage: imageToAsk
     }
 }
 
 // When the previous question is answered, this call will choose incorrect image options for multiple choice game mode (ImageMultipleChoiceGame).
-export const setWrongImageOptions = (images, answers) => {
+export const setImagesToImageMultipleChoiceGame = (images, answers) => {
     const imageToAsk = selectNextImage(answers, images);
     const wrongImageOptions = selectWrongImageOptions(images, imageToAsk);
     return {
-        type: 'SET_WRONG_IMAGE_OPTIONS',
+        type: 'SET_IMAGES_TO_MULTIPLE',
         wrongImageOptions: wrongImageOptions,
         currentImage: imageToAsk
     }

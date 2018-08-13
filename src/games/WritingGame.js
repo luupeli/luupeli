@@ -1,7 +1,7 @@
 import React from 'react'
 import StringSimilarity from 'string-similarity'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
-import { setAnswer, setImageToAsk, setWrongAnswerOptions, setWrongImageOptions, startGameClock, stopGameClock } from '../reducers/gameReducer'
+import { setAnswer, setImageToWritingGame, startGameClock, stopGameClock } from '../reducers/gameReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
 import emoji from 'node-emoji'
@@ -47,13 +47,13 @@ class WritingGame extends React.Component {
 
   gameClockUnits() { return Math.round(((new Date).getTime() - this.props.game.startedAt) / 50) }
   componentDidMount() {
-    this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
+    this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
     this.props.startGameClock()
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.game.endCounter !== prevProps.game.endCounter) {
-      this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
+      this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
       this.props.startGameClock()
     }
   }
@@ -414,9 +414,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   setAnswer,
-  setImageToAsk,
-  setWrongAnswerOptions,
-  setWrongImageOptions,
+  setImageToWritingGame,
   setScoreFlash,
   startGameClock,
   stopGameClock
