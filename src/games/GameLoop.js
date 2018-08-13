@@ -396,7 +396,7 @@ class GameLoop extends React.Component {
 
         const scoreActual = this.props.scoreflash.score
         const durationOfScoreRise = Math.min(30, (scoreActual / 10) + 5)
-        let scoreShown = this.props.game.totalScore - scoreActual + Math.min(scoreActual, Math.round(scoreActual * (this.gameClockUnits() / durationOfScoreRise)))
+        let scoreShown = this.props.game.totalScore  + Math.min(scoreActual, Math.round(scoreActual * (this.gameClockUnits() / durationOfScoreRise)))
 
         return (
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import StringSimilarity from 'string-similarity'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
-import { setAnswer, setImageToAsk,setWrongAnswerOptions,setWrongImageOptions } from '../reducers/gameReducer'
+import { setAnswer, resetGameClock,setImageToAsk,setWrongAnswerOptions,setWrongImageOptions } from '../reducers/gameReducer'
 import { setMessage } from '../reducers/messageReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
@@ -143,20 +143,25 @@ class WritingGame extends React.Component {
     }
 
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
+    this.props.resetGameClock()
     this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 3, true)
 
     
-    this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(), this.state.value, this.gameClockUnits(), points)
+    let answerMoment = this.gameClockUnits()
+    let answerCurrentImage = this.props.game.currentImage
+    let answerCorrectness = this.checkCorrectness()
 
-
-
-    setTimeout(() => {
+    
+    console.log('BEFORE TIMEOUT: '+this.gameClockUnits())
+    setTimeout(() =>  {
+      console.log('AFTER timeout!! '+this.gameClockUnits())
+      this.props.setAnswer(answerCurrentImage, answerCorrectness, this.state.value,answerMoment, points)
       this.setState({ animationActive: true })
       this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
       // this.props.setWrongImageOptions(this.props.game.currentImage, this.props.game.images)
     //  this.props.setWrongAnswerOptions(this.props.game.currentImage, this.props.game.images)
-      this.createMessage(points)
-    }, 2000)
+      this.createMessage(points)},2000
+    );
 
 
   }
@@ -329,7 +334,7 @@ class WritingGame extends React.Component {
           <div className="intro">
             <CloudinaryContext cloudName="luupeli">
               <div className="height-restricted" >
-                <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationOutDelay="1000" isVisible={this.state.animationActive}>
+                <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationOutDelay="0" isVisible={this.state.animationActive}>
                   <Image id="bone-image" publicId={this.props.game.currentImage.url}>
 
                     <Transformation width={imageWidth()} />
@@ -342,18 +347,18 @@ class WritingGame extends React.Component {
         </div>
         {/* <div className="row"> */}
         <div>
-          <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1250" animationOutDelay="1250" isVisible={this.state.animationActive}>
+          <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="550" animationOutDelay="250" isVisible={this.state.animationActive}>
             <center>
               <h3 id="heading">{name}</h3></center>
           </Animated>
         </div>
-        <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1500" animationOutDelay="1500" isVisible={this.state.animationActive}>
+        <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1500" animationOutDelay="500" isVisible={this.state.animationActive}>
           <p>{description}</p>
         </Animated>
         {/* <p>Tätä kuvaa on yritetty {attempts} kertaa, niistä {correctAttempts} oikein. Oikeita vastauksia: {correctPercentile} % kaikista yrityksistä.</p> */}
         {/* <p>Img width: {imageWidth()} | height: {imageHeight()}</p> */}
         {/* <p>URL: {this.props.game.currentImage.url}</p> */}
-        <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1750" animationOutDelay="1750" isVisible={this.state.animationActive}>
+        <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1750" animationOutDelay="1500" isVisible={this.state.animationActive}>
           <p>{cheat}</p>
         </Animated>
         {/* </div>
@@ -399,7 +404,8 @@ const mapDispatchToProps = {
   setWrongAnswerOptions,
   setWrongImageOptions,
   setMessage,
-  setScoreFlash
+  setScoreFlash,
+  resetGameClock
 }
 
 const ConnectedWritingGame = connect(

@@ -32,9 +32,9 @@ const gameReducer = (store = initialState.game, action) => {
     if (action.type === 'SET_ANSWER') {
         console.log(action)
         if (store.answers === undefined) {
-            return { ...store, surpriseGameMode: action.surpriseGameMode, answers: action.answer, endCounter: store.endCounter - 1, gameClock: 0,startTime: newStartTime,totalSeconds: action.totalSeconds, totalScore: action.totalScore }
+            return { ...store, surpriseGameMode: action.surpriseGameMode, answers: action.answer, endCounter: store.endCounter - 1, gameClock: 0,totalSeconds: action.totalSeconds, totalScore: action.totalScore }
         } else {
-            return { ...store, surpriseGameMode: action.surpriseGameMode,answers: store.answers.concat(action.answer), endCounter: store.endCounter - 1, gameClock: 0, startTime: newStartTime, totalSeconds: store.totalSeconds + action.totalSeconds, totalScore: store.totalScore + action.totalScore }
+            return { ...store, surpriseGameMode: action.surpriseGameMode,answers: store.answers.concat(action.answer), endCounter: store.endCounter - 1, gameClock: 0,  totalSeconds: store.totalSeconds + action.totalSeconds, totalScore: store.totalScore + action.totalScore }
         }
     }
     if (action.type === 'SET_IMAGE_TO_ASK') {
@@ -120,6 +120,7 @@ export const setAnswer = (image, correctness, answer, seconds, score) => {
 
 // When the previous question is answered, this call will choose the image for the next question.
 export const setImageToAsk = (images, answers) => {
+    
     const imageToAsk = selectNextImage(answers, images);
     console.log(answers + '!!!')
     return {
