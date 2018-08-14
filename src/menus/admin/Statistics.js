@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import gameSessionService from '../../services/gameSessions'
-import gameSessions from '../../services/gameSessions';
 
 class Statistics extends React.Component {
 	constructor(props) {

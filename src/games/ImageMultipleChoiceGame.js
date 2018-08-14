@@ -1,10 +1,11 @@
 import React from 'react'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
-import { setAnswer, setImageToAsk, setWrongImageOptions, setWrongAnswerOptions } from '../reducers/gameReducer'
+import { setAnswer, setImagesToImageMultipleChoiceGame, startGameClock, stopGameClock } from '../reducers/gameReducer'
 import { setMessage } from '../reducers/messageReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
 import emoji from 'node-emoji'
+import AnswerSounds from './AnswerSounds'
 
 class ImageMultipleChoiceGame extends React.Component {
 
@@ -12,8 +13,8 @@ class ImageMultipleChoiceGame extends React.Component {
     super(props);
     this.timer = 0;
     this.state = {
-      selectedId: '',
-      selectedImage: '',
+      selectedId: undefined,
+      selectedImage: undefined,
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     window.onunload = function () { window.location.href = '/' }
@@ -21,16 +22,19 @@ class ImageMultipleChoiceGame extends React.Component {
   }
 
   componentDidMount() {
-    this.props.setWrongImageOptions(this.props.game.images, this.props.game.answers)
+    this.props.setImagesToImageMultipleChoiceGame(this.props.game.images, this.props.game.answers)
+    this.props.startGameClock()
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.game.endCounter !== prevProps.game.endCounter) {
-      this.props.setWrongImageOptions(this.props.game.images, this.props.game.answers)
+      this.props.setImagesToImageMultipleChoiceGame(this.props.game.images, this.props.game.answers)
+      this.props.startGameClock()
     }
   }
 
   handleSubmit(image) {
+    this.props.stopGameClock()
     this.setState({
       selectedId: image.id,
       selectedImage: image
@@ -74,7 +78,7 @@ class ImageMultipleChoiceGame extends React.Component {
 
     setTimeout(() => {
       this.props.setAnswer(this.props.game.currentImage, correctness, this.state.selectedImage.bone.nameLatin, this.props.game.gameClock, points)
-      this.setState({ selectedId: '', selectedImage: '' })
+      this.setState({ selectedId: undefined, selectedImage: undefined })
     }, 3000)
   }
 
@@ -83,34 +87,6 @@ class ImageMultipleChoiceGame extends React.Component {
       return 100
     } else {
       return 0
-    }
-  }
-
-  tick() {
-    this.setState(prevState => ({
-      seconds: prevState.seconds + 1,
-    }));
-  }
-
-  componentWillMount() {
-    this.interval = setInterval(() => this.tick(), 100);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-
-  createMessage(image) {
-    this.setState({
-      seconds: 0
-    })
-
-    const correctness = this.checkCorrectness(image)
-
-    if (correctness === 100) {
-      this.props.setMessage('Oikein!', 'success')
-    } else {
-      this.props.setMessage('Väärin!', 'danger')
     }
   }
 
@@ -130,7 +106,7 @@ class ImageMultipleChoiceGame extends React.Component {
         borderColor: 'red'
       }
     }
-    if (choice.correct && '' !== this.state.selectedId && choice.id !== this.state.selectedId) {
+    if (choice.correct && undefined !== this.state.selectedId && choice.id !== this.state.selectedId) {
       return {
         borderStyle: 'solid',
         borderWidth: 20,
@@ -141,15 +117,26 @@ class ImageMultipleChoiceGame extends React.Component {
   }
 
   render() {
+    const sounds = () => {
+      if (this.state.selectedImage !== undefined) {
+        return (
+          <AnswerSounds correctness={this.checkCorrectness(this.state.selectedImage)} />
+        )
+      }
+    }
+
+
     return (
       <div className="bottom" z-index="3" position="relative">
         <div className="intro" z-index="3" position="relative">
+          {sounds()}
           <h2>{this.props.game.currentImage.bone.nameLatin}, {this.props.game.currentImage.animal.name}</h2>
           <p>(klikkaa oikeaa kuvaa!)</p>
           {this.props.game.wrongImageOptions.map((choice, i) => {
             if (choice.correct) {
               return 'Oikea vastaus ylhäältä laskettuna: ' + i + '(laskenta alkaa nollasta)'
             }
+          return null
           })}
         </div>
         <div className="container" z-index="3" position="relative">
@@ -183,11 +170,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   setAnswer,
-  setImageToAsk,
-  setWrongImageOptions,
-  setWrongAnswerOptions,
+  setImagesToImageMultipleChoiceGame,
   setMessage,
-  setScoreFlash
+  setScoreFlash,
+  startGameClock,
+  stopGameClock
 }
 
 const ConnectedImageMultipleChoiceGame = connect(

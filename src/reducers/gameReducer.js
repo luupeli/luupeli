@@ -12,54 +12,57 @@ const initialState = {
         answers: undefined,
         totalSeconds: '',
         gameClock: 0,
+        startedAt: undefined,
+        stoppedAt: undefined,
         playSound: false,
-        gameDifficulty: "medium",
-        startTime: ''
+        gameDifficulty: "medium"
     }
 }
 
 const gameReducer = (store = initialState.game, action) => {
-   // console.log(action.type)
-   var newStartTime = (new Date).getTime();
     if (action.type === 'INIT_GAME') {
         console.log(action)
-        return { ...store, surpriseGameMode: action.surpriseGameMode, wrongImageOptions: action.wrongImageOptions, 
-              wrongAnswerOptions: action.wrongAnswerOptions, currentImage: action.currentImage, user: action.user,
-               totalScore: action.totalScore, gameLength: action.gameLength, endCounter: action.endCounter, 
-               totalSeconds: action.totalSeconds, images: action.images, animals: action.animals, 
-               bodyparts: action.bodyparts, answers: action.answer, gamemode: action.gamemode,playSound: action.playSound,gameDifficulty: action.gameDifficulty, startTime: action.startTime,getGameClock: action.getGameClock }
+        return {
+            ...store, surpriseGameMode: action.surpriseGameMode, wrongImageOptions: action.wrongImageOptions,
+            wrongAnswerOptions: action.wrongAnswerOptions, currentImage: action.currentImage, user: action.user,
+            totalScore: action.totalScore, gameLength: action.gameLength, endCounter: action.endCounter,
+            totalSeconds: action.totalSeconds, images: action.images, animals: action.animals,
+            bodyparts: action.bodyparts, answers: action.answer, gamemode: action.gamemode, playSound: action.playSound, gameDifficulty: action.gameDifficulty, startTime: action.startTime, getGameClock: action.getGameClock
+        }
     }
     if (action.type === 'SET_ANSWER') {
         console.log(action)
         if (store.answers === undefined) {
-            return { ...store, surpriseGameMode: action.surpriseGameMode, answers: action.answer, endCounter: store.endCounter - 1, gameClock: 0,totalSeconds: action.totalSeconds, totalScore: action.totalScore }
+            return { ...store, surpriseGameMode: action.surpriseGameMode, answers: action.answer, endCounter: store.endCounter - 1, gameClock: 0, totalSeconds: action.totalSeconds, totalScore: action.totalScore }
         } else {
-            return { ...store, surpriseGameMode: action.surpriseGameMode,answers: store.answers.concat(action.answer), endCounter: store.endCounter - 1, gameClock: 0,  totalSeconds: store.totalSeconds + action.totalSeconds, totalScore: store.totalScore + action.totalScore }
+            return { ...store, surpriseGameMode: action.surpriseGameMode, answers: store.answers.concat(action.answer), endCounter: store.endCounter - 1, gameClock: 0, totalSeconds: store.totalSeconds + action.totalSeconds, totalScore: store.totalScore + action.totalScore }
         }
     }
-    if (action.type === 'SET_IMAGE_TO_ASK') {
+    if (action.type === 'SET_IMAGE_TO_WRITING_GAME') {
         console.log(action)
         return { ...store, currentImage: action.currentImage }
     }
-    if (action.type === 'SET_WRONG_ANSWER_OPTIONS') {
+    if (action.type === 'SET_IMAGES_TO_MULTIPLE') {
         console.log(action)
         return { ...store, wrongAnswerOptions: action.wrongAnswerOptions, currentImage: action.currentImage }
     }
-    if (action.type === 'SET_WRONG_IMAGE_OPTIONS') {
+    if (action.type === 'SET_IMAGES_TO_IMAGE_MULTIPLE') {
         console.log(action)
         return { ...store, wrongImageOptions: action.wrongImageOptions, currentImage: action.currentImage }
     }
     if (action.type === 'ADVANCE_GAMECLOCK') {
-        
-        return { ...store, gameClock: store.gameClock+1 }
+
+        return { ...store, gameClock: store.gameClock + 1 }
     }
     if (action.type === 'TOGGLE_SOUND') {
 
         return { ...store, playSound: store.playSound + 1 }
     }
-     if (action.type === 'RESET_GAMECLOCK') {
-         return {...store, startTime: (new Date).getTime()}
-         
+    if (action.type === 'START_GAME_CLOCK') {
+        return { ...store, startedAt: action.now, stoppedAt: undefined }
+    }
+    if (action.type === 'STOP_GAME_CLOCK') {
+        return { ...store, stoppedAt: action.now, gameClock: action.now - store.startedAt }
     }
     return store
 }
@@ -69,15 +72,13 @@ export const gameInitialization = (gameLength, images, user, gamemode, animals, 
     const imageToAsk = selectNextImage(undefined, images);
     const wrongAnswerOptions = selectWrongAnswerOptions(images, imageToAsk)
     const wrongImageOptions = selectWrongImageOptions(images, imageToAsk)
-    
+
 
     console.log(images)
     console.log(gameLength)
     console.log(animals)
     console.log(bodyparts)
 
-    var startTime = (new Date).getTime();
-    console.log('time:' +startTime)
     return {
         type: 'INIT_GAME',
         gameLength: gameLength,
@@ -94,11 +95,24 @@ export const gameInitialization = (gameLength, images, user, gamemode, animals, 
         user: user,
         totalSeconds: 0,
         totalScore: 0,
-        gameClock:0,
-        playSound:playSound,
-        gameDifficulty: gameDifficulty,
-        startTime: startTime,
+        gameClock: 0,
+        playSound: playSound,
+        gameDifficulty: gameDifficulty
     }
+}
+
+export const startGameClock = () => {
+    return {
+        type: "START_GAME_CLOCK",
+        now: new Date().getTime()
+    };
+}
+
+export const stopGameClock = () => {
+    return {
+        type: "STOP_GAME_CLOCK",
+        now: new Date().getTime()
+    };
 }
 
 // This sets a new answer to the answers array.
@@ -119,33 +133,33 @@ export const setAnswer = (image, correctness, answer, seconds, score) => {
 }
 
 // When the previous question is answered, this call will choose the image for the next question.
-export const setImageToAsk = (images, answers) => {
-    
+export const setImageToWritingGame = (images, answers) => {
+
     const imageToAsk = selectNextImage(answers, images);
     console.log(answers + '!!!')
     return {
-        type: 'SET_IMAGE_TO_ASK',
+        type: 'SET_IMAGE_TO_WRITING_GAME',
         currentImage: imageToAsk
     }
 }
 
 // When the previous question is answered, this call will choose incorrect answer options for multiple choice game mode (MultipleChoiceGame).
-export const setWrongAnswerOptions = (images, answers) => {
+export const setImagesToMultipleChoiceGame = (images, answers) => {
     const imageToAsk = selectNextImage(answers, images);
     const wrongAnswerOptions = selectWrongAnswerOptions(images, imageToAsk);
     return {
-        type: 'SET_WRONG_ANSWER_OPTIONS',
+        type: 'SET_IMAGES_TO_MULTIPLE',
         wrongAnswerOptions: wrongAnswerOptions,
         currentImage: imageToAsk
     }
 }
 
 // When the previous question is answered, this call will choose incorrect image options for multiple choice game mode (ImageMultipleChoiceGame).
-export const setWrongImageOptions = (images, answers) => {
+export const setImagesToImageMultipleChoiceGame = (images, answers) => {
     const imageToAsk = selectNextImage(answers, images);
     const wrongImageOptions = selectWrongImageOptions(images, imageToAsk);
     return {
-        type: 'SET_WRONG_IMAGE_OPTIONS',
+        type: 'SET_IMAGES_TO_IMAGE_MULTIPLE',
         wrongImageOptions: wrongImageOptions,
         currentImage: imageToAsk
     }
@@ -163,14 +177,8 @@ export const getGameClock = () => {
     return {
         type: 'GET_GAMECLOCK'
     }
-      
 
-}
 
-export const resetGameClock = () => {
-    return {
-        type: 'RESET_GAMECLOCK'
-    }
 }
 
 export const toggleSound = () => {
@@ -273,3 +281,4 @@ function selectNextImage(answers, images) {
     }
     return imageToAsk;
 }
+
