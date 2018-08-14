@@ -1,12 +1,13 @@
 import React from 'react'
-import { Redirect, Link } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
-import { Grid, Row, Col, FormGroup, ControlLabel, FormControl, Label } from 'react-bootstrap'
+import { Grid, Row, Col } from 'react-bootstrap'
 import emoji from 'node-emoji'
 import { gameInitialization } from '../../reducers/gameReducer'
 import { ProgressBar } from 'react-bootstrap'
 import Sound from 'react-sound';
+import answerService from '../../services/answers'
 
 /**
  * EndScreen is the game over/results screen of Luupeli.
@@ -22,7 +23,8 @@ class EndScreen extends React.Component {
     this.state = {
       style: localStorage.getItem('style'),
       user: null,
-      redirect: false
+      redirect: false,
+      allImgAnswers: []
     }
     this.proceedToMain = this.proceedToMain.bind(this)
     this.proceedToGameModeSelection = this.proceedToGameModeSelection.bind(this)
@@ -36,8 +38,6 @@ class EndScreen extends React.Component {
       const user = JSON.parse(loggedUserJSON)
       this.setState({ user })
     }
-    console.log(this.props.game)
-    console.log(this.props.game.gameLength)
   }
 
   proceedToMain(event) {
@@ -57,7 +57,7 @@ class EndScreen extends React.Component {
 		this.setState({ redirect: true })
 		this.setState({ redirectTo: '/game' })
 	}
-  
+	
   //Sorts answer array from most difficult to answer (for the player) to least difficult
   //First incorrect/almost correct answers sorted by correctness, then completely correct answers sorted by time spent answering
   sortByDifficulty(answers) {
@@ -112,23 +112,24 @@ class EndScreen extends React.Component {
 		
 		return(
 			<Col xs={12} md={6}>
-						<Row className="show-grid row-eq-height">
-							<Col xs={6}>
-								<CloudinaryContext cloudName="luupeli">
-									<Image publicId={answer.image.url+".png"}>
-										<Transformation height={imageWidth()} crop="fill" />
-									</Image>
-								</CloudinaryContext>
-							</Col>
-							<Col xs={6} bsClass="text-bg col">
-								<p><b>{answer.image.bone.nameLatin}</b></p>
-								<p>Vastasit: {answer.answer}</p>
-								<p>Aika: {answer.seconds / 10} s</p>
-								<p>Pisteet: {answer.score}</p>
-								<p className={gradeMarkClass}>{gradeMark}</p>
-							</Col>
-						</Row>
+				<Row className="show-grid row-eq-height">
+					<Col xs={6}>
+						<CloudinaryContext cloudName="luupeli">
+							<Image publicId={answer.image.url+".png"}>
+								<Transformation height={imageWidth()} crop="fill" />
+							</Image>
+						</CloudinaryContext>
 					</Col>
+					<Col xs={6} bsClass="text-bg col">
+						<ProgressBar now={60} />
+						<p><b>{answer.image.bone.nameLatin}</b></p>
+						<p>Vastasit: {answer.answer}</p>
+						<p>Aika: {answer.seconds / 10} s</p>
+						<p>Pisteet: {answer.score}</p>
+						<p className={gradeMarkClass}>{gradeMark}</p>
+					</Col>
+				</Row>
+			</Col>
 		)
 		
 	}
@@ -136,23 +137,6 @@ class EndScreen extends React.Component {
   //Render all answers as rows and cols
   //Answer array is split in half so that two answers can be rendered side-by-side
   renderAnswers() {
-		
-		const imageWidth = () => {
-			const windowWidth = Math.max(
-				document.body.scrollWidth,
-				document.documentElement.scrollWidth,
-				document.body.offsetWidth,
-				document.documentElement.offsetWidth,
-				document.documentElement.clientWidth
-			)
-			if (windowWidth > 400) {
-				return 300
-			}
-			return windowWidth - 100
-		}
-		
-		const totalAnswers = this.props.game.answers.length
-		
 		const sortedAnswers = this.sortByDifficulty(this.props.game.answers)
 		console.log(sortedAnswers)
 		
