@@ -15,7 +15,8 @@ const initialState = {
         startedAt: undefined,
         stoppedAt: undefined,
         playSound: false,
-        gameDifficulty: "medium"
+        gameDifficulty: "medium",
+        gameStarted: new Date().getTime()
     }
 }
 
@@ -27,7 +28,9 @@ const gameReducer = (store = initialState.game, action) => {
             wrongAnswerOptions: action.wrongAnswerOptions, currentImage: action.currentImage, user: action.user,
             totalScore: action.totalScore, gameLength: action.gameLength, endCounter: action.endCounter,
             totalSeconds: action.totalSeconds, images: action.images, animals: action.animals,
-            bodyparts: action.bodyparts, answers: action.answer, gamemode: action.gamemode, playSound: action.playSound, gameDifficulty: action.gameDifficulty, startTime: action.startTime, getGameClock: action.getGameClock
+            bodyparts: action.bodyparts, answers: action.answer, gamemode: action.gamemode, playSound: action.playSound, 
+            gameDifficulty: action.gameDifficulty, startTime: action.startTime, getGameClock: action.getGameClock,
+            gameStarted: action.gameStarted
         }
     }
     if (action.type === 'SET_ANSWER') {
@@ -97,7 +100,8 @@ export const gameInitialization = (gameLength, images, user, gamemode, animals, 
         totalScore: 0,
         gameClock: 0,
         playSound: playSound,
-        gameDifficulty: gameDifficulty
+        gameDifficulty: gameDifficulty,
+        gameStarted: new Date().getTime()
     }
 }
 

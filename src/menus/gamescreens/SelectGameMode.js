@@ -155,9 +155,9 @@ musicPlayer() {
   if (this.state.loopTheMusicMore) {
   return (
     <Sound
-    url="/sounds/351717__monkeyman535__cool-chill-beat-loop.wav"
+    url={"/sounds/"+this.state.allStyles[this.state.styleIndex].music}
       playStatus={Sound.status.PLAYING}
-      // playFromPosition={0 /* in milliseconds */}
+      //  playFromPosition={new Date().getTime()-this.state.musicStartTime}
       onLoading={this.handleSongLoading}
       onPlaying={this.handleSongPlaying}
       onFinishedPlaying={this.handleSongFinishedPlaying}
@@ -168,9 +168,9 @@ musicPlayer() {
   else if (!this.state.loopTheMusicMore) {
     return (
       <Sound
-      url="/sounds/351717__monkeyman535__cool-chill-beat-loop.wav"
+      url={"/sounds/"+this.state.allStyles[this.state.styleIndex].music}
         playStatus={Sound.status.STOPPED}
-        // playFromPosition={0 /* in milliseconds */}
+        // playFromPosition={new Date().getTime()-this.state.musicStartTime}
         onLoading={this.handleSongLoading}
         onLoad={this.startTheMusic()}
         onPlaying={this.handleSongPlaying}

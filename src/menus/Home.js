@@ -36,6 +36,7 @@ class Home extends React.Component {
                 secondary: '#ff2596',                   // Secondary is the middle color of the theme
                 tertiary: '#ef007c',                    // Tertiary is the darkest color of the theme
                 overlay: null,                          // Overlay can be used to add an extra layer of vfx on top of the viewport. Optional!
+                music: '346193__frankum__techno-80-base-loop.mp3'
             }, {
                 style: 'fallout',
                 background: 'background-fallout',
@@ -47,7 +48,8 @@ class Home extends React.Component {
                 primary: '#33BB33',
                 secondary: '#229922',
                 tertiary: '#115511',
-                overlay: 'crt'
+                overlay: 'crt',
+                music: '51239__rutgermuller__8-bit-electrohouse.wav'
             }, {
                 style: 'deep-blue',
                 background: 'background-deep-blue',
@@ -59,7 +61,8 @@ class Home extends React.Component {
                 primary: '#0033BB',
                 secondary: '#002299',
                 tertiary: '#000055',
-                overlay: null
+                overlay: null,
+                music: '351717__monkeyman535__cool-chill-beat-loop.wav'
             }, {
                 style: 'steel',
                 background: 'background-steel',
@@ -71,7 +74,8 @@ class Home extends React.Component {
                 primary: '#BBBBFF',
                 secondary: '#9999DD',
                 tertiary: '#555599',
-                overlay: null
+                overlay: null,
+                music: '351717__monkeyman535__cool-chill-beat-loop.wav'
             }],
             styleIndex: 0,
             style: 'blood-dragon',
@@ -90,7 +94,9 @@ class Home extends React.Component {
             attractMode: 0,
             attractAnimation: true,
             loopTheMusic: false,
-            bestPlayers: []
+            bestPlayers: [],
+            musicStartTime: '',
+            music: '346193__frankum__techno-80-base-loop.mp3'
         }
 
         // The method sets the first style as default if none are chosen.
@@ -138,7 +144,7 @@ class Home extends React.Component {
 
     
   tick() {
-    if (this.state.attractMode%20>16 || (this.state.attractMode%80>7 && this.state.attractMode%80<10)) {
+    if (this.state.attractMode%20>16 || (this.state.attractMode%80>7 && this.state.attractMode%80<10) || (this.state.attractMode%80>47 && this.state.attractMode%80<50)) {
       this.setState({attractMode:this.state.attractMode+1,attractAnimation:false})
     } else {
       this.setState({attractMode:this.state.attractMode+1,attractAnimation:true})
@@ -211,7 +217,8 @@ class Home extends React.Component {
                 primary: this.state.allStyles[localStorage.styleIndex].primary,
                 secondary: this.state.allStyles[localStorage.styleIndex].secondary,
                 tertiary: this.state.allStyles[localStorage.styleIndex].tertiary,
-                overlay: this.state.allStyles[localStorage.styleIndex].overlay
+                overlay: this.state.allStyles[localStorage.styleIndex].overlay,
+                music:  this.state.allStyles[localStorage.styleIndex].music
             })
         }
     }
@@ -372,7 +379,7 @@ class Home extends React.Component {
           var trueScorers = [];
 
           if (this.state.bestPlayers.length > 10) {
-              trueScorers = this.state.bestPlayers.slice(0, 10 + 1)
+              trueScorers = this.state.bestPlayers.slice(0, 10 )
           } else {
               trueScorers = this.state.bestPlayers
           }
@@ -461,16 +468,20 @@ class Home extends React.Component {
     lines.push('Timo Leskinen')
     lines.push('Tuomas Honkala')
     lines.push('Ville Hänninen')
-    lines.push('Toteutettu ohjelmistotuotantoprojektina')
-    lines.push('Helsingin Yliopiston Tietojenkäsittelytieteen laitokselle '+heartEmoji)
+    lines.push('Toteutettu ohjelmistotuotantoprojektina Helsingin Yliopiston Tietojenkäsittelytieteen laitokselle '+heartEmoji)
    }
-   else if (this.state.attractMode%80<=60) {
+   else if (this.state.attractMode%80<=50) {
     heading='Luupeli features music and sfx from Freesound.org'
     lines.push('Chiptune Intro #1 by Fred1712')
     lines.push('Electro success sound by Mativve')
     lines.push('Error.wav by Autistic Lucario')
     lines.push('Retro Bonus Pickup SFX by suntemple')
+   }
+   else if (this.state.attractMode%80<=60) {
+    heading='Freesound.org continued...'
     lines.push('Cool Chill Beat Loop by monkeyman535')
+    lines.push('Techno 80 - base loop by frankum')
+    lines.push('8-bit ElectroHouse by RutgerMuller')
     lines.push('Used under Creative Commons (CC) license')
     lines.push('The Luupeli devs kindly thank these content creators! '+heartEmoji)
    }
@@ -480,16 +491,16 @@ class Home extends React.Component {
    lines.push('Miksi sinä vielä luet tätä?')
    lines.push('Mene pelaamaan siitä!')
    lines.push('Opettele uusi luu!')
-   lines.push('...')
+   lines.push('Tai kaksi!')
    lines.push('Jaa minäkö?')
    lines.push('Olisin mieluummin purjehtimassa!')
    } else if (this.state.attractMode%320<=160) {
     heading='LUUPELI MUISTUTTAA'
     lines.push('Laiska tyäs huomiseen lykkää.')
     lines.push('Laiskalla hiki syödessä, vilu työtä tehdessä.')
-    lines.push('Laiska ei sua, ahkera sua yltäkyllin')
-    lines.push('...')
-    lines.push('Se ei pelaa, joka pelkää.')
+    lines.push('Laiska ei sua, ahkera sua yltäkyllin.')
+    lines.push('Tekee vanhakin, jos ei muuta niin hiljaa kävelee.')
+    lines.push('Se ei pelaa, joka pelkää!!')
    }  else if (this.state.attractMode%320<=240) {
     heading='LUUPELI ANELEE'
     lines.push('Haluan, että lopetat näiden lukemisen.')
@@ -547,7 +558,8 @@ class Home extends React.Component {
   }
 }
 startTheMusic () {
-   this.setState({loopTheMusic: true})
+   this.setState({loopTheMusic: true, musicStartTime: new Date().getTime()})
+
 }
 
 
@@ -556,7 +568,7 @@ startTheMusic () {
         if (this.state.loopTheMusic) {
             return (
                 <Sound
-                    url="/sounds/351717__monkeyman535__cool-chill-beat-loop.wav"
+                    url={"/sounds/"+this.state.music}
                     playStatus={Sound.status.PLAYING}
                     // playFromPosition={0 /* in milliseconds */}
                     onLoading={this.handleSongLoading}
@@ -570,7 +582,7 @@ startTheMusic () {
         else if (!this.state.loopTheMusic) {
             return (
                 <Sound
-                    url="/sounds/351717__monkeyman535__cool-chill-beat-loop.wav"
+                    url={"/sounds/"+this.state.music}
                     playStatus={Sound.status.STOPPED}
                     // playFromPosition={0 /* in milliseconds */}
                     onLoading={this.handleSongLoading}

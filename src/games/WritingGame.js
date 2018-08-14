@@ -54,7 +54,7 @@ class WritingGame extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.game.endCounter !== prevProps.game.endCounter) {
       this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
-      //this.props.startGameClock()
+      this.props.startGameClock()
     }
   }
 
@@ -67,7 +67,7 @@ class WritingGame extends React.Component {
    */
   handleSubmit(event) {
     event.preventDefault()
-    this.props.startGameClock()
+    this.props.stopGameClock()
     this.setState({ lastValue: this.state.value })
     let currentStreak = this.state.streakWG
     let currentBonus = this.state.bonus
@@ -234,6 +234,8 @@ class WritingGame extends React.Component {
    */
   render() {
 
+    var currentMoment = new Date().getTime()
+
     const answerInput = () => {
       if (this.state.lastValue === undefined) {
         return (
@@ -293,8 +295,12 @@ class WritingGame extends React.Component {
     }
 
 
+    var timeToCompare = this.props.game.gameStarted
+    if (this.props.game.scoreflash!==undefined) {
+      timeToCompare=this.props.game.scoreflash.startTime
+    }
 
-    if (this.gameClockUnits() > 60 && this.props.game.gameDifficulty === 'easy') {
+    if (currentMoment-timeToCompare > (3000) && this.props.game.gameDifficulty === 'easy') {
       this.revealPartialAnswer()
     }
 
@@ -337,9 +343,7 @@ class WritingGame extends React.Component {
     let cheat = ''
     if (this.props.game.gameDifficulty === 'easy') {
       cheat = this.state.partialEasyAnswer
-    }
-
-    if (!this.state.animationActive) {
+    } else if (!this.state.animationActive) {
       cheat = this.props.game.currentImage.bone.nameLatin
     } else {
       cheat = '???'

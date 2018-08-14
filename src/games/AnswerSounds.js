@@ -21,7 +21,7 @@ class AnswerSounds extends React.Component {
 
     render() {
         if (this.props.correctness !== undefined) {
-            if (this.props.game.playSound) {
+            
                 console.log(this.props.correctness)
                 if (this.props.correctness > 99) {
                     return (
@@ -38,7 +38,7 @@ class AnswerSounds extends React.Component {
                         />
                     )
                 }
-            }
+            
         } else {
             return 
                 null;

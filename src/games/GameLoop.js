@@ -202,8 +202,8 @@ class GameLoop extends React.Component {
                         {progressBar}
                     </ProgressBar>
                     <h3>SCORE {scoreShown}</h3>
-                    <h5>STAMP TIME {this.state.seconds}</h5>
-                    <h5>STAMP UNITS {this.gameClockUnits()}</h5>
+                    <h5>TIME {this.state.seconds}</h5>
+                    {/* <h5>STAMP UNITS {this.gameClockUnits()}</h5> */}
                     {this.reminderOfPreviousImage(progressWidth)}
                 </div>
                 
@@ -445,7 +445,11 @@ class GameLoop extends React.Component {
         if (!this.props.scoreflash.visibility) {
             scoreActual=0
         }
-        let scoreShown = this.props.game.totalScore  + Math.min(scoreActual, Math.round(scoreActual * (this.gameClockUnits() / durationOfScoreRise)))
+        let scoreShown = this.props.game.totalScore
+        if (this.props.game.scoreflash!==undefined) {
+            scoreShown=
+         this.props.game.totalScore  + Math.min(scoreActual, Math.round(scoreActual * ((new Date().getTime()-this.props.game.scoreflash.startTime) / (50*durationOfScoreRise))))
+        }
 
         return (
 

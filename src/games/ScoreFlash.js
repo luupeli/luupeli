@@ -50,7 +50,7 @@ class ScoreFlash extends React.Component {
 	 */
 	render() {
 		const style = 'scoreflash'   // <--- PLACEHOLDER CSS EFFECT!!! {this.props.scoreflash.score}
-		var gameClock = Math.round(((new Date).getTime() - this.props.game.startedAt) / 50)
+		var gameClock = new Date().getTime() - this.props.scoreflash.startTime
 		const scoreActual = this.props.scoreflash.score
 
 		
@@ -58,7 +58,7 @@ class ScoreFlash extends React.Component {
 		const durationOfScoreRise = Math.min(30, (scoreActual / 10) + 5)
 		
 		let scoreShown = Math.min(scoreActual, Math.round(scoreActual * (gameClock / durationOfScoreRise)))
-	//	console.log('scoreFlash: gameclock: ' + gameClock+', scoreShown: '+scoreShown)
+		// console.log('scoreFlash: gameclock: ' + gameClock+', scoreShown: '+scoreShown)
 		let scoreShownForDelayedSound = Math.min(scoreActual * 1.4, Math.round(scoreActual * (gameClock / durationOfScoreRise)))
 		let durationOfScoreRiseForSound = Math.min(30, (scoreActual / 10) + 5) + 5
 		//	position="fixed"
@@ -71,7 +71,7 @@ class ScoreFlash extends React.Component {
 	
 
 
-		if (this.props.scoreflash !== undefined && gameClock<60 && this.props.scoreflash.scoreflash.length !== 0) {
+		if (this.props.scoreflash !== undefined && gameClock<3000 && this.props.scoreflash.scoreflash.length !== 0) {
 		//if (this.props.scoreflash !== undefined && this.props.game.stoppedAt && this.props.scoreflash.scoreflash.length !== 0) {
 			return (<div>
 				<Animated animationIn="bounceIn faster" animationOut="bounceOut faster" isVisible={ this.props.scoreflash.visibility}>

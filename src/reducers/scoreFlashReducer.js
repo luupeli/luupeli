@@ -5,7 +5,8 @@ const initialState = {
         streakemoji: '',
         scoreflash: '',
         style: '',
-        visibility: true
+        visibility: true,
+        startTime: new Date().getTime()
     }
 }
 
@@ -17,7 +18,7 @@ const scoreFlashReducer = (store = initialState.scoreflash, action) => {
     }
     if (action.type === 'SET_SCOREFLASH') {
         console.log(action)
-        return { ...store, score: action.score, streak:action.streak, streakemoji:action.streakemoji,scoreflash: action.scoreflash, style: action.style, visibility: action.visibility }
+        return { ...store, score: action.score, streak:action.streak, streakemoji:action.streakemoji,scoreflash: action.scoreflash, style: action.style, visibility: action.visibility, startTime: action.startTime }
     }
 
     return store
@@ -83,7 +84,8 @@ export const setScoreFlashOn = (score,streak,streakemoji,scoreflash, style, visi
         streakemoji: streakemoji,
         scoreflash: scoreflash,
         style: style,
-        visibility: visibility
+        visibility: visibility,
+        startTime: new Date().getTime()
     }
 }
 
