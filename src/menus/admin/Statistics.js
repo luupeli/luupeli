@@ -27,7 +27,6 @@ class Statistics extends React.Component {
 
 	updateDate(date){
 		console.log(date)
-		console.log(this.state.gameSessionsFiltered[0].timeStamp)
 		const end = date.endDate._d
 		const endDateFormatted = ""
 		console.log(end)

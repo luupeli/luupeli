@@ -341,53 +341,16 @@ class GameSettings extends React.Component {
 								</div>
 								<div className="game-text-input">
 									<div className="col-md-12">
-<<<<<<< HEAD
 									<h3 className="form-header">Luupelin pituus:</h3>
 									<div className="game-text-input">
 										<input
-											id="gameTextInput"
+											id="gameLength"
 											type="text"
 											style={{color:'black'}}
 											value={this.state.gameLength}
 											onChange={this.changeGameLength.bind(this)}
 											name="length"
 											/>
-=======
-										<h4 className="form-header">Luupelin pituus:</h4>
-										<form>
-											<label className="radio-inline">
-												<input
-													type="radio"
-													id="gameLengthShort"
-													value="3"
-													onClick={this.changeGameLength.bind(this)}
-													name="length"
-												/>
-												3
-											</label>
-											<label className="radio-inline">
-												<input
-													type="radio"
-													id="gameLengthMedium"
-													value="5"
-													onClick={this.changeGameLength.bind(this)}
-													name="length"
-													defaultChecked
-												/>
-												5
-											</label>
-											<label className="radio-inline">
-												<input
-													type="radio"
-													id="gameLengthLong"
-													value="7"
-													onClick={this.changeGameLength.bind(this)}
-													name="length"
-												/>
-												7
-											</label>
-										</form>
->>>>>>> b1e1fdb6472a84f09c877ece90c32b9babdf61ca
 									</div>
 								</div>
 

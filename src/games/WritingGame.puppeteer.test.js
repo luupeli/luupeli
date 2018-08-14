@@ -40,9 +40,12 @@ describe('WritingGame tests', () => {
 		await page.waitForSelector('#writingGameButton')
 		// await page.screenshot({ path: 'menu2.png', fullPage: true });
 		await page.click('#writingGameButton')
-
+		
 		//Select settings and begin game
 		// await page.screenshot({ path: 'menu3.png', fullPage: true });
+		await page.waitForSelector('#gameLength')
+		const gameLength = await page.$eval('#gameLength', el => el.value)
+		console.log(gameLength)
 
 		await page.waitForSelector('#gameEasy')
 		await page.click('#gameEasy')

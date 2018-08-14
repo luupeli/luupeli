@@ -128,14 +128,6 @@ class GameLoop extends React.Component {
     }
 
     postGameSession() {
-<<<<<<< HEAD
-        let userToBePosted = null
-        if (this.state.user !== null) {
-            userToBePosted = this.state.user.id
-        }
-        console.log(userToBePosted)
-=======
->>>>>>> b1e1fdb6472a84f09c877ece90c32b9babdf61ca
         gameSessionService.create({
             user: this.props.game.user !== null ? this.props.game.user.id : null,
             gamemode: this.props.game.gamemode,
@@ -243,7 +235,7 @@ class GameLoop extends React.Component {
                 <div className="intro">
                 <CloudinaryContext cloudName="luupeli">
                   <div className="height-restricted" >
-                    <Animated animationIn="fedeIn" animationOut="fadeOut faster" animationInDelaya="100" animationOutDelay="100" isVisible={animationActive}>
+                    <Animated animat3="fedeIn" animationOut="fadeOut faster" animationInDelaya="100" animationOutDelay="100" isVisible={animationActive}>
                       <Image id="bone-image" publicId={this.state.previousImage.url}>
     
                         <Transformation width="250" height="150" crop="scale" effect="grayscale"/>
