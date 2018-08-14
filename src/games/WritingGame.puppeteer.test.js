@@ -8,7 +8,7 @@ let page
 beforeAll(async () => {
 	browser = await puppeteer.launch({ args: ['--no-sandbox'] })
 	page = await browser.newPage()
-	jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000
+	jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000
 	await page.setViewport({ width: 1280, height: 800 })
 })
 
@@ -28,7 +28,7 @@ afterAll(async () => {
 describe('WritingGame tests', () => {
 
 	test('easy short playthrough', async () => {
-		jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000
+		jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000
 		//Navigate to Select Game Mode-screen
 		console.log("navigating from main page to game mode selection")
 		await page.waitForSelector('#proceedToSelectGameMode')

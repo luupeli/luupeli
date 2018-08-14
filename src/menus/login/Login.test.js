@@ -11,7 +11,7 @@ let loggedIn = false // Helper variable
 
 beforeAll(async () => {
 	browser = await puppeteer.launch({ args: ['--no-sandbox'] })
-	jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000
+	jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000
 	page = await browser.newPage()
 	await page.setViewport({ width: 1280, height: 800 })
 })
