@@ -20,6 +20,10 @@ const scoreFlashReducer = (store = initialState.scoreflash, action) => {
         console.log(action)
         return { ...store, score: action.score, streak:action.streak, streakemoji:action.streakemoji,scoreflash: action.scoreflash, style: action.style, visibility: action.visibility, startTime: action.startTime }
     }
+    if (action.type === 'SET_LIMITEDSCOREFLASH') {
+        console.log(action)
+        return { ...store, score: action.score, style: action.style, visibility: action.visibility }
+    }
 
     return store
 }
@@ -55,7 +59,7 @@ export const setScoreFlash = (score, streak,streakemoji, scoreflash, style, time
     return async (dispatch) => {
       dispatch(setScoreFlashOn(score,streak,streakemoji,scoreflash, style,visibility))
       setTimeout(() => {
-        dispatch(setScoreFlashOn(score,streak,streakemoji, scoreflash,style,false))
+        dispatch(limitedSetScoreFlashOn(score,'outbound',false))
       }, 2000)
 
     }
@@ -86,6 +90,16 @@ export const setScoreFlashOn = (score,streak,streakemoji,scoreflash, style, visi
         style: style,
         visibility: visibility,
         startTime: new Date().getTime()
+    }
+}
+
+export const limitedSetScoreFlashOn = (score, style, visibility) => {
+    
+    return {
+        type: 'SET_LIMITEDSCOREFLASH',
+        score: score,
+        style: style,
+        visibility: visibility,
     }
 }
 

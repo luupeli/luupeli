@@ -55,26 +55,30 @@ class ScoreFlash extends React.Component {
 
 		
 
-		const durationOfScoreRise = Math.min(30, (scoreActual / 10) + 5)
+		const durationOfScoreRise = Math.min(30, (scoreActual / 10) + 5)*50
 		
 		let scoreShown = Math.min(scoreActual, Math.round(scoreActual * (gameClock / durationOfScoreRise)))
-		// console.log('scoreFlash: gameclock: ' + gameClock+', scoreShown: '+scoreShown)
+		 console.log('scoreFlash: gameclock: ' + gameClock+', scoreShown: '+scoreShown)
 		let scoreShownForDelayedSound = Math.min(scoreActual * 1.4, Math.round(scoreActual * (gameClock / durationOfScoreRise)))
 		let durationOfScoreRiseForSound = Math.min(30, (scoreActual / 10) + 5) + 5
 		//	position="fixed"
 
-		let rowtext = this.props.scoreflash.streak + '' + this.props.scoreflash.streakemoji + '' + scoreShown//+ ''+this.props.scoreflash.streakemoji
+		let rowtext = 
+		//this.props.scoreflash.streak + '' + 
+		//this.props.scoreflash.streakemoji + '' +
+		 ''+scoreShown+''.toString()//+ ''+this.props.scoreflash.streakemoji
 
 		if (scoreActual === 0) {
 			rowtext = this.props.scoreflash.streakemoji + 'VÄÄRIN!' + this.props.scoreflash.streakemoji
 		}
-	
+		 var rowtextLeft = rowtext.substring(0,rowtext.length/2)
+		 var rowtextRight = rowtext.substring(rowtext.length/2,rowtext.length)
 
 
-		if (this.props.scoreflash !== undefined && gameClock<3000 && this.props.scoreflash.scoreflash.length !== 0) {
+		if (this.props.scoreflash !== undefined && gameClock<2500 && this.props.scoreflash.scoreflash.length !== 0) {
 		//if (this.props.scoreflash !== undefined && this.props.game.stoppedAt && this.props.scoreflash.scoreflash.length !== 0) {
 			return (<div>
-				<Animated animationIn="bounceIn faster" animationOut="bounceOut faster" isVisible={ this.props.scoreflash.visibility}>
+				<Animated animationIn="bounceInDown faster" animationOut="bounceOutUp faster" isVisible={ this.props.scoreflash.visibility}>
 					<div
 						className={style}
 						role="alert"
@@ -85,8 +89,14 @@ class ScoreFlash extends React.Component {
 						margin="5px"
 					>
 					
-						<h3>{rowtext}</h3>
+						{/* <h3>{rowtext}</h3> */}
+						{/* <h3>{this.props.scoreflash.streak}{this.props.scoreflash.streakemoji}</h3> */}
 						
+						<h3><Animated animationIn="bounceInLeft faster" animationOut="bounceOutLeft faster" isVisible={ this.props.scoreflash.visibility}>{rowtextLeft}</Animated>
+						<Animated animationIn="bounceInRight faster" animationOut="bounceOutRight faster" isVisible={ this.props.scoreflash.visibility}>{rowtextRight}</Animated>
+						</h3>
+
+						<Animated animationIn="bounceInUp faster" animationOut="bounceOutDown faster" isVisible={ this.props.scoreflash.visibility}><h3>{this.props.scoreflash.streak}{this.props.scoreflash.streakemoji}</h3></Animated>
 						
 					</div>
 				</Animated>
