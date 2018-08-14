@@ -23,7 +23,7 @@ class GameSettings extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			gameLength: 5,
+			gameLength: '5',
 			gamemode: '',
 			redirect: false,
 			allImages: [],		   // used to store an array of alla known images
@@ -34,9 +34,13 @@ class GameSettings extends React.Component {
 			styleIndex: localStorage.getItem('styleIndex'),
       user: null,
       animals: [],
-      bodyParts: []
+	  bodyParts: [],
+	  playSound: true,
+	  gameDifficulty: 'medium'
 		}
 
+		this.changeGameDifficulty = this.changeGameDifficulty.bind(this)
+		this.changeSoundSetting = this.changeSoundSetting.bind(this)
 		this.changeAnimal = this.changeAnimal.bind(this)
 		this.toggleCheck = this.toggleCheck.bind(this)
 		this.atLeastOneBodyPartIsSelected = this.atLeastOneBodyPartIsSelected.bind(this)
@@ -104,10 +108,39 @@ class GameSettings extends React.Component {
 	}
 
 	changeGameLength(event) {
-		this.setState({ gameLength: [event.target.value] })
+		const re = /^[0-9\b]+$/
+
+		if (event.target.value == '' || re.test(event.target.value)) {
+			this.setState({ gameLength: event.target.value })
+		}
 		console.log(typeof this.state.gameLength)
 		console.log('Pelin pituus on nyt ... ' + this.state.gameLength)
 	}
+
+	changeGameDifficulty(event) {
+		if (event.target.value==='easy') {
+			this.setState({ gameDifficulty: 'easy' }) 
+		}
+		if (event.target.value==='medium') {
+			this.setState({ gameDifficulty: 'medium' }) 
+		}
+		if (event.target.value==='hard') {
+			this.setState({ gameDifficulty: 'hard' }) 
+		}
+	}
+
+	changeSoundSetting(event) {
+		
+		if (event.target.value==="true") {
+
+		   this.setState({ playSound: true }) 
+		} 
+		else  {
+
+		   this.setState({ playSound: false }) 
+		}
+	}
+
 
 	changeAnimal(i, event) {
 		const animals = this.state.allAnimals
@@ -150,6 +183,8 @@ class GameSettings extends React.Component {
 		}
 	}
 
+	
+
 	// Returns the state
 	state() {
 		return this.state
@@ -158,7 +193,7 @@ class GameSettings extends React.Component {
 	initializeGame() {
 		// Filtering selected animals and body parts
 		let chosenAnimals = this.state.allAnimals.filter(animal => animal.selected === true)
-    let chosenBodyParts = this.state.allBodyParts.filter(bodyPart => bodyPart.selected === true)
+ 	    let chosenBodyParts = this.state.allBodyParts.filter(bodyPart => bodyPart.selected === true)
     
 		console.log(this.state.allAnimals)
 		console.log(chosenAnimals)
@@ -197,11 +232,26 @@ class GameSettings extends React.Component {
       }
       for (let bodyPart of chosenBodyParts) {
         delete bodyPart.selected
-      }
-      this.setState({ images: pics })
-      this.setState({ animals : chosenAnimals })
-      this.setState({ bodyParts: chosenBodyParts })
-			this.setState({ redirect: true })
+	  }
+
+	  //sets the gameLength from String to Integer, and between 3 and 25 if necessary
+	  if (this.state.gameLength === '') {
+		  this.setState({ gameLength : 3 })
+	  } else {
+		  //string to number
+		  let length = parseInt(this.state.gameLength, 10)
+		  if (length < 3) {
+			  length = 3
+		  } else if (length > 25) {
+			  length = 25
+		  }
+		  this.setState({gameLength : length})
+	  }
+	  console.log(this.state.gameLength)
+	  console.log(typeof this.state.gameLength)
+	  
+	  
+	this.setState({ images: pics,animals : chosenAnimals, bodyParts: chosenBodyParts, redirect: true })
 		}
 		console.log(pics)
 
@@ -222,7 +272,7 @@ class GameSettings extends React.Component {
 
 		if (this.state.redirect) {
       this.props.gameInitialization(this.state.gameLength, this.state.images, this.state.user, 
-        this.props.location.state.gamemode, this.state.animals, this.state.bodyParts)
+        this.props.location.state.gamemode, this.state.animals, this.state.bodyParts,this.state.playSound, this.state.gameDifficulty)
 			return (
 				<Redirect to={{
 					pathname: '/game',
@@ -284,74 +334,22 @@ class GameSettings extends React.Component {
 										</form>
 									</div>
 								</div>
-								<div className="container">
-									<div className="col-md-12">
-										<h3 className="form-header">Luupelin pituus:</h3>
-										<form>
-											<label className="radio-inline">
-												<input
-													type="radio"
-													id="gameLengthShort"
-													value={3}
-													onClick={this.changeGameLength.bind(this)}
-													name="length"
-												/>
-												3
-											</label>
-											<label className="radio-inline">
-												<input
-													type="radio"
-													id="gameLengthMedium"
-													value={5}
-													onClick={this.changeGameLength.bind(this)}
-													name="length"
-													defaultChecked
-												/>
-												5
-											</label>
-											<label className="radio-inline">
-												<input
-													type="radio"
-													id="gameLengthLong"
-													value={7}
-													onClick={this.changeGameLength.bind(this)}
-													name="length"
-												/>
-												7
-											</label>
-										</form>
-									</div>
-								</div>
-								<div className="container">
+								<div className="game-text-input">
 									<div className="col-md-12">
 									<h3 className="form-header">Luupelin pituus:</h3>
-									<select>
-										<option value="volvo">Volvo</option>
-										<option value="saab">Saab</option>
-										<option value="opel">Opel</option>
-										<option value="audi">Audi</option>
-										<option value="volvo">Volvo</option>
-										<option value="saab">Saab</option>
-										<option value="opel">Opel</option>
-										<option value="audi">Audi</option>
-										<option value="volvo">Volvo</option>
-										<option value="saab">Saab</option>
-										<option value="opel">Opel</option>
-										<option value="audi">Audi</option>
-										<option value="volvo">Volvo</option>
-										<option value="saab">Saab</option>
-										<option value="opel">Opel</option>
-										<option value="audi">Audi</option>
-										<option value="volvo">Volvo</option>
-										<option value="saab">Saab</option>
-										<option value="opel">Opel</option>
-										<option value="audi">Audi</option>
-										<option value="volvo">Volvo</option>
-										<option value="saab">Saab</option>
-										<option value="opel">Opel</option>
-										<option value="audi">Audi</option>
-									</select>
+									<div className="game-text-input">
+										<input
+											id="gameTextInput"
+											type="text"
+											style={{color:'black'}}
+											value={this.state.gameLength}
+											onChange={this.changeGameLength.bind(this)}
+											name="length"
+											/>
 									</div>
+								</div>
+
+									
 								</div>
 								<div className="container">
 									<div className="col-md-12">
@@ -362,6 +360,7 @@ class GameSettings extends React.Component {
 													type="radio"
 													id="gameEasy"
 													value="easy"
+													onClick={this.changeGameDifficulty.bind(this)}
 													name="difficultylevel"
 												/>
 												Luupää (helppo)
@@ -372,19 +371,51 @@ class GameSettings extends React.Component {
 													id="gameMedium"
 													value="medium"
 													name="difficultylevel"
+													onClick={this.changeGameDifficulty.bind(this)}
 													defaultChecked
 												/>
-												Normaali
+												Luunkova
 											</label>
 											<label className="radio-inline">
 												<input
 													type="radio"
 													id="gameHard"
 													value="hard"
+													onClick={this.changeGameDifficulty.bind(this)}
 													name="difficultylevel"
 												/>
-												Luunkova (vaikea)
+												Luu-5 (vaikea)
 											</label>
+										</form>
+										
+									</div>
+								</div>
+								<div className="container">
+									<div className="col-md-12">
+										<h3 className="form-header">Äänet:</h3>
+										<form>
+											<label className="radio-inline">
+												<input
+													type="radio"
+													id="soundsOn"
+													value="true"
+													name="sound"
+													defaultChecked
+													onClick={this.changeSoundSetting.bind(this)}
+												/>
+												Päällä
+											</label>
+											<label className="radio-inline">
+												<input
+													type="radio"
+													id="soundsOff"
+													value="false"
+													name="sound"
+													onClick={this.changeSoundSetting.bind(this)}
+												/>
+												Pois
+											</label>
+											
 										</form>
 										<div className="btn-group wide settingspage GameButton">
 											<button id="luupeliinButton" onClick={this.atLeastOneBodyPartIsSelected}>Luupeliin >></button>

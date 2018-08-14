@@ -26,10 +26,17 @@ class WritingGame extends React.Component {
       currentScoreFlashTime: 0,
       currentScoreFlashCutOff: 0,
       currentScoreFlashVisibility: false,
+      fullEasyAnswer: '',
+      partialEasyAnswer: '__',
+      previousRevealClock: 0,
+      easyDifficultyPenalty: 1.0
       
     }
+    this.getRandomInt = this.getRandomInt.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.revealPartialAnswer = this.revealPartialAnswer.bind(this)
+    window.onunload = function () { window.location.href = '/' }
   }
 
   handleChange(event) {
@@ -51,10 +58,27 @@ class WritingGame extends React.Component {
     if (this.props.game.gameClock < 200) {
       points = points * ((400 - this.props.game.gameClock) / 40)
     }
+
+    if (this.props.game.gameDifficulty==='easy') {
+      points = points * 0.5
+      points = points * Math.max(0.2,this.state.easyDifficultyPenalty)
+      if (this.state.partialEasyAnswer===this.props.game.currentImage.bone.nameLatin) {
+        points = points * 0.25
+      }
+      if (points<20) {
+        points=20
+      }
+    }
+
+    let hardBonus= 0.0
+    if (this.props.game.gameDifficulty==='hard') {
+      hardBonus = 1.0
+    }
+
     if (this.checkCorrectness() > 99) {
       points = points * 5
       correctness = 'Oikein'
-      this.setState({ streakWG: currentStreak + 1, bonus: currentBonus + 1.0 })
+      this.setState({ streakWG: currentStreak + 1, bonus: currentBonus + 1.0 + hardBonus, value: '',previousRevealClock: 0,partialEasyAnswer: '__',easyDifficultyPenalty:1.0  })
       streakNote = currentBonus + 'x!'
       if (currentBonus < 1.5) {
         streakNote = ''
@@ -63,7 +87,12 @@ class WritingGame extends React.Component {
       streakEmoji = streakEmoji.get('fire')
       console.log(streakEmoji)
     } else {
-      this.setState({ streakWG: 0, bonus: 1.0 })
+
+      if (this.props.game.gameDifficulty==='hard') {
+        points = 40 * currentBonus
+      }
+
+      this.setState({ streakWG: 0, bonus: 1.0, value: '',previousRevealClock: 0,partialEasyAnswer: '__',easyDifficultyPenalty:1.0  })
       streakNote = ''
       if (this.checkCorrectness() < 1) {
         streakEmoji = require('node-emoji')
@@ -73,6 +102,8 @@ class WritingGame extends React.Component {
     if (this.checkCorrectness() > 85) {
       points = points * 2 * currentBonus
     }
+   
+
     points = Math.round(points / 20) * 20
     if (this.checkCorrectness() <= 70) {
       correctness = 'Väärin'
@@ -82,12 +113,20 @@ class WritingGame extends React.Component {
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
     this.props.setScoreFlash(points, streakNote,streakEmoji,scoreFlashRowtext, 'success',3,true)
     
-    this.setState({ value: '' })
+    //this.setState({ value: '',previousRevealClock: 0,partialEasyAnswer: '__' })
     this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(), this.state.value, this.props.game.gameClock, points)
     this.props.setImageToAsk(this.props.game.images, this.props.game.answers)
     this.props.setWrongImageOptions(this.props.game.currentImage, this.props.game.images)
     this.props.setWrongAnswerOptions(this.props.game.currentImage, this.props.game.images)
-    this.createMessage(points)  }
+    this.createMessage(points)  
+  
+    // let newPartial =''
+    // for (var i = 0; i< this.props.game.currentImage.bone.nameLatin.length; i++) {
+    //   newPartial = newPartial+'_'
+    // }
+    // this.setState( {fullEasyAnswer: this.props.game.currentImage.bone.nameLatin,partialEasyAnswer: newPartial})
+    
+  }
   
   /**
    * This method measures the "correctness" (or similarity) of the answer string compared to the actual latin name string.
@@ -121,10 +160,62 @@ class WritingGame extends React.Component {
       this.props.setMessage('Väärin (similarity: ' + similarity.toPrecision(2) + ')! Oikea vastaus oli ' + this.props.game.currentImage.bone.nameLatin.toLowerCase(), 'danger')
     }
   }
+
+  
+/**
+ * As demonstrated on Mozilla.org's Javascript reference
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+ * @param {*} min minimum value for the random int
+ * @param {*} max max value for the random int
+ */
+   getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+  }
+
+  revealPartialAnswer() {
+      let skipState = false;
+      if (this.state.partialEasyAnswer.length<3) {
+        skipState =true
+      }
+
+      if (this.getRandomInt(0,25)<1+this.props.game.gameClock/400 && this.props.game.gameClock-this.state.previousRevealClock>7) {
+        console.log('päästiin arvontaan')
+        let randomIndex = this.getRandomInt(0,this.props.game.currentImage.bone.nameLatin.length);
+        let newPartial = ''
+        let addPenalty = 0.0
+        for (var i = 0; i< this.props.game.currentImage.bone.nameLatin.length; i++) {
+          if (i===randomIndex || this.props.game.currentImage.bone.nameLatin.charAt(i)===' ') {
+          newPartial = newPartial+this.props.game.currentImage.bone.nameLatin.charAt(i)
+          if (!skipState) {
+            if (this.state.partialEasyAnswer.charAt(i)==='_') {
+          addPenalty = 0.02+Math.max(0,Math.min(((50-(this.props.game.currentImage.bone.nameLatin.length*2))/1000),0.06))
+            }
+          }
+        } else if (!skipState) {
+              newPartial = newPartial+this.state.partialEasyAnswer.charAt(i)
+        } else {
+          newPartial = newPartial+'_'
+        }
+        
+        
+     //   newPartial[randomIndex] =this.props.game.currentImage.bone.nameLatin[randomIndex]
+        this.setState( { previousRevealClock: this.props.game.gameClock, partialEasyAnswer: newPartial, easyDifficultyPenalty: this.state.easyDifficultyPenalty-addPenalty})
+        console.log('new partial on nyt : '+newPartial)
+        }
+
+      }
+  }
+
   /**
    * Notice that the bone images are fethched from Cloudinary, with a resize transformation done based on the measured window size.
    */
   render() {
+
+    if (this.props.game.gameClock>60 && this.props.game.gameDifficulty==='easy') {
+      this.revealPartialAnswer()
+    }
     
     const imageWidth = () => {              // Here we try to measure the window size in order to resize the bone image accordingly
       const windowWidth = Math.min(
@@ -162,14 +253,29 @@ class WritingGame extends React.Component {
     //{/* <Transformation width={imageWidth()} crop="fill" format="png" radius="20" /> */}
       //            {/* <Transformation width={imageWidth()} crop="fill" format="png" radius="20" /> */}
 
+    let cheat = ''
+    if (this.props.game.gameDifficulty==='easy') {
+      cheat = this.state.partialEasyAnswer
+    } else {
+      cheat = '(Oikea vastaus: '+this.props.game.currentImage.bone.nameLatin
+    }
+    let description = this.props.game.currentImage.bone.description
+    let name =  this.props.game.currentImage.bone.name
+
+    if (this.props.game.gameDifficulty==='hard') {
+      name = 'LUU-5!'
+    }
+
     return (
       <div className="bottom">
         <div className="row" id="image-holder">
           <div className="intro">
             <CloudinaryContext cloudName="luupeli">
               <div className="height-restricted" >
-                <Image id="bone-image" publicId={this.props.game.currentImage.url}     sizes="(min-width: 30em) 30em, 80vw">
-                  
+                <Image id="bone-image" publicId={this.props.game.currentImage.url}>
+
+                    <Transformation width={imageWidth()}/>
+                    
                 </Image>
               </div>
             </CloudinaryContext>
@@ -177,17 +283,17 @@ class WritingGame extends React.Component {
         </div>
         <div className="row">
           <div><center>
-            <h3 id="heading">{this.props.game.currentImage.bone.name}</h3></center>
+            <h3 id="heading">{name}</h3></center>
           </div>
         </div>
         {/* <div className="container">
           <div className="col-md-6 col-md-offset-3" id="info">
              */}
-            <p>{this.props.game.currentImage.bone.description}</p>
+            <p>{description}</p>
             {/* <p>Tätä kuvaa on yritetty {attempts} kertaa, niistä {correctAttempts} oikein. Oikeita vastauksia: {correctPercentile} % kaikista yrityksistä.</p> */}
             <p>Img width: {imageWidth()} | height: {imageHeight()}</p>
             <p>URL: {this.props.game.currentImage.url}</p>
-            <p>(Oikea vastaus: {this.props.game.currentImage.bone.nameLatin})</p>
+            <p>{cheat}</p>
           {/* </div>
         </div>
          */}

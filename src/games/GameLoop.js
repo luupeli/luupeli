@@ -6,7 +6,7 @@ import WritingGame from './WritingGame'
 import MultipleChoiceGame from './MultipleChoiceGame'
 import ImageMultipleChoiceGame from './ImageMultipleChoiceGame'
 import { connect } from 'react-redux'
-import { gameInitialization, setAnswer, advanceGameClock } from '../reducers/gameReducer'
+import { gameInitialization, setAnswer, advanceGameClock,toggleSound } from '../reducers/gameReducer'
 import { ProgressBar } from 'react-bootstrap'
 import gameSessionService from '../services/gameSessions'
 import bodyPartService from '../services/bodyParts'
@@ -41,6 +41,7 @@ class GameLoop extends React.Component {
         }
         this.postGameSession = this.postGameSession.bind(this)
         this.handleSongFinishedPlaying = this.handleSongFinishedPlaying.bind(this)
+        window.onunload = function () { window.location.href = '/' }
     };
 
 
@@ -81,10 +82,11 @@ class GameLoop extends React.Component {
     }
 
     postGameSession() {
-        let userToBePosted
+        let userToBePosted = null
         if (this.state.user !== null) {
             userToBePosted = this.state.user.id
         }
+        console.log(userToBePosted)
         gameSessionService.create({
             user: userToBePosted,
             mode: this.props.game.gamemode,
@@ -110,7 +112,9 @@ class GameLoop extends React.Component {
     }
 
     handleSound() {
-        if (!this.state.introMusicHasFinished && this.props.game.gameLength === this.props.game.endCounter) {
+        if (this.props.game.playSound) {
+
+        if (!this.state.introMusicHasFinished && this.props.game.gameLength === this.props.game.endCounter ) {
             return (
 
                 <Sound
@@ -152,7 +156,10 @@ class GameLoop extends React.Component {
                 )
             }
         }
-
+    }
+    else {
+        return null
+    }
     }
 
     /**
@@ -209,9 +216,7 @@ class GameLoop extends React.Component {
                 document.documentElement.offsetWidth,
                 document.documentElement.clientWidth
             )
-            // if (windowWidth > 1000) {
-            //     return 1000
-            // }
+
             return Math.round(windowWidth * 1.0)
         }
 
@@ -223,9 +228,6 @@ class GameLoop extends React.Component {
                 document.documentElement.offsetHeight,
                 document.documentElement.clientHeight
             )
-            // if (windowHeight > 1000) {
-            //     return 1000
-            // }
             return Math.round(windowHeight * 1.0)
         }
 
@@ -403,7 +405,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
     gameInitialization,
     setAnswer,
-    advanceGameClock
+    advanceGameClock,
+    toggleSound
 }
 
 const ConnectedGameLoop = connect(

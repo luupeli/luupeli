@@ -24,6 +24,7 @@ class MultipleChoiceGame extends React.Component {
       currentBonus: 0
     }
     this.handleSubmit = this.handleSubmit.bind(this)
+    window.onunload = function () { window.location.href = '/' }
   }
 
   /**

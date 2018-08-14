@@ -4,6 +4,7 @@ import GameLoop from './games/GameLoop'
 import SelectGameMode from './menus/gamescreens/SelectGameMode'
 import EndScreen from './menus/gamescreens/EndScreen'
 import Home from './menus/Home'
+import Leaderboard from './menus/Leaderboard'
 
 import GameSettings from './menus/gamescreens/GameSettings'
 import BoneListing from './menus/admin/BoneListing'
@@ -77,6 +78,9 @@ class Main extends React.Component {
               }} />
               <Route exact path="/statistics" render={({ location, history }) => {
                 return <Statistics location={location} history={history} />
+              }} />
+              <Route exact path="/leaderboard" render={({ location, history }) => {
+                return <Leaderboard location={location} history={history} />
               }} />
             </div>
           </BrowserRouter>

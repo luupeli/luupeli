@@ -19,6 +19,8 @@
     "react": "^16.4.1",
     "react-animated-css": "^1.0.4",
     "react-bootstrap": "^0.32.1",
+    "react-calendar": "^2.16.1",
+    "react-date-range": "^0.9.4",
     "react-dom": "^16.4.1",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",

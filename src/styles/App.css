@@ -51,7 +51,7 @@
      -moz-border-radius: 9px;
    margin-bottom: 15px;
    border-radius: 15px;
-   font-size:calc(0.9vw + 0.9vh + .5vmin);/*10vh;/*24px;*/
+   font-size:calc(0.9vw + 0.5vh + .5vmin);/*10vh;/*24px;*/
    cursor: pointer;
    width: 100%;
    padding: 1.0vh 1.25vw;/*20px 24px;*/
@@ -103,7 +103,7 @@ animation: Button-Gradient 3.23s ease infinite;
       -moz-border-radius: 9px;
     margin-bottom: 15px;
     border-radius: 15px;
-    font-size:calc(0.9vw + 0.9vh + .5vmin);/*10vh;/*24px;*/
+    font-size:calc(0.9vw + 0.5vh + .5vmin);/*10vh;/*24px;*/
     cursor: pointer;
     width: 100%;
     display: block; 
@@ -161,15 +161,15 @@ animation: Button-Gradient 3.23s ease infinite;
 .gobackbutton {
     /* float: left;*/
     position: fixed; 
-    font-size:calc(0.6vw + 0.6vh + .4vmin)!important;
+    font-size:calc(0.6vw + 0.4vh + .4vmin)!important;
     bottom: 5vh !important;
     left: 0.8vw !important;
-    max-width: calc(10*(0.6vw + 0.6vh + .4vmin)) !important;
+    max-width: calc(10*(0.6vw + 0.4vh + .4vmin))!important;
 
     white-space:nowrap;
     margin-bottom: 5px;
     border-radius: 5px;
-    font-size:calc(.79vw + .79vh + .75vmin);
+    font-size:calc(.79vw + .49vh + .75vmin);
     cursor: pointer;
     display: inline-block;
     padding: 0.5vh 0.69vw!important;
@@ -187,15 +187,15 @@ animation: Button-Gradient 3.23s ease infinite;
 .scoreview {
   /* float: left;*/
   position: fixed; 
-  font-size:calc(0.6vw + 0.6vh + .4vmin)!important;
+  font-size:calc(0.6vw + 0.4vh + .4vmin)!important;
   margin-top: 5vh !important;
   margin-left: 0.8vw !important;
-  max-width: calc(10*(0.6vw + 0.6vh + .4vmin)) !important;
+  max-width: calc(10*(0.6vw + 0.4vh + .4vmin)) !important;
 
   white-space:nowrap;
   margin-bottom: 5px;
   border-radius: 5px;
-  font-size:calc(.79vw + .79vh + .75vmin);
+  font-size:calc(.79vw + .49vh + .75vmin);
   cursor: pointer;
   display: inline-block;
   padding: 0.5vh 0.69vw!important;
@@ -222,7 +222,7 @@ h1 {
     width: 100%;
     color: #C6CBF5;
     font-family: 'Press start 2p', sans-serif;
-    font-size:calc(3vw + 3vh + 2.5vmin);
+    font-size:calc(3vw + 2vh + 2.0vmin);
     font-weight: 1000;
     line-height: 1.2;
     left: 50vw;
@@ -277,7 +277,7 @@ h1 {
 
 h2 {
     color: #C6CBF5;
-    font-size:calc(2vw + 2vh + 1vmin);
+    font-size:calc(2vw + 1.2vh + 0.7vmin);
     font-weight: 700;
     line-height: 1.2;
     left: 50vw;
@@ -305,7 +305,7 @@ h2 {
 }
 
 h3 {
-  font-size:calc(1.25vw + 1.25vh + 1.0vmin);
+  font-size:calc(1.25vw + 0.75vh + 0.8vmin);
   -webkit-background-clip: text;
   -webkit-text-fill-color:  var(--highlight);
   -webkit-text-stroke-width: 0.75px;
@@ -313,7 +313,7 @@ h3 {
 }
 
 h4 {
-  font-size:calc(1.05vw + 1.05vh + 0.8vmin);
+  font-size:calc(1.05vw + 0.65vh + 0.6vmin);
   -webkit-background-clip: text;
   -webkit-text-fill-color:  var(--highlight);
   -webkit-text-stroke-width: 0.5px;
@@ -322,11 +322,11 @@ h4 {
 
 
 h5 {
-  font-size:calc(0.85vw + 0.85vh + 0.7vmin);
+  font-size:calc(0.85vw + 0.45vh + 0.6vmin);
 }
   
 h6 {
-  font-size:calc(0.7vw + 0.7vh + 0.55vmin);
+  font-size:calc(0.7vw + 0.3vh + 0.45vmin);
 }
 
 
@@ -590,7 +590,7 @@ form {
 
 .form-header {
     color:  var(--highlight);
-    font-size:calc(1.4vw + 1.4vh + 0.7vmin);
+    font-size:calc(1.4vw + 0.8vh + 0.6vmin);
     margin-bottom:calc(1.1vw + 1.1vh + 0.5vmin);
     
 }
@@ -603,7 +603,7 @@ form {
 
 
 .settingspage {
-    font-size:calc(0.7vw + 0.7vh + 0.5vmin);
+    font-size:calc(0.7vw + 0.5vh + 0.5vmin);
     margin-top:calc(1.3vw + 1.3vh + 0.7vmin);
     /*font-size: 20px;
     margin-top: 60px;*/
@@ -1080,7 +1080,7 @@ https://codepen.io/George-Payne/pen/qOrxao
   font-size:1rem;
   line-height:1.5;
   color:#495057;
-  background-color:#fff;
+  background-color:#f;
   background-clip:padding-box;
   border:1px solid #ced4da;
   border-radius:.25rem;

@@ -129,6 +129,7 @@ class Home extends React.Component {
     console.log('new style index is now: ' + next)
     window.location.reload()
     window.onunload = function () { window.location.href = '/' }
+
   }
 
   proceedToSelect(event) {
@@ -142,6 +143,8 @@ class Home extends React.Component {
       this.setState({ redirect: true, redirectTo: '/admin' })
     } else if (event.target.id === 'profilePageButton') {
       this.setState({ redirect: true, redirectTo: '/users/' + this.state.user.id })
+    } else if (event.target.id === 'bestPlayers') {
+      this.setState({ redirect: true, redirectTo: '/leaderboard' })
     }
   }
 
@@ -325,6 +328,16 @@ class Home extends React.Component {
                     </Row>
                     {this.adminButtons()}
                     {this.loggedInButtons()}
+                    <Row className="show-grid">
+                      <Col>
+                        <button
+                          className="menu-button"
+                          id="bestPlayers"
+                          onClick={this.proceedToSelect}>
+                          &#9733; Pistetaulukko &#9733;
+                       </button>
+                      </Col>
+                    </Row>
                     <Row className="show-grid">
                       <button
                         id="themeChangeButton"

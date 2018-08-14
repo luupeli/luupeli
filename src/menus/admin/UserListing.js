@@ -23,6 +23,8 @@ class UserListing extends React.Component {
 	componentDidMount() {
 		userService.getAll()
 			.then((response) => {
+				//Sort the list of users alphabetically
+				response.data.sort((userA, userB) => userA.username.localeCompare(userB.username))
 				this.setState({ allUsers: response.data })
 			})
 			.catch((error) => {
@@ -54,7 +56,7 @@ class UserListing extends React.Component {
 		return (
 			<div className="menu-background App">
 				<h2>Käyttäjälista</h2>
-				<font size ="4"><p>&#9733; = ylläpitäjä</p></font>
+				<font size="4"><p>&#9733; = ylläpitäjä</p></font>
 				<br></br>
 				<Link to='/admin'>
 					<button className="gobackbutton">Takaisin</button>
@@ -63,8 +65,8 @@ class UserListing extends React.Component {
 					<Col>
 						{this.state.allUsers.map(aUser => { //For every user in allUsers, name will be shown
 							if (aUser.role.toUpperCase() === 'ADMIN') {
-							//We'll need the id on the user's page, so we are forwarding
-							//it like this, in the state (going to users/:id)
+								//We'll need the id on the user's page, so we are forwarding
+								//it like this, in the state (going to users/:id)
 								return <Link key={aUser.id} to={{
 									pathname: '/users/' + aUser.id,
 									state: {
@@ -74,7 +76,7 @@ class UserListing extends React.Component {
 							} else {
 								//Copypaste, kill me
 								return <Link key={aUser.id} to={{
-									pathname: '/users/' + aUser.id
+										pathname: '/users/' + aUser.id
 								}}>{aUser.username}<p></p></Link>
 							}
 						}

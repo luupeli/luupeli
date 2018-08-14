@@ -20,6 +20,7 @@ class ImageMultipleChoiceGame extends React.Component {
 
     }
     this.handleSubmit = this.handleSubmit.bind(this)
+    window.onunload = function () { window.location.href = '/' }
   }
 
   handleSubmit(image) {
