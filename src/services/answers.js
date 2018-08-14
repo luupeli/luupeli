@@ -7,18 +7,18 @@ const getAll = () => {
   return request.then(response => { return response })
 }
 
+const getByUser = (userId) => {
+  const request = axios.get(`${baseUrl}/user/${userId}`)
+  return request.then(response => { return response })
+}
+
+const getByUserAndImage = (userId, imgId) => {
+  const request = axios.get(`${baseUrl}/user/${userId}/img/${imgId}`)
+  return request.then(response => { return response })
+}
+
 const get = (id) => {
   const request = axios.get(`${baseUrl}/${id}`)
-  return request.then(response => { return response })
-}
-
-const create = (newObject) => {
-  const request = axios.post(baseUrl, newObject)
-  return request.then(response => { return response })
-}
-
-const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject)
   return request.then(response => { return response })
 }
 
@@ -27,4 +27,4 @@ const remove = (id) => {
   return request.then(response => { return response })
 }
 
-export default { getAll, get, create, update, remove }
+export default { getAll, get, remove }

@@ -100,25 +100,6 @@ class AddData extends React.Component {
 		console.log('Luut valmis!')
 	}
 
-	async sendBones() {
-		for (let index = 0; index < this.state.newBones.length; index++) {
-			const bodyPartInDatabase = this.state.bodyParts.filter(bp => bp.name === this.state.newBones[index].bodyPart)
-
-			await boneService.create({
-				name: this.state.newBones[index].name,
-				nameLatin: this.state.newBones[index].nameLatin,
-				bodyPart: bodyPartInDatabase[0].id
-			})
-		}
-
-		const bones = await boneService.getAll()
-
-		this.setState({
-			bones: bones.data
-		})
-		console.log('Luut valmis!')
-	}
-
 	async sendImages() {
 		for (let index = 0; index < this.state.newImages.length; index++) {
 			const animalsInDatabase = this.state.animals.filter(animal => animal.name === this.state.newImages[index].animal)
@@ -164,6 +145,7 @@ class AddData extends React.Component {
 						luuVaiRakenne: d[8] !== undefined ? d[8].trim() : null,
 					}
 				}
+				return null
 			})
 
 			images = images.filter(img => img !== undefined)

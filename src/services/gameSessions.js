@@ -1,5 +1,6 @@
 import axios from 'axios'
-const baseUrl = 'http://luupeli-backend.herokuapp.com/api/gamesessions'
+ const baseUrl = 'http://luupeli-backend.herokuapp.com/api/gamesessions'
+// const baseUrl = 'http://localhost:3001/api/gamesessions'
 
 const getAll = () => {
   const request = axios.get(baseUrl)
@@ -16,14 +17,9 @@ const create = (newObject) => {
   return request.then(response => { return response })
 }
 
-const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject)
-  return request.then(response => { return response })
-}
-
 const remove = (id) => {
   const request = axios.delete(`${baseUrl}/${id}`)
   return request.then(response => { return response })
 }
 
-export default { getAll, get, create, update, remove }
+export default { getAll, get, create, remove }

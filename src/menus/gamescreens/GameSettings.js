@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import { setMessage } from '../../reducers/messageReducer'
 import emoji from 'node-emoji'
 
+
 /**
  * GameSettings is the menu directly prior to a WritingGame session.
  * A game session will be based on the selections made by user in the GameSettings menu.
@@ -32,11 +33,11 @@ class GameSettings extends React.Component {
 			images: [],			   // used to store an array of images which meet the selection criteria
 			allStyles: JSON.parse(localStorage.getItem("allStyles")),
 			styleIndex: localStorage.getItem('styleIndex'),
-      user: null,
-      animals: [],
-	  bodyParts: [],
-	  playSound: true,
-	  gameDifficulty: 'medium'
+			user: null,
+			animals: [],
+			bodyParts: [],
+			playSound: true,
+			gameDifficulty: 'medium'
 		}
 
 		this.changeGameDifficulty = this.changeGameDifficulty.bind(this)
@@ -67,7 +68,7 @@ class GameSettings extends React.Component {
 						console.log(emo)
 						animals[key].emoji = emo
 					}
-					if (animals[key].name.toLowerCase() === 'hevonen') {	
+					if (animals[key].name.toLowerCase() === 'hevonen') {
 						emo = emo.get('horse')
 						console.log(emo)
 						animals[key].emoji = emo
@@ -118,26 +119,26 @@ class GameSettings extends React.Component {
 	}
 
 	changeGameDifficulty(event) {
-		if (event.target.value==='easy') {
-			this.setState({ gameDifficulty: 'easy' }) 
+		if (event.target.value === 'easy') {
+			this.setState({ gameDifficulty: 'easy' })
 		}
-		if (event.target.value==='medium') {
-			this.setState({ gameDifficulty: 'medium' }) 
+		if (event.target.value === 'medium') {
+			this.setState({ gameDifficulty: 'medium' })
 		}
-		if (event.target.value==='hard') {
-			this.setState({ gameDifficulty: 'hard' }) 
+		if (event.target.value === 'hard') {
+			this.setState({ gameDifficulty: 'hard' })
 		}
 	}
 
 	changeSoundSetting(event) {
-		
-		if (event.target.value==="true") {
 
-		   this.setState({ playSound: true }) 
-		} 
-		else  {
+		if (event.target.value === "true") {
 
-		   this.setState({ playSound: false }) 
+			this.setState({ playSound: true })
+		}
+		else {
+
+			this.setState({ playSound: false })
 		}
 	}
 
@@ -194,7 +195,7 @@ class GameSettings extends React.Component {
 		// Filtering selected animals and body parts
 		let chosenAnimals = this.state.allAnimals.filter(animal => animal.selected === true)
  	    let chosenBodyParts = this.state.allBodyParts.filter(bodyPart => bodyPart.selected === true)
-    
+
 		console.log(this.state.allAnimals)
 		console.log(chosenAnimals)
 		console.log(chosenBodyParts)
@@ -219,7 +220,7 @@ class GameSettings extends React.Component {
 		pics = pics.filter(image => {
 			const bodyPartIds = chosenBodyParts.map(chosenBodyPart => chosenBodyPart.id)
 			return bodyPartIds.includes(image.bone.bodyPart)
-		})		
+		})
 		console.log(pics)
 
 		// If criteria doesn't fulfill the game won't launch
@@ -271,16 +272,20 @@ class GameSettings extends React.Component {
 		}`
 
 		if (this.state.redirect) {
-      this.props.gameInitialization(this.state.gameLength, this.state.images, this.state.user, 
-        this.props.location.state.gamemode, this.state.animals, this.state.bodyParts,this.state.playSound, this.state.gameDifficulty)
+			this.props.gameInitialization(this.state.gameLength, this.state.images, this.state.user,
+				this.props.location.state.gamemode, this.state.animals, this.state.bodyParts, this.state.playSound, this.state.gameDifficulty)
+				
+				
+				
 			return (
+				
+
 				<Redirect to={{
 					pathname: '/game',
 					state: {
 						allStyles: this.state.allStyles,
-						styleIndex: this.state.styleIndex,
-						gamemode: this.state.gamemode
-					  }
+						styleIndex: this.state.styleIndex
+					}
 				}} />
 			)
 		}
@@ -320,7 +325,7 @@ class GameSettings extends React.Component {
 							<div className="transbox">
 								<div className="container">
 									<div className="col-md-12">
-										<h3 className="form-header">Valitse eläin:</h3>
+										<h4 className="form-header">Valitse eläin</h4>
 										<form>
 											{selectAnimal}
 										</form>
@@ -328,7 +333,7 @@ class GameSettings extends React.Component {
 								</div>
 								<div className="container">
 									<div className="col-md-12">
-										<h3 className="form-header">Valitse ruumiinosa:</h3>
+										<h4 className="form-header">Valitse ruumiinosa</h4>
 										<form>
 											{selectBodyPart}
 										</form>
@@ -336,6 +341,7 @@ class GameSettings extends React.Component {
 								</div>
 								<div className="game-text-input">
 									<div className="col-md-12">
+<<<<<<< HEAD
 									<h3 className="form-header">Luupelin pituus:</h3>
 									<div className="game-text-input">
 										<input
@@ -346,6 +352,42 @@ class GameSettings extends React.Component {
 											onChange={this.changeGameLength.bind(this)}
 											name="length"
 											/>
+=======
+										<h4 className="form-header">Luupelin pituus:</h4>
+										<form>
+											<label className="radio-inline">
+												<input
+													type="radio"
+													id="gameLengthShort"
+													value="3"
+													onClick={this.changeGameLength.bind(this)}
+													name="length"
+												/>
+												3
+											</label>
+											<label className="radio-inline">
+												<input
+													type="radio"
+													id="gameLengthMedium"
+													value="5"
+													onClick={this.changeGameLength.bind(this)}
+													name="length"
+													defaultChecked
+												/>
+												5
+											</label>
+											<label className="radio-inline">
+												<input
+													type="radio"
+													id="gameLengthLong"
+													value="7"
+													onClick={this.changeGameLength.bind(this)}
+													name="length"
+												/>
+												7
+											</label>
+										</form>
+>>>>>>> b1e1fdb6472a84f09c877ece90c32b9babdf61ca
 									</div>
 								</div>
 
@@ -353,7 +395,7 @@ class GameSettings extends React.Component {
 								</div>
 								<div className="container">
 									<div className="col-md-12">
-										<h3 className="form-header">Vaikeusaste:</h3>
+										<h4 className="form-header">Vaikeusaste</h4>
 										<form>
 											<label className="radio-inline">
 												<input
@@ -363,7 +405,7 @@ class GameSettings extends React.Component {
 													onClick={this.changeGameDifficulty.bind(this)}
 													name="difficultylevel"
 												/>
-												Luupää (helppo)
+												Luupää
 											</label>
 											<label className="radio-inline">
 												<input
@@ -384,15 +426,15 @@ class GameSettings extends React.Component {
 													onClick={this.changeGameDifficulty.bind(this)}
 													name="difficultylevel"
 												/>
-												Luu-5 (vaikea)
+												Luu-5
 											</label>
 										</form>
-										
+
 									</div>
 								</div>
 								<div className="container">
 									<div className="col-md-12">
-										<h3 className="form-header">Äänet:</h3>
+										<h4 className="form-header">Äänet</h4>
 										<form>
 											<label className="radio-inline">
 												<input
@@ -415,7 +457,7 @@ class GameSettings extends React.Component {
 												/>
 												Pois
 											</label>
-											
+
 										</form>
 										<div className="btn-group wide settingspage GameButton">
 											<button id="luupeliinButton" onClick={this.atLeastOneBodyPartIsSelected}>Luupeliin >></button>

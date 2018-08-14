@@ -1,7 +1,5 @@
 import React from 'react'
 import boneService from '../../services/bones'
-import animalService from '../../services/animals'
-import bodyPartService from '../../services/bodyParts'
 import { Link, Redirect } from 'react-router-dom'
 import { ToggleButtonGroup, ToggleButton, Row, Col, Grid, FormControl } from 'react-bootstrap'
 import { connect } from 'react-redux'

@@ -10,28 +10,36 @@ import { Animated } from "react-animated-css";
  */
 class ScoreFlash extends React.Component {
 
-	handleSound(gameClock, scoreRiseTime,scoreActual) {
+    componentDidMount() {
+        setInterval(() => {
+            this.setState(() => {
+                //console.log('setting state');
+                return { unseen: "does not display" }
+            });
+        }, 150);
+    }
 
+	handleSound(gameClock, scoreRiseTime,scoreActual) {
 		var playbackspeed=1.0; 
 		if (scoreActual<500) {
 			playbackspeed=1.0-(scoreActual/100);
 		}
-		if (scoreActual>1000) {
-			playbackspeed=Math.min(4,1.0+(scoreActual/2500));
+		if (scoreActual > 1000) {
+			playbackspeed = Math.min(4, 1.0 + (scoreActual / 2500));
 		}
-		
-		if (gameClock<scoreRiseTime &&  this.props.game.playSound) {
+
+		if (gameClock < scoreRiseTime && this.props.game.playSound) {
 			return (
-				
-			<Sound
-			url="/sounds/253172__suntemple__retro-bonus-pickup-sfx.wav"
-				playStatus={Sound.status.PLAYING}
-				// playFromPosition={0 /* in milliseconds */}
-				playbackRate={playbackspeed}
-				onLoading={this.handleSongLoading}
-				onPlaying={this.handleSongPlaying}
-				onFinishedPlaying={this.handleSongFinishedPlaying}
-			  />
+
+				<Sound
+					url="/sounds/253172__suntemple__retro-bonus-pickup-sfx.wav"
+					playStatus={Sound.status.PLAYING}
+					// playFromPosition={0 /* in milliseconds */}
+					playbackRate={playbackspeed}
+					onLoading={this.handleSongLoading}
+					onPlaying={this.handleSongPlaying}
+					onFinishedPlaying={this.handleSongFinishedPlaying}
+				/>
 			)
 		}
 	}
@@ -41,59 +49,57 @@ class ScoreFlash extends React.Component {
 	 * Also, "zero points" should probably have some noticeable vfx as well.
 	 */
 	render() {
-		// const style = 'alert alert-' + `${this.props.scoreflash.style}`
 		const style = 'scoreflash'   // <--- PLACEHOLDER CSS EFFECT!!! {this.props.scoreflash.score}
+		var gameClock = Math.round(((new Date).getTime() - this.props.game.startedAt) / 50)
+		const scoreActual = this.props.scoreflash.score
 
-		const scoreActual = this.props.scoreflash.score 
-		const durationOfScoreRise = Math.min(30,(scoreActual/10) + 5)
+		
 
-		let scoreShown =Math.min(scoreActual, Math.round(scoreActual*( this.props.game.gameClock /durationOfScoreRise)))
-
-		let scoreShownForDelayedSound =Math.min(scoreActual*1.4, Math.round(scoreActual*( this.props.game.gameClock /durationOfScoreRise)))
-		let durationOfScoreRiseForSound = Math.min(30,(scoreActual/10) + 5)+5
+		const durationOfScoreRise = Math.min(30, (scoreActual / 10) + 5)
+		
+		let scoreShown = Math.min(scoreActual, Math.round(scoreActual * (gameClock / durationOfScoreRise)))
+	//	console.log('scoreFlash: gameclock: ' + gameClock+', scoreShown: '+scoreShown)
+		let scoreShownForDelayedSound = Math.min(scoreActual * 1.4, Math.round(scoreActual * (gameClock / durationOfScoreRise)))
+		let durationOfScoreRiseForSound = Math.min(30, (scoreActual / 10) + 5) + 5
 		//	position="fixed"
-		
-		let rowtext = this.props.scoreflash.streak+'' +this.props.scoreflash.streakemoji+''+scoreShown//+ ''+this.props.scoreflash.streakemoji
-		
-		if (scoreActual === 0) {
-			rowtext=this.props.scoreflash.streakemoji+'VÄÄRIN!'+this.props.scoreflash.streakemoji
-		}
 
-		if (this.props.scoreflash !== undefined && this.props.game.gameClock<60 && this.props.scoreflash.scoreflash.length !== 0) {
-			return (
-				<Animated animationIn="rubberBand faster" animationOut="zoomOut faster" isVisible={this.props.scoreflash.visibility}>
+		let rowtext = this.props.scoreflash.streak + '' + this.props.scoreflash.streakemoji + '' + scoreShown//+ ''+this.props.scoreflash.streakemoji
+
+		if (scoreActual === 0) {
+			rowtext = this.props.scoreflash.streakemoji + 'VÄÄRIN!' + this.props.scoreflash.streakemoji
+		}
+	
+
+
+		if (this.props.scoreflash !== undefined && gameClock<60 && this.props.scoreflash.scoreflash.length !== 0) {
+		//if (this.props.scoreflash !== undefined && this.props.game.stoppedAt && this.props.scoreflash.scoreflash.length !== 0) {
+			return (<div>
+				<Animated animationIn="bounceIn faster" animationOut="bounceOut faster" isVisible={ this.props.scoreflash.visibility}>
 					<div
 						className={style}
 						role="alert"
 						text-align="center"
 						vertical-align="middle"
 						line-height="90px"
-					
+						z-index="1000"
+						margin="5px"
 					>
-		 <h3>
-			{rowtext}
-			{/* {this.handleSound(scoreShownForDelayedSound,scoreActual)} */}
-			{this.handleSound(this.props.game.gameClock ,durationOfScoreRiseForSound,scoreActual)}
-		 </h3>
 					
+						<h3>{rowtext}</h3>
+						
+						
 					</div>
 				</Animated>
+				{this.handleSound(gameClock, durationOfScoreRiseForSound, scoreActual)}
+				</div>
 			)
 		}
-		
-		
-		
+
+
+
 		else {
 			return null;
 		}
-		// else 		
-		
-		// {
-		// 	return (
-				
-		// 	<br/>
-		// 	)
-		// }
 	}
 
 
