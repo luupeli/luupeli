@@ -228,7 +228,7 @@ class GameLoop extends React.Component {
             return (
                 <div>
                     <Animated animationIn="fedeIn" animationOut="fadeOut faster" animationInDelay="100" animationOutDelay="100" isVisible={animationActive}>
-                   <h5> </h5>
+                   
                     <h5>EDELLINEN</h5>
                     <h6>{this.state.previousImage.bone.nameLatin}</h6>
                     </Animated>
@@ -440,9 +440,12 @@ class GameLoop extends React.Component {
             }
         }
 
-        const scoreActual = this.props.scoreflash.score
+        let scoreActual = this.props.scoreflash.score
         const durationOfScoreRise = Math.min(30, (scoreActual / 10) + 5)
-        let scoreShown = this.props.game.totalScore + Math.min(scoreActual, Math.round(scoreActual * (this.gameClockUnits() / durationOfScoreRise)))
+        if (!this.props.scoreflash.visibility) {
+            scoreActual=0
+        }
+        let scoreShown = this.props.game.totalScore  + Math.min(scoreActual, Math.round(scoreActual * (this.gameClockUnits() / durationOfScoreRise)))
 
         return (
 

@@ -40,9 +40,9 @@ class AnswerSounds extends React.Component {
                 }
             }
         } else {
-            return (
-                <div></div>
-            )
+            return 
+                null;
+            
         }
     }
  }
