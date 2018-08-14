@@ -32,7 +32,7 @@ beforeAll(async () => {
 	})
 	// Finally waits for the logout button to render which shows after a user is logged in
 	await page.waitForSelector('#logout-button')
-}, 30000)
+}, 60000)
 
 beforeEach(async () => {
 	await page.goto('http://localhost:' + port + '/add')

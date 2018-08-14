@@ -35,5 +35,5 @@ describe('GameSettings tests', () => {
 		await page.screenshot({ path: 'gameSettings2.png' })
 		await page.waitFor(500)
 		expect(textContent.toLowerCase().trim().includes("ca")).toBe(true)
-	}, 30000)
+	}, 60000)
 })
