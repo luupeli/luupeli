@@ -5,7 +5,7 @@ import { setMessage } from '../reducers/messageReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
 import emoji from 'node-emoji'
-import AnswerSounds from './AnswerSounds'
+import { setAnswerSound } from '../reducers/soundReducer'
 
 class ImageMultipleChoiceGame extends React.Component {
 
@@ -40,6 +40,7 @@ class ImageMultipleChoiceGame extends React.Component {
       selectedImage: image
     })
     const correctness = this.checkCorrectness(image)
+    this.props.setAnswerSound(correctness)
 
     let points = (Math.round((this.checkCorrectness(image) * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((300 + Math.max(0, (300 - this.state.seconds))) / 600))) / 20
 
@@ -73,7 +74,7 @@ class ImageMultipleChoiceGame extends React.Component {
 
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
 
-    this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 3, true)
+    this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 2.5, true)
     this.setState({ choices: [] })
 
     setTimeout(() => {
@@ -117,19 +118,9 @@ class ImageMultipleChoiceGame extends React.Component {
   }
 
   render() {
-    const sounds = () => {
-      if (this.state.selectedImage !== undefined) {
-        return (
-          <AnswerSounds correctness={this.checkCorrectness(this.state.selectedImage)} />
-        )
-      }
-    }
-
-
     return (
       <div className="bottom" z-index="3" position="relative">
         <div className="intro" z-index="3" position="relative">
-          {sounds()}
           <h2>{this.props.game.currentImage.bone.nameLatin}, {this.props.game.currentImage.animal.name}</h2>
           <p>(klikkaa oikeaa kuvaa!)</p>
           {this.props.game.wrongImageOptions.map((choice, i) => {
@@ -174,7 +165,8 @@ const mapDispatchToProps = {
   setMessage,
   setScoreFlash,
   startGameClock,
-  stopGameClock
+  stopGameClock,
+  setAnswerSound
 }
 
 const ConnectedImageMultipleChoiceGame = connect(

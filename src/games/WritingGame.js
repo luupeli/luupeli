@@ -3,11 +3,10 @@ import StringSimilarity from 'string-similarity'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
 import { setAnswer, setImageToWritingGame, startGameClock, stopGameClock } from '../reducers/gameReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
+import { setAnswerSound } from '../reducers/soundReducer'
 import { connect } from 'react-redux'
 import emoji from 'node-emoji'
 import { Animated } from "react-animated-css";
-import Sounds from './AnswerSounds'
-
 
 /**
  * WritingGame (run under Gameloop.js) is the standard game mode of Luupeli.
@@ -69,12 +68,14 @@ class WritingGame extends React.Component {
     event.preventDefault()
     this.props.stopGameClock()
     this.setState({ lastValue: this.state.value })
+    let answerCorrectness = this.checkCorrectness(this.state.value)
+    this.props.setAnswerSound(answerCorrectness)
+
     let currentStreak = this.state.streakWG
     let currentBonus = this.state.bonus
     let streakNote = ''
     let streakEmoji = emoji.get('yellow_heart')
     let correctness = 'Melkein oikein'
-    let answerCorrectness = this.checkCorrectness(this.state.value)
 
     let points = (Math.round((answerCorrectness * Math.max(20, this.props.game.currentImage.bone.nameLatin.length - 3)) * ((900 + Math.max(0, (900 - this.gameClockUnits()))) / 1800))) / 20
 
@@ -148,8 +149,7 @@ class WritingGame extends React.Component {
     }
 
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
-    this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 3, true)
-
+    this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 2.5, true)
 
     let answerMoment = this.gameClockUnits()
     let answerCurrentImage = this.props.game.currentImage
@@ -157,9 +157,9 @@ class WritingGame extends React.Component {
     console.log('BEFORE TIMEOUT: ' + this.gameClockUnits())
     setTimeout(() => {
       console.log('AFTER timeout!! ' + this.gameClockUnits())
-      this.props.setAnswer(answerCurrentImage, answerCorrectness, this.state.value, this.props.game.gameClock, points)
+      this.props.setAnswer(answerCurrentImage, answerCorrectness, this.state.lastValue, this.props.game.gameClock, points)
       this.setState({ animationActive: true, lastValue: undefined })
-    }, 2000
+    }, 2500
     );
 
 
@@ -258,7 +258,7 @@ class WritingGame extends React.Component {
           return (
             <div>
               <div className="game-text-input" style={{ color: 'green' }}>
-                <Sounds correctness={this.checkCorrectness(this.state.lastValue)} />
+           {/*     <Sounds correctness={this.checkCorrectness(this.state.lastValue)} />*/}
                 <input
                   id="gameTextInput"
                   type="text"
@@ -276,7 +276,7 @@ class WritingGame extends React.Component {
           return (
             <div>
               <div className="game-text-input" style={{ color: 'red' }}>
-                <Sounds correctness={this.checkCorrectness(this.state.lastValue)} />
+                {/*    <Sounds correctness={this.checkCorrectness(this.state.lastValue)} />*/}
                 <input
                   id="gameTextInput"
                   type="text"
@@ -421,7 +421,8 @@ const mapDispatchToProps = {
   setImageToWritingGame,
   setScoreFlash,
   startGameClock,
-  stopGameClock
+  stopGameClock,
+  setAnswerSound
 }
 
 const ConnectedWritingGame = connect(

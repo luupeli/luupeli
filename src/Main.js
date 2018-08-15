@@ -1,11 +1,11 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
-import GameLoop from './games/GameLoop'
+import Game from './games/Game'
 import SelectGameMode from './menus/gamescreens/SelectGameMode'
 import EndScreen from './menus/gamescreens/EndScreen'
 import Home from './menus/Home'
 import Leaderboard from './menus/Leaderboard'
-
+import Sounds from './Sounds'
 import GameSettings from './menus/gamescreens/GameSettings'
 import BoneListing from './menus/admin/BoneListing'
 import UserListing from './menus/admin/UserListing'
@@ -27,12 +27,21 @@ class Main extends React.Component {
   }
 
   render() {
+    const sound = () => {
+      if (this.props.sound.active && this.props.game.playSound) {
+        return (
+          <Sounds />
+        )
+      }
+    }
+
     return (
       <div>
         {/* <NavBar/> */}
         <main>
           <BrowserRouter>
-          <div>
+            <div>
+              {sound()}
               <Route exact path="/add_data" render={({ location, history }) => {
                 return <AddData location={location} history={history} />
               }} />
@@ -49,7 +58,7 @@ class Main extends React.Component {
                 return <SelectGameMode location={location} history={history} />
               }} />
               <Route exact path="/game" render={({ location, history }) => {
-                return <GameLoop location={location} history={history} />
+                return <Game location={location} history={history} />
               }} />
               <Route exact path="/settings" render={({ location, history }) => {
                 return <GameSettings location={location} history={history} />
@@ -89,12 +98,19 @@ class Main extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    game: state.game,
+    sound: state.sound
+  }
+}
+
 const mapDispatchToProps = {
   init
 }
 
 const ConnectedMain = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Main)
 export default ConnectedMain
