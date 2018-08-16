@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = 'http://luupeli-backend.herokuapp.com/api/bestanswers'
+const baseUrl = '/api/bestanswers'
 
 
 const getAll = () => {

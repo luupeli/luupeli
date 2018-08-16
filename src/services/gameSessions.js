@@ -1,6 +1,5 @@
 import axios from 'axios'
- const baseUrl = 'http://luupeli-backend.herokuapp.com/api/gamesessions'
-// const baseUrl = 'http://localhost:3001/api/gamesessions'
+ const baseUrl = '/api/gamesessions'
 
 const getAll = () => {
   const request = axios.get(baseUrl)

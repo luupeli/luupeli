@@ -46,6 +46,7 @@
     "eject": "react-scripts eject",
     "puppe": "NODE_ENV=test node scripts/puppe.js"
   },
+  "proxy": "http://localhost:3001",
   "devDependencies": {
     "codecov": "^3.0.4",
     "cross-env": "^5.2.0",
