@@ -1338,6 +1338,17 @@ https://codepen.io/George-Payne/pen/qOrxao
   flex: 0 50%;
 }
 
+.home-flex-title {
+  display:flex;
+  flex-wrap: nowrap;
+  margin-left: 30%;
+  margin-right: 30%;
+}
+.home-flex-title>div {
+  flex: 0 14%;
+}
+
+
 .home-highscore .score {
   width: 100%;
 }

@@ -277,8 +277,62 @@ class Home extends React.Component {
             )
         }
         else {
+
+            let inEffect = 'zoomInDown slower'
+            let outEffect = 'zoomOutUp slower'
+            
+            let titleVisibility = this.state.attractAnimation
+            if (!this.state.attractAnimation && this.state.attractMode%40>35) {
+                titleVisibility=false
+            } else {
+                titleVisibility=true
+            }
+            if (this.state.attractMode%160>=120) {
+                inEffect='rotateIn faster'
+                outEffect='rotateOut faster'
+            }
+            else if (this.state.attractMode%160>=80) {
+                inEffect='bounceInLeft slower'
+                outEffect='bounceOutRight slower'
+            }
+            else if (this.state.attractMode%160>=40) {
+                inEffect='flipInX slower'
+                outEffect='flipOutY slower'
+            }
+
             return (
-                <h1 className="game-title">Luupeli</h1>
+                <div className="home-flex-title">
+                <div className="score">
+                <h1 className="game-title">
+                <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="100" animationOutDelay="100" isVisible={titleVisibility}>L</Animated>
+                </h1></div>
+                <div className="score">
+                <h1 className="game-title">
+                <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="150" animationOutDelay="150" isVisible={titleVisibility}>u</Animated>
+                </h1></div>
+                <div className="score">
+                <h1 className="game-title">
+                <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="200" animationOutDelay="200" isVisible={titleVisibility}>u</Animated>
+                </h1></div>
+                <div className="score">
+                <h1 className="game-title">
+                <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="250" animationOutDelay="250" isVisible={titleVisibility}>p</Animated>
+                </h1></div>
+                <div className="score">
+                <h1 className="game-title">
+                <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="300" animationOutDelay="300" isVisible={titleVisibility}>e</Animated>
+                </h1></div>
+                <div className="score">
+                <h1 className="game-title">
+                <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="350" animationOutDelay="350" isVisible={titleVisibility}>l</Animated>
+                </h1></div>
+                <div className="score">
+                <h1 className="game-title">
+                <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="400" animationOutDelay="400" isVisible={titleVisibility}>i</Animated>
+                </h1></div>
+                {/* Luupeli</h1> */}
+                </div>
+                
             )
         }
     }
@@ -368,8 +422,8 @@ class Home extends React.Component {
 
 
       var effects = [];
-      effects.push('bounceOutLeft faster')
-      effects.push('bounceOutRight faster')
+      effects.push('bounceOutLeft slower')
+      effects.push('bounceOutRight slower')
       let heartEmoji = emoji.get('yellow_heart')
 
       if (this.state.attractMode % 80 <= 20) {
@@ -441,7 +495,7 @@ class Home extends React.Component {
         <div>
     <div className="home-highscore-top">
                 
-                <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay={1000} animationOutDelay={0} isVisible={titleVisible}>
+                <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight slower" animationInDelay={1000} animationOutDelay={0} isVisible={titleVisible}>
 		            <h3>
 			          TOP {trueScorers.length} LUUPÄÄT
 		            </h3>
@@ -546,7 +600,7 @@ class Home extends React.Component {
         <div>
         <div className="home-highscore-top">
                     
-                    <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay={1000} animationOutDelay={0} isVisible={this.state.attractAnimation}>
+                    <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight slower" animationInDelay={1000} animationOutDelay={0} isVisible={this.state.attractAnimation}>
                     <h3>
                     {heading}
                     </h3>
