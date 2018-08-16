@@ -400,7 +400,7 @@ class WritingGame extends React.Component {
         >
           {answerInput()}
         </form>
-        <h6>debug: {this.props.game.currentImage.bone.nameLatin}</h6>
+     {/*   <h6>debug: {this.props.game.currentImage.bone.nameLatin}</h6> */}
       </div >
 
 

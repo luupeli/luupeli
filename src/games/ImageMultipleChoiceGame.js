@@ -123,12 +123,12 @@ class ImageMultipleChoiceGame extends React.Component {
         <div className="intro" z-index="3" position="relative">
           <h2>{this.props.game.currentImage.bone.nameLatin}, {this.props.game.currentImage.animal.name}</h2>
           <p>(klikkaa oikeaa kuvaa!)</p>
-          {this.props.game.wrongImageOptions.map((choice, i) => {
+       {/*   {this.props.game.wrongImageOptions.map((choice, i) => {
             if (choice.correct) {
               return 'Oikea vastaus ylhäältä laskettuna: ' + i + '(laskenta alkaa nollasta)'
             }
           return null
-          })}
+          })} */}
         </div>
         <div className="container" z-index="3" position="relative">
           <div z-index="3" position="relative">

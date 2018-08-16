@@ -150,7 +150,7 @@ class MultipleChoiceGame extends React.Component {
         <div className="container">
           <div className="intro" />
           {this.props.game.wrongAnswerOptions.map(choice => <Button bsStyle={this.style(choice)} disabled={undefined !== this.state.value} value={choice.nameLatin} onClick={this.handleSubmit}>{choice.nameLatin}</Button>)}
-          <p>Oikea vastaus: {this.props.game.currentImage.bone.nameLatin}</p>
+       {/*   <p>Oikea vastaus: {this.props.game.currentImage.bone.nameLatin}</p> */}
         </div>
       </div>
     )
