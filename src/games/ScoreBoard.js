@@ -85,18 +85,18 @@ class ScoreBoard extends React.Component {
       * Method for rendering the Gameloop page header (containing ProgressBar)
       */
     render() {
-        let progressBar = <ProgressBar bsStyle="info" now={0} key={0} />
+        let progressBar = <ProgressBar bsStyle="info" bsClass="progress-bar-slim progress-bar" now={0} key={0} />
         let correctAnswers = []
         if (this.props.game.answers !== undefined) {
             correctAnswers = this.props.game.answers.filter(ans => ans.correctness === 100)
 
             progressBar = this.props.game.answers.map((ans, i) => {
                 if (ans.correctness === 100) {
-                    return <ProgressBar active bsStyle="success" now={(1 / this.props.game.gameLength) * 100} key={i} />
+											return <div class="progress-bar progress-bar-slim progress-bar-success progress-bar-striped active" style={{width: ((1 / this.props.game.gameLength) * 100) + "%"}} role="progressbar" aria-valuenow={(1 / this.props.game.gameLength) * 100} aria-valuemin="0" aria-valuemax="100" key={i}></div>
                 } else if (ans.correctness > 70 && ans.correctness < 100) {
-                    return <ProgressBar active bsStyle="warning" now={(1 / this.props.game.gameLength) * 100} key={i} />
+                    	return <div class="progress-bar progress-bar-slim progress-bar-warning progress-bar-striped active" style={{width: ((1 / this.props.game.gameLength) * 100) + "%"}} role="progressbar" aria-valuenow={(1 / this.props.game.gameLength) * 100} aria-valuemin="0" aria-valuemax="100" key={i}></div>
                 } else {
-                    return <ProgressBar active bsStyle="danger" now={(1 / this.props.game.gameLength) * 100} key={i} />
+                    	return <div class="progress-bar progress-bar-slim progress-bar-danger progress-bar-striped active" style={{width: ((1 / this.props.game.gameLength) * 100) + "%"}} role="progressbar" aria-valuenow={(1 / this.props.game.gameLength) * 100} aria-valuemin="0" aria-valuemax="100" key={i}></div>
                 }
             })
         }
@@ -105,9 +105,9 @@ class ScoreBoard extends React.Component {
             <div className="score-board">
                 <div className="col-md-6 col-md-offset-3 center-block">
                     <h3>{correctAnswers.length}/{this.props.game.gameLength}</h3>
-                    <ProgressBar label={`moi`}>
-                        {progressBar}
-                    </ProgressBar>
+                    <div class="progress progress-slim">
+											{progressBar}
+                    </div>
                     <h3>SCORE {this.state.score}</h3>
                     <h5>TIME {this.state.seconds}</h5>
                     {this.reminderOfPreviousImage(this.props.progressWidth)}

@@ -106,7 +106,7 @@ animation: Button-Gradient 3.23s ease infinite;
 
 }
 
- .btn-group button {
+.btn-group button {
     
     -webkit-box-shadow: #B4B5B5 2px 2px 2px  ;
    -moz-box-shadow: #B4B5B5 2px 2px 2px ;
@@ -118,7 +118,8 @@ animation: Button-Gradient 3.23s ease infinite;
     font-size:calc(0.9vw + 0.5vh + .5vmin);/*10vh;/*24px;*/
     cursor: pointer;
     width: 100%;
-    display: block; 
+    display: block;
+    
     padding: 1.0vh 1.25vw;/*20px 24px;*/
     text-decoration:none;
     text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
@@ -1269,10 +1270,16 @@ https://codepen.io/George-Payne/pen/qOrxao
   bottom: 8px;
   right: 16px;
 }
-.progress {
-  height: 3rem;
-  /* width: 100%!important; */
+
+.progress-slim {
+/* width: 100%!important; */
   height: 10px!important;
+}
+
+.progress-fat {
+	margin-left: 3%;
+	margin-right: 3%;
+	height: 3rem;
 }
 
 .thirtythree {
@@ -1292,11 +1299,15 @@ https://codepen.io/George-Payne/pen/qOrxao
   width: var(--progress-max-width-fifty)!important;
 }
 
-.progress-bar {
+.progress-bar-slim {
 	font-size: 1.7rem;
 	text-align: center;
   padding-top: 5px!important;
   height: 10px!important;
+}
+
+.progress-bar-fat {
+	height: 3rem;
 }
 
 /* .steel img {
@@ -1335,4 +1346,44 @@ https://codepen.io/George-Payne/pen/qOrxao
 .home-highscore h4, .home-highscore h5, .home-highscore h6{
   margin-top: 2px!important;
   text-align: left;
+}
+
+.btn-group-horizontal {
+	width: 100%;
+}
+
+.btn-group-horizontal .btn {
+    font-size:calc(0.9vw + 0.5vh + .5vmin);/*10vh;/*24px;*/
+    cursor: pointer;
+    width: 48%;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+.btn-theme {
+	    -webkit-box-shadow: #B4B5B5 2px 2px 2px  ;
+   -moz-box-shadow: #B4B5B5 2px 2px 2px ;
+     box-shadow: #B4B5B5 2px 2px 2px  ;
+      -webkit-border-radius: 9px;
+      -moz-border-radius: 9px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    padding: 1.0vh 1.25vw;/*20px 24px;*/
+    text-decoration:none;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+  /*  color: rgb(236, 209, 228);*/
+ opacity: 0.68;
+ background-size: 200% 200%;
+ border:4px solid var(--primary);
+   background-color: var(--tertiary); 
+  background-image: -webkit-gradient(linear, left top, left bottom, from(var(--primary)), to(var(--tertiary)));
+  background-image: -webkit-linear-gradient(top, var(--primary),var(--tertiary));
+  background-image: -moz-linear-gradient(top, var(--primary),var(--tertiary));
+  background-image: -ms-linear-gradient(top,  var(--primary),var(--tertiary));
+  background-image: -o-linear-gradient(top,  var(--primary),var(--tertiary));
+  background-image: linear-gradient(to bottom,  var(--primary),var(--tertiary));
+  filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=var(--primary), endColorstr=var(--tertiary));
+ -webkit-animation: Button-Gradient 3.23s ease infinite;
+ -moz-animation: Button-Gradient 3.23s ease infinite;
+ animation: Button-Gradient 3.23s ease infinite;
 }

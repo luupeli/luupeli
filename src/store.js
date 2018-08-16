@@ -1,4 +1,4 @@
-import { createStore, combineReducers, applyMiddleware } from '../../.cache/typescript/2.9/node_modules/redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
