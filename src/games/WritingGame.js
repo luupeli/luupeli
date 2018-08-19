@@ -1,5 +1,6 @@
 import React from 'react'
 import StringSimilarity from 'string-similarity'
+import { Redirect, Link } from 'react-router-dom'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
 import { setAnswer, setImageToWritingGame, startGameClock, stopGameClock } from '../reducers/gameReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
@@ -258,7 +259,7 @@ class WritingGame extends React.Component {
           return (
             <div>
               <div className="game-text-input" style={{ color: 'green' }}>
-           {/*     <Sounds correctness={this.checkCorrectness(this.state.lastValue)} />*/}
+                {/*     <Sounds correctness={this.checkCorrectness(this.state.lastValue)} />*/}
                 <input
                   id="gameTextInput"
                   type="text"
@@ -286,7 +287,7 @@ class WritingGame extends React.Component {
                 />
               </div>
               <div className="btn-group">
-                <button classname="gobackbutton" disabled  id="submitButton">Vastaa</button>
+                <button classname="gobackbutton" disabled id="submitButton">Vastaa</button>
               </div>
             </div>
           )
@@ -296,11 +297,11 @@ class WritingGame extends React.Component {
 
 
     var timeToCompare = this.props.game.gameStarted
-    if (this.props.game.scoreflash!==undefined) {
-      timeToCompare=this.props.game.scoreflash.startTime
+    if (this.props.game.scoreflash !== undefined) {
+      timeToCompare = this.props.game.scoreflash.startTime
     }
 
-    if (currentMoment-timeToCompare > (3000) && this.props.game.gameDifficulty === 'easy') {
+    if (currentMoment - timeToCompare > (3000) && this.props.game.gameDifficulty === 'easy') {
       this.revealPartialAnswer()
     }
 
@@ -400,10 +401,13 @@ class WritingGame extends React.Component {
         >
           {answerInput()}
         </form>
-     {/*   <h6>debug: {this.props.game.currentImage.bone.nameLatin}</h6> */}
+        {/*   <h6>debug: {this.props.game.currentImage.bone.nameLatin}</h6> */}
+        <div className="homeicon">
+          <Link to='/'>
+            <img src="homeicon.png" alt="Etusivulle"></img><p>Lopeta</p>
+          </Link>
+        </div>
       </div >
-
-
 
     )
 

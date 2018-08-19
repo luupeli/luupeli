@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
 import { setAnswer, setImagesToImageMultipleChoiceGame, startGameClock, stopGameClock } from '../reducers/gameReducer'
 import { setMessage } from '../reducers/messageReducer'
@@ -123,7 +124,7 @@ class ImageMultipleChoiceGame extends React.Component {
         <div className="intro" z-index="3" position="relative">
           <h2>{this.props.game.currentImage.bone.nameLatin}, {this.props.game.currentImage.animal.name}</h2>
           <p>(klikkaa oikeaa kuvaa!)</p>
-       {/*   {this.props.game.wrongImageOptions.map((choice, i) => {
+          {/*   {this.props.game.wrongImageOptions.map((choice, i) => {
             if (choice.correct) {
               return 'Oikea vastaus ylhäältä laskettuna: ' + i + '(laskenta alkaa nollasta)'
             }
@@ -147,6 +148,11 @@ class ImageMultipleChoiceGame extends React.Component {
             )}
 
           </div>
+        </div>
+        <div className="homeicon">
+          <Link to='/'>
+            <img src="homeicon.png" alt="Etusivulle"></img><p>Lopeta</p>
+          </Link>
         </div>
       </div>
     )

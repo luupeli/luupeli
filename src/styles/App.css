@@ -236,6 +236,15 @@ width:var(--progress-max-width-thirtythree)
  -moz-animation: Button-Gradient 0.75s ease infinite;
  animation: Button-Gradient 0.75s ease infinite;
 }
+
+.homeicon {
+
+  position: fixed; 
+  bottom: 8vh !important;
+  right: 5vw !important;
+}
+
+
 .game-answer-input .gobackbutton {
   padding: 5px;
 }
