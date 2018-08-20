@@ -284,7 +284,6 @@ class WritingGame extends React.Component {
 			}
 		}
     
-    console.log(animalRadioNoAnimal)
     const animalRadio = this.props.init.animals.map((animal, i) => {
 			if (this.props.game.gameDifficulty === 'hard') {
 				return (
@@ -337,7 +336,7 @@ class WritingGame extends React.Component {
                   disabled
                 />
               </div>
-              {animalRadioNoAnimal}
+              {animalRadioNoAnimal()}
               {animalRadio}
               <div className="btn-group">
                 <button classname="gobackbutton" disabled id="submitButton">Vastaa</button>
@@ -358,7 +357,7 @@ class WritingGame extends React.Component {
                   disabled
                 />
               </div>
-              {animalRadioNoAnimal}
+              {animalRadioNoAnimal()}
               {animalRadio}
               <div className="btn-group">
                 <button classname="gobackbutton" disabled id="submitButton">Vastaa</button>
