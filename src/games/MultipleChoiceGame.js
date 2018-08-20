@@ -133,6 +133,15 @@ class MultipleChoiceGame extends React.Component {
       return windowWidth - 40
     }
 
+    const debug = () => {
+      if (process.env.NODE_ENV === 'development') {
+        return (
+          <p>Oikea vastaus: {this.props.game.currentImage.bone.nameLatin}</p>
+        )
+      }
+      return null
+    }
+
     return (
       <div className="bottom">
         <div className="row" id="image-holder">
@@ -151,12 +160,12 @@ class MultipleChoiceGame extends React.Component {
         <div className="container">
           <div className="intro" />
           {this.props.game.wrongAnswerOptions.map(choice => <Button bsStyle={this.style(choice)} disabled={undefined !== this.state.value} value={choice.nameLatin} onClick={this.handleSubmit}>{choice.nameLatin}</Button>)}
-       {/*   <p>Oikea vastaus: {this.props.game.currentImage.bone.nameLatin}</p> */}
+          {debug()}
         </div>
         <div className="homeicon">
-        <Link to='/'>
-          <img src="homeicon.png" alt="Etusivulle"></img><p>Lopeta</p>
-        </Link>
+          <Link to='/'>
+            <img src="homeicon.png" alt="Etusivulle"></img><p>Lopeta</p>
+          </Link>
         </div>
       </div>
     )

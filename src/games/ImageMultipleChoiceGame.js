@@ -119,17 +119,26 @@ class ImageMultipleChoiceGame extends React.Component {
   }
 
   render() {
+    const debug = () => {
+      if (process.env.NODE_ENV === 'development') {
+        return (
+          this.props.game.wrongImageOptions.map((choice, i) => {
+            if (choice.correct) {
+              return 'Oikea vastaus ylhäältä laskettuna: ' + i + '(laskenta alkaa nollasta)'
+            }
+          return null
+          })
+        )
+      }
+      return null
+    }
+
     return (
       <div className="bottom" z-index="3" position="relative">
         <div className="intro" z-index="3" position="relative">
           <h2>{this.props.game.currentImage.bone.nameLatin}, {this.props.game.currentImage.animal.name}</h2>
           <p>(klikkaa oikeaa kuvaa!)</p>
-          {/*   {this.props.game.wrongImageOptions.map((choice, i) => {
-            if (choice.correct) {
-              return 'Oikea vastaus ylhäältä laskettuna: ' + i + '(laskenta alkaa nollasta)'
-            }
-          return null
-          })} */}
+          {debug()}
         </div>
         <div className="container" z-index="3" position="relative">
           <div z-index="3" position="relative">
