@@ -139,12 +139,18 @@ class Statistics extends React.Component {
 		this.setState({ gamesByAnonymousUsers })
 	}
 
-	//renders stats, or "ladataan tietoja" if they're not loaded yet
+	//renders stats, or sends an informative message to user.
 	statsJSX() {
-		if (!this.state.loaded) {
-			return (
-				<p>Ladataan tietoja..</p>
-			)
+		if (this.state.gameSessionsFiltered.length === 0) {
+			if (!this.state.loaded) {
+				return (
+					<p>Ladataan tietoja..</p>
+				)
+			} else {
+				return (
+					<p>Pelejä ei löytynyt valitulla aikavälillä!</p>
+				)
+			}
 		} else {
 			return (
 				<div>

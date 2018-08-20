@@ -109,12 +109,10 @@ class GameSettings extends React.Component {
 	}
 
 	changeGameLength(event) {
-		const re = /^[0-9\b]+$/
-
-		if (event.target.value == '' || re.test(event.target.value)) {
-			this.setState({ gameLength: event.target.value })
-		}
+		const number = JSON.parse([event.target.value])
+		this.setState({ gameLength: number })
 		console.log(typeof this.state.gameLength)
+		console.log(typeof JSON.parse(this.state.gameLength))
 		console.log('Pelin pituus on nyt ... ' + this.state.gameLength)
 	}
 
@@ -339,71 +337,62 @@ class GameSettings extends React.Component {
 										</form>
 									</div>
 								</div>
-								<div className="game-text-input">
-									<div className="col-md-12">
-									<h3 className="form-header">Luupelin pituus:</h3>
-									<div className="game-text-input">
-										<input
-											id="gameLength"
-											type="text"
-											style={{color:'black'}}
-											value={this.state.gameLength}
-											onChange={this.changeGameLength.bind(this)}
-											name="length"
-											/>
-									</div>
-								</div>
+								<div>
 
 								<div className="container">
  									<div className="col-md-12">
  										<h3 className="form-header">Luupelin pituus:</h3>
- 										<h3 className="form-header">Vaikeusaste:</h3>
  										<form>
  											<label className="radio-inline">
  												<input
  													type="radio"
  													id="gameLengthShort"
- 													value={3}
+ 													value="5"
  													onClick={this.changeGameLength.bind(this)}
- 													name="length"
- 													id="gameEasy"
- 													value="easy"
- 													onClick={this.changeGameDifficulty.bind(this)}
- 													name="difficultylevel"
+													name="length"
  												/>
- 												3
- 												Luupää (helppo)
+ 												5
  											</label>
  											<label className="radio-inline">
  												<input
  													type="radio"
  													id="gameLengthMedium"
- 													value={5}
+ 													value="10"
  													onClick={this.changeGameLength.bind(this)}
  													name="length"
- 													id="gameMedium"
- 													value="medium"
- 													name="difficultylevel"
- 													onClick={this.changeGameDifficulty.bind(this)}
- 													defaultChecked
+													defaultChecked 													
  												/>
- 												5
- 												Luunkova
+ 												10
  											</label>
  											<label className="radio-inline">
  												<input
  													type="radio"
  													id="gameLengthLong"
- 													value={7}
+ 													value="15"
  													onClick={this.changeGameLength.bind(this)}
  													name="length"
- 													id="gameHard"
- 													value="hard"
- 													onClick={this.changeGameDifficulty.bind(this)}
- 													name="difficultylevel"
  												/>
- 												7
- 												Luu-5 (vaikea)
+												15
+ 											</label>
+											 <label className="radio-inline">
+ 												<input
+ 													type="radio"
+ 													id="gameLengthLong"
+ 													value="20"
+ 													onClick={this.changeGameLength.bind(this)}
+ 													name="length"
+ 												/>
+												20
+ 											</label>
+											 <label className="radio-inline">
+ 												<input
+ 													type="radio"
+ 													id="gameLengthLong"
+ 													value="25"
+ 													onClick={this.changeGameLength.bind(this)}
+ 													name="length"
+ 												/>
+												25
  											</label>
  										</form>
  										
