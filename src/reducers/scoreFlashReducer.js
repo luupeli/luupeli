@@ -8,6 +8,7 @@ const initialState = {
         scoreflash: '',
         style: '',
         visibility: false,
+        startPlayingBonusSound: false,
         startTime: new Date().getTime()
     }
 }
@@ -16,13 +17,16 @@ const scoreFlashReducer = (store = initialState.scoreflash, action) => {
     //  console.log(action.type)
     if (action.type === 'SET_SCOREFLASH_ON') {
         console.log(action)
-        return { ...store, score: action.score, streak: action.streak, streakemoji: action.streakemoji, scoreflash: action.scoreflash, style: action.style, visibility: action.visibility, startTime: action.startTime }
+        return { ...store, score: action.score, streak: action.streak, streakemoji: action.streakemoji, scoreflash: action.scoreflash, style: action.style, visibility: action.visibility, startTime: action.startTime,startPlayingBonusSound: action.startPlayingBonusSound }
     }
     if (action.type === 'SET_SCOREFLASH_OFF') {
         console.log(action)
-        return { ...store, score: action.score, style: action.style, visibility: action.visibility }
+        return { ...store, score: action.score, style: action.style, visibility: action.visibility, startPlayingBonusSound: action.startPlayingBonusSound }
     }
-
+    if (action.type === 'SET_STOP_SOUND') {
+        console.log(action)
+        return { ...store, startPlayingBonusSound: action.startPlayingBonusSound }
+    }
     return store
 }
 
@@ -51,6 +55,7 @@ export const setScoreFlash = (score, streak, streakemoji, scoreflash, style, tim
     if (visibility === undefined || visibility === 'nan') {
         visibility = true
     }
+    
 
     return async (dispatch, getState) => {
         dispatch(setScoreFlashOn(score, streak, streakemoji, scoreflash, style, visibility))
@@ -71,6 +76,7 @@ export const setScoreFlashOn = (score, streak, streakemoji, scoreflash, style, v
         scoreflash: scoreflash,
         style: style,
         visibility: visibility,
+        startPlayingBonusSound: true,
         startTime: new Date().getTime()
     }
 }
@@ -83,6 +89,15 @@ export const setScoreFlashOff = () => {
         scoreflash: undefined,
         style: 'primary',
         visibility: false,
+        startPlayingBonusSound: false,
+    }
+}
+
+export const stopPlayingBonusSound = () => {
+
+    return {
+        type: 'SET_STOP_SOUND',
+        startPlayingBonusSound: false
     }
 }
 
