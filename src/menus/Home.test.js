@@ -4,7 +4,7 @@ import Home from './Home'
 
 beforeEach(function () {
   global.sessionStorage = jest.genMockFunction();
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000
   global.sessionStorage.setItem = jest.genMockFunction();
   global.sessionStorage.getItem = jest.genMockFunction();
 })

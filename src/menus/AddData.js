@@ -148,7 +148,7 @@ class AddData extends React.Component {
 				return null
 			})
 
-			images = images.filter(img => img !== undefined)
+			images = images.filter(img => img !== undefined && img !== null)
 			images.shift()
 
 			let newBodyParts = images.map(i => i.bodyPart)

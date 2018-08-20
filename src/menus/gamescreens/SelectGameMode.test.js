@@ -19,7 +19,7 @@ const retry = (fn, ms) => new Promise(resolve => {
 
 beforeAll(async () => {
   browser = await puppeteer.launch({ args: ['--no-sandbox --disable-http2'] })
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000
   page = await browser.newPage()
   await page.setViewport({ width: 1280, height: 800 })
   await page.goto('http://localhost:' + port)

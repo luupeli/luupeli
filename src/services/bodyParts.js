@@ -1,5 +1,13 @@
 import axios from 'axios'
-const baseUrl = 'http://luupeli-backend.herokuapp.com/api/bodyParts'
+const url = '/api/bodyParts'
+let baseUrl = ''
+if (process.env.NODE_ENV === 'test') {
+  baseUrl = 'http://luupeli-dev.herokuapp.com' + url
+} else if (process.env.NODE_ENV === 'development') {
+  baseUrl = 'http://localhost:3001' + url
+} else {
+  baseUrl = url
+}
 
 const getAll = () => {
   const request = axios.get(baseUrl)

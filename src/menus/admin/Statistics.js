@@ -16,7 +16,8 @@ class Statistics extends React.Component {
 			writingGameCount: 0,
 			mixedGameCount: 0,
 			multipleChoiceGameCount: 0,
-			gamesByLoggedInUsers: 0
+			gamesByLoggedInUsers: 0,
+			gamesByAnonymousUsers: 0
 		}
 		window.onunload = function () { window.location.href = '/' }
 		this.setInitialStats = this.setInitialStats.bind(this)
@@ -33,14 +34,15 @@ class Statistics extends React.Component {
 		const startDate = Moment(date.startDate._d).format('YYYY MM DD')
 		const endDate = Moment(date.endDate._d).format('YYYY MM DD')
 		if (startDate !== endDate) {
-			let updatedGameSessions = this.state.gameSessions.filter(session => {
+			const updatedGameSessions = this.state.gameSessions.filter(session => {
 				var sessionTimeStamp = Moment(session.timeStamp).format('YYYY MM DD')
 				return endDate >= sessionTimeStamp && startDate <= sessionTimeStamp
 				//return session.timeStamp <= date.endDate._d && session.timeStamp >= date.startDate._d
 			})
 			console.log(updatedGameSessions)
-			this.setState({ gameSessionsFiltered : updatedGameSessions})
-			this.setStats()
+			this.setState({gameSessionsFiltered : updatedGameSessions})
+			console.log(this.state.gameSessionsFiltered)
+			this.setStats(updatedGameSessions)
 		}
 	}
 
@@ -63,45 +65,62 @@ class Statistics extends React.Component {
 				this.setState({ redirect: true, redirectTo: '/' })
 			}
 			this.setState({ user })
+			console.log('jasddsadsa')
 			gameSessionService.getAll()
 				.then((response) => {
+					console.log('nyt menee')
 					this.setInitialStats(response)
 				})
 				.catch((error) => {
 					console.log(error)
-				})
+				})	
 		} else {
 			this.setState({ redirect: true, redirectTo: '/' })
 		}
 	}
 
 	setInitialStats(response) {
+		console.log("asetetaan..")
 		this.setState({ gameSessions: response.data, gameSessionsFiltered: response.data })
-		this.setStats()
+		this.setStats(response.data)
 	}
 
-	setStats() {
-		this.setTimePlayed()
-		this.setGameModes()
-		this.setGamesPlayedByLoggedInUsers()
-	}
+	setStats(updatedGameSessions) {
+		this.setTimePlayed(updatedGameSessions)
+		console.log('time set')
+		this.setGameModes(updatedGameSessions)
+		console.log('gamemodes set')
+		this.setGamesPlayedByLoggedInUsers(updatedGameSessions)
+		console.log('games set by logged in users')
 
-	setTimePlayed() {
+		console.log('Pelejä pelattu kirjautuneiden käyttäjien osalta:' + this.state.gamesByLoggedInUsers + 'kpl')
+		console.log('Pelejä pelattu anonyymien käyttäjien osalta:' + this.state.gamesByAnonymousUsers + 'kpl </p>')
+		console.log('Pelejä pelattu yhteensä:' + this.state.gameSessionsFiltered.length + ' kpl')
+		console.log('Kirjoituspelejä pelattu:' + this.state.writingGameCount + ' kpl')
+		console.log('Monivalintapelejä pelattu:' +  this.state.multipleChoiceGameCount + 'kpl')
+		console.log('Sekapelejä pelattu: ' + this.state.mixedGameCount + 'kpl')
+		console.log('Peliä pelattu yhteensä:' + this.secondsToHourMinuteSecond(this.state.timePlayed))
+		this.forceUpdate()
+}
+
+	setTimePlayed(updatedGameSessions) {
 		let seconds = 0
-		this.state.gameSessionsFiltered.forEach(function(session){
+		updatedGameSessions.forEach(function(session){
 			seconds += session.seconds
 		})
-		this.setState({ timePlayed : Math.round(seconds) })
+		const timePlayed = Math.round(seconds)
+		this.setState({ timePlayed })
 	}
 
-	setGameModes() {
-		let writingGame = this.state.gameSessionsFiltered.filter(session => {
+	setGameModes(updatedGameSessions) {
+		console.log('setting gamemodes')
+		let writingGame = updatedGameSessions.filter(session => {
 			return session.gamemode === "kirjoituspeli"
 		}).length
-		let mixedGame = this.state.gameSessionsFiltered.filter(session => {
+		let mixedGame = updatedGameSessions.filter(session => {
 			return session.gamemode === "sekapeli"
 		}).length
-		let multipleChoiceGame = this.state.gameSessionsFiltered.filter(session => {
+		let multipleChoiceGame = updatedGameSessions.filter(session => {
 			return session.gamemode === "monivalintapeli"
 		}).length
 		this.setState({ writingGameCount: writingGame , 
@@ -109,11 +128,13 @@ class Statistics extends React.Component {
 							multipleChoiceGameCount: multipleChoiceGame })
 	}
 
-	setGamesPlayedByLoggedInUsers() {
-		let gamesByLoggedInUsers = this.state.gameSessionsFiltered.filter(session => {
+	setGamesPlayedByLoggedInUsers(updatedGameSessions) {
+		let gamesByLoggedInUsers = updatedGameSessions.filter(session => {
 			return session.user !== null
 		}).length
 		this.setState({ gamesByLoggedInUsers })
+		let gamesByAnonymousUsers = updatedGameSessions.length - gamesByLoggedInUsers
+		this.setState({ gamesByAnonymousUsers })
 	}
 
 	//renders stats, or "ladataan tietoja" if they're not loaded yet
@@ -126,8 +147,7 @@ class Statistics extends React.Component {
 			return (
 				<div>
 					<p>Pelejä pelattu kirjautuneiden käyttäjien osalta: {this.state.gamesByLoggedInUsers} kpl </p>
-					<p>Pelejä pelattu anonyymien käyttäjien osalta: {this.state.gameSessionsFiltered.length - 
-																	this.state.gamesByLoggedInUsers} kpl </p>
+					<p>Pelejä pelattu anonyymien käyttäjien osalta: {this.state.gamesByAnonymousUsers} kpl </p>
 					<p>Pelejä pelattu yhteensä: {this.state.gameSessionsFiltered.length} kpl</p>
 					<p>Kirjoituspelejä pelattu: {this.state.writingGameCount} kpl</p>
 					<p>Monivalintapelejä pelattu: {this.state.multipleChoiceGameCount} kpl</p>

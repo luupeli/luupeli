@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
 import { setAnswer, setImagesToMultipleChoiceGame, startGameClock, stopGameClock } from '../reducers/gameReducer'
 import { setMessage } from '../reducers/messageReducer'
@@ -6,7 +7,7 @@ import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
 import { Button } from 'react-bootstrap'
 import emoji from 'node-emoji'
-import AnswerSounds from './AnswerSounds'
+import { setAnswerSound } from '../reducers/soundReducer'
 
 /**
  * MultipleChoiceGame (run under Gameloop.js) is one of game mode of Luupeli.
@@ -46,6 +47,9 @@ class MultipleChoiceGame extends React.Component {
     event.preventDefault()
     this.props.stopGameClock()
     this.setState({ value: event.target.value })
+    const correctness = this.checkCorrectness(event.target.value)
+    this.props.setAnswerSound(correctness)
+
     let gameClock = Math.round(((new Date).getTime() - this.props.game.startTime) / 50)
     //let points = (Math.round((this.checkCorrectness(event.target.value) * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((300 + Math.max(0, (300 - this.state.seconds))) / 600))) / 20
     let points = Math.round((1000 + ((1000 + Math.max(0, (400 - gameClock))) / 800))) / 20
@@ -59,7 +63,6 @@ class MultipleChoiceGame extends React.Component {
       points = 0
     }
 
-    const correctness = this.checkCorrectness(event.target.value)
     let streakEmoji = require('node-emoji')
     streakEmoji = emoji.get('yellow_heart')
     let streakNote = ''
@@ -79,7 +82,7 @@ class MultipleChoiceGame extends React.Component {
     }
 
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
-    this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 5, true)
+    this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 3, true)
 
     setTimeout(() => {
       this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(this.state.value), this.state.value, this.props.game.gameClock, points)
@@ -130,17 +133,8 @@ class MultipleChoiceGame extends React.Component {
       return windowWidth - 40
     }
 
-    const sounds = () => {
-      if (this.state.value !== undefined) {
-        return (
-          <AnswerSounds correctness={this.checkCorrectness(this.state.value)} />
-        )
-      }
-    }
-
     return (
       <div className="bottom">
-      {sounds()}
         <div className="row" id="image-holder">
           <div className="intro">
             <CloudinaryContext cloudName="luupeli">
@@ -157,7 +151,12 @@ class MultipleChoiceGame extends React.Component {
         <div className="container">
           <div className="intro" />
           {this.props.game.wrongAnswerOptions.map(choice => <Button bsStyle={this.style(choice)} disabled={undefined !== this.state.value} value={choice.nameLatin} onClick={this.handleSubmit}>{choice.nameLatin}</Button>)}
-          <p>Oikea vastaus: {this.props.game.currentImage.bone.nameLatin}</p>
+       {/*   <p>Oikea vastaus: {this.props.game.currentImage.bone.nameLatin}</p> */}
+        </div>
+        <div className="homeicon">
+        <Link to='/'>
+          <img src="homeicon.png" alt="Etusivulle"></img><p>Lopeta</p>
+        </Link>
         </div>
       </div>
     )
@@ -176,7 +175,8 @@ const mapDispatchToProps = {
   setMessage,
   setScoreFlash,
   startGameClock,
-  stopGameClock
+  stopGameClock,
+  setAnswerSound
 }
 
 const ConnectedMultipleChoiceGame = connect(

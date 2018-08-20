@@ -13,8 +13,8 @@ let page
 // and it is done in this beforeAll block
 beforeAll(async () => {
   browser = await puppeteer.launch({ args: ['--no-sandbox'] })
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000
-}, 30000)
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000
+}, 60000)
 
 beforeEach(async () => {
 	//For some reason the tests seem to hang and timeout around page.$eval() or expect() when using page.removeAllListeners()

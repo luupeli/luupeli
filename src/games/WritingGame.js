@@ -1,13 +1,13 @@
 import React from 'react'
 import StringSimilarity from 'string-similarity'
+import { Redirect, Link } from 'react-router-dom'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
 import { setAnswer, setImageToWritingGame, startGameClock, stopGameClock } from '../reducers/gameReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
+import { setAnswerSound } from '../reducers/soundReducer'
 import { connect } from 'react-redux'
 import emoji from 'node-emoji'
 import { Animated } from "react-animated-css";
-import Sounds from './AnswerSounds'
-
 
 /**
  * WritingGame (run under Gameloop.js) is the standard game mode of Luupeli.
@@ -46,6 +46,7 @@ class WritingGame extends React.Component {
   }
 
   gameClockUnits() { return Math.round(((new Date).getTime() - this.props.game.startedAt) / 50) }
+
   componentDidMount() {
     this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
     this.props.startGameClock()
@@ -54,9 +55,18 @@ class WritingGame extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.game.endCounter !== prevProps.game.endCounter) {
       this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
-      //this.props.startGameClock()
+      this.props.startGameClock()
     }
   }
+
+  componentDidMount() {
+		setInterval(() => {
+			this.setState(() => {
+				// console.log('test')
+				return { unseen: "does not display" }
+			});
+		}, 1000);
+		}
 
   handleChange(event) {
     this.setState({ value: event.target.value })
@@ -67,14 +77,16 @@ class WritingGame extends React.Component {
    */
   handleSubmit(event) {
     event.preventDefault()
-    this.props.startGameClock()
+    this.props.stopGameClock()
     this.setState({ lastValue: this.state.value })
+    let answerCorrectness = this.checkCorrectness(this.state.value)
+    this.props.setAnswerSound(answerCorrectness)
+
     let currentStreak = this.state.streakWG
     let currentBonus = this.state.bonus
     let streakNote = ''
     let streakEmoji = emoji.get('yellow_heart')
     let correctness = 'Melkein oikein'
-    let answerCorrectness = this.checkCorrectness(this.state.value)
 
     let points = (Math.round((answerCorrectness * Math.max(20, this.props.game.currentImage.bone.nameLatin.length - 3)) * ((900 + Math.max(0, (900 - this.gameClockUnits()))) / 1800))) / 20
 
@@ -148,8 +160,7 @@ class WritingGame extends React.Component {
     }
 
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
-    this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 3, true)
-
+    this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 2.5, true)
 
     let answerMoment = this.gameClockUnits()
     let answerCurrentImage = this.props.game.currentImage
@@ -157,9 +168,9 @@ class WritingGame extends React.Component {
     console.log('BEFORE TIMEOUT: ' + this.gameClockUnits())
     setTimeout(() => {
       console.log('AFTER timeout!! ' + this.gameClockUnits())
-      this.props.setAnswer(answerCurrentImage, answerCorrectness, this.state.value, this.props.game.gameClock, points)
+      this.props.setAnswer(answerCurrentImage, answerCorrectness, this.state.lastValue, this.props.game.gameClock, points)
       this.setState({ animationActive: true, lastValue: undefined })
-    }, 2000
+    }, 2500
     );
 
 
@@ -193,36 +204,46 @@ class WritingGame extends React.Component {
     return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
   }
 
-  revealPartialAnswer() {
+  revealPartialAnswer(currentMoment, currentLatin) {
     let skipState = false;
     if (this.state.partialEasyAnswer.length < 3) {
       skipState = true
     }
-    const gameClock = this.gameClockUnits()
-    if (this.getRandomInt(0, 25) < 1 + gameClock / 400 && gameClock - this.state.previousRevealClock > 7) {
+    let previousClock =  this.state.previousRevealClock 
+    if (previousClock===undefined) {
+      previousClock=0
+    }
 
-      let randomIndex = this.getRandomInt(0, this.props.game.currentImage.bone.nameLatin.length);
+  //  const gameClock = this.gameClockUnits()
+  
+    if (this.getRandomInt(0, 15) < 1 + Math.min(12,(this.state.easyDifficultyPenalty*5)+(currentLatin.length/5)) && currentMoment - previousClock > (5000*this.state.easyDifficultyPenalty)) { //+(2000*this.state.easyDifficultyPenalty)
+      console.log('entered inside random')
+      let randomIndex = this.getRandomInt(0, currentLatin.length);
       let newPartial = ''
       let addPenalty = 0.0
-      for (var i = 0; i < this.props.game.currentImage.bone.nameLatin.length; i++) {
-        if (i === randomIndex || this.props.game.currentImage.bone.nameLatin.charAt(i) === ' ') {
-          newPartial = newPartial + this.props.game.currentImage.bone.nameLatin.charAt(i)
+      for (var i = 0; i <currentLatin.length; i++) {
+        if (i === randomIndex || currentLatin.charAt(i) === ' ') {
+          newPartial = newPartial + currentLatin.charAt(i)
           if (!skipState) {
-            if (this.state.partialEasyAnswer.charAt(i) === '_') {
+            if (this.state.partialEasyAnswer.charAt(i) === '_' || this.state.partialEasyAnswer.charAt(i)!==currentLatin.charAt(i)) {
               addPenalty = 0.02/*05+Math.max(0,Math.min(((50-(this.props.game.currentImage.bone.nameLatin.length*2))/1000),0.06))*/
-              if (this.props.game.currentImage.bone.nameLatin.length < 10) {
+              if (currentLatin.length < 10) {
                 addPenalty = addPenalty * 2;
               }
             }
           }
         } else if (!skipState) {
+          if (this.state.partialEasyAnswer.charAt(i)!=='_' && this.state.partialEasyAnswer.charAt(i)!==currentLatin.charAt(i)) {
+            newPartial = newPartial + currentLatin.charAt(i)
+          } else {
           newPartial = newPartial + this.state.partialEasyAnswer.charAt(i)
+          }
         } else {
           newPartial = newPartial + '_'
         }
 
         //   newPartial[randomIndex] =this.props.game.currentImage.bone.nameLatin[randomIndex]
-        this.setState({ previousRevealClock: gameClock, partialEasyAnswer: newPartial, easyDifficultyPenalty: this.state.easyDifficultyPenalty - addPenalty })
+        this.setState({ previousRevealClock: currentMoment, partialEasyAnswer: newPartial, easyDifficultyPenalty: this.state.easyDifficultyPenalty - addPenalty })
         // console.log('new partial on nyt : ' + newPartial)
       }
 
@@ -233,6 +254,8 @@ class WritingGame extends React.Component {
    * Notice that the bone images are fethched from Cloudinary, with a resize transformation done based on the measured window size.
    */
   render() {
+
+    var currentMoment = new Date().getTime()
 
     const answerInput = () => {
       if (this.state.lastValue === undefined) {
@@ -256,7 +279,7 @@ class WritingGame extends React.Component {
           return (
             <div>
               <div className="game-text-input" style={{ color: 'green' }}>
-                <Sounds correctness={this.checkCorrectness(this.state.lastValue)} />
+                {/*     <Sounds correctness={this.checkCorrectness(this.state.lastValue)} />*/}
                 <input
                   id="gameTextInput"
                   type="text"
@@ -274,7 +297,7 @@ class WritingGame extends React.Component {
           return (
             <div>
               <div className="game-text-input" style={{ color: 'red' }}>
-                <Sounds correctness={this.checkCorrectness(this.state.lastValue)} />
+                {/*    <Sounds correctness={this.checkCorrectness(this.state.lastValue)} />*/}
                 <input
                   id="gameTextInput"
                   type="text"
@@ -284,7 +307,7 @@ class WritingGame extends React.Component {
                 />
               </div>
               <div className="btn-group">
-                <button classname="gobackbutton" disabled  id="submitButton">Vastaa</button>
+                <button classname="gobackbutton" disabled id="submitButton">Vastaa</button>
               </div>
             </div>
           )
@@ -293,9 +316,15 @@ class WritingGame extends React.Component {
     }
 
 
+    var timeToCompare = this.props.game.startedAt
+    if (timeToCompare=== undefined) {
+    timeToCompare=currentMoment-5001
+    }
 
-    if (this.gameClockUnits() > 60 && this.props.game.gameDifficulty === 'easy') {
-      this.revealPartialAnswer()
+    console.log('curr: '+currentMoment+" vs started: "+timeToCompare)
+    if (currentMoment - timeToCompare > (5000) && this.props.game.gameDifficulty === 'easy') {
+      console.log('trying to reveal...')
+      this.revealPartialAnswer(currentMoment,this.props.game.currentImage.bone.nameLatin)
     }
 
     const imageWidth = () => {              // Here we try to measure the window size in order to resize the bone image accordingly
@@ -335,11 +364,12 @@ class WritingGame extends React.Component {
     //            {/* <Transformation width={imageWidth()} crop="fill" format="png" radius="20" /> */}
 
     let cheat = ''
-    if (this.props.game.gameDifficulty === 'easy') {
+    if (this.props.game.gameDifficulty === 'easy' && this.state.animationActive) {
+      if (currentMoment - timeToCompare > 5000) {
       cheat = this.state.partialEasyAnswer
-    }
-
-    if (!this.state.animationActive) {
+      } else {
+        cheat = '____'}
+    } else if (!this.state.animationActive) {
       cheat = this.props.game.currentImage.bone.nameLatin
     } else {
       cheat = '???'
@@ -396,10 +426,13 @@ class WritingGame extends React.Component {
         >
           {answerInput()}
         </form>
-        <h6>debug: {this.props.game.currentImage.bone.nameLatin}</h6>
+        {/*   <h6>debug: {this.props.game.currentImage.bone.nameLatin}</h6> */}
+        <div className="homeicon">
+          <Link to='/'>
+            <img src="homeicon.png" alt="Etusivulle"></img><p>Lopeta</p>
+          </Link>
+        </div>
       </div >
-
-
 
     )
 
@@ -417,7 +450,8 @@ const mapDispatchToProps = {
   setImageToWritingGame,
   setScoreFlash,
   startGameClock,
-  stopGameClock
+  stopGameClock,
+  setAnswerSound
 }
 
 const ConnectedWritingGame = connect(

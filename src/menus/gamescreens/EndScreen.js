@@ -112,19 +112,19 @@ class EndScreen extends React.Component {
 		}
 
 		return (
-			<Col xs={12} md={6}>
+			<Col xs={12} md={6} lg={6}>
 				<Row className="show-grid row-eq-height">
-					<Col xs={6}>
+					<Col xs={6} md={6} lg={6}>
 						<CloudinaryContext cloudName="luupeli">
 							<Image publicId={answer.image.url + ".png"}>
 								<Transformation height={imageWidth()} crop="fill" />
 							</Image>
 						</CloudinaryContext>
 					</Col>
-					<Col xs={6} bsClass="text-bg col">
+					<Col xs={6} md={6} lg={6} bsClass="text-bg col">
 						<p><b>{answer.image.bone.nameLatin}</b></p>
 						<p>Vastasit: {answer.answer}</p>
-						<p>Aika: {answer.seconds / 10} s</p>
+						<p>Aika: {answer.seconds / 1000} s</p>
 						<p>Pisteet: {answer.score}</p>
 						<p className={gradeMarkClass}>{gradeMark}</p>
 					</Col>
@@ -147,7 +147,7 @@ class EndScreen extends React.Component {
 		const lastHalf = sortedAnswers.filter((answer, i) => i % 2 !== 0)
 
 		return (
-			<Grid>
+			<Grid fluid={true}>
 				{firstHalf.map((answer, i) => {
 					if (i < lastHalf.length) {
 						return (
@@ -161,11 +161,11 @@ class EndScreen extends React.Component {
 					return (
 						<Row className="show-grid">
 							{this.renderSingleAnswer(answer)}
-							<Col xs={12} md={6}>
+							<Col xs={12} md={6} lg={6}>
 								<Row className="show-grid row-eq-height">
-									<Col xs={6}>
+									<Col xs={6} md={6} lg={6}>
 									</Col>
-									<Col xs={6} bsClass="text-bg col">
+									<Col xs={6} md={6} lg={6} bsClass="text-bg col">
 									</Col>
 								</Row>
 							</Col>
@@ -189,10 +189,15 @@ class EndScreen extends React.Component {
 		const correctAnswers = this.props.game.answers.filter(ans => ans.correctness === 100)
 		const almostCorrectAnswers = this.props.game.answers.filter(ans => ans.correctness > 70 && ans.correctness < 100)
 		const wrongAnswers = this.props.game.answers.filter(ans => ans.correctness <= 70)
+		console.log(correctAnswers)
+		console.log(wrongAnswers)
 
-		const correctPortion = Math.round((correctAnswers.length / this.props.game.answers.length)) * 100
-		const almostCorrectPortion = Math.round((almostCorrectAnswers.length / this.props.game.answers.length)) * 100
-		const wrongPortion = Math.round((wrongAnswers.length / this.props.game.answers.length)) * 100
+		const correctPortion = (correctAnswers.length / this.props.game.answers.length) * 100
+		const almostCorrectPortion = (almostCorrectAnswers.length / this.props.game.answers.length) * 100
+		const wrongPortion = (wrongAnswers.length / this.props.game.answers.length) * 100
+		console.log(correctPortion)
+		console.log(wrongPortion)
+		console.log(this.props.game.answers.length)
 
 		return (
 
@@ -207,22 +212,28 @@ class EndScreen extends React.Component {
 					loop="true"
 				/>
 				<div>
-					<div className="btn-group" role="group">
-						<button type="button" className="btn btn-secondary" onClick={this.proceedToReplay}>Pelaa uudestaan</button>
-						<button type="button" className="btn btn-secondary" onClick={this.proceedToGameModeSelection}>Pelimoodivalikkoon</button>
-					</div>
 					<h1>Pelin kulku:</h1>
-					<h2>Pisteet yhteensä: {this.props.game.totalScore}</h2>
-					<h2>Pelin kesto: {this.props.game.totalSeconds / 10} s</h2>
+					<Row className="show-grid">
+						<Col xs={12} md={6}>
+							<h2>Pisteet yhteensä: {this.props.game.totalScore}</h2>
+						</Col>
+						<Col xs={12} md={6}>
+							<h2>Pelin kesto: {this.props.game.totalSeconds / 1000} s</h2>
+						</Col>
+					</Row>
+					<div className="btn-group-horizontal" role="group">
+						<button type="button" className="btn btn-theme" onClick={this.proceedToReplay}>Pelaa uudestaan</button>
+						<button type="button" className="btn btn-theme" onClick={this.proceedToGameModeSelection}>Pelimoodivalikkoon</button>
+					</div>
 				</div>
 				<div>
-					<h1 className='h2' id="endScreenTitle">Vastauksesi olivat:</h1>
+					<h2 id="endScreenTitle">Vastauksesi olivat:</h2>
 					<div id="resultsText">
-						<ProgressBar label={`answerPortions`}>
-							<ProgressBar bsStyle="success" now={correctPortion} label={`Täysin oikein ${correctPortion}%`} key={1} />
-							<ProgressBar bsStyle="warning" now={almostCorrectPortion} label={`Melkein oikein ${almostCorrectPortion}%`} key={2} />
-							<ProgressBar bsStyle="danger" now={wrongPortion} label={`Väärin ${wrongPortion}%`} key={3} />
-						</ProgressBar>
+						<div class="progress progress-fat">
+							<div class="progress-bar progress-bar-fat progress-bar-success" style={{width: correctPortion + "%"}} role="progressbar" aria-valuenow={correctPortion} aria-valuemin="0" aria-valuemax="100">Täysin oikein {correctPortion}%</div>
+							<div class="progress-bar progress-bar-fat progress-bar-warning" style={{width: almostCorrectPortion + "%"}} role="progressbar" aria-valuenow={almostCorrectPortion} aria-valuemin="0" aria-valuemax="100">Melkein oikein {almostCorrectPortion}</div>
+							<div class="progress-bar progress-bar-fat progress-bar-danger" style={{width: wrongPortion + "%"}} role="progressbar" aria-valuenow={wrongPortion} aria-valuemin="0" aria-valuemax="100">Väärin {wrongPortion}</div>
+						</div>
 						{this.renderAnswers()}
 					</div>
 
