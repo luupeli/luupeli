@@ -3,6 +3,8 @@ import { Link, Redirect } from 'react-router-dom'
 import gameSessionService from '../../services/gameSessions'
 import gameSessions from '../../services/gameSessions';
 import { DateRange } from 'react-date-range';
+import Moment from 'moment';
+
 
 class Statistics extends React.Component {
 	constructor(props) {
@@ -17,6 +19,7 @@ class Statistics extends React.Component {
 			gamesByLoggedInUsers: 0
 		}
 		window.onunload = function () { window.location.href = '/' }
+		this.setInitialStats = this.setInitialStats.bind(this)
 		this.setStats = this.setStats.bind(this)
 		this.setTimePlayed = this.setTimePlayed.bind(this)
 		this.setGameTypes = this.setGameModes.bind(this)
@@ -27,13 +30,18 @@ class Statistics extends React.Component {
 
 	updateDate(date){
 		console.log(date)
-		const end = date.endDate._d
-		const endDateFormatted = ""
-		console.log(end)
-		let updatedGameSessions = this.state.gameSessions.filter(session => {
-			return session.timeStamp <= date.endDate._d && session.timeStamp >= date.startDate._d
-		})
-		console.log(updatedGameSessions)
+		const startDate = Moment(date.startDate._d).format('YYYY MM DD')
+		const endDate = Moment(date.endDate._d).format('YYYY MM DD')
+		if (startDate !== endDate) {
+			let updatedGameSessions = this.state.gameSessions.filter(session => {
+				var sessionTimeStamp = Moment(session.timeStamp).format('YYYY MM DD')
+				return endDate >= sessionTimeStamp && startDate <= sessionTimeStamp
+				//return session.timeStamp <= date.endDate._d && session.timeStamp >= date.startDate._d
+			})
+			console.log(updatedGameSessions)
+			this.setState({ gameSessionsFiltered : updatedGameSessions})
+			this.setStats()
+		}
 	}
 
 	secondsToHourMinuteSecond(total) {
@@ -57,7 +65,7 @@ class Statistics extends React.Component {
 			this.setState({ user })
 			gameSessionService.getAll()
 				.then((response) => {
-					this.setStats(response)
+					this.setInitialStats(response)
 				})
 				.catch((error) => {
 					console.log(error)
@@ -67,8 +75,12 @@ class Statistics extends React.Component {
 		}
 	}
 
-	setStats(response) {
+	setInitialStats(response) {
 		this.setState({ gameSessions: response.data, gameSessionsFiltered: response.data })
+		this.setStats()
+	}
+
+	setStats() {
 		this.setTimePlayed()
 		this.setGameModes()
 		this.setGamesPlayedByLoggedInUsers()
@@ -104,6 +116,7 @@ class Statistics extends React.Component {
 		this.setState({ gamesByLoggedInUsers })
 	}
 
+	//renders stats, or "ladataan tietoja" if they're not loaded yet
 	statsJSX() {
 		if (this.state.gameSessionsFiltered.length === 0) {
 			return (
@@ -127,7 +140,7 @@ class Statistics extends React.Component {
 	
 
 	render() {
-		console.log(this.state.gameSessions)
+		Moment.locale('en');
 
 		if (this.state.redirect) {
 			return (
