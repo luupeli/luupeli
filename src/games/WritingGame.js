@@ -21,6 +21,7 @@ class WritingGame extends React.Component {
     this.state = {
       value: '',
       lastValue: undefined,
+      imgAnimal: "none",
       streakWG: 0,
       bonus: 1.0,
       currentScore: 0,
@@ -58,7 +59,8 @@ class WritingGame extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({ value: event.target.value })
+    //this.setState({ value: event.target.value })
+    this.setState({ [event.target.name]: event.target.value })
   }
   /**
    * As the player submits the answer, the points will be calculated, gameplay stats will be stored and player message and score flash balloon will be generated.
@@ -140,6 +142,13 @@ class WritingGame extends React.Component {
       points = points * 2 * currentBonus
 
     }
+    
+    //Check answered animal and score accordingly
+    if (this.state.imgAnimal === this.props.game.currentImage.animal.name) {
+			points = Math.round(points * 2.5)
+		} else if (this.state.imgAnimal !== "none") {
+			points = Math.round(points * 0.5)
+		}
 
 
     points = Math.round(points / 20) * 20
@@ -157,7 +166,7 @@ class WritingGame extends React.Component {
     console.log('BEFORE TIMEOUT: ' + this.gameClockUnits())
     setTimeout(() => {
       console.log('AFTER timeout!! ' + this.gameClockUnits())
-      this.props.setAnswer(answerCurrentImage, answerCorrectness, this.state.lastValue, this.props.game.gameClock, points)
+      this.props.setAnswer(answerCurrentImage, answerCorrectness, this.state.lastValue, this.state.imgAnimal, this.props.game.gameClock, points)
       this.setState({ animationActive: true, lastValue: undefined })
     }, 2500
     );
@@ -235,6 +244,42 @@ class WritingGame extends React.Component {
   render() {
 
     var currentMoment = new Date().getTime()
+    
+    const animalRadioNoAnimal = () => {
+			if (this.props.game.gameDifficulty === 'hard') {
+				return (
+					<label className="radio-inline">
+						<input
+							type="radio"
+							id="animalRadio0"
+							value="none"
+							onClick={this.handleChange}
+							name="imgAnimal"
+							defaultChecked
+						/>
+						En tiedä
+					</label>
+				)
+			}
+		}
+    
+    console.log(animalRadioNoAnimal)
+    const animalRadio = this.props.init.animals.map((animal, i) => {
+			if (this.props.game.gameDifficulty === 'hard') {
+				return (
+					<label className="radio-inline">
+						<input
+							type="radio"
+							id={"animalRadio" + (i + 1)}
+							value={animal.name}
+							onClick={this.handleChange}
+							name="imgAnimal"
+						/>
+							{animal.name}
+					</label>
+				)
+			}
+		})
 
     const answerInput = () => {
       if (this.state.lastValue === undefined) {
@@ -245,9 +290,12 @@ class WritingGame extends React.Component {
                 id="gameTextInput"
                 type="text"
                 value={this.state.value}
+                name="value"
                 onChange={this.handleChange}
               />
             </div>
+            {animalRadioNoAnimal()}
+            {animalRadio}
             <div className="btn-group">
               <button classname="gobackbutton" type="submit" id="submitButton">Vastaa</button>
             </div>
@@ -263,10 +311,13 @@ class WritingGame extends React.Component {
                   id="gameTextInput"
                   type="text"
                   value={this.state.lastValue}
+                  name="value"
                   onChange={this.handleChange}
                   disabled
                 />
               </div>
+              {animalRadioNoAnimal}
+              {animalRadio}
               <div className="btn-group">
                 <button classname="gobackbutton" disabled id="submitButton">Vastaa</button>
               </div>
@@ -281,10 +332,13 @@ class WritingGame extends React.Component {
                   id="gameTextInput"
                   type="text"
                   value={this.state.lastValue}
+                  name="value"
                   onChange={this.handleChange}
                   disabled
                 />
               </div>
+              {animalRadioNoAnimal}
+              {animalRadio}
               <div className="btn-group">
                 <button classname="gobackbutton" disabled  id="submitButton">Vastaa</button>
               </div>
@@ -412,7 +466,8 @@ class WritingGame extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    game: state.game
+    game: state.game,
+    init: state.init
   }
 }
 

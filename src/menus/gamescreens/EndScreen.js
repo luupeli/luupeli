@@ -110,6 +110,30 @@ class EndScreen extends React.Component {
 			gradeMark = emoji.get('negative_squared_cross_mark')
 			gradeMarkClass = "grade-mark-bad"
 		}
+		
+		const correctAnswer = () => {
+			if (this.props.game.gameDifficulty === 'hard') {
+				return (
+					<p><b>{answer.image.bone.nameLatin}, {answer.image.animal.name}</b></p>
+				)
+			}
+			
+			return (
+				<p><b>{answer.image.bone.nameLatin}</b></p>
+			)
+		}
+		
+		const playerAnswer = () => {
+			if (this.props.game.gameDifficulty === 'hard' && answer.animal !== 'none') {
+				return (
+					<p>Vastasit: {answer.answer}, {answer.animal}</p>
+				)
+			}
+			
+			return (
+				<p>Vastasit: {answer.answer}</p>
+			)
+		}
 
 		return (
 			<Col xs={12} md={6} lg={6}>
@@ -122,8 +146,8 @@ class EndScreen extends React.Component {
 						</CloudinaryContext>
 					</Col>
 					<Col xs={6} md={6} lg={6} bsClass="text-bg col">
-						<p><b>{answer.image.bone.nameLatin}</b></p>
-						<p>Vastasit: {answer.answer}</p>
+						{correctAnswer()}
+						{playerAnswer()}
 						<p>Aika: {answer.seconds / 1000} s</p>
 						<p>Pisteet: {answer.score}</p>
 						<p className={gradeMarkClass}>{gradeMark}</p>
@@ -192,9 +216,9 @@ class EndScreen extends React.Component {
 		console.log(correctAnswers)
 		console.log(wrongAnswers)
 
-		const correctPortion = (correctAnswers.length / this.props.game.answers.length) * 100
-		const almostCorrectPortion = (almostCorrectAnswers.length / this.props.game.answers.length) * 100
-		const wrongPortion = (wrongAnswers.length / this.props.game.answers.length) * 100
+		const correctPortion = Math.round((correctAnswers.length / this.props.game.answers.length) * 100)
+		const almostCorrectPortion = Math.round((almostCorrectAnswers.length / this.props.game.answers.length) * 100)
+		const wrongPortion = Math.round((wrongAnswers.length / this.props.game.answers.length) * 100)
 		console.log(correctPortion)
 		console.log(wrongPortion)
 		console.log(this.props.game.answers.length)
@@ -231,8 +255,8 @@ class EndScreen extends React.Component {
 					<div id="resultsText">
 						<div class="progress progress-fat">
 							<div class="progress-bar progress-bar-fat progress-bar-success" style={{width: correctPortion + "%"}} role="progressbar" aria-valuenow={correctPortion} aria-valuemin="0" aria-valuemax="100">Täysin oikein {correctPortion}%</div>
-							<div class="progress-bar progress-bar-fat progress-bar-warning" style={{width: almostCorrectPortion + "%"}} role="progressbar" aria-valuenow={almostCorrectPortion} aria-valuemin="0" aria-valuemax="100">Melkein oikein {almostCorrectPortion}</div>
-							<div class="progress-bar progress-bar-fat progress-bar-danger" style={{width: wrongPortion + "%"}} role="progressbar" aria-valuenow={wrongPortion} aria-valuemin="0" aria-valuemax="100">Väärin {wrongPortion}</div>
+							<div class="progress-bar progress-bar-fat progress-bar-warning" style={{width: almostCorrectPortion + "%"}} role="progressbar" aria-valuenow={almostCorrectPortion} aria-valuemin="0" aria-valuemax="100">Melkein oikein {almostCorrectPortion}%</div>
+							<div class="progress-bar progress-bar-fat progress-bar-danger" style={{width: wrongPortion + "%"}} role="progressbar" aria-valuenow={wrongPortion} aria-valuemin="0" aria-valuemax="100">Väärin {wrongPortion}%</div>
 						</div>
 						{this.renderAnswers()}
 					</div>

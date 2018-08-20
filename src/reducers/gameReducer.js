@@ -120,13 +120,14 @@ export const stopGameClock = () => {
 }
 
 // This sets a new answer to the answers array.
-export const setAnswer = (image, correctness, answer, seconds, score) => {
+export const setAnswer = (image, correctness, answer, animal, seconds, score) => {
     return {
         type: 'SET_ANSWER',
         answer: [{
             image: image,
             correctness: correctness,
             answer: answer,
+            animal: animal,
             seconds: seconds,
             score: score
         }],
