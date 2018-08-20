@@ -10,6 +10,7 @@ class Statistics extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			loaded: false,
 			gameSessions: [],
 			gameSessionsFiltered: [],
 			timePlayed: 0.0,
@@ -47,7 +48,7 @@ class Statistics extends React.Component {
 	}
 
 	secondsToHourMinuteSecond(total) {
-		var hours = Math.floor(total / 3600);
+		var hours = Math.floor(total / 3600 / 60);
 		var minutes = Math.floor(total % 3600 / 60);
 		var seconds = Math.floor(total % 3600 % 60);
 	
@@ -83,6 +84,7 @@ class Statistics extends React.Component {
 		console.log("asetetaan..")
 		this.setState({ gameSessions: response.data, gameSessionsFiltered: response.data })
 		this.setStats(response.data)
+		this.setState({loaded : true})
 	}
 
 	setStats(updatedGameSessions) {
@@ -139,7 +141,7 @@ class Statistics extends React.Component {
 
 	//renders stats, or "ladataan tietoja" if they're not loaded yet
 	statsJSX() {
-		if (this.state.gameSessionsFiltered.length === 0) {
+		if (!this.state.loaded) {
 			return (
 				<p>Ladataan tietoja..</p>
 			)

@@ -354,6 +354,63 @@ class GameSettings extends React.Component {
 									</div>
 								</div>
 
+								<div className="container">
+ 									<div className="col-md-12">
+ 										<h3 className="form-header">Luupelin pituus:</h3>
+ 										<h3 className="form-header">Vaikeusaste:</h3>
+ 										<form>
+ 											<label className="radio-inline">
+ 												<input
+ 													type="radio"
+ 													id="gameLengthShort"
+ 													value={3}
+ 													onClick={this.changeGameLength.bind(this)}
+ 													name="length"
+ 													id="gameEasy"
+ 													value="easy"
+ 													onClick={this.changeGameDifficulty.bind(this)}
+ 													name="difficultylevel"
+ 												/>
+ 												3
+ 												Luupää (helppo)
+ 											</label>
+ 											<label className="radio-inline">
+ 												<input
+ 													type="radio"
+ 													id="gameLengthMedium"
+ 													value={5}
+ 													onClick={this.changeGameLength.bind(this)}
+ 													name="length"
+ 													id="gameMedium"
+ 													value="medium"
+ 													name="difficultylevel"
+ 													onClick={this.changeGameDifficulty.bind(this)}
+ 													defaultChecked
+ 												/>
+ 												5
+ 												Luunkova
+ 											</label>
+ 											<label className="radio-inline">
+ 												<input
+ 													type="radio"
+ 													id="gameLengthLong"
+ 													value={7}
+ 													onClick={this.changeGameLength.bind(this)}
+ 													name="length"
+ 													id="gameHard"
+ 													value="hard"
+ 													onClick={this.changeGameDifficulty.bind(this)}
+ 													name="difficultylevel"
+ 												/>
+ 												7
+ 												Luu-5 (vaikea)
+ 											</label>
+ 										</form>
+ 										
+ 									</div>
+ 								</div>
+
+			
 									
 								</div>
 								<div className="container">
