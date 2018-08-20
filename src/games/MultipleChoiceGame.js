@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
 import { setAnswer, setImagesToMultipleChoiceGame, startGameClock, stopGameClock } from '../reducers/gameReducer'
 import { setMessage } from '../reducers/messageReducer'
@@ -151,6 +152,11 @@ class MultipleChoiceGame extends React.Component {
           <div className="intro" />
           {this.props.game.wrongAnswerOptions.map(choice => <Button bsStyle={this.style(choice)} disabled={undefined !== this.state.value} value={choice.nameLatin} onClick={this.handleSubmit}>{choice.nameLatin}</Button>)}
        {/*   <p>Oikea vastaus: {this.props.game.currentImage.bone.nameLatin}</p> */}
+        </div>
+        <div className="homeicon">
+        <Link to='/'>
+          <img src="homeicon.png" alt="Etusivulle"></img><p>Lopeta</p>
+        </Link>
         </div>
       </div>
     )

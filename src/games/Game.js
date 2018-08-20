@@ -35,7 +35,15 @@ class Game extends React.Component {
             const user = JSON.parse(loggedUserJSON)
             this.setState({ user })
         }
+
+        setInterval(() => {
+			this.setState(() => {
+				// console.log('test')
+				return { unseen: "does not display" }
+			});
+		}, 500);
     }
+    
 
     postGameSession() {
         gameSessionService.create({
@@ -228,7 +236,6 @@ class Game extends React.Component {
                                 <div
                                     className={this.state.allStyles[i].flairLayerD}>
                                 </div>
-
                                 {this.responsiveLayout()}
 
                             </div>
