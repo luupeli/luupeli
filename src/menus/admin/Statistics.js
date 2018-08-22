@@ -1,10 +1,10 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import gameSessionService from '../../services/gameSessions'
-import gameSessions from '../../services/gameSessions';
+import answersService from '../../services/answers'
 import { DateRange } from 'react-date-range';
 import Moment from 'moment';
-
+import { Row, Col } from 'react-bootstrap'
 
 class Statistics extends React.Component {
 	constructor(props) {
@@ -13,6 +13,7 @@ class Statistics extends React.Component {
 			loaded: false,
 			gameSessions: [],
 			gameSessionsFiltered: [],
+			top10EasiestImages: [],
 			timePlayed: 0.0,
 			writingGameCount: 0,
 			mixedGameCount: 0,
@@ -31,9 +32,9 @@ class Statistics extends React.Component {
 	}
 
 	updateDate(date){
-		console.log(date)
 		const startDate = Moment(date.startDate._d).format('YYYY MM DD')
 		const endDate = Moment(date.endDate._d).format('YYYY MM DD')
+		console.log(startDate)
 		if (startDate !== endDate) {
 			const updatedGameSessions = this.state.gameSessions.filter(session => {
 				var sessionTimeStamp = Moment(session.timeStamp).format('YYYY MM DD')
@@ -89,20 +90,8 @@ class Statistics extends React.Component {
 
 	setStats(updatedGameSessions) {
 		this.setTimePlayed(updatedGameSessions)
-		console.log('time set')
 		this.setGameModes(updatedGameSessions)
-		console.log('gamemodes set')
 		this.setGamesPlayedByLoggedInUsers(updatedGameSessions)
-		console.log('games set by logged in users')
-
-		console.log('Pelejä pelattu kirjautuneiden käyttäjien osalta:' + this.state.gamesByLoggedInUsers + 'kpl')
-		console.log('Pelejä pelattu anonyymien käyttäjien osalta:' + this.state.gamesByAnonymousUsers + 'kpl </p>')
-		console.log('Pelejä pelattu yhteensä:' + this.state.gameSessionsFiltered.length + ' kpl')
-		console.log('Kirjoituspelejä pelattu:' + this.state.writingGameCount + ' kpl')
-		console.log('Monivalintapelejä pelattu:' +  this.state.multipleChoiceGameCount + 'kpl')
-		console.log('Sekapelejä pelattu: ' + this.state.mixedGameCount + 'kpl')
-		console.log('Peliä pelattu yhteensä:' + this.secondsToHourMinuteSecond(this.state.timePlayed))
-		this.forceUpdate()
 }
 
 	setTimePlayed(updatedGameSessions) {
@@ -139,6 +128,17 @@ class Statistics extends React.Component {
 		this.setState({ gamesByAnonymousUsers })
 	}
 
+	setEasiestImages() {
+		gameSessionService.getAll()
+			.then((response) => {
+				console.log('nyt menee')
+				this.setInitialStats(response)
+			})
+			.catch((error) => {
+				console.log(error)
+			})	
+	}
+	
 	//renders stats, or sends an informative message to user.
 	statsJSX() {
 		if (this.state.gameSessionsFiltered.length === 0) {
@@ -154,13 +154,35 @@ class Statistics extends React.Component {
 		} else {
 			return (
 				<div>
-					<p>Pelejä pelattu kirjautuneiden käyttäjien osalta: {this.state.gamesByLoggedInUsers} kpl </p>
-					<p>Pelejä pelattu anonyymien käyttäjien osalta: {this.state.gamesByAnonymousUsers} kpl </p>
-					<p>Pelejä pelattu yhteensä: {this.state.gameSessionsFiltered.length} kpl</p>
-					<p>Kirjoituspelejä pelattu: {this.state.writingGameCount} kpl</p>
-					<p>Monivalintapelejä pelattu: {this.state.multipleChoiceGameCount} kpl</p>
-					<p>Sekapelejä pelattu: {this.state.mixedGameCount} kpl</p>
-					<p>Peliä pelattu yhteensä: {this.secondsToHourMinuteSecond(this.state.timePlayed)}</p>
+					<div>
+						<p>Pelejä pelattu kirjautuneiden käyttäjien osalta: {this.state.gamesByLoggedInUsers} kpl </p>
+						<p>Pelejä pelattu anonyymien käyttäjien osalta: {this.state.gamesByAnonymousUsers} kpl </p>
+						<p>Pelejä pelattu yhteensä: {this.state.gameSessionsFiltered.length} kpl</p>
+						<p>Kirjoituspelejä pelattu: {this.state.writingGameCount} kpl</p>
+						<p>Monivalintapelejä pelattu: {this.state.multipleChoiceGameCount} kpl</p>
+						<p>Sekapelejä pelattu: {this.state.mixedGameCount} kpl</p>
+						<p>Peliä pelattu yhteensä: {this.secondsToHourMinuteSecond(this.state.timePlayed)}</p>
+					</div>
+					<div>
+						<div>
+							<Row>
+								<Col>
+									{this.state.top10EasiestImages.map(index => {
+										return <p>{index}</p>
+									})}
+								</Col>
+							</Row>
+						</div>
+						<div>
+							<Row>
+								<Col>
+									{this.state.top10EasiestImages.map(index => {
+										return <p>{index}</p>
+									})}
+								</Col>
+							</Row>
+						</div>
+					</div>
 				</div>
 			)
 		}
