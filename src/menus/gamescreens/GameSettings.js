@@ -9,6 +9,7 @@ import { gameInitialization } from '../../reducers/gameReducer'
 import { connect } from 'react-redux'
 import { setMessage } from '../../reducers/messageReducer'
 import emoji from 'node-emoji'
+import BackButton from '../BackButton'
 
 
 /**
@@ -475,9 +476,7 @@ class GameSettings extends React.Component {
 								</div>
 							</div>
 						</div>
-						<div className="btn-group">
-							<button className="gobackbutton"><Link to='/gamemode'>Takaisin</Link></button>
-						</div>
+						<BackButton redirectTo='/gamemode' />
 					</div>
 				</div>
 			</div>
