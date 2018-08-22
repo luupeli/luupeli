@@ -1,12 +1,12 @@
 import axios from 'axios'
 const url = '/api/users'
 let baseUrl = ''
-if (process.env.NODE_ENV === 'test') {
-  baseUrl = 'http://luupeli-dev.herokuapp.com' + url
-} else if (process.env.NODE_ENV === 'development') {
+if (process.env.REACT_APP_ENV === 'production') {
+  baseUrl = url
+} else if (process.env.REACT_APP_ENV === 'development') {
   baseUrl = 'http://localhost:3001' + url
 } else {
-  baseUrl = url
+  baseUrl = 'http://luupeli-dev.herokuapp.com' + url
 }
 
 const getAll = () => {
