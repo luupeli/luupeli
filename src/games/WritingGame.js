@@ -1,6 +1,6 @@
 import React from 'react'
 import StringSimilarity from 'string-similarity'
-import { Redirect, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
 import { setAnswer, setImageToWritingGame, startGameClock, stopGameClock } from '../reducers/gameReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
@@ -8,7 +8,6 @@ import { setAnswerSound } from '../reducers/soundReducer'
 import { connect } from 'react-redux'
 import emoji from 'node-emoji'
 import { Animated } from "react-animated-css";
-import { debug } from 'util';
 
 /**
  * WritingGame (run under Gameloop.js) is the standard game mode of Luupeli.
@@ -48,18 +47,14 @@ class WritingGame extends React.Component {
   }
 
   gameClockUnits() {
-    let currentTime = (new Date).getTime()
-    let startedAt = this.props.game.startedAt; 
+    let currentTime = (new Date()).getTime()
+    let startedAt = this.props.game.startedAt;
     if (isNaN(startedAt)) {
-      startedAt= currentTime-5000
+      startedAt = currentTime - 5000
     }
-    return Math.round((currentTime-startedAt) / 50) }
-
-  componentDidMount() {
-    this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
-    this.props.startGameClock()
+    return Math.round((currentTime - startedAt) / 50)
   }
-
+  
   componentDidUpdate(prevProps) {
     if (this.props.game.endCounter !== prevProps.game.endCounter) {
       this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
@@ -73,7 +68,9 @@ class WritingGame extends React.Component {
         console.log('test')
         return { unseen: "does not display" }
       });
-    }, 1000);
+    }, 1000)
+    this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
+    this.props.startGameClock()
   }
 
   handleChange(event) {
@@ -174,7 +171,7 @@ class WritingGame extends React.Component {
       correctness = 'Väärin'
       points = 0
     }
-    console.log(' points ennen talennusta: '+points)
+    console.log(' points ennen talennusta: ' + points)
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
     this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 2.5, true)
 
@@ -305,7 +302,7 @@ class WritingGame extends React.Component {
             {animal.name}
           </label>
         )
-      }
+      } return null
     })
 
     const answerInput = () => {
@@ -440,7 +437,7 @@ class WritingGame extends React.Component {
     let name = this.props.game.currentImage.bone.name
     if (this.props.game.gameDifficulty === 'hard') {
       name = 'LUU-5!'
-      if (this.props.game.gameLength == 15) {
+      if (this.props.game.gameLength === 15) {
         name = 'TENTTI!'
       }
     }
@@ -495,7 +492,7 @@ class WritingGame extends React.Component {
         >
           {answerInput()}
         </form>
-          {debug()}
+        {debug()}
         <div className="homeicon">
           <Link to='/'>
             <img src="homeicon.png" alt="Etusivulle"></img><p>Lopeta</p>

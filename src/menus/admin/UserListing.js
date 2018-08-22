@@ -61,28 +61,30 @@ class UserListing extends React.Component {
 				<Link to='/admin'>
 					<button className="gobackbutton">Takaisin</button>
 				</Link>
-				<Row>
-					<Col>
-						{this.state.allUsers.map(aUser => { //For every user in allUsers, name will be shown
-							if (aUser.role.toUpperCase() === 'ADMIN') {
-								//We'll need the id on the user's page, so we are forwarding
-								//it like this, in the state (going to users/:id)
-								return <Link key={aUser.id} to={{
-									pathname: '/users/' + aUser.id,
-									state: {
-										id: aUser.id
-									}
-								}}>&#9733; {aUser.username}<p></p></Link>
-							} else {
-								//Copypaste, kill me
-								return <Link key={aUser.id} to={{
+				<div id='listOfUsers'>
+					<Row>
+						<Col>
+							{this.state.allUsers.map(aUser => { //For every user in allUsers, name will be shown
+								if (aUser.role.toUpperCase() === 'ADMIN') {
+									//We'll need the id on the user's page, so we are forwarding
+									//it like this, in the state (going to users/:id)
+									return <Link key={aUser.id} to={{
+										pathname: '/users/' + aUser.id,
+										state: {
+											id: aUser.id
+										}
+									}}>&#9733; {aUser.username}<p></p></Link>
+								} else {
+									//Copypaste, kill me
+									return <Link key={aUser.id} to={{
 										pathname: '/users/' + aUser.id
-								}}>{aUser.username}<p></p></Link>
+									}}>{aUser.username}<p></p></Link>
+								}
 							}
-						}
-						)}
-					</Col>
-				</Row>
+							)}
+						</Col>
+					</Row>
+				</div>
 			</div >
 		)
 	}

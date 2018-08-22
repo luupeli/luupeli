@@ -9,7 +9,6 @@ import RandomTextGenerator from 'react-scrolling-text';
 import { Animated } from "react-animated-css";
 import emoji from 'node-emoji'
 import Sound from 'react-sound'
-import soundManager2 from 'soundmanager2'
 
 import userStatistics from '../services/userStatistics'
 
@@ -142,40 +141,40 @@ class Home extends React.Component {
         clearInterval(this.interval);
     }
 
-    
-  tick() {
-    if (this.state.attractMode%20>16 || (this.state.attractMode%80>7 && this.state.attractMode%80<10) || (this.state.attractMode%80>47 && this.state.attractMode%80<50)) {
-      this.setState({attractMode:this.state.attractMode+1,attractAnimation:false})
-    } else {
-      this.setState({attractMode:this.state.attractMode+1,attractAnimation:true})
 
-  }
-  }
-  
+    tick() {
+        if (this.state.attractMode % 20 > 16 || (this.state.attractMode % 80 > 7 && this.state.attractMode % 80 < 10) || (this.state.attractMode % 80 > 47 && this.state.attractMode % 80 < 50)) {
+            this.setState({ attractMode: this.state.attractMode + 1, attractAnimation: false })
+        } else {
+            this.setState({ attractMode: this.state.attractMode + 1, attractAnimation: true })
 
-  
- // This event chooses the next css style settings from the list
- changeCss(event) {
-  var next = parseInt(localStorage.getItem('styleIndex'), 10) + 1
-  if (this.state.allStyles[next] != null) {
-      localStorage.setItem('styleIndex', next)
-      this.setState({
-          styleIndex: next,
-          style: 'placeholder-next-theme-name'
-      })
-  } else {
-      localStorage.setItem('styleIndex', 0)
-      this.setState({
-          styleIndex: 0,
-          style: 'placeholder-last-theme-name'
-      })
-      next = 0
-  }
-  console.log('new style index is now: ' + next)
-  window.location.reload()
-  window.onunload = function() { window.location.href = '/' }
+        }
+    }
 
-}
+
+
+    // This event chooses the next css style settings from the list
+    changeCss(event) {
+        var next = parseInt(localStorage.getItem('styleIndex'), 10) + 1
+        if (this.state.allStyles[next] != null) {
+            localStorage.setItem('styleIndex', next)
+            this.setState({
+                styleIndex: next,
+                style: 'placeholder-next-theme-name'
+            })
+        } else {
+            localStorage.setItem('styleIndex', 0)
+            this.setState({
+                styleIndex: 0,
+                style: 'placeholder-last-theme-name'
+            })
+            next = 0
+        }
+        console.log('new style index is now: ' + next)
+        window.location.reload()
+        window.onunload = function () { window.location.href = '/' }
+
+    }
 
     proceedToSelect(event) {
         if (event.target.id === 'proceedToSelectGameMode') {
@@ -218,7 +217,7 @@ class Home extends React.Component {
                 secondary: this.state.allStyles[localStorage.styleIndex].secondary,
                 tertiary: this.state.allStyles[localStorage.styleIndex].tertiary,
                 overlay: this.state.allStyles[localStorage.styleIndex].overlay,
-                music:  this.state.allStyles[localStorage.styleIndex].music
+                music: this.state.allStyles[localStorage.styleIndex].music
             })
         }
     }
@@ -280,59 +279,59 @@ class Home extends React.Component {
 
             let inEffect = 'zoomInDown slower'
             let outEffect = 'zoomOutUp slower'
-            
+
             let titleVisibility = this.state.attractAnimation
-            if (!this.state.attractAnimation && this.state.attractMode%40>35) {
-                titleVisibility=false
+            if (!this.state.attractAnimation && this.state.attractMode % 40 > 35) {
+                titleVisibility = false
             } else {
-                titleVisibility=true
+                titleVisibility = true
             }
-            if (this.state.attractMode%160>=120) {
-                inEffect='rotateIn faster'
-                outEffect='rotateOut faster'
+            if (this.state.attractMode % 160 >= 120) {
+                inEffect = 'rotateIn faster'
+                outEffect = 'rotateOut faster'
             }
-            else if (this.state.attractMode%160>=80) {
-                inEffect='bounceInLeft slower'
-                outEffect='bounceOutRight slower'
+            else if (this.state.attractMode % 160 >= 80) {
+                inEffect = 'bounceInLeft slower'
+                outEffect = 'bounceOutRight slower'
             }
-            else if (this.state.attractMode%160>=40) {
-                inEffect='flipInX slower'
-                outEffect='flipOutY slower'
+            else if (this.state.attractMode % 160 >= 40) {
+                inEffect = 'flipInX slower'
+                outEffect = 'flipOutY slower'
             }
 
             return (
                 <div className="home-flex-title">
-                <div className="score">
-                <h1 className="game-title">
-                <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="100" animationOutDelay="100" isVisible={titleVisibility}>L</Animated>
-                </h1></div>
-                <div className="score">
-                <h1 className="game-title">
-                <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="150" animationOutDelay="150" isVisible={titleVisibility}>u</Animated>
-                </h1></div>
-                <div className="score">
-                <h1 className="game-title">
-                <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="200" animationOutDelay="200" isVisible={titleVisibility}>u</Animated>
-                </h1></div>
-                <div className="score">
-                <h1 className="game-title">
-                <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="250" animationOutDelay="250" isVisible={titleVisibility}>p</Animated>
-                </h1></div>
-                <div className="score">
-                <h1 className="game-title">
-                <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="300" animationOutDelay="300" isVisible={titleVisibility}>e</Animated>
-                </h1></div>
-                <div className="score">
-                <h1 className="game-title">
-                <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="350" animationOutDelay="350" isVisible={titleVisibility}>l</Animated>
-                </h1></div>
-                <div className="score">
-                <h1 className="game-title">
-                <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="400" animationOutDelay="400" isVisible={titleVisibility}>i</Animated>
-                </h1></div>
-                {/* Luupeli</h1> */}
+                    <div className="score">
+                        <h1 className="game-title">
+                            <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="100" animationOutDelay="100" isVisible={titleVisibility}>L</Animated>
+                        </h1></div>
+                    <div className="score">
+                        <h1 className="game-title">
+                            <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="150" animationOutDelay="150" isVisible={titleVisibility}>u</Animated>
+                        </h1></div>
+                    <div className="score">
+                        <h1 className="game-title">
+                            <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="200" animationOutDelay="200" isVisible={titleVisibility}>u</Animated>
+                        </h1></div>
+                    <div className="score">
+                        <h1 className="game-title">
+                            <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="250" animationOutDelay="250" isVisible={titleVisibility}>p</Animated>
+                        </h1></div>
+                    <div className="score">
+                        <h1 className="game-title">
+                            <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="300" animationOutDelay="300" isVisible={titleVisibility}>e</Animated>
+                        </h1></div>
+                    <div className="score">
+                        <h1 className="game-title">
+                            <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="350" animationOutDelay="350" isVisible={titleVisibility}>l</Animated>
+                        </h1></div>
+                    <div className="score">
+                        <h1 className="game-title">
+                            <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="400" animationOutDelay="400" isVisible={titleVisibility}>i</Animated>
+                        </h1></div>
+                    {/* Luupeli</h1> */}
                 </div>
-                
+
             )
         }
     }
@@ -404,217 +403,216 @@ class Home extends React.Component {
     getBestPlayers() {
 
 
-      userStatistics.getTop50()
-          .then((response) => {
-              this.setState({ bestPlayers: response.data })
-              console.log(this.state.bestPlayers)
+        userStatistics.getTop50()
+            .then((response) => {
+                this.setState({ bestPlayers: response.data })
+                console.log(this.state.bestPlayers)
 
-          })
-          .catch((error) => {
-              console.log(error)
-          })
-
-
-
-  }
-
-  attractMode() {
+            })
+            .catch((error) => {
+                console.log(error)
+            })
 
 
-      var effects = [];
-      effects.push('bounceOutLeft slower')
-      effects.push('bounceOutRight slower')
-      let heartEmoji = emoji.get('yellow_heart')
 
-      if (this.state.attractMode % 80 <= 20) {
-          var scores = [];
-          var scorers = [];
-
-          var trueScorers = [];
-
-          if (this.state.bestPlayers.length > 10) {
-              trueScorers = this.state.bestPlayers.slice(0, 10 )
-          } else {
-              trueScorers = this.state.bestPlayers
-          }
-
-
-          scorers.push('Luu Skywalker'); scorers.push('Luuno Turhapuro'); scorers.push('Princess Luua'); scorers.push('Sorbusten Ritari'); scorers.push('Keisari Luupatine'); scorers.push('Mr. Kitiini'); scorers.push('Bonefish!'); scorers.push('Luufemma'); scorers.push('Luubi-Wan Luunobi'); scorers.push('Luunkerääjä')
-
-
-          var firstHalf = trueScorers.slice(0,5)
-          var secondHalf = trueScorers.slice(5,10+1)
-      
-
-      // const placeholderScores = scorers.map((scoree,i) =>
-      const placeholderScoresFirst = firstHalf.map((scoree,i) =>
-      <Animated animationIn="bounceInUp slower" animationOut={effects[i%2]} animationInDelay={1500+(i*500)}  animationOutDelay={i*50} isVisible={this.state.attractAnimation}>
-            <div className="home-highscore">
-         <div className="score">
-          <h5>
-        {i+1}. {scoree.user.username.toUpperCase()}
-        </h5>
-        </div>
-        <div className="score">
-                  <h5>
-                {/* {10000-(i*740)+(Math.round(this.state.attractMode/80)*(2000-(i*40)))} */}
-                {scoree.total}
-                  </h5>
-                  </div>
-                  </div>   
-          
-      </Animated>
-     )
-     const placeholderScoresLast = secondHalf.map((scoree,i) =>
-     <Animated animationIn="bounceInUp slower" animationOut={effects[i%2]} animationInDelay={50+(i*500)}  animationOutDelay={(i*50)} isVisible={this.state.attractAnimation}>
-           <div className="home-highscore">
-        <div className="score">
-         <h5>
-       {i+6}. {scoree.user.username.toUpperCase()}
-       </h5>
-       </div>
-       <div className="score">
-                 <h5>
-               {/* {10000-(i*740)+(Math.round(this.state.attractMode/80)*(2000-(i*40)))} */}
-               {scoree.total}
-                 </h5>
-                 </div>
-                 </div>   
-         
-     </Animated>
-    )
-    var titleVisible = true
-    if (this.state.attractMode%80>=15) {titleVisible=this.state.attractAnimation}
-    
-    var showScores = placeholderScoresFirst
-    if (this.state.attractMode%80>=10) {
-      showScores = placeholderScoresLast
     }
 
-      return (
-        <div>
-    <div className="home-highscore-top">
-                
-                <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight slower" animationInDelay={1000} animationOutDelay={0} isVisible={titleVisible}>
-		            <h3>
-			          TOP {trueScorers.length} LUUPÄÄT
+    attractMode() {
+
+
+        var effects = [];
+        effects.push('bounceOutLeft slower')
+        effects.push('bounceOutRight slower')
+        let heartEmoji = emoji.get('yellow_heart')
+
+        if (this.state.attractMode % 80 <= 20) {
+            // var scores = []
+            var scorers = []
+            var trueScorers = []
+
+            if (this.state.bestPlayers.length > 10) {
+                trueScorers = this.state.bestPlayers.slice(0, 10)
+            } else {
+                trueScorers = this.state.bestPlayers
+            }
+
+
+            scorers.push('Luu Skywalker'); scorers.push('Luuno Turhapuro'); scorers.push('Princess Luua'); scorers.push('Sorbusten Ritari'); scorers.push('Keisari Luupatine'); scorers.push('Mr. Kitiini'); scorers.push('Bonefish!'); scorers.push('Luufemma'); scorers.push('Luubi-Wan Luunobi'); scorers.push('Luunkerääjä')
+
+
+            var firstHalf = trueScorers.slice(0, 5)
+            var secondHalf = trueScorers.slice(5, 10 + 1)
+
+
+            // const placeholderScores = scorers.map((scoree,i) =>
+            const placeholderScoresFirst = firstHalf.map((scoree, i) =>
+                <Animated animationIn="bounceInUp slower" animationOut={effects[i % 2]} animationInDelay={1500 + (i * 500)} animationOutDelay={i * 50} isVisible={this.state.attractAnimation}>
+                    <div className="home-highscore">
+                        <div className="score">
+                            <h5>
+                                {i + 1}. {scoree.user.username.toUpperCase()}
+                            </h5>
+                        </div>
+                        <div className="score">
+                            <h5>
+                                {/* {10000-(i*740)+(Math.round(this.state.attractMode/80)*(2000-(i*40)))} */}
+                                {scoree.total}
+                            </h5>
+                        </div>
+                    </div>
+
+                </Animated>
+            )
+            const placeholderScoresLast = secondHalf.map((scoree, i) =>
+                <Animated animationIn="bounceInUp slower" animationOut={effects[i % 2]} animationInDelay={50 + (i * 500)} animationOutDelay={(i * 50)} isVisible={this.state.attractAnimation}>
+                    <div className="home-highscore">
+                        <div className="score">
+                            <h5>
+                                {i + 6}. {scoree.user.username.toUpperCase()}
+                            </h5>
+                        </div>
+                        <div className="score">
+                            <h5>
+                                {/* {10000-(i*740)+(Math.round(this.state.attractMode/80)*(2000-(i*40)))} */}
+                                {scoree.total}
+                            </h5>
+                        </div>
+                    </div>
+
+                </Animated>
+            )
+            var titleVisible = true
+            if (this.state.attractMode % 80 >= 15) { titleVisible = this.state.attractAnimation }
+
+            var showScores = placeholderScoresFirst
+            if (this.state.attractMode % 80 >= 10) {
+                showScores = placeholderScoresLast
+            }
+
+            return (
+                <div>
+                    <div className="home-highscore-top">
+
+                        <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight slower" animationInDelay={1000} animationOutDelay={0} isVisible={titleVisible}>
+                            <h3>
+                                TOP {trueScorers.length} LUUPÄÄT
 		            </h3>
-				      </Animated>
-              </div>
-              {showScores}
-              </div>
-              )
-    } 
-  
-    
-    
- else {
-
-  
-   var lines = [];
-   var heading = ''
-
-   if (this.state.attractMode%80<=40) {
-    heading='CREDITS'
-    lines.push('Helena Parviainen')
-    lines.push('Kerem Atak')
-    lines.push('Peppi Mattsson')
-    lines.push('Timo Leskinen')
-    lines.push('Tuomas Honkala')
-    lines.push('Ville Hänninen')
-    lines.push('Toteutettu ohjelmistotuotantoprojektina Helsingin Yliopiston Tietojenkäsittelytieteen laitokselle '+heartEmoji)
-   }
-   else if (this.state.attractMode%80<=50) {
-    heading='Luupeli features music and sfx from Freesound.org'
-    lines.push('Chiptune Intro #1 by Fred1712')
-    lines.push('Electro success sound by Mativve')
-    lines.push('Error.wav by Autistic Lucario')
-    lines.push('Retro Bonus Pickup SFX by suntemple')
-   }
-   else if (this.state.attractMode%80<=60) {
-    heading='Freesound.org continued...'
-    lines.push('Cool Chill Beat Loop by monkeyman535')
-    lines.push('Techno 80 - base loop by frankum')
-    lines.push('8-bit ElectroHouse by RutgerMuller')
-    lines.push('Used under Creative Commons (CC) license')
-    lines.push('The Luupeli devs kindly thank these content creators! '+heartEmoji)
-   }
-
-   else if (this.state.attractMode%320<=80) {
-     heading='LUUPELI TIEDOTTAA'
-   lines.push('Miksi sinä vielä luet tätä?')
-   lines.push('Mene pelaamaan siitä!')
-   lines.push('Opettele uusi luu!')
-   lines.push('Tai kaksi!')
-   lines.push('Jaa minäkö?')
-   lines.push('Olisin mieluummin purjehtimassa!')
-   } else if (this.state.attractMode%320<=160) {
-    heading='LUUPELI MUISTUTTAA'
-    lines.push('Laiska tyäs huomiseen lykkää.')
-    lines.push('Laiskalla hiki syödessä, vilu työtä tehdessä.')
-    lines.push('Laiska ei sua, ahkera sua yltäkyllin.')
-    lines.push('Tekee vanhakin, jos ei muuta niin hiljaa kävelee.')
-    lines.push('Se ei pelaa, joka pelkää!!')
-   }  else if (this.state.attractMode%320<=240) {
-    heading='LUUPELI ANELEE'
-    lines.push('Haluan, että lopetat näiden lukemisen.')
-    lines.push('Kierros alkaa näiden tekstien jälkeen alusta.')
-    lines.push('Tuhlaat aikaasi jos jäät katsomaan tuleeko näitä lisää.')
-    lines.push('Ei tule.')
-    lines.push('Pelaa Luupeliä! '+heartEmoji)
-   } else if (this.state.attractMode%320<=320) {
-    let watermelon = emoji.get('watermelon')
-    let cherries = emoji.get('cherries')
-    let grapes = emoji.get('grapes')
-    let banana = emoji.get('banana')
-    let strawberry = emoji.get('strawberry')
-    let mushroom = emoji.get('mushroom')
-
-    heading='HEDELMÄBONUKSET'
-    lines.push(watermelon+' ...... 5 000 pts')
-    lines.push(cherries+' ..... 10 000 pts')
-    lines.push(grapes+' ..... 25 000 pts')
-    lines.push(banana+' ..... 50 000 pts')
-    lines.push(strawberry+' .... 250 000 pts')
-    lines.push(mushroom+' ....... SECRET!!')
-   }
+                        </Animated>
+                    </div>
+                    {showScores}
+                </div>
+            )
+        }
 
 
-   
 
-   const rollingMessage = lines.map((line,i) =>
-   <Animated animationIn="bounceInUp slower" animationOut={effects[i%2]} animationInDelay={1500+(i*500)} animationOutDelay={i*50} isVisible={this.state.attractAnimation}>
-         <div className="home-highscore">
-      <div className="score">
-       <h5>
-     {line.toUpperCase()}
-     </h5>
-     </div>
-     </div>
-       
-   </Animated>
-  )
+        else {
 
-      return (
 
-        <div>
-        <div className="home-highscore-top">
-                    
-                    <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight slower" animationInDelay={1000} animationOutDelay={0} isVisible={this.state.attractAnimation}>
-                    <h3>
-                    {heading}
-                    </h3>
-                  </Animated>
-                  </div>
-              {rollingMessage}
-                  </div>
-      )
-  }
-}
-startTheMusic () {
-   this.setState({loopTheMusic: true, musicStartTime: new Date().getTime()})
+            var lines = [];
+            var heading = ''
 
-}
+            if (this.state.attractMode % 80 <= 40) {
+                heading = 'CREDITS'
+                lines.push('Helena Parviainen')
+                lines.push('Kerem Atak')
+                lines.push('Peppi Mattsson')
+                lines.push('Timo Leskinen')
+                lines.push('Tuomas Honkala')
+                lines.push('Ville Hänninen')
+                lines.push('Toteutettu ohjelmistotuotantoprojektina Helsingin Yliopiston Tietojenkäsittelytieteen laitokselle ' + heartEmoji)
+            }
+            else if (this.state.attractMode % 80 <= 50) {
+                heading = 'Luupeli features music and sfx from Freesound.org'
+                lines.push('Chiptune Intro #1 by Fred1712')
+                lines.push('Electro success sound by Mativve')
+                lines.push('Error.wav by Autistic Lucario')
+                lines.push('Retro Bonus Pickup SFX by suntemple')
+            }
+            else if (this.state.attractMode % 80 <= 60) {
+                heading = 'Freesound.org continued...'
+                lines.push('Cool Chill Beat Loop by monkeyman535')
+                lines.push('Techno 80 - base loop by frankum')
+                lines.push('8-bit ElectroHouse by RutgerMuller')
+                lines.push('Used under Creative Commons (CC) license')
+                lines.push('The Luupeli devs kindly thank these content creators! ' + heartEmoji)
+            }
+
+            else if (this.state.attractMode % 320 <= 80) {
+                heading = 'LUUPELI TIEDOTTAA'
+                lines.push('Miksi sinä vielä luet tätä?')
+                lines.push('Mene pelaamaan siitä!')
+                lines.push('Opettele uusi luu!')
+                lines.push('Tai kaksi!')
+                lines.push('Jaa minäkö?')
+                lines.push('Olisin mieluummin purjehtimassa!')
+            } else if (this.state.attractMode % 320 <= 160) {
+                heading = 'LUUPELI MUISTUTTAA'
+                lines.push('Laiska tyäs huomiseen lykkää.')
+                lines.push('Laiskalla hiki syödessä, vilu työtä tehdessä.')
+                lines.push('Laiska ei sua, ahkera sua yltäkyllin.')
+                lines.push('Tekee vanhakin, jos ei muuta niin hiljaa kävelee.')
+                lines.push('Se ei pelaa, joka pelkää!!')
+            } else if (this.state.attractMode % 320 <= 240) {
+                heading = 'LUUPELI ANELEE'
+                lines.push('Haluan, että lopetat näiden lukemisen.')
+                lines.push('Kierros alkaa näiden tekstien jälkeen alusta.')
+                lines.push('Tuhlaat aikaasi jos jäät katsomaan tuleeko näitä lisää.')
+                lines.push('Ei tule.')
+                lines.push('Pelaa Luupeliä! ' + heartEmoji)
+            } else if (this.state.attractMode % 320 <= 320) {
+                let watermelon = emoji.get('watermelon')
+                let cherries = emoji.get('cherries')
+                let grapes = emoji.get('grapes')
+                let banana = emoji.get('banana')
+                let strawberry = emoji.get('strawberry')
+                let mushroom = emoji.get('mushroom')
+
+                heading = 'HEDELMÄBONUKSET'
+                lines.push(watermelon + ' ...... 5 000 pts')
+                lines.push(cherries + ' ..... 10 000 pts')
+                lines.push(grapes + ' ..... 25 000 pts')
+                lines.push(banana + ' ..... 50 000 pts')
+                lines.push(strawberry + ' .... 250 000 pts')
+                lines.push(mushroom + ' ....... SECRET!!')
+            }
+
+
+
+
+            const rollingMessage = lines.map((line, i) =>
+                <Animated animationIn="bounceInUp slower" animationOut={effects[i % 2]} animationInDelay={1500 + (i * 500)} animationOutDelay={i * 50} isVisible={this.state.attractAnimation}>
+                    <div className="home-highscore">
+                        <div className="score">
+                            <h5>
+                                {line.toUpperCase()}
+                            </h5>
+                        </div>
+                    </div>
+
+                </Animated>
+            )
+
+            return (
+
+                <div>
+                    <div className="home-highscore-top">
+
+                        <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight slower" animationInDelay={1000} animationOutDelay={0} isVisible={this.state.attractAnimation}>
+                            <h3>
+                                {heading}
+                            </h3>
+                        </Animated>
+                    </div>
+                    {rollingMessage}
+                </div>
+            )
+        }
+    }
+    startTheMusic() {
+        this.setState({ loopTheMusic: true, musicStartTime: new Date().getTime() })
+
+    }
 
 
 
@@ -622,7 +620,7 @@ startTheMusic () {
         if (this.state.loopTheMusic) {
             return (
                 <Sound
-                    url={"/sounds/"+this.state.music}
+                    url={"/sounds/" + this.state.music}
                     playStatus={Sound.status.PLAYING}
                     // playFromPosition={0 /* in milliseconds */}
                     onLoading={this.handleSongLoading}
@@ -636,7 +634,7 @@ startTheMusic () {
         else if (!this.state.loopTheMusic) {
             return (
                 <Sound
-                    url={"/sounds/"+this.state.music}
+                    url={"/sounds/" + this.state.music}
                     playStatus={Sound.status.STOPPED}
                     // playFromPosition={0 /* in milliseconds */}
                     onLoading={this.handleSongLoading}
@@ -677,9 +675,9 @@ startTheMusic () {
         let i = parseInt(localStorage.getItem('styleIndex'), 10)
         this.setThemeColors(i)
 
-        var loggedText='Anonyymi Pelaaja'
-        if (this.state.user!==null) {
-          loggedText='Tervetuloa, '+this.state.user.username+'!'
+        var loggedText = 'Anonyymi Pelaaja'
+        if (this.state.user !== null) {
+            loggedText = 'Tervetuloa, ' + this.state.user.username + '!'
         }
 
         return (
@@ -728,34 +726,34 @@ startTheMusic () {
                                                         onClick={this.proceedToSelect}>
                                                         &#9733; Pistetaulukko &#9733;
                        </button>
-                       </Animated>
-                      </Col>
-                    </Row>
-                    <Row className="show-grid">
-                    <Animated animationIn="bounceInRight" animationInDelay={500} isVisible={true}>
-                      <button
-                        id="themeChangeButton"
-                        className="menu-button"
-                        onClick={this.changeCss}>
-                        Teema: {this.state.style}
-                    </button>
-                    </Animated>
-                    </Row>
-                    <h6>
-                    {loggedText}
-                    </h6>
-                    <div className={this.state.style} />
-                  </Col>
-                </Row>
-            {this.attractMode()}
-            
-          
-              </div>
-              </div>
-              </div>
-              </div>
-              </div>
-    )
-  }
+                                                </Animated>
+                                            </Col>
+                                        </Row>
+                                        <Row className="show-grid">
+                                            <Animated animationIn="bounceInRight" animationInDelay={500} isVisible={true}>
+                                                <button
+                                                    id="themeChangeButton"
+                                                    className="menu-button"
+                                                    onClick={this.changeCss}>
+                                                    Teema: {this.state.style}
+                                                </button>
+                                            </Animated>
+                                        </Row>
+                                        <h6>
+                                            {loggedText}
+                                        </h6>
+                                        <div className={this.state.style} />
+                                    </Col>
+                                </Row>
+                                {this.attractMode()}
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 }
 export default Home

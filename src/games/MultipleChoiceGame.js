@@ -50,7 +50,7 @@ class MultipleChoiceGame extends React.Component {
     const correctness = this.checkCorrectness(event.target.value)
     this.props.setAnswerSound(correctness)
 
-    let gameClock = Math.round(((new Date).getTime() - this.props.game.startTime) / 50)
+    let gameClock = Math.round(((new Date()).getTime() - this.props.game.startTime) / 50)
     //let points = (Math.round((this.checkCorrectness(event.target.value) * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((300 + Math.max(0, (300 - this.state.seconds))) / 600))) / 20
     let points = Math.round((1000 + ((1000 + Math.max(0, (400 - gameClock))) / 800))) / 20
 
