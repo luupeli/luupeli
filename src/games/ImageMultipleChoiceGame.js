@@ -43,7 +43,9 @@ class ImageMultipleChoiceGame extends React.Component {
     const correctness = this.checkCorrectness(image)
     this.props.setAnswerSound(correctness)
 
-    let points = (Math.round((this.checkCorrectness(image) * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((300 + Math.max(0, (300 - this.state.seconds))) / 600))) / 20
+    let points = (Math.round((this.checkCorrectness(image) * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((300 + Math.max(0, (300 - this.props.game.startedAt))) / 600))) / 20
+	console.log(this.props.game)
+
 
     if (correctness > 99) {
       points = points * 10
