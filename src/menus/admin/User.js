@@ -43,7 +43,7 @@ class User extends React.Component {
 			})
 		userStatistics.getUsersBestGames(this.props.userId)
 			.then((response) => {
-				if (response.data.length != 0) {
+				if (response.data.length !== 0) {
 					this.setState({
 						usersBestGame: response.data[0]
 					})

@@ -43,13 +43,14 @@ afterAll(async () => {
 })
 
 describe('Admin tests', () => {
-	// Fetching the content of the div with id adminButtons. Luut and Käyttäjät
+	// Fetching the content of the div with id adminButtons. Luut, Käyttäjät and Statistiikka
 	// should be found.
 	test('page renders', async () => {
 
 		const textContent = await page.$eval('#adminButtons', el => el.textContent)
 		expect(textContent.includes("Luut")).toBe(true)
 		expect(textContent.includes("Käyttäjät")).toBe(true)
+		expect(textContent.includes("Statistiikka")).toBe(true)
 	}, 20000)
 
 	// Let's click "Luut", which has boneList as an id. It should take us to BoneListing,
@@ -62,4 +63,22 @@ describe('Admin tests', () => {
 		const textContent = await page.$eval('#listGroup', el => el.textContent)
 		expect(textContent.toUpperCase().includes("SUODATA LAJIN MUKAAN")).toBe(true)
 	}, 20000)
+
+	// test('pressing "Käyttäjät" takes the user to UserListing', async () => {
+
+	// 	await page.waitForSelector('#userList')
+	// 	await page.click('#userList')
+
+	// 	const textContent = await page.$eval('#listOfUsers', el => el.textContent)
+	// 	expect(textContent.includes(username).toBe(true))
+	// }, 20000)
+
+	// test('pressing "Statistiikka" takes the user to Statistics', async () => {
+
+	// 	await page.waitForSelector('#adminStatistic')
+	// 	await page.click('#adminStatistic')
+
+	// 	const textContent = await page.$eval('#gameStatistics', el => el.textContent)
+	// 	expect(textContent.toUpperCase().includes("LADATAAN TIETOJA...")).toBe(true)
+	// }, 20000)
 })
