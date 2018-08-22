@@ -1,5 +1,6 @@
 import React from 'react'
 import userStatistics from '../services/userStatistics'
+import BackButton from './BackButton'
 import { Link } from 'react-router-dom'
 import { Row, Col } from 'react-bootstrap'
 
@@ -7,6 +8,8 @@ class Leaderboard extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			allStyles: JSON.parse(localStorage.getItem("allStyles")),
+      styleIndex: localStorage.getItem('styleIndex'),
 			top50: [],
 			bestPlayersTop20AllTime: []
 		}
@@ -22,6 +25,11 @@ class Leaderboard extends React.Component {
 			this.setState({ user })
 		}
 	}
+	
+	proceedToMain(event) {
+		this.setState({ redirect: true })
+		this.setState({ redirectTo: '/' })
+  }
 
 	setBestPlayers() {
 		userStatistics.getTop50()
@@ -49,20 +57,26 @@ class Leaderboard extends React.Component {
 	}
 
 	render() {
+		let i = this.state.styleIndex
+		
 		return (
-			<div className="menu-background App">
-				<h2>&#9733; Eniten pisteitä (kaikilta ajoilta) &#9733;</h2>
-				<Link to='/'>
-					<button className="gobackbutton">Takaisin</button>
-				</Link>
-				<Row>
-					<Col>
-						{this.state.bestPlayersTop20AllTime.map(index => {
-							return <p>{index}</p>
-						})}
-					</Col>
-				</Row>
-			</div >
+			<div className={this.state.allStyles[i].overlay}>
+				<div className={this.state.allStyles[i].background}>
+          <div className={this.state.allStyles[i].style}>
+						<div className="App">
+							<h2>&#9733; Eniten pisteitä (kaikilta ajoilta) &#9733;</h2>
+							<BackButton redirectTo='/' />
+							<Row>
+								<Col>
+									{this.state.bestPlayersTop20AllTime.map(index => {
+										return <p>{index}</p>
+									})}
+								</Col>
+							</Row>
+						</div>
+					</div>
+				</div>
+			</div>
 		)
 	}
 }

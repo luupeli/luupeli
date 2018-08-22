@@ -2,6 +2,7 @@ import React from 'react'
 import loginService from '../../services/login'
 import { Link, Redirect } from 'react-router-dom'
 import '../../styles/App.css'
+import BackButton from '../BackButton'
 
 class Login extends React.Component {
   constructor(props) {
@@ -114,7 +115,7 @@ class Login extends React.Component {
               />
             </div>
             <div className="form-group btn-group">
-              <button className="btn btn-block" type="submit" id="login-button">Kirjaudu</button>
+              <button className="btn btn-block menu-button" type="submit" id="login-button">Kirjaudu</button>
             </div>
             {/* <a href="#" className="forgot">Unohditko sähköpostisi tai salasanasi?</a> */}
           </form>
@@ -162,11 +163,7 @@ class Login extends React.Component {
               <div className="transbox">
                 {this.ifLoggedInForms()}
               </div>
-              <div className="btn-group">
-                <Link to='/'>
-                  <button id='back-button' className="gobackbutton">Etusivulle</button>
-                </Link>
-              </div>
+              <BackButton redirectTo='/' />
             </div>
           </div>
         </div>
