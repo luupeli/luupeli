@@ -713,9 +713,19 @@ form {
   position: absolute;
   width:100%;
   height:100%;
-      overflow-x: scroll;
+  /*    overflow-x: scroll;
     overflow-y: scroll;
-    overflow: scroll;
+    overflow: scroll;*/
+}
+
+.scroll {
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.no-scroll {
+	overflow-y: hidden;
+	overflow-x: hidden;
 }
 
 body {
@@ -735,9 +745,9 @@ body {
     overflow-y: scroll;
     overflow: scroll; */
 
-    overflow-x: hidden;
+    /*overflow-x: hidden;
     overflow-y: hidden;
-    overflow: hidden;
+    overflow: hidden;*/
     /* font-size: 12px!important; */
 }
 
@@ -1153,7 +1163,6 @@ https://codepen.io/George-Payne/pen/qOrxao
   margin:0 auto;
   padding:40px;
   border-radius:4px;
-  color:#505e6c;
   box-shadow:1px 1px 5px rgba(0,0,0,0.1);
 }
 
@@ -1166,6 +1175,7 @@ https://codepen.io/George-Payne/pen/qOrxao
   color:inherit;
   text-indent:8px;
   height:42px;
+  color:#505e6c;
 }
 
 .form-control {

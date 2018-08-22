@@ -6,8 +6,8 @@ import { Grid, Row, Col } from 'react-bootstrap'
 import emoji from 'node-emoji'
 import { gameInitialization } from '../../reducers/gameReducer'
 import { ProgressBar } from 'react-bootstrap'
-import Sound from 'react-sound';
-import answerService from '../../services/answers'
+import Sound from 'react-sound'
+import BackButton from '../BackButton'
 
 /**
  * EndScreen is the game over/results screen of Luupeli.
@@ -21,6 +21,8 @@ class EndScreen extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			allStyles: JSON.parse(localStorage.getItem("allStyles")),
+      styleIndex: localStorage.getItem('styleIndex'),
 			style: localStorage.getItem('style'),
 			user: null,
 			redirect: false
@@ -202,6 +204,8 @@ class EndScreen extends React.Component {
 	}
 
 	render() {
+		let i = this.state.styleIndex
+		
 		if (this.state.redirect) {
 			return (
 				<Redirect to={{
@@ -224,46 +228,50 @@ class EndScreen extends React.Component {
 		console.log(this.props.game.answers.length)
 
 		return (
-
-			<div className='Appbd menu-background'>
-				<Sound
-					url="/sounds/351717__monkeyman535__cool-chill-beat-loop.wav"
-					playStatus={Sound.status.PLAYING}
-					// playFromPosition={0 /* in milliseconds */}
-					onLoading={this.handleSongLoading}
-					onPlaying={this.handleSongPlaying}
-					onFinishedPlaying={this.handleSongFinishedPlaying}
-					loop="true"
-				/>
-				<div>
-					<h1>Pelin kulku:</h1>
-					<Row className="show-grid">
-						<Col xs={12} md={6}>
-							<h2>Pisteet yhteensä: {this.props.game.totalScore}</h2>
-						</Col>
-						<Col xs={12} md={6}>
-							<h2>Pelin kesto: {this.props.game.totalSeconds / 1000} s</h2>
-						</Col>
-					</Row>
-					<div className="btn-group-horizontal" role="group">
-						<button type="button" className="btn btn-theme" onClick={this.proceedToReplay}>Pelaa uudestaan</button>
-						<button type="button" className="btn btn-theme" onClick={this.proceedToGameModeSelection}>Pelimoodivalikkoon</button>
-					</div>
-				</div>
-				<div>
-					<h2 id="endScreenTitle">Vastauksesi olivat:</h2>
-					<div id="resultsText">
-						<div class="progress progress-fat">
-							<div class="progress-bar progress-bar-fat progress-bar-success" style={{width: correctPortion + "%"}} role="progressbar" aria-valuenow={correctPortion} aria-valuemin="0" aria-valuemax="100">Täysin oikein {correctPortion}%</div>
-							<div class="progress-bar progress-bar-fat progress-bar-warning" style={{width: almostCorrectPortion + "%"}} role="progressbar" aria-valuenow={almostCorrectPortion} aria-valuemin="0" aria-valuemax="100">Melkein oikein {almostCorrectPortion}%</div>
-							<div class="progress-bar progress-bar-fat progress-bar-danger" style={{width: wrongPortion + "%"}} role="progressbar" aria-valuenow={wrongPortion} aria-valuemin="0" aria-valuemax="100">Väärin {wrongPortion}%</div>
+			<div className={this.state.allStyles[i].overlay}>
+				<div className={this.state.allStyles[i].background}>
+          <div className={this.state.allStyles[i].style}>
+						<div className='Appbd'>
+							<Sound
+								url="/sounds/351717__monkeyman535__cool-chill-beat-loop.wav"
+								playStatus={Sound.status.PLAYING}
+								// playFromPosition={0 /* in milliseconds */}
+								onLoading={this.handleSongLoading}
+								onPlaying={this.handleSongPlaying}
+								onFinishedPlaying={this.handleSongFinishedPlaying}
+								loop="true"
+							/>
+							<div>
+								<h1>Pelin kulku:</h1>
+								<Row className="show-grid">
+									<Col xs={12} md={6}>
+										<h2>Pisteet yhteensä: {this.props.game.totalScore}</h2>
+									</Col>
+									<Col xs={12} md={6}>
+										<h2>Pelin kesto: {this.props.game.totalSeconds / 1000} s</h2>
+									</Col>
+								</Row>
+								<div className="btn-group-horizontal" role="group">
+									<button type="button" className="btn btn-theme" onClick={this.proceedToReplay}>Pelaa uudestaan</button>
+									<button type="button" className="btn btn-theme" onClick={this.proceedToGameModeSelection}>Pelimoodivalikkoon</button>
+								</div>
+							</div>
+							
+							<div>
+								<h2 id="endScreenTitle">Vastauksesi olivat:</h2>
+								<div id="resultsText">
+									<div class="progress progress-fat">
+										<div class="progress-bar progress-bar-fat progress-bar-success" style={{width: correctPortion + "%"}} role="progressbar" aria-valuenow={correctPortion} aria-valuemin="0" aria-valuemax="100">Täysin oikein {correctPortion}%</div>
+										<div class="progress-bar progress-bar-fat progress-bar-warning" style={{width: almostCorrectPortion + "%"}} role="progressbar" aria-valuenow={almostCorrectPortion} aria-valuemin="0" aria-valuemax="100">Melkein oikein {almostCorrectPortion}%</div>
+										<div class="progress-bar progress-bar-fat progress-bar-danger" style={{width: wrongPortion + "%"}} role="progressbar" aria-valuenow={wrongPortion} aria-valuemin="0" aria-valuemax="100">Väärin {wrongPortion}%</div>
+									</div>
+									{this.renderAnswers()}
+								</div>
+							</div>
+							
+						<BackButton redirectTo='/' />
 						</div>
-						{this.renderAnswers()}
 					</div>
-
-				</div>
-				<div>
-					<button className='gobackbutton' onClick={this.proceedToMain}>Etusivulle</button>
 				</div>
 			</div>
 		)
