@@ -1,5 +1,4 @@
 import axios from 'axios'
-
 const url = '/api/animals'
 let baseUrl = ''
 if (process.env.NODE_ENV === 'test') {

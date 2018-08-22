@@ -1,4 +1,3 @@
-
 import { Redirect } from 'react-router-dom'
 import React from 'react'
 import ScoreFlash from './ScoreFlash'
@@ -11,14 +10,10 @@ import ScoreBoard from './ScoreBoard'
 import GameLoop from './GameLoop'
 import Confetti from 'react-confetti'
 
-
 /**
  * Gameloop is the parent component for 'hosting' different game modes of Luupeli.
  * Currently, two different game modes are supported.
  */
-
-
-
 
 class Game extends React.Component {
     constructor(props) {
@@ -30,13 +25,9 @@ class Game extends React.Component {
             allStyles: JSON.parse(localStorage.getItem("allStyles")),
             styleIndex: localStorage.getItem('styleIndex'),
         }
-
         this.postGameSession = this.postGameSession.bind(this)
         window.onunload = function () { window.location.href = '/' }
-
     };
-
-
 
     componentDidMount() {
         const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
@@ -44,7 +35,6 @@ class Game extends React.Component {
             const user = JSON.parse(loggedUserJSON)
             this.setState({ user })
         }
-
         setInterval(() => {
             this.setState(() => {
                 // console.log('test')
@@ -52,7 +42,6 @@ class Game extends React.Component {
             });
         }, 500);
     }
-
 
     postGameSession() {
         gameSessionService.create({
@@ -67,11 +56,7 @@ class Game extends React.Component {
         })
     }
 
-
-
     responsiveLayout() {
-
-
         const imageWidthR = () => {              // Here we try to measure the window size in order to resize the bone image accordingly
             const windowWidth = Math.max(
                 document.body.scrollWidth,
@@ -91,7 +76,6 @@ class Game extends React.Component {
                 document.documentElement.offsetHeight,
                 document.documentElement.clientHeight
             )
-
             return Math.round(windowHeight * 1.0)
         }
 
@@ -105,11 +89,8 @@ class Game extends React.Component {
 
         if ((imageWidthR() > imageHeightR() && imageWidthR() > 1000) || imageWidthR() > imageHeightR() * 1.3) {
             var progressWidth = Math.round((imageWidthR()) * 0.20);
-
             var gameBorder = Math.round(Math.min(7, (progressWidth * 5) / 100));
-
             var responsive = 'fifty'
-
             var heightRestriction = 50;
             if (imageHeightR() < 641 || imageWidthR() * 1.3 < imageHeightR()) {
                 heightRestriction = 40;
@@ -119,10 +100,8 @@ class Game extends React.Component {
                 responsive = 'fortyfive'
             }
 
-
             injectGlobal`
             :root {  
-            
                 --progress-max-width-forty: ${progressWidth}px;
                 --progress-max-width-fortyfive: ${progressWidth}px;
                 --progress-max-width-fifty: ${progressWidth}px;
@@ -130,14 +109,11 @@ class Game extends React.Component {
               }
               .score-board .col-md-offset-3 {
                 margin: ${Math.round(progressWidth / 7)}px!important;
-              }
-              
+              }              
             }`
-
 
             /* REMOVED FROM INJECTION:   --image-height-restriction: ${heightRestriction}vh;*/
             const confettiGun = () => {
-
                 if (this.props.scoreflash.visibility && this.props.scoreflash.score > 0) {
                     var numberOfPieces = Math.min(275, 25 +
                         Math.min(25, this.props.scoreflash.score / 10) +
@@ -156,17 +132,11 @@ class Game extends React.Component {
                 } else {
                     return null
                 }
-
             }
             return (
                 <div className={responsive}>
-
                     {/* // {this.getConfetti(imageWidthR(),imageHeightR())} */}
-
-
-
                     <div className="transbox">
-
                         {confettiGun()}
                         <div className="game-mainview">
                             {/* <p>{imageWidthR()},{imageHeightR()}</p> */}
@@ -175,19 +145,16 @@ class Game extends React.Component {
                             </div>
                             <GameLoop />
                         </div>
-
                         <div className="game-score">
                             <ScoreBoard progressWidth={progressWidth} previous={true} />
                         </div>
                     </div>
-
                 </div>
             )
         } else {
             var progressWidth = Math.round((imageWidthR()) * 0.75);
             injectGlobal`
             :root {  
-                
                 --progress-max-width: ${progressWidth}px;
                 --progress-max-width-thirtythree: ${Math.round(progressWidth * 0.5)}px;
                 --game-border: ${gameBorder}px;
@@ -196,7 +163,6 @@ class Game extends React.Component {
                 margin-left: 0!important; 
                 margin-top: 5px!important;
               }
-              
             }`
             /* REMOVED FROM INJECTION:   --image-height-restriction: 33vh;*/
             return (
@@ -219,7 +185,6 @@ class Game extends React.Component {
                         </div>
                     </div>
                 </div>
-
             )
         }
     }
@@ -228,9 +193,6 @@ class Game extends React.Component {
      *    If all images have been cycled through, redirect to endscreen, otherwise render quiz page 
      */
     render() {
-
-
-
 
         let i = parseInt(localStorage.getItem('styleIndex'), 10)
         // Here we inject the visual style specific colors into the css. Each visual style has a primary, secondary and tertiary color (accent).
@@ -257,17 +219,10 @@ class Game extends React.Component {
             }
         }
 
-
-
         return (
-
-
             <div className={this.state.allStyles[i].overlay}>
-
                 {/* {...this.props.size} /> */}
                 <div className={this.state.allStyles[i].background}>
-
-
                     <div className={this.state.allStyles[i].style}>
                         <div id="App" className="App">
                             <div id="App" className="gameplay">
@@ -284,18 +239,13 @@ class Game extends React.Component {
                                     className={this.state.allStyles[i].flairLayerD}>
                                 </div>
                                 {this.responsiveLayout()}
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-
-
         );
     }
-
 }
 
 const mapStateToProps = (state) => {
