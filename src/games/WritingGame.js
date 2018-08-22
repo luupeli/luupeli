@@ -47,7 +47,13 @@ class WritingGame extends React.Component {
     window.onunload = function () { window.location.href = '/' }
   }
 
-  gameClockUnits() { return Math.round(((new Date).getTime() - this.props.game.startedAt) / 50) }
+  gameClockUnits() {
+    let currentTime = (new Date).getTime()
+    let startedAt = this.props.game.startedAt; 
+    if (isNaN(startedAt)) {
+      startedAt= currentTime-5000
+    }
+    return Math.round((currentTime-startedAt) / 50) }
 
   componentDidMount() {
     this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
@@ -168,7 +174,7 @@ class WritingGame extends React.Component {
       correctness = 'Väärin'
       points = 0
     }
-
+    console.log(' points ennen talennusta: '+points)
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
     this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 2.5, true)
 

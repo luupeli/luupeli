@@ -12,7 +12,7 @@ const initialState = {
         answers: undefined,
         totalSeconds: '',
         gameClock: 0,
-        startedAt: undefined,
+        startedAt: new Date().getTime(),
         stoppedAt: undefined,
         playSound: false,
         gameDifficulty: "medium",
