@@ -45,7 +45,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "REACT_APP_ENV=test react-scripts test --coverage --collectCoverageFrom=**/src/menus/*.js --collectCoverageFrom=**/src/games/*.js",
+    "test": "REACT_APP_ENV=test react-scripts test --env=jsdom --coverage --collectCoverageFrom=**/src/menus/*.js --collectCoverageFrom=**/src/games/*.js",
     "eject": "react-scripts eject",
     "puppe": "REACT_APP_ENV=test node scripts/puppe.js"
   },
