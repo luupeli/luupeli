@@ -36,7 +36,6 @@ class WritingGame extends React.Component {
       previousRevealClock: 0,
       easyDifficultyPenalty: 1.0,
       animationActive: true
-
     }
     this.getRandomInt = this.getRandomInt.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -54,7 +53,7 @@ class WritingGame extends React.Component {
     }
     return Math.round((currentTime - startedAt) / 50)
   }
-  
+
   componentDidUpdate(prevProps) {
     if (this.props.game.endCounter !== prevProps.game.endCounter) {
       this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
@@ -87,16 +86,12 @@ class WritingGame extends React.Component {
     this.setState({ lastValue: this.state.value })
     let answerCorrectness = this.checkCorrectness(this.state.value)
     this.props.setAnswerSound(answerCorrectness)
-
     let currentStreak = this.state.streakWG
     let currentBonus = this.state.bonus
     let streakNote = ''
     let streakEmoji = emoji.get('yellow_heart')
     let correctness = 'Melkein oikein'
-
     let points = (Math.round((answerCorrectness * Math.max(20, this.props.game.currentImage.bone.nameLatin.length - 3)) * ((900 + Math.max(0, (900 - this.gameClockUnits()))) / 1800))) / 20
-
-
 
     if (this.gameClockUnits() < 200 && (StringSimilarity.compareTwoStrings(this.state.partialEasyAnswer.toLowerCase(), this.props.game.currentImage.bone.nameLatin.toLowerCase()) < 0.90)) {
       points = points * ((400 - this.gameClockUnits()) / 40)
@@ -122,11 +117,9 @@ class WritingGame extends React.Component {
         currentBonus = 2.0
       }
     }
-
     let hardBonus = 0.0
     if (this.props.game.gameDifficulty === 'hard') {
       hardBonus = 1.0
-
     }
 
     if (answerCorrectness > 99) {
@@ -141,7 +134,6 @@ class WritingGame extends React.Component {
       streakEmoji = streakEmoji.get('fire')
       console.log(streakEmoji)
     } else {
-
       if (this.props.game.gameDifficulty === 'hard') {
         points = 40 * currentBonus
       }
@@ -153,9 +145,9 @@ class WritingGame extends React.Component {
         streakEmoji = streakEmoji.get('poop')
       }
     }
+
     if (answerCorrectness > 85) {
       points = points * 2 * currentBonus
-
     }
 
     //Check answered animal and score accordingly
@@ -165,12 +157,12 @@ class WritingGame extends React.Component {
       points = Math.round(points * 0.5)
     }
 
-
     points = Math.round(points / 20) * 20
     if (answerCorrectness <= 70) {
       correctness = 'Väärin'
       points = 0
     }
+
     console.log(' points ennen talennusta: ' + points)
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
     this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 2.5, true)
@@ -183,12 +175,8 @@ class WritingGame extends React.Component {
       console.log('AFTER timeout!! ' + this.gameClockUnits())
       this.props.setAnswer(answerCurrentImage, answerCorrectness, this.state.lastValue, this.state.imgAnimal, this.props.game.gameClock, points)
       this.setState({ animationActive: true, lastValue: undefined })
-    }, 2500
-    );
-
-
+    }, 2500)
   }
-
 
   /**
    * This method measures the "correctness" (or similarity) of the answer string compared to the actual latin name string.
@@ -199,10 +187,8 @@ class WritingGame extends React.Component {
   checkCorrectness(answer) {
     var playerAnswer = answer.toLowerCase().replace(", ", " ja ").replace(" & ", " ja ")
     var latinName = this.props.game.currentImage.bone.nameLatin.toLowerCase().replace(" & ", " ja ")
-
     return 100 * StringSimilarity.compareTwoStrings(playerAnswer, latinName); // calculate similarity   
     //return 100 * StringSimilarity.compareTwoStrings(this.props.game.currentImage.bone.nameLatin.toLowerCase(), this.state.value.toLowerCase()); // calculate similarity   
-
   }
 
   /**
@@ -259,7 +245,6 @@ class WritingGame extends React.Component {
         this.setState({ previousRevealClock: currentMoment, partialEasyAnswer: newPartial, easyDifficultyPenalty: this.state.easyDifficultyPenalty - addPenalty })
         // console.log('new partial on nyt : ' + newPartial)
       }
-
     }
   }
 
@@ -267,9 +252,7 @@ class WritingGame extends React.Component {
    * Notice that the bone images are fethched from Cloudinary, with a resize transformation done based on the measured window size.
    */
   render() {
-
     var currentMoment = new Date().getTime()
-
     const animalRadioNoAnimal = () => {
       if (this.props.game.gameDifficulty === 'hard') {
         return (
@@ -445,8 +428,9 @@ class WritingGame extends React.Component {
     const debug = () => {
       if (process.env.NODE_ENV === 'development') {
         return (
-          <h6>debug: {this.props.game.currentImage.bone.nameLatin}</h6>
-
+          <h6>
+            debug: {this.props.game.currentImage.bone.nameLatin}
+          </h6>
         )
       }
       return null
@@ -460,9 +444,7 @@ class WritingGame extends React.Component {
               <div className="height-restricted" >
                 <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationOutDelay="0" isVisible={this.state.animationActive}>
                   <Image id="bone-image" publicId={this.props.game.currentImage.url}>
-
                     <Transformation width={imageWidth()} />
-
                   </Image>
                 </Animated>
               </div>

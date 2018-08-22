@@ -42,15 +42,13 @@ class Leaderboard extends React.Component {
 			})
 	}
 
-	
-
 	bestPlayersAuxiliaryMethod() {
 		var top20AllTime = []
 		var i
 		for (i = 0; i < 20; i++) {
 			if (this.state.top50[i] !== undefined) {
 				top20AllTime[i] = i + 1 + '. ' + this.state.top50[i].user.username
-				+ ' (' + this.state.top50[i].total + ' pistettä)'
+					+ ' (' + this.state.top50[i].total + ' pistettä)'
 			} else {
 				top20AllTime[i] = i + 1 + '. '
 			}

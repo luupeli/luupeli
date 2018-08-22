@@ -116,7 +116,6 @@ class Home extends React.Component {
         this.setState({
             styleIndex: 0,
         })
-
         const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
         if (loggedUserJSON) {
             const user = JSON.parse(loggedUserJSON)
@@ -147,11 +146,8 @@ class Home extends React.Component {
             this.setState({ attractMode: this.state.attractMode + 1, attractAnimation: false })
         } else {
             this.setState({ attractMode: this.state.attractMode + 1, attractAnimation: true })
-
         }
     }
-
-
 
     // This event chooses the next css style settings from the list
     changeCss(event) {
@@ -193,7 +189,6 @@ class Home extends React.Component {
     }
 
     setThemeColors(i) {
-
         injectGlobal`
     :root {   
       --highlight: ${this.state.highlight}   
@@ -233,7 +228,7 @@ class Home extends React.Component {
                                 className="menu-button"
                                 onClick={this.proceedToSelect}>
                                 Ylläpitäjälle
-            </button>
+                            </button>
                         </Animated>
                     </Col>
                 </Row>
@@ -248,7 +243,7 @@ class Home extends React.Component {
                                 className="menu-button"
                                 onClick={this.proceedToSelect}>
                                 Profiili
-            </button>
+                            </button>
                         </Animated>
                     </Col>
                 </Row>
@@ -276,10 +271,8 @@ class Home extends React.Component {
             )
         }
         else {
-
             let inEffect = 'zoomInDown slower'
             let outEffect = 'zoomOutUp slower'
-
             let titleVisibility = this.state.attractAnimation
             if (!this.state.attractAnimation && this.state.attractMode % 40 > 35) {
                 titleVisibility = false
@@ -298,7 +291,6 @@ class Home extends React.Component {
                 inEffect = 'flipInX slower'
                 outEffect = 'flipOutY slower'
             }
-
             return (
                 <div className="home-flex-title">
                     <div className="score">
@@ -331,7 +323,6 @@ class Home extends React.Component {
                         </h1></div>
                     {/* Luupeli</h1> */}
                 </div>
-
             )
         }
     }
@@ -348,7 +339,7 @@ class Home extends React.Component {
                                     className="menu-button"
                                     onClick={this.proceedToSelect}>
                                     Kirjaudu sisään
-              </button>
+                                </button>
                             </Animated>
                         </Col>
                     </Row>
@@ -360,7 +351,7 @@ class Home extends React.Component {
                                     className="menu-button"
                                     onClick={this.proceedToSelect}>
                                     Luo käyttäjätili
-              </button>
+                                </button>
                             </Animated>
                         </Col>
                     </Row>
@@ -377,7 +368,7 @@ class Home extends React.Component {
                                     className='menu-button'
                                     onClick={this.logOut}>
                                     Kirjaudu ulos
-              </button>
+                                </button>
                             </Animated>
                         </Col>
                     </Row>
@@ -401,49 +392,33 @@ class Home extends React.Component {
     }
 
     getBestPlayers() {
-
-
         userStatistics.getTop50()
             .then((response) => {
                 this.setState({ bestPlayers: response.data })
                 console.log(this.state.bestPlayers)
-
             })
             .catch((error) => {
                 console.log(error)
             })
-
-
-
     }
 
     attractMode() {
-
-
         var effects = [];
         effects.push('bounceOutLeft slower')
         effects.push('bounceOutRight slower')
         let heartEmoji = emoji.get('yellow_heart')
-
         if (this.state.attractMode % 80 <= 20) {
             // var scores = []
             var scorers = []
             var trueScorers = []
-
             if (this.state.bestPlayers.length > 10) {
                 trueScorers = this.state.bestPlayers.slice(0, 10)
             } else {
                 trueScorers = this.state.bestPlayers
             }
-
-
             scorers.push('Luu Skywalker'); scorers.push('Luuno Turhapuro'); scorers.push('Princess Luua'); scorers.push('Sorbusten Ritari'); scorers.push('Keisari Luupatine'); scorers.push('Mr. Kitiini'); scorers.push('Bonefish!'); scorers.push('Luufemma'); scorers.push('Luubi-Wan Luunobi'); scorers.push('Luunkerääjä')
-
-
             var firstHalf = trueScorers.slice(0, 5)
             var secondHalf = trueScorers.slice(5, 10 + 1)
-
-
             // const placeholderScores = scorers.map((scoree,i) =>
             const placeholderScoresFirst = firstHalf.map((scoree, i) =>
                 <Animated animationIn="bounceInUp slower" animationOut={effects[i % 2]} animationInDelay={1500 + (i * 500)} animationOutDelay={i * 50} isVisible={this.state.attractAnimation}>
@@ -460,7 +435,6 @@ class Home extends React.Component {
                             </h5>
                         </div>
                     </div>
-
                 </Animated>
             )
             const placeholderScoresLast = secondHalf.map((scoree, i) =>
@@ -483,35 +457,25 @@ class Home extends React.Component {
             )
             var titleVisible = true
             if (this.state.attractMode % 80 >= 15) { titleVisible = this.state.attractAnimation }
-
             var showScores = placeholderScoresFirst
             if (this.state.attractMode % 80 >= 10) {
                 showScores = placeholderScoresLast
             }
-
             return (
                 <div>
                     <div className="home-highscore-top">
-
                         <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight slower" animationInDelay={1000} animationOutDelay={0} isVisible={titleVisible}>
                             <h3>
                                 TOP {trueScorers.length} LUUPÄÄT
-		            </h3>
+		                    </h3>
                         </Animated>
                     </div>
                     {showScores}
                 </div>
             )
-        }
-
-
-
-        else {
-
-
+        } else {
             var lines = [];
             var heading = ''
-
             if (this.state.attractMode % 80 <= 40) {
                 heading = 'CREDITS'
                 lines.push('Helena Parviainen')
@@ -536,9 +500,7 @@ class Home extends React.Component {
                 lines.push('8-bit ElectroHouse by RutgerMuller')
                 lines.push('Used under Creative Commons (CC) license')
                 lines.push('The Luupeli devs kindly thank these content creators! ' + heartEmoji)
-            }
-
-            else if (this.state.attractMode % 320 <= 80) {
+            } else if (this.state.attractMode % 320 <= 80) {
                 heading = 'LUUPELI TIEDOTTAA'
                 lines.push('Miksi sinä vielä luet tätä?')
                 lines.push('Mene pelaamaan siitä!')
@@ -567,7 +529,6 @@ class Home extends React.Component {
                 let banana = emoji.get('banana')
                 let strawberry = emoji.get('strawberry')
                 let mushroom = emoji.get('mushroom')
-
                 heading = 'HEDELMÄBONUKSET'
                 lines.push(watermelon + ' ...... 5 000 pts')
                 lines.push(cherries + ' ..... 10 000 pts')
@@ -576,9 +537,6 @@ class Home extends React.Component {
                 lines.push(strawberry + ' .... 250 000 pts')
                 lines.push(mushroom + ' ....... SECRET!!')
             }
-
-
-
 
             const rollingMessage = lines.map((line, i) =>
                 <Animated animationIn="bounceInUp slower" animationOut={effects[i % 2]} animationInDelay={1500 + (i * 500)} animationOutDelay={i * 50} isVisible={this.state.attractAnimation}>
@@ -589,15 +547,12 @@ class Home extends React.Component {
                             </h5>
                         </div>
                     </div>
-
                 </Animated>
             )
 
             return (
-
                 <div>
                     <div className="home-highscore-top">
-
                         <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight slower" animationInDelay={1000} animationOutDelay={0} isVisible={this.state.attractAnimation}>
                             <h3>
                                 {heading}
@@ -611,10 +566,7 @@ class Home extends React.Component {
     }
     startTheMusic() {
         this.setState({ loopTheMusic: true, musicStartTime: new Date().getTime() })
-
     }
-
-
 
     musicPlayer() {
         if (this.state.loopTheMusic) {
@@ -648,7 +600,6 @@ class Home extends React.Component {
         } else { return null }
     }
 
-
     render() {
         if (process.env.NODE_ENV !== 'test') {
             // skelly()
@@ -656,7 +607,6 @@ class Home extends React.Component {
         if (this.state.redirect) {
             this.setState({ redirect: false })
             return (
-
                 <Redirect to=
                     {
                         {
@@ -711,7 +661,7 @@ class Home extends React.Component {
                                                         id="proceedToSelectGameMode"
                                                         onClick={this.proceedToSelect}>
                                                         Pelaa
-                       </button>
+                                                    </button>
                                                 </Animated>
                                             </Col>
                                         </Row>
@@ -725,7 +675,7 @@ class Home extends React.Component {
                                                         id="bestPlayers"
                                                         onClick={this.proceedToSelect}>
                                                         &#9733; Pistetaulukko &#9733;
-                       </button>
+                                                    </button>
                                                 </Animated>
                                             </Col>
                                         </Row>
@@ -746,8 +696,6 @@ class Home extends React.Component {
                                     </Col>
                                 </Row>
                                 {this.attractMode()}
-
-
                             </div>
                         </div>
                     </div>
