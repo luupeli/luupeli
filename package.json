@@ -45,9 +45,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "NODE_ENV=test react-scripts test --env=jsdom --coverage --collectCoverageFrom=**/src/menus/*.js --collectCoverageFrom=**/src/games/*.js",
+    "test": "REACT_APP_ENV=test react-scripts test --env=jsdom --coverage --collectCoverageFrom=**/src/menus/*.js --collectCoverageFrom=**/src/games/*.js",
     "eject": "react-scripts eject",
-    "puppe": "NODE_ENV=test node scripts/puppe.js"
+    "puppe": "REACT_APP_ENV=test node scripts/puppe.js"
   },
   "devDependencies": {
     "codecov": "^3.0.4",
