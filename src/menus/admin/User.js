@@ -17,6 +17,7 @@ class User extends React.Component {
 			viewedUserEmail: '',
 			totalGames: '',
 			usersBestGame: '',
+			usersBestAnswers: [],
 			//user is just the user viewing this page, nothing to do with the user
 			//being viewed
 			user: null,
@@ -39,7 +40,7 @@ class User extends React.Component {
 		userStatistics.getTotalGamesForIndividual(this.props.userId)
 			.then((response) => {
 				this.setState({
-					totalGames: response.data
+					totalGames: response.data.length
 				})
 			})
 
@@ -52,6 +53,15 @@ class User extends React.Component {
 				if (response.data.length !== 0) {
 					this.setState({
 						usersBestGame: response.data[0]
+					})
+				}
+			})
+
+		userStatistics.getUsersBestAnswers(this.props.userId)
+			.then((response) => {
+				if (response.data.length !== 0) {
+					this.setState({
+						usersBestAnswers: response.data
 					})
 				}
 			})
@@ -93,6 +103,18 @@ class User extends React.Component {
 		}
 	}
 
+	bestAnswersTop5() {
+		return (
+			<div>
+				<p>&#9733; Eniten pisteitä saaneet vastaukset &#9733;</p>
+				{this.state.usersBestAnswers.map(answer => {
+					return <p>"{answer.input}", {answer.points} pistettä ajassa {answer.seconds / 1000} s</p>
+				}
+				)}
+			</div>
+		)
+	}
+
 	render() {
 		//If redirect is set to true, we will redirect. It might, no, WILL be true,
 		//if the user trying to view this page is not an admin.
@@ -113,9 +135,12 @@ class User extends React.Component {
 				<font size="4"><div>
 					<h2>Käyttäjä {this.state.viewedUserName}</h2>
 					<p>Sähköposti: {this.state.viewedUserEmail}</p>
-					<p>Pelattuja pelejä: {this.state.totalGames.length}</p>
+					<br></br>
+					<p>Pelattuja pelejä: {this.state.totalGames}</p>
 					<br></br>
 					{this.bestGame()}
+					<br></br>
+					{this.bestAnswersTop5()}
 				</div>
 				</font>
 			</div >
