@@ -10,18 +10,18 @@ if (process.env.NODE_ENV === 'development') {
 const top50 = '/api/gamesessions/top_list_all?limit=50'
 let top50Url = ''
 if (process.env.NODE_ENV === 'development') {
-    top50Url = 'http://localhost:3001' + url
+    top50Url = 'http://localhost:3001' + top50
   } else {
-    top50Url = url
+    top50Url = top50
   }
 
 
 const usersBestGames = '/api/gamesessions/top_list_game?limit=50'
 let bestGamesUrl = ''
 if (process.env.NODE_ENV === 'development') {
-    bestGamesUrl = 'http://localhost:3001' + url
+    bestGamesUrl = 'http://localhost:3001' + usersBestGames
   } else {
-    bestGamesUrl = url
+    bestGamesUrl = usersBestGames
   }
 
 const getTop50 = () => {
