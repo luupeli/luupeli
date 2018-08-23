@@ -1,15 +1,11 @@
 const getUrl = () => {
   let baseUrl = ''
-  if (process.env.REACT_APP_ENV === 'production') {
-    baseUrl = ''
-  } else if (process.env.REACT_APP_ENV === 'development') {
-    baseUrl = 'http://localhost:3001'
+  if (process.env.NODE_ENV === 'development') {
+    baseUrl = 'http://localhost:3001' + url
   } else {
-    baseUrl = 'http://luupeli-dev.herokuapp.com'
+    baseUrl = url
   }
   return baseUrl
 }
-
-
 
 export default getUrl
