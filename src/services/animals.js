@@ -1,13 +1,8 @@
 import axios from 'axios'
+import getUrl from './urls'
 const url = '/api/animals'
-let baseUrl = ''
-if (process.env.REACT_APP_ENV === 'production') {
-  baseUrl = url
-} else if (process.env.REACT_APP_ENV === 'development') {
-  baseUrl = 'http://localhost:3001' + url
-} else {
-  baseUrl = 'http://luupeli-dev.herokuapp.com' + url
-}
+
+let baseUrl = getUrl() + url
 
 console.log(process.env)
 
