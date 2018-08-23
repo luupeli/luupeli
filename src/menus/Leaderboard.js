@@ -1,7 +1,6 @@
 import React from 'react'
 import userStatistics from '../services/userStatistics'
 import BackButton from './BackButton'
-import { Link } from 'react-router-dom'
 import { Row, Col } from 'react-bootstrap'
 
 class Leaderboard extends React.Component {
