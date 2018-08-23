@@ -75,7 +75,21 @@ class Home extends React.Component {
                 tertiary: '#555599',
                 overlay: null,
                 music: '351717__monkeyman535__cool-chill-beat-loop.wav'
-            }],
+            }, {
+                style: 'normo',
+                background: 'background-normo',
+                flairLayerD: 'none',
+                flairLayerC: 'none',
+                flairLayerB: 'none',
+                flairLayerA: 'none',
+                highlight: '#222211',
+                primary: '#555544',
+                secondary: '#999988',
+                tertiary: '#EEEECC',
+                overlay: null,
+                music: '435958__greek555__trap-beat.mp3'
+            }
+            ],
             styleIndex: 0,
             style: 'blood-dragon',
             background: 'background-blood-dragon',
@@ -268,6 +282,7 @@ class Home extends React.Component {
                         timePerChar={240}
                     />
                 </h1>
+                
             )
         }
         else {
@@ -292,36 +307,32 @@ class Home extends React.Component {
                 outEffect = 'flipOutY slower'
             }
             return (
+                <div id="styleName" className={this.state.style}>
                 <div className="home-flex-title">
                     <div className="score">
-                        <h1 className="game-title">
-                            <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="100" animationOutDelay="100" isVisible={titleVisibility}>L</Animated>
-                        </h1></div>
+                        
+                            <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="100" animationOutDelay="100" isVisible={titleVisibility}><h1 className="game-title">L</h1></Animated>
+                        </div>
                     <div className="score">
-                        <h1 className="game-title">
-                            <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="150" animationOutDelay="150" isVisible={titleVisibility}>u</Animated>
-                        </h1></div>
+                            <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="150" animationOutDelay="150" isVisible={titleVisibility}><h1 className="game-title">u</h1></Animated>
+                        </div>
                     <div className="score">
-                        <h1 className="game-title">
-                            <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="200" animationOutDelay="200" isVisible={titleVisibility}>u</Animated>
-                        </h1></div>
+                            <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="200" animationOutDelay="200" isVisible={titleVisibility}><h1 className="game-title">u</h1></Animated>
+                        </div>
                     <div className="score">
-                        <h1 className="game-title">
-                            <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="250" animationOutDelay="250" isVisible={titleVisibility}>p</Animated>
-                        </h1></div>
+                            <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="250" animationOutDelay="250" isVisible={titleVisibility}><h1 className="game-title">p</h1></Animated>
+                        </div>
                     <div className="score">
-                        <h1 className="game-title">
-                            <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="300" animationOutDelay="300" isVisible={titleVisibility}>e</Animated>
-                        </h1></div>
+                            <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="300" animationOutDelay="300" isVisible={titleVisibility}><h1 className="game-title">e</h1></Animated>
+                        </div>
                     <div className="score">
-                        <h1 className="game-title">
-                            <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="350" animationOutDelay="350" isVisible={titleVisibility}>l</Animated>
-                        </h1></div>
+                            <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="350" animationOutDelay="350" isVisible={titleVisibility}><h1 className="game-title">l</h1></Animated>
+                        </div>
                     <div className="score">
-                        <h1 className="game-title">
-                            <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="400" animationOutDelay="400" isVisible={titleVisibility}>i</Animated>
-                        </h1></div>
+                            <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="400" animationOutDelay="400" isVisible={titleVisibility}><h1 className="game-title">i</h1></Animated>
+                        </div>
                     {/* Luupeli</h1> */}
+                </div>
                 </div>
             )
         }
@@ -492,6 +503,7 @@ class Home extends React.Component {
                 lines.push('Electro success sound by Mativve')
                 lines.push('Error.wav by Autistic Lucario')
                 lines.push('Retro Bonus Pickup SFX by suntemple')
+                lines.push('Trap-Beat by greek555')
             }
             else if (this.state.attractMode % 80 <= 60) {
                 heading = 'Freesound.org continued...'
@@ -689,9 +701,10 @@ class Home extends React.Component {
                                                 </button>
                                             </Animated>
                                         </Row>
-                                        <h6>
+                                        <h5><div className="username">
                                             {loggedText}
-                                        </h6>
+                                            </div>
+                                        </h5>
                                         <div className={this.state.style} />
                                     </Col>
                                 </Row>
