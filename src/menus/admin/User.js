@@ -2,6 +2,7 @@ import React from 'react'
 import userService from '../../services/users'
 import userStatistics from '../../services/userStatistics'
 import { Link, Redirect } from 'react-router-dom'
+import Moment from 'moment';
 
 class User extends React.Component {
 	constructor(props) {
@@ -86,7 +87,7 @@ class User extends React.Component {
 					<p>&#9733; Paras peli &#9733;</p>
 					<p>{this.state.usersBestGame["totalScore"]} pistettä</p>
 					<p>{this.state.usersBestGame["gameDifficulty"]}-tason {this.state.usersBestGame["gamemode"]}</p>
-					<p>{this.state.usersBestGame["timeStamp"]}</p>
+					<p>{Moment(this.state.usersBestGame["timeStamp"]).format('DD.MM.YYYY')}</p>
 				</div>
 			)
 		}

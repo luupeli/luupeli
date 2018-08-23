@@ -16,6 +16,9 @@ class ImageMultipleChoiceGame extends React.Component {
     this.state = {
       selectedId: undefined,
       selectedImage: undefined,
+      streakMCG: 0,
+      bonus: 1.0,
+      internalStartedAt: new Date().getTime
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     window.onunload = function () { window.location.href = '/' }
@@ -25,6 +28,12 @@ class ImageMultipleChoiceGame extends React.Component {
   componentDidMount() {
     this.props.setImagesToImageMultipleChoiceGame(this.props.game.images, this.props.game.answers)
     this.props.startGameClock()
+    setInterval(() => {
+      this.setState(() => {
+        console.log('test')
+        return { unseen: "does not display" }
+      });
+    }, 1000)
   }
 
   componentDidUpdate(prevProps) {
@@ -42,8 +51,15 @@ class ImageMultipleChoiceGame extends React.Component {
     })
     const correctness = this.checkCorrectness(image)
     this.props.setAnswerSound(correctness)
+    let current = new Date().getTime()
+    let started = this.props.game.startedAt
+    if (started<1 || isNaN(started) || started===undefined) {
+      started=this.state.internalStartedAt
+    }
 
-    let points = (Math.round((this.checkCorrectness(image) * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((300 + Math.max(0, (300 - this.state.seconds))) / 600))) / 20
+    let points = (Math.round((this.checkCorrectness(image) * Math.min(10, this.props.game.currentImage.bone.nameLatin.length)) *((30 + Math.max(0, (30 - ((current- started)/1000)) / 60))))) / 80
+	console.log(this.props.game)
+
 
     if (correctness > 99) {
       points = points * 10
@@ -60,7 +76,7 @@ class ImageMultipleChoiceGame extends React.Component {
     let currentStreak = this.state.streakMCG
     let currentBonus = this.state.bonus
 
-    points = 1000;
+    
     if (correctness === 100) {
       this.setState({ streakMCG: currentStreak + 1, bonus: currentBonus + 0.5 })
       streakNote = currentBonus + 'x!'
@@ -77,9 +93,11 @@ class ImageMultipleChoiceGame extends React.Component {
 
     this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 2.5, true)
     this.setState({ choices: [] })
-
+    console.log('points: '+points)
+    console.log('this.state.selectedImage.bone.nameLatin: '+image.bone.nameLatin)
+    console.log('gameClock: '+current-started)
     setTimeout(() => {
-      this.props.setAnswer(this.props.game.currentImage, correctness, this.state.selectedImage.bone.nameLatin, this.props.game.gameClock, points)
+      this.props.setAnswer(this.props.game.currentImage, correctness, image.bone.nameLatin,image.animal.name, current-started, points)
       this.setState({ selectedId: undefined, selectedImage: undefined })
     }, 3000)
   }

@@ -4,7 +4,6 @@ import gameSessionService from '../../services/gameSessions'
 import { DateRange } from 'react-date-range';
 import Moment from 'moment';
 
-
 class Statistics extends React.Component {
 	constructor(props) {
 		super(props)
@@ -50,7 +49,6 @@ class Statistics extends React.Component {
 		var hours = Math.floor(total / 3600 / 60);
 		var minutes = Math.floor(total % 3600 / 60);
 		var seconds = Math.floor(total % 3600 % 60);
-
 		var hourDisplay = hours > 0 ? hours + (hours === 1 ? " tunti, " : " tuntia, ") : "";
 		var minuteDisplay = minutes > 0 ? minutes + (minutes === 1 ? " minuutti, " : " minuuttia, ") : "";
 		var secondDisplay = seconds > 0 ? seconds + (seconds === 1 ? " sekuntti" : " sekuntia") : "";
@@ -93,7 +91,6 @@ class Statistics extends React.Component {
 		console.log('gamemodes set')
 		this.setGamesPlayedByLoggedInUsers(updatedGameSessions)
 		console.log('games set by logged in users')
-
 		console.log('Pelejä pelattu kirjautuneiden käyttäjien osalta:' + this.state.gamesByLoggedInUsers + 'kpl')
 		console.log('Pelejä pelattu anonyymien käyttäjien osalta:' + this.state.gamesByAnonymousUsers + 'kpl </p>')
 		console.log('Pelejä pelattu yhteensä:' + this.state.gameSessionsFiltered.length + ' kpl')
@@ -167,10 +164,8 @@ class Statistics extends React.Component {
 		}
 	}
 
-
 	render() {
 		Moment.locale('en');
-
 		if (this.state.redirect) {
 			return (
 				<Redirect to={{
@@ -183,7 +178,6 @@ class Statistics extends React.Component {
 				<Link to='/admin'>
 					<button className="gobackbutton">Takaisin</button>
 				</Link>
-
 				<div className="App menu">
 					<DateRange
 						maxDate={Date.now()}

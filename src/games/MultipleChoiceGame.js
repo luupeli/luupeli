@@ -21,6 +21,9 @@ class MultipleChoiceGame extends React.Component {
     this.timer = 0;
     this.state = {
       value: undefined,
+      streakMCG: 0,
+      bonus: 1.0,
+      internalStartedAt: new Date().getTime
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     window.onunload = function () { window.location.href = '/' }
@@ -28,6 +31,12 @@ class MultipleChoiceGame extends React.Component {
   }
 
   componentDidMount() {
+    setInterval(() => {
+      this.setState(() => {
+        console.log('test')
+        return { unseen: "does not display" }
+      });
+    }, 1000)
     this.props.setImagesToMultipleChoiceGame(this.props.game.images, this.props.game.answers)
     this.props.startGameClock()
   }
@@ -50,9 +59,13 @@ class MultipleChoiceGame extends React.Component {
     const correctness = this.checkCorrectness(event.target.value)
     this.props.setAnswerSound(correctness)
 
-    let gameClock = Math.round(((new Date()).getTime() - this.props.game.startTime) / 50)
+    let current = new Date().getTime()
+    let started = this.props.game.startedAt
+    if (started<1 || isNaN(started) || started===undefined) {
+      started=this.state.internalStartedAt
+    }
     //let points = (Math.round((this.checkCorrectness(event.target.value) * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((300 + Math.max(0, (300 - this.state.seconds))) / 600))) / 20
-    let points = Math.round((1000 + ((1000 + Math.max(0, (400 - gameClock))) / 800))) / 20
+    let points = (Math.round((correctness * Math.min(10, this.props.game.currentImage.bone.nameLatin.length)) * ((30 + Math.max(0, (30 - ((current- started)/1000)) / 60))))) / 80
 
     if (this.checkCorrectness(event.target.value) > 99) {
       points = points * 10
@@ -69,7 +82,7 @@ class MultipleChoiceGame extends React.Component {
     let currentStreak = this.state.streakMCG
     let currentBonus = this.state.bonus
 
-    points = 1000;
+    
     if (correctness === 100) {
       this.setState({ streakMCG: currentStreak + 1, bonus: currentBonus + 0.5 })
       streakNote = currentBonus + 'x!'
@@ -85,7 +98,7 @@ class MultipleChoiceGame extends React.Component {
     this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 3, true)
 
     setTimeout(() => {
-      this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(this.state.value), this.state.value, this.props.game.gameClock, points)
+      this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(this.state.value), this.state.value,this.props.game.currentImage.animal.name,current-started,points)
       this.setState({ value: undefined })
     }, 3000)
   }
