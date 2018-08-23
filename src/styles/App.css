@@ -41,8 +41,23 @@
   color:#fff!important;
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: orange;
-
 }
+.username{
+  color:orange!important;
+  letter-spacing: 1.1;
+  -webkit-text-stroke-width: 0.25px;
+  -webkit-text-stroke-color: red;
+}
+
+.fallout .username{
+  color:white!important;
+  letter-spacing: 1.1;
+  -webkit-text-stroke-width: 0.25px;
+  -webkit-text-stroke-color: greenyellow;
+}
+
+
+
 
 .menu-button {
   display: block;
@@ -94,14 +109,14 @@ animation: Button-Gradient 3.23s ease infinite;
     /*font-family: "Verdana";*/
     font-family: 'Oswald', cursive;
     text-align: center;
-    letter-spacing: 0px!important;
+    letter-spacing: normal!important;
 }
 
 .App .fallout{
   font-family: 'Press start 2p', sans-serif;
   /* font-family: 'VT323', sans-serif; */
   text-align: center;
-  letter-spacing: 0px!important;
+  letter-spacing: normal!important;
 }
 
 .deep-blue App {
@@ -423,7 +438,7 @@ h3, h4, h5, h6 {
 
 p {
   font-size:calc(1.25vw + 0.35vh + 0.35vmin);
-  letter-spacing: 0!important;
+  letter-spacing: normal!important;
 }
 
 .fallout p {
@@ -688,7 +703,7 @@ div.transbox p {
 form {
     /* color: var(--tertiary); */
     display: inline-block;
-    letter-spacing: 0!important;
+    letter-spacing: normal!important;
 }
 
 

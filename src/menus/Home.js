@@ -87,7 +87,7 @@ class Home extends React.Component {
                 secondary: '#999988',
                 tertiary: '#EEEECC',
                 overlay: null,
-                music: '351717__monkeyman535__cool-chill-beat-loop.wav'
+                music: '435958__greek555__trap-beat.mp3'
             }
             ],
             styleIndex: 0,
@@ -503,6 +503,7 @@ class Home extends React.Component {
                 lines.push('Electro success sound by Mativve')
                 lines.push('Error.wav by Autistic Lucario')
                 lines.push('Retro Bonus Pickup SFX by suntemple')
+                lines.push('Trap-Beat by greek555')
             }
             else if (this.state.attractMode % 80 <= 60) {
                 heading = 'Freesound.org continued...'
@@ -700,9 +701,10 @@ class Home extends React.Component {
                                                 </button>
                                             </Animated>
                                         </Row>
-                                        <h6>
+                                        <h5><div className="username">
                                             {loggedText}
-                                        </h6>
+                                            </div>
+                                        </h5>
                                         <div className={this.state.style} />
                                     </Col>
                                 </Row>
