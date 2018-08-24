@@ -1,0 +1,59 @@
+#question-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 460px;
+    width: auto;
+    max-width: 100%;
+}
+
+#wr-message {
+    height: 60px;
+}
+
+#progbar {
+    color: black;
+    width: 0%;
+}
+
+#proglabel {
+    font-family: 'Press start 2p', sans-serif;
+    font-size: 16px;
+    width: 100%;
+    float: left;
+    position: absolute;
+}
+
+#image-holder {
+    align-content: center;
+}
+
+#info {
+    text-align: center;
+}
+
+.listStyle {
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.labelStyle {
+    color: white;
+    background-color: #330066;
+}
+
+.titleStyle {
+    margin-bottom: 0px;
+    text-align: left;
+}
+.luunTiedot {
+    margin-top: 15px;
+    text-align: left;
+}
+
+.imgStyle {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 15px;
+}

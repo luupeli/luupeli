@@ -1,13 +1,3 @@
 language: node_js
 node_js:
   - "10"
-
-sudo: required
-addons:
-  chrome: stable
-
-services:
-  - mongodb
-
-script:
-  - npm run puppe
