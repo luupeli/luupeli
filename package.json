@@ -30,6 +30,11 @@
   },
   "devDependencies": {
     "nodemon": "^1.17.5",
-    "supertest": "^3.1.0"
+    "supertest": "^3.1.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "istanbul": "^0.4.5",
+    "jest": "^23.5.0",
+    "jest-enzyme": "^6.0.2"
   }
 }
