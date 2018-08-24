@@ -65,19 +65,27 @@ describe('Admin tests', () => {
 		expect(textContent.toUpperCase().includes("SUODATA LAJIN MUKAAN")).toBe(true)
 	})
 
+	// Same tests as above, but for "Käyttäjät" and "Statistiikka"
+	// These don't work for unknown reasons ( ͡° ل͜ ͡°)
 	// test('pressing "Käyttäjät" takes the user to UserListing', async () => {
 
 	// 	await page.waitForSelector('#userList')
 	// 	await page.click('#userList')
 
+<<<<<<< HEAD:frontend/test/Admin.test.js
 	// 	const textContent = await page.$eval('#listOfUsers', el => el.textContent)
 	// 	expect(textContent.includes(username).toBe(true))
 	// })
+=======
+	// 	const textContent = await page.$eval('.menu-background', el => el.textContent)
+	// 	expect(textContent.toUpperCase().includes('KÄYTTÄJÄLISTA').toBe(true))
+	// }, 20000)
+>>>>>>> 6c47037b668a3b0b5bb4156537d88cad38518f17:src/menus/admin/Admin.test.js
 
 	// test('pressing "Statistiikka" takes the user to Statistics', async () => {
 
-	// 	await page.waitForSelector('#adminStatistic')
-	// 	await page.click('#adminStatistic')
+	// 	await page.waitForSelector('#adminStatistics')
+	// 	await page.click('#adminStatistics')
 
 	// 	const textContent = await page.$eval('#gameStatistics', el => el.textContent)
 	// 	expect(textContent.toUpperCase().includes("LADATAAN TIETOJA...")).toBe(true)

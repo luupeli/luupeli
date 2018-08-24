@@ -87,6 +87,7 @@ class Game extends React.Component {
             }
         }
         const confettiGun = () => {
+            var colors
             if (this.props.scoreflash.visibility && this.props.scoreflash.score > 0) {
                 var numberOfPieces = Math.min(275, 25 +
                     Math.min(25, this.props.scoreflash.score / 10) +
@@ -94,10 +95,10 @@ class Game extends React.Component {
                     Math.min(75, this.props.scoreflash.score / 250) +
                     Math.min(125, this.props.scoreflash.score / 1000))
                 if (this.state.allStyles[this.state.styleIndex].style === 'fallout') {
-                    var colors = ['#39FF14', '#EEEEFF', '#55DD55', '#33BB33', '#229922']
+                    colors = ['#39FF14', '#EEEEFF', '#55DD55', '#33BB33', '#229922']
                     return (<Confetti width={imageWidthR()} height={imageHeightR()} colors={colors} numberOfPieces={numberOfPieces} run={this.props.scoreflash.visibility} gravity={0.37} />)
                 } else if (this.state.allStyles[this.state.styleIndex].style === 'blood-dragon') {
-                    var colors = ['#ff9de1', '#ff5db1', '#ff2596', '#ef007c', '#c04df9', '#ff48c4']
+                    colors = ['#ff9de1', '#ff5db1', '#ff2596', '#ef007c', '#c04df9', '#ff48c4']
                     return (<Confetti width={imageWidthR()} height={imageHeightR()} colors={colors} numberOfPieces={numberOfPieces} run={this.props.scoreflash.visibility} gravity={0.37} />)
                 } else {
                     return (<Confetti width={imageWidthR()} height={imageHeightR()} numberOfPieces={numberOfPieces} run={this.props.scoreflash.visibility} gravity={0.37} />)
@@ -153,7 +154,7 @@ class Game extends React.Component {
                 </div>
             )
         } else {
-            var progressWidth = Math.round((imageWidthR()) * 0.75);
+            progressWidth = Math.round((imageWidthR()) * 0.75);
             injectGlobal`
             :root {  
                 --progress-max-width: ${progressWidth}px;

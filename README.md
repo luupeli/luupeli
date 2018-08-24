@@ -5,6 +5,7 @@
 
 `http://luupeli-backend.herokuapp.com/api`
 
+<<<<<<< HEAD
 Path | Method | Description
 -----|------|------------
 `/bones/` | GET | Returns an array of all bones.
@@ -21,6 +22,9 @@ Path | Method | Description
 `/animals/` | POST | Creates a new animal.
 `/bodyparts/` | GET | Returns an array of all body parts.
 `/bodyparts/` | POST | Creates a new body part.
+=======
+## Seuraava asiakastapaaminen: ti 28.8. klo 14.30-17.00 (asiakas saapuu klo 15)
+>>>>>>> 6c47037b668a3b0b5bb4156537d88cad38518f17
 
 #### Bone
 ##### Example

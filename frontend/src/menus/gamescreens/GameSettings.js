@@ -1,5 +1,5 @@
 import React from 'react'
-import { Redirect, Link } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import Message from '../../games/Message'
 import imageService from '../../services/images'
 import bodyPartService from '../../services/bodyParts'

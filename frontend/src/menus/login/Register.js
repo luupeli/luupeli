@@ -1,7 +1,7 @@
 import React from 'react'
 import usersService from '../../services/users'
 import loginService from '../../services/login'
-import { Link, Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import '../../styles/App.css'
 import BackButton from '../BackButton'
 
