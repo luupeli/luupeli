@@ -20,7 +20,7 @@ mongoose.Promise = global.Promise
 // Configure app to use cors, parser, logger, etc...
 app.use(cors())
 app.use(require('body-parser').json())
-app.use(express.static('frontend/build'))
+app.use(express.static('../frontend/build'))
 app.use(require('./utils/middleware').logger)
 app.use('/api/users', require('./controllers/users'))
 app.use('/api/login', require('./controllers/login'))

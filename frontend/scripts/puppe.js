@@ -47,7 +47,7 @@ function start() {
       console.log(`stderr: ${data}`);
     };
 
-     const server = spawn('npx', ['react-scripts', 'start'], { env: env });
+     const server = spawn('npx', ['npm run watch'], { env: env });
      server.stdout.on('data', onServerStdout);
      server.stderr.on('data', onServerStderr);
 
