@@ -6,7 +6,8 @@ import '../styles/Crt.css'
 import { injectGlobal } from 'styled-components'
 import { Row, Col } from 'react-bootstrap'
 import RandomTextGenerator from 'react-scrolling-text';
-import { Animated } from "react-animated-css";
+import { Animated } from 'react-animated-css';
+import cherryBlossomizer from './CherryBlossom';
 import emoji from 'node-emoji'
 import Sound from 'react-sound'
 
@@ -23,20 +24,20 @@ class Home extends React.Component {
         super(props)
         this.state = {
             // These are CSS style settings which are hopefully in a different place in the future
-            allStyles: [{                             // KEY
-                style: 'blood-dragon',                  // Name of the visual theme
-                background: 'background-blood-dragon',  // reference to the css background styling
-                flairLayerD: 'grid-sub',                // on top of the background, a visual style can use up to 4 layers ouf 'flair'
-                flairLayerC: 'grid',                    // Layer D is the bottom most layer of flair, while layer A is the top most
-                flairLayerB: 'grid-flair',              //
-                flairLayerA: 'blinder',                 //
-                highlight: '#ff9de1',                   // Each theme specficies four color codes. Highlight is mostly for the fonts.
-                primary: '#ff5db1',                     // Primary is the second most brightest theme color
-                secondary: '#ff2596',                   // Secondary is the middle color of the theme
-                tertiary: '#ef007c',                    // Tertiary is the darkest color of the theme
-                overlay: null,                          // Overlay can be used to add an extra layer of vfx on top of the viewport. Optional!
-                music: '346193__frankum__techno-80-base-loop.mp3'
-            }, {
+            allStyles: [{
+                style: 'normo',
+                background: 'background-normo',
+                flairLayerD: 'none',
+                flairLayerC: 'none',
+                flairLayerB: 'none',
+                flairLayerA: 'none',
+                highlight: '#222211',
+                primary: '#555544',
+                secondary: '#999988',
+                tertiary: '#EEEECC',
+                overlay: null,
+                music: '435958__greek555__trap-beat.mp3'
+                },   {
                 style: 'fallout',
                 background: 'background-fallout',
                 flairLayerD: 'none',
@@ -75,18 +76,31 @@ class Home extends React.Component {
                 tertiary: '#555599',
                 overlay: null,
                 music: '351717__monkeyman535__cool-chill-beat-loop.wav'
-            }, {
-                style: 'normo',
-                background: 'background-normo',
+            },     {                             // KEY
+                style: 'blood-dragon',                  // Name of the visual theme
+                background: 'background-blood-dragon',  // reference to the css background styling
+                flairLayerD: 'grid-sub',                // on top of the background, a visual style can use up to 4 layers ouf 'flair'
+                flairLayerC: 'grid',                    // Layer D is the bottom most layer of flair, while layer A is the top most
+                flairLayerB: 'grid-flair',              //
+                flairLayerA: 'blinder',                 //
+                highlight: '#ff9de1',                   // Each theme specficies four color codes. Highlight is mostly for the fonts.
+                primary: '#ff5db1',                     // Primary is the second most brightest theme color
+                secondary: '#ff2596',                   // Secondary is the middle color of the theme
+                tertiary: '#ef007c',                    // Tertiary is the darkest color of the theme
+                overlay: null,                          // Overlay can be used to add an extra layer of vfx on top of the viewport. Optional!
+                music: '346193__frankum__techno-80-base-loop.mp3'
+            },     {
+                style: 'cherry-blossom',
+                background: 'background-cherry',
                 flairLayerD: 'none',
                 flairLayerC: 'none',
                 flairLayerB: 'none',
                 flairLayerA: 'none',
-                highlight: '#222211',
-                primary: '#555544',
-                secondary: '#999988',
-                tertiary: '#EEEECC',
-                overlay: null,
+                highlight: '#331524',
+                primary: '#662a48',
+                secondary: '#cc5490',
+                tertiary: '#FF69B4',
+                overlay: 'cherry-confetti',
                 music: '435958__greek555__trap-beat.mp3'
             }
             ],
@@ -613,6 +627,9 @@ class Home extends React.Component {
         } else { return null }
     }
 
+    
+   
+
     render() {
         if (process.env.NODE_ENV !== 'test') {
             // skelly()
@@ -648,6 +665,7 @@ class Home extends React.Component {
                 {this.musicPlayer()}
                 <div className="menu">
                     <div className={this.state.overlay}>
+                    {cherryBlossomizer(this.state.style)}
                         <div className={this.state.background}>
                             <div id="styleName" className={this.state.style}>
                                 <div
