@@ -108,8 +108,9 @@ imagesRouter.post('/', async (request, response) => {
             description: body.description,
             lastModified: Date.now(),
             creationTime: Date.now(),
-            attempts: body.attempts,
-            correctAttempts: body.correctAttempts
+            attempts: 0,
+            correctAttempts: 0,
+            correctness: 0
         })
         const savedImage = await image.save()
 
@@ -164,7 +165,8 @@ imagesRouter.put('/:id', async (request, response) => {
             lastModified: Date.now(),
             creationTime: oldImage.creationTime,
             attempts: body.attempts,
-            correctAttempts: body.correctAttempts
+            correctAttempts: body.correctAttempts,
+            correctness: body.correctness
         }
 
         const updatedImage = await Image.findByIdAndUpdate(request.params.id, image, { new: true })
