@@ -82,12 +82,12 @@ class ScoreFlash extends React.Component {
 					margin="5px"
 				>
 
-					{/* <h3>{rowtext}</h3> */}
+				<Animated animationIn="zoomIn faster" animationOut="zoomOut faster" isVisible={this.props.scoreflash.visibility}>	<h3>{rowtext}</h3></Animated>
 					{/* <h3>{this.props.scoreflash.streak}{this.props.scoreflash.streakemoji}</h3> */}
 
-					<h3><Animated animationIn="bounceInLeft faster" animationOut="bounceOutLeft faster" isVisible={this.props.scoreflash.visibility}>{rowtextLeft}</Animated>
-						<Animated animationIn="bounceInRight faster" animationOut="bounceOutRight faster" isVisible={this.props.scoreflash.visibility}>{rowtextRight}</Animated>
-					</h3>
+					 {/* <h3><Animated animationIn="bounceInLeft faster" animationOut="bounceOutLeft faster" isVisible={this.props.scoreflash.visibility}>{rowtextLeft}</Animated>
+					 	<Animated animationIn="bounceInRight faster" animationOut="bounceOutRight faster" isVisible={this.props.scoreflash.visibility}>{rowtextRight}</Animated>
+					 </h3> */}
 
 					<Animated animationIn="bounceInUp faster" animationOut="bounceOutDown faster" isVisible={this.props.scoreflash.visibility}><h3>{this.props.scoreflash.streak}{this.props.scoreflash.streakemoji}</h3></Animated>
 

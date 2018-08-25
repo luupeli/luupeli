@@ -15,6 +15,7 @@ class User extends React.Component {
 			viewedUserName: '',
 			viewedUserEmail: '',
 			totalGames: '',
+			usersBestGame: '',
 			//user is just the user viewing this page, nothing to do with the user
 			//being viewed
 			user: null,
@@ -34,14 +35,22 @@ class User extends React.Component {
 					viewedUserEmail: response.data.email
 				})
 			})
-			.catch((error) => {
-				console.log(error)
-			})
 		userStatistics.getTotalGamesForIndividual(this.props.userId)
 			.then((response) => {
 				this.setState({
 					totalGames: response.data
 				})
+			})
+		userStatistics.getUsersBestGames(this.props.userId)
+			.then((response) => {
+				if (response.data.length !== 0) {
+					this.setState({
+						usersBestGame: response.data[0]
+					})
+				}
+			})
+			.catch((error) => {
+				console.log(error)
 			})
 		//And this is just for setting the user, although unless the user is an admin
 		//or the very user this user page belongs to, they're going to need to gtfo
@@ -61,7 +70,22 @@ class User extends React.Component {
 		}
 	}
 
+	bestGame() {
+
+		if (this.state.usersBestGame !== '') {
+			return (
+				<div>
+					<p>&#9733; Paras peli &#9733;</p>
+					<p>{this.state.usersBestGame["totalScore"]} pistettä</p>
+					<p>{this.state.usersBestGame["gameDifficulty"]}-tason {this.state.usersBestGame["gamemode"]}</p>
+					<p>{this.state.usersBestGame["timeStamp"]}</p>
+				</div>
+			)
+		}
+	}
+
 	render() {
+		console.log(this.state.usersBestGame)
 		//If redirect is set to true, we will redirect. It might, no, WILL be true,
 		//if the user trying to view this page is not an admin.
 		if (this.state.redirect) {
@@ -82,6 +106,8 @@ class User extends React.Component {
 					<h2>Käyttäjä {this.state.viewedUserName}</h2>
 					<p>Sähköposti: {this.state.viewedUserEmail}</p>
 					<p>Pelattuja pelejä: {this.state.totalGames.length}</p>
+					<br></br>
+					{this.bestGame()}
 				</div>
 				</font>
 			</div >

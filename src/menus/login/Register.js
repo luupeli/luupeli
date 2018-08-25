@@ -3,6 +3,7 @@ import usersService from '../../services/users'
 import loginService from '../../services/login'
 import { Link, Redirect } from 'react-router-dom'
 import '../../styles/App.css'
+import BackButton from '../BackButton'
 
 class Register extends React.Component {
     constructor(props) {
@@ -179,12 +180,12 @@ class Register extends React.Component {
                                                     />
                                                 </div>
                                                 <div className="form-group btn-group">
-                                                    <button
-                                                        className="btn btn-block"
-                                                        id="signup-button"
-                                                        type="submit">
-                                                        Luo tili
-																										</button>
+                                                  <button
+																										className="btn btn-block"
+                                                    id="signup-button"
+                                                    type="submit">
+                                                    Luo tili
+																									</button>
                                                 </div>
                                                 <div className="form-group">
                                                     <p>Onko sinulla jo tili?<a href='/login'> Kirjaudu sisään!</a></p>
@@ -194,11 +195,7 @@ class Register extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                            <div className="btn-group">
-                                <Link to='/'>
-                                    <button id="back-button" className="gobackbutton">Etusivulle</button>
-                                </Link>
-                            </div>
+                            <BackButton redirectTo='/' />
                         </div>
                     </div>
                 </div>

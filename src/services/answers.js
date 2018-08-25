@@ -34,4 +34,4 @@ const remove = (id) => {
   return request.then(response => { return response })
 }
 
-export default { getAll, get, remove }
+export default { getAll, get, remove, getByUser, getByUserAndImage }

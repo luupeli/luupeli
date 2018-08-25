@@ -31,7 +31,8 @@ class Statistics extends React.Component {
 		this.secondsToHourMinuteSecond = this.secondsToHourMinuteSecond.bind(this)
 	}
 
-	updateDate(date){
+	updateDate(date) {
+		console.log(date)
 		const startDate = Moment(date.startDate._d).format('YYYY MM DD')
 		const endDate = Moment(date.endDate._d).format('YYYY MM DD')
 		console.log(startDate)
@@ -42,7 +43,7 @@ class Statistics extends React.Component {
 				//return session.timeStamp <= date.endDate._d && session.timeStamp >= date.startDate._d
 			})
 			console.log(updatedGameSessions)
-			this.setState({gameSessionsFiltered : updatedGameSessions})
+			this.setState({ gameSessionsFiltered: updatedGameSessions })
 			console.log(this.state.gameSessionsFiltered)
 			this.setStats(updatedGameSessions)
 		}
@@ -52,11 +53,11 @@ class Statistics extends React.Component {
 		var hours = Math.floor(total / 3600 / 60);
 		var minutes = Math.floor(total % 3600 / 60);
 		var seconds = Math.floor(total % 3600 % 60);
-	
-		var hourDisplay = hours > 0 ? hours + (hours == 1 ? " tunti, " : " tuntia, ") : "";
-		var minuteDisplay = minutes > 0 ? minutes + (minutes == 1 ? " minuutti, " : " minuuttia, ") : "";
-		var secondDisplay = seconds > 0 ? seconds + (seconds == 1 ? " sekuntti" : " sekuntia") : "";
-		return hourDisplay + minuteDisplay + secondDisplay; 
+
+		var hourDisplay = hours > 0 ? hours + (hours === 1 ? " tunti, " : " tuntia, ") : "";
+		var minuteDisplay = minutes > 0 ? minutes + (minutes === 1 ? " minuutti, " : " minuuttia, ") : "";
+		var secondDisplay = seconds > 0 ? seconds + (seconds === 1 ? " sekuntti" : " sekuntia") : "";
+		return hourDisplay + minuteDisplay + secondDisplay;
 	}
 
 	componentDidMount() {
@@ -75,7 +76,7 @@ class Statistics extends React.Component {
 				})
 				.catch((error) => {
 					console.log(error)
-				})	
+				})
 		} else {
 			this.setState({ redirect: true, redirectTo: '/' })
 		}
@@ -85,7 +86,7 @@ class Statistics extends React.Component {
 		console.log("asetetaan..")
 		this.setState({ gameSessions: response.data, gameSessionsFiltered: response.data })
 		this.setStats(response.data)
-		this.setState({loaded : true})
+		this.setState({ loaded: true })
 	}
 
 	setStats(updatedGameSessions) {
@@ -96,7 +97,7 @@ class Statistics extends React.Component {
 
 	setTimePlayed(updatedGameSessions) {
 		let seconds = 0
-		updatedGameSessions.forEach(function(session){
+		updatedGameSessions.forEach(function (session) {
 			seconds += session.seconds
 		})
 		const timePlayed = Math.round(seconds)
@@ -114,9 +115,11 @@ class Statistics extends React.Component {
 		let multipleChoiceGame = updatedGameSessions.filter(session => {
 			return session.gamemode === "monivalintapeli"
 		}).length
-		this.setState({ writingGameCount: writingGame , 
-							mixedGameCount: mixedGame , 
-							multipleChoiceGameCount: multipleChoiceGame })
+		this.setState({
+			writingGameCount: writingGame,
+			mixedGameCount: mixedGame,
+			multipleChoiceGameCount: multipleChoiceGame
+		})
 	}
 
 	setGamesPlayedByLoggedInUsers(updatedGameSessions) {
@@ -187,7 +190,7 @@ class Statistics extends React.Component {
 			)
 		}
 	}
-	
+
 
 	render() {
 		Moment.locale('en');
@@ -206,13 +209,15 @@ class Statistics extends React.Component {
 				</Link>
 
 				<div className="App menu">
-				<DateRange
-					maxDate={Date.now()}
-					onChange={this.updateDate}
-				/>
+					<DateRange
+						maxDate={Date.now()}
+						onChange={this.updateDate}
+					/>
 				</div>
 				<h2>Pelin statistiikka</h2>
-				{this.statsJSX()}
+				<div id='gameStatistics'>
+					{this.statsJSX()}
+				</div>
 			</div>
 		)
 	}

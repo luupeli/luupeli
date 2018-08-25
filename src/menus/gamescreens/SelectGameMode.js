@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { Animated } from "react-animated-css";
 import emoji from 'node-emoji'
 import Sound from 'react-sound'
+import BackButton from '../BackButton'
 
 class SelectGameMode extends React.Component {
 
@@ -297,14 +298,7 @@ musicPlayer() {
                 </Col>
               </Row>
               {this.instructionMode()}
-              <div className="btn-group">
-                <button
-                  id="goBackButton"
-                  className="gobackbutton"
-                  onClick={this.proceedToMain}>
-                  Takaisin
-                </button>
-              </div>
+							<BackButton redirectTo='/' />
             </div>
           </div>
         </div>

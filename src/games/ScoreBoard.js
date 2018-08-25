@@ -57,6 +57,16 @@ class ScoreBoard extends React.Component {
 		}
 	}
 
+	
+	componentDidMount() {
+		setInterval(() => {
+		  this.setState(() => {
+			console.log('test')
+			return { unseen: "does not display" }
+		  });
+		}, 150);
+	  }
+
 
 	getElapsedTime() {
 		let stoppedAt
@@ -83,24 +93,24 @@ class ScoreBoard extends React.Component {
 			scoreShown =
 				this.props.game.totalScore + Math.min(scoreActual, Math.round(scoreActual * ((new Date().getTime() - this.props.game.scoreflash.startTime) / (50 * durationOfScoreRise))))
 		}
-		if (this.state.score!==scoreShown) {
-			setInterval(() => {
-				this.setState(() => {
-			this.setState({score: scoreShown})
-		});
-	}, 100);
-		}
+	// 	if (this.state.score!==scoreShown) {
+	// 		setInterval(() => {
+	// 			this.setState(() => {
+	// 		this.setState({score: scoreShown})
+	// 	});
+	// }, 100);
+	// 	}
 		return scoreShown
 	}
 
-	componentDidMount() {
-		setInterval(() => {
-			this.setState(() => {
-				// console.log('test')
-				return { unseen: "does not display" }
-			});
-		}, 1000);
-		}
+	// componentDidMount() {
+	// 	setInterval(() => {
+	// 		this.setState(() => {
+	// 			// console.log('test')
+	// 			return { unseen: "does not display" }
+	// 		});
+	// 	}, 1000);
+	// 	}
 
 	/**
 	 * With the component mounting, the game time measuring tick() is set at 50 milliseconds.

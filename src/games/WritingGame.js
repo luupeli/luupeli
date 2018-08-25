@@ -1,6 +1,6 @@
 import React from 'react'
 import StringSimilarity from 'string-similarity'
-import { Redirect, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
 import { setAnswer, setImageToWritingGame, startGameClock, stopGameClock } from '../reducers/gameReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
@@ -46,13 +46,15 @@ class WritingGame extends React.Component {
     window.onunload = function () { window.location.href = '/' }
   }
 
-  gameClockUnits() { return Math.round(((new Date).getTime() - this.props.game.startedAt) / 50) }
-
-  componentDidMount() {
-    this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
-    this.props.startGameClock()
+  gameClockUnits() {
+    let currentTime = (new Date()).getTime()
+    let startedAt = this.props.game.startedAt;
+    if (isNaN(startedAt)) {
+      startedAt = currentTime - 5000
+    }
+    return Math.round((currentTime - startedAt) / 50)
   }
-
+  
   componentDidUpdate(prevProps) {
     if (this.props.game.endCounter !== prevProps.game.endCounter) {
       this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
@@ -61,13 +63,15 @@ class WritingGame extends React.Component {
   }
 
   componentDidMount() {
-		setInterval(() => {
-			this.setState(() => {
-				// console.log('test')
-				return { unseen: "does not display" }
-			});
-		}, 1000);
-		}
+    setInterval(() => {
+      this.setState(() => {
+        console.log('test')
+        return { unseen: "does not display" }
+      });
+    }, 1000)
+    this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
+    this.props.startGameClock()
+  }
 
   handleChange(event) {
     //this.setState({ value: event.target.value })
@@ -153,13 +157,13 @@ class WritingGame extends React.Component {
       points = points * 2 * currentBonus
 
     }
-    
+
     //Check answered animal and score accordingly
     if (this.state.imgAnimal === this.props.game.currentImage.animal.name) {
-			points = Math.round(points * 2.5)
-		} else if (this.state.imgAnimal !== "none") {
-			points = Math.round(points * 0.5)
-		}
+      points = Math.round(points * 2.5)
+    } else if (this.state.imgAnimal !== "none") {
+      points = Math.round(points * 0.5)
+    }
 
 
     points = Math.round(points / 20) * 20
@@ -167,7 +171,7 @@ class WritingGame extends React.Component {
       correctness = 'Väärin'
       points = 0
     }
-
+    console.log(' points ennen talennusta: ' + points)
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
     this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 2.5, true)
 
@@ -218,23 +222,23 @@ class WritingGame extends React.Component {
     if (this.state.partialEasyAnswer.length < 3) {
       skipState = true
     }
-    let previousClock =  this.state.previousRevealClock 
-    if (previousClock===undefined) {
-      previousClock=0
+    let previousClock = this.state.previousRevealClock
+    if (previousClock === undefined) {
+      previousClock = 0
     }
 
-  //  const gameClock = this.gameClockUnits()
-  
-    if (this.getRandomInt(0, 15) < 1 + Math.min(12,(this.state.easyDifficultyPenalty*5)+(currentLatin.length/5)) && currentMoment - previousClock > (5000*this.state.easyDifficultyPenalty)) { //+(2000*this.state.easyDifficultyPenalty)
+    //  const gameClock = this.gameClockUnits()
+
+    if (this.getRandomInt(0, 15) < 1 + Math.min(12, (this.state.easyDifficultyPenalty * 5) + (currentLatin.length / 5)) && currentMoment - previousClock > (5000 * this.state.easyDifficultyPenalty)) { //+(2000*this.state.easyDifficultyPenalty)
       console.log('entered inside random')
       let randomIndex = this.getRandomInt(0, currentLatin.length);
       let newPartial = ''
       let addPenalty = 0.0
-      for (var i = 0; i <currentLatin.length; i++) {
+      for (var i = 0; i < currentLatin.length; i++) {
         if (i === randomIndex || currentLatin.charAt(i) === ' ') {
           newPartial = newPartial + currentLatin.charAt(i)
           if (!skipState) {
-            if (this.state.partialEasyAnswer.charAt(i) === '_' || this.state.partialEasyAnswer.charAt(i)!==currentLatin.charAt(i)) {
+            if (this.state.partialEasyAnswer.charAt(i) === '_' || this.state.partialEasyAnswer.charAt(i) !== currentLatin.charAt(i)) {
               addPenalty = 0.02/*05+Math.max(0,Math.min(((50-(this.props.game.currentImage.bone.nameLatin.length*2))/1000),0.06))*/
               if (currentLatin.length < 10) {
                 addPenalty = addPenalty * 2;
@@ -242,10 +246,10 @@ class WritingGame extends React.Component {
             }
           }
         } else if (!skipState) {
-          if (this.state.partialEasyAnswer.charAt(i)!=='_' && this.state.partialEasyAnswer.charAt(i)!==currentLatin.charAt(i)) {
+          if (this.state.partialEasyAnswer.charAt(i) !== '_' && this.state.partialEasyAnswer.charAt(i) !== currentLatin.charAt(i)) {
             newPartial = newPartial + currentLatin.charAt(i)
           } else {
-          newPartial = newPartial + this.state.partialEasyAnswer.charAt(i)
+            newPartial = newPartial + this.state.partialEasyAnswer.charAt(i)
           }
         } else {
           newPartial = newPartial + '_'
@@ -265,41 +269,41 @@ class WritingGame extends React.Component {
   render() {
 
     var currentMoment = new Date().getTime()
-    
+
     const animalRadioNoAnimal = () => {
-			if (this.props.game.gameDifficulty === 'hard') {
-				return (
-					<label className="radio-inline">
-						<input
-							type="radio"
-							id="animalRadio0"
-							value="none"
-							onClick={this.handleChange}
-							name="imgAnimal"
-							defaultChecked
-						/>
-						En tiedä
+      if (this.props.game.gameDifficulty === 'hard') {
+        return (
+          <label className="radio-inline">
+            <input
+              type="radio"
+              id="animalRadio0"
+              value="none"
+              onClick={this.handleChange}
+              name="imgAnimal"
+              defaultChecked
+            />
+            En tiedä
 					</label>
-				)
-			}
-		}
-    
+        )
+      }
+    }
+
     const animalRadio = this.props.init.animals.map((animal, i) => {
-			if (this.props.game.gameDifficulty === 'hard') {
-				return (
-					<label className="radio-inline">
-						<input
-							type="radio"
-							id={"animalRadio" + (i + 1)}
-							value={animal.name}
-							onClick={this.handleChange}
-							name="imgAnimal"
-						/>
-							{animal.name}
-					</label>
-				)
-			}
-		})
+      if (this.props.game.gameDifficulty === 'hard') {
+        return (
+          <label className="radio-inline">
+            <input
+              type="radio"
+              id={"animalRadio" + (i + 1)}
+              value={animal.name}
+              onClick={this.handleChange}
+              name="imgAnimal"
+            />
+            {animal.name}
+          </label>
+        )
+      } return null
+    })
 
     const answerInput = () => {
       if (this.state.lastValue === undefined) {
@@ -370,14 +374,14 @@ class WritingGame extends React.Component {
 
 
     var timeToCompare = this.props.game.startedAt
-    if (timeToCompare=== undefined) {
-    timeToCompare=currentMoment-5001
+    if (timeToCompare === undefined) {
+      timeToCompare = currentMoment - 5001
     }
 
-    console.log('curr: '+currentMoment+" vs started: "+timeToCompare)
+    console.log('curr: ' + currentMoment + " vs started: " + timeToCompare)
     if (currentMoment - timeToCompare > (5000) && this.props.game.gameDifficulty === 'easy') {
       console.log('trying to reveal...')
-      this.revealPartialAnswer(currentMoment,this.props.game.currentImage.bone.nameLatin)
+      this.revealPartialAnswer(currentMoment, this.props.game.currentImage.bone.nameLatin)
     }
 
     const imageWidth = () => {              // Here we try to measure the window size in order to resize the bone image accordingly
@@ -419,9 +423,10 @@ class WritingGame extends React.Component {
     let cheat = ''
     if (this.props.game.gameDifficulty === 'easy' && this.state.animationActive) {
       if (currentMoment - timeToCompare > 5000) {
-      cheat = this.state.partialEasyAnswer
+        cheat = this.state.partialEasyAnswer
       } else {
-        cheat = '____'}
+        cheat = '____'
+      }
     } else if (!this.state.animationActive) {
       cheat = this.props.game.currentImage.bone.nameLatin
     } else {
@@ -432,12 +437,20 @@ class WritingGame extends React.Component {
     let name = this.props.game.currentImage.bone.name
     if (this.props.game.gameDifficulty === 'hard') {
       name = 'LUU-5!'
-      if (this.props.game.gameLength == 15) {
+      if (this.props.game.gameLength === 15) {
         name = 'TENTTI!'
       }
     }
 
+    const debug = () => {
+      if (process.env.NODE_ENV === 'development') {
+        return (
+          <h6>debug: {this.props.game.currentImage.bone.nameLatin}</h6>
 
+        )
+      }
+      return null
+    }
 
     return (
       <div className="bottomxxx">
@@ -479,7 +492,7 @@ class WritingGame extends React.Component {
         >
           {answerInput()}
         </form>
-        {/*   <h6>debug: {this.props.game.currentImage.bone.nameLatin}</h6> */}
+        {debug()}
         <div className="homeicon">
           <Link to='/'>
             <img src="homeicon.png" alt="Etusivulle"></img><p>Lopeta</p>

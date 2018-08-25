@@ -9,11 +9,17 @@ import { injectGlobal } from 'styled-components'
 import { setIntroSound } from '../reducers/soundReducer'
 import ScoreBoard from './ScoreBoard'
 import GameLoop from './GameLoop'
+import Confetti from 'react-confetti'
+
 
 /**
  * Gameloop is the parent component for 'hosting' different game modes of Luupeli.
  * Currently, two different game modes are supported.
  */
+
+
+
+
 class Game extends React.Component {
     constructor(props) {
         super(props);
@@ -27,7 +33,10 @@ class Game extends React.Component {
 
         this.postGameSession = this.postGameSession.bind(this)
         window.onunload = function () { window.location.href = '/' }
+
     };
+
+
 
     componentDidMount() {
         const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
@@ -37,13 +46,13 @@ class Game extends React.Component {
         }
 
         setInterval(() => {
-			this.setState(() => {
-				// console.log('test')
-				return { unseen: "does not display" }
-			});
-		}, 500);
+            this.setState(() => {
+                // console.log('test')
+                return { unseen: "does not display" }
+            });
+        }, 500);
     }
-    
+
 
     postGameSession() {
         gameSessionService.create({
@@ -58,7 +67,10 @@ class Game extends React.Component {
         })
     }
 
+
+
     responsiveLayout() {
+
 
         const imageWidthR = () => {              // Here we try to measure the window size in order to resize the bone image accordingly
             const windowWidth = Math.max(
@@ -124,13 +136,38 @@ class Game extends React.Component {
 
 
             /* REMOVED FROM INJECTION:   --image-height-restriction: ${heightRestriction}vh;*/
+            const confettiGun = () => {
 
+                if (this.props.scoreflash.visibility && this.props.scoreflash.score > 0) {
+                    var numberOfPieces = Math.min(275, 25 +
+                        Math.min(25, this.props.scoreflash.score / 10) +
+                        Math.min(50, this.props.scoreflash.score / 50) +
+                        Math.min(75, this.props.scoreflash.score / 250) +
+                        Math.min(125, this.props.scoreflash.score / 1000))
+                    if (this.state.allStyles[this.state.styleIndex].style === 'fallout') {
+                        var colors = ['#39FF14', '#EEEEFF', '#55DD55', '#33BB33', '#229922']
+                        return (<Confetti width={imageWidthR()} height={imageHeightR()} colors={colors} numberOfPieces={numberOfPieces} run={this.props.scoreflash.visibility} gravity={0.37} />)
+                    } else if (this.state.allStyles[this.state.styleIndex].style === 'blood-dragon') {
+                        var colors = ['#ff9de1', '#ff5db1', '#ff2596', '#ef007c', '#c04df9', '#ff48c4']
+                        return (<Confetti width={imageWidthR()} height={imageHeightR()} colors={colors} numberOfPieces={numberOfPieces} run={this.props.scoreflash.visibility} gravity={0.37} />)
+                    } else {
+                        return (<Confetti width={imageWidthR()} height={imageHeightR()} numberOfPieces={numberOfPieces} run={this.props.scoreflash.visibility} gravity={0.37} />)
+                    }
+                } else {
+                    return null
+                }
+
+            }
             return (
                 <div className={responsive}>
 
+                    {/* // {this.getConfetti(imageWidthR(),imageHeightR())} */}
+
+
+
                     <div className="transbox">
 
-
+                        {confettiGun()}
                         <div className="game-mainview">
                             {/* <p>{imageWidthR()},{imageHeightR()}</p> */}
                             <div>
@@ -191,6 +228,10 @@ class Game extends React.Component {
      *    If all images have been cycled through, redirect to endscreen, otherwise render quiz page 
      */
     render() {
+
+
+
+
         let i = parseInt(localStorage.getItem('styleIndex'), 10)
         // Here we inject the visual style specific colors into the css. Each visual style has a primary, secondary and tertiary color (accent).
         injectGlobal`
@@ -216,11 +257,17 @@ class Game extends React.Component {
             }
         }
 
+
+
         return (
 
 
             <div className={this.state.allStyles[i].overlay}>
+
+                {/* {...this.props.size} /> */}
                 <div className={this.state.allStyles[i].background}>
+
+
                     <div className={this.state.allStyles[i].style}>
                         <div id="App" className="App">
                             <div id="App" className="gameplay">

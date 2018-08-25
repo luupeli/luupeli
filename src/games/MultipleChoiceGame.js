@@ -50,7 +50,7 @@ class MultipleChoiceGame extends React.Component {
     const correctness = this.checkCorrectness(event.target.value)
     this.props.setAnswerSound(correctness)
 
-    let gameClock = Math.round(((new Date).getTime() - this.props.game.startTime) / 50)
+    let gameClock = Math.round(((new Date()).getTime() - this.props.game.startTime) / 50)
     //let points = (Math.round((this.checkCorrectness(event.target.value) * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((300 + Math.max(0, (300 - this.state.seconds))) / 600))) / 20
     let points = Math.round((1000 + ((1000 + Math.max(0, (400 - gameClock))) / 800))) / 20
 
@@ -133,6 +133,15 @@ class MultipleChoiceGame extends React.Component {
       return windowWidth - 40
     }
 
+    const debug = () => {
+      if (process.env.NODE_ENV === 'development') {
+        return (
+          <p>Oikea vastaus: {this.props.game.currentImage.bone.nameLatin}</p>
+        )
+      }
+      return null
+    }
+
     return (
       <div className="bottom">
         <div className="row" id="image-holder">
@@ -151,12 +160,12 @@ class MultipleChoiceGame extends React.Component {
         <div className="container">
           <div className="intro" />
           {this.props.game.wrongAnswerOptions.map(choice => <Button bsStyle={this.style(choice)} disabled={undefined !== this.state.value} value={choice.nameLatin} onClick={this.handleSubmit}>{choice.nameLatin}</Button>)}
-       {/*   <p>Oikea vastaus: {this.props.game.currentImage.bone.nameLatin}</p> */}
+          {debug()}
         </div>
         <div className="homeicon">
-        <Link to='/'>
-          <img src="homeicon.png" alt="Etusivulle"></img><p>Lopeta</p>
-        </Link>
+          <Link to='/'>
+            <img src="homeicon.png" alt="Etusivulle"></img><p>Lopeta</p>
+          </Link>
         </div>
       </div>
     )
