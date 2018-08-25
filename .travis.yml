@@ -7,7 +7,7 @@ addons:
   chrome: stable
   hostname: localhost
 before_install:
-  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+  - google-chrome-stable --headless --remote-debugging-port=9222 http://localhost &
 before_script:
   - npm start &
 services:
