@@ -1,0 +1,35 @@
+.answer-input {
+  font-family: 'Changa One', cursive;
+  color:#313437;
+  background-color:#fff;
+  padding:5px;
+}
+
+.answer-input .intro p {
+  margin-bottom:35px;
+}
+
+.answer-input form {
+  justify-content:center;
+}
+
+.answer-input form .form-control {
+  background:#eff1f4;
+  border:none;
+  border-radius:3px;
+  box-shadow:none;
+  outline:none;
+  color: #313437;
+  font-family: monospace;
+  text-indent:9px;
+  height:55px;
+  margin-right:10px;
+  margin-bottom: 10px;
+  min-width:250px;
+}
+
+#submitButton {
+  width: auto;
+  height: 55px;
+  padding: 0px;
+}

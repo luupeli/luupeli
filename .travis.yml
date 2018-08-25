@@ -8,6 +8,3 @@ addons:
 
 services:
   - mongodb
-
-script:
-  - npm run puppe
