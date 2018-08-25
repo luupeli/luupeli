@@ -40,12 +40,16 @@
     "string-similarity": "^1.2.0",
     "styled-components": "^3.3.3",
     "tree-kill": "^1.2.0",
-    "xlsjs": "^1.0.1"
+    "xlsjs": "^1.0.1",
+    "regenerator-runtime": "^0.12.1"
+  },
+  "jest": {
+    "setupTestFrameworkScriptFile": "<rootDir>/src/setupTests.js"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "NODE_ENV=test react-scripts test --env=jsdom --coverage --collectCoverageFrom=**/src/menus/*.js --collectCoverageFrom=**/src/games/*.js",
+    "test": "NODE_ENV=test node_modules/.bin/jest --detectOpenHandles --env=jsdom --collectCoverageFrom=**/frontend/tests/*.js",
     "eject": "react-scripts eject",
     "puppe": "NODE_ENV=test node scripts/puppe.js"
   },
