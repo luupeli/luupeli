@@ -1,1 +1,1 @@
-web: cd backend && npm start -p $BACKEND_PORT
+web: cd backend && npm start
