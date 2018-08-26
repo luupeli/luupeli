@@ -1,10 +1,12 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import gameSessionService from '../../services/gameSessions'
+import imageService from '../../services/images'
 import answersService from '../../services/answers'
 import { DateRange } from 'react-date-range';
 import Moment from 'moment';
 import { Row, Col } from 'react-bootstrap'
+import getUrl from '../../services/urls'
 
 class Statistics extends React.Component {
 	constructor(props) {
@@ -12,24 +14,76 @@ class Statistics extends React.Component {
 		this.state = {
 			loaded: false,
 			gameSessions: [],
-			gameSessionsFiltered: [],
-			top10EasiestImages: [],
+      gameSessionsFiltered: [],
+      allImages: [],
+      top10EasiestImages: [],
+      top10HardestImages: [],
 			timePlayed: 0.0,
 			writingGameCount: 0,
 			mixedGameCount: 0,
 			multipleChoiceGameCount: 0,
 			gamesByLoggedInUsers: 0,
-			gamesByAnonymousUsers: 0
+      gamesByAnonymousUsers: 0,
+      timeMessage: ''
 		}
 		window.onunload = function () { window.location.href = '/' }
 		this.setInitialStats = this.setInitialStats.bind(this)
 		this.setStats = this.setStats.bind(this)
 		this.setTimePlayed = this.setTimePlayed.bind(this)
 		this.setGameTypes = this.setGameModes.bind(this)
-		this.setGamesPlayedByLoggedInUsers = this.setGamesPlayedByLoggedInUsers.bind(this)
+    this.setGamesPlayedByLoggedInUsers = this.setGamesPlayedByLoggedInUsers.bind(this)
+    this.setImages = this.setImages.bind(this)
 		this.updateDate = this.updateDate.bind(this)
-		this.secondsToHourMinuteSecond = this.secondsToHourMinuteSecond.bind(this)
+    this.secondsToHourMinuteSecond = this.secondsToHourMinuteSecond.bind(this)
 	}
+
+  componentDidMount() {
+		const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
+		if (loggedUserJSON) {
+			const user = JSON.parse(loggedUserJSON)
+			if (user.role !== "ADMIN") {
+				this.setState({ redirect: true, redirectTo: '/' })
+			}
+      this.setState({ user })
+      
+      imageService.getAll()
+        .then((response) => {
+          this.setImages(response.data)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+      
+			gameSessionService.getAll()
+				.then((response) => {
+					this.setInitialStats(response)
+				})
+				.catch((error) => {
+					console.log(error)
+        })
+      
+		} else {
+			this.setState({ redirect: true, redirectTo: '/' })
+		}
+  }
+
+  //removes images from getted images that haven't been guessed, and orders them on ascending order by difficulty
+  setImages(images) {
+    var filteredImages = images.filter(function(image) {
+        console.log(image.correctness)
+        return image.correctness !== undefined
+    })
+    filteredImages.sort((a, b) => a.correctness - b.correctness)
+    this.setState({ allImages : filteredImages })
+
+    const top10EasiestImages = filteredImages.slice(filteredImages.length - 10)
+    this.setState({ top10EasiestImages })
+
+    var top10HardestImages = filteredImages.slice(0, 10)
+    top10HardestImages.sort((a, b) => a.correctness - b.correctness)
+    
+    this.setState({ top10HardestImages })
+  }
 
 	updateDate(date) {
 		console.log(date)
@@ -43,7 +97,10 @@ class Statistics extends React.Component {
 				//return session.timeStamp <= date.endDate._d && session.timeStamp >= date.startDate._d
 			})
 			console.log(updatedGameSessions)
-			this.setState({ gameSessionsFiltered: updatedGameSessions })
+      this.setState({ gameSessionsFiltered: updatedGameSessions })
+
+      const timeMessage = Moment(date.startDate._d).format('DD MM YYYY') + ' - ' + Moment(date.endDate._d).format('DD MM YYYY')
+      this.setState({ timeMessage })
 			console.log(this.state.gameSessionsFiltered)
 			this.setStats(updatedGameSessions)
 		}
@@ -59,39 +116,16 @@ class Statistics extends React.Component {
 		return hourDisplay + minuteDisplay + secondDisplay;
 	}
 
-	componentDidMount() {
-		const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
-		if (loggedUserJSON) {
-			const user = JSON.parse(loggedUserJSON)
-			if (user.role !== "ADMIN") {
-				this.setState({ redirect: true, redirectTo: '/' })
-			}
-			this.setState({ user })
-			console.log('jasddsadsa')
-			gameSessionService.getAll()
-				.then((response) => {
-					console.log('nyt menee')
-					this.setInitialStats(response)
-				})
-				.catch((error) => {
-					console.log(error)
-				})
-		} else {
-			this.setState({ redirect: true, redirectTo: '/' })
-		}
-	}
-
-	setInitialStats(response) {
-		console.log("asetetaan..")
+	setInitialStats(response) {			
 		this.setState({ gameSessions: response.data, gameSessionsFiltered: response.data })
-		this.setStats(response.data)
-		this.setState({ loaded: true })
+    this.setStats(response.data)
+    this.setState({ loaded: true })
 	}
 
 	setStats(updatedGameSessions) {
 		this.setTimePlayed(updatedGameSessions)
 		this.setGameModes(updatedGameSessions)
-		this.setGamesPlayedByLoggedInUsers(updatedGameSessions)
+    this.setGamesPlayedByLoggedInUsers(updatedGameSessions)
 }
 
 	setTimePlayed(updatedGameSessions) {
@@ -128,21 +162,13 @@ class Statistics extends React.Component {
 		this.setState({ gamesByLoggedInUsers })
 		let gamesByAnonymousUsers = updatedGameSessions.length - gamesByLoggedInUsers
 		this.setState({ gamesByAnonymousUsers })
-	}
+  }
+  
 
-	setEasiestImages() {
-		gameSessionService.getAll()
-			.then((response) => {
-				console.log('nyt menee')
-				this.setInitialStats(response)
-			})
-			.catch((error) => {
-				console.log(error)
-			})	
-	}
-	
 	//renders stats, or sends an informative message to user.
 	statsJSX() {
+    console.log(this.state.top10EasiestImages)
+    console.log(this.state.top10HardestImages)
 		if (this.state.gameSessionsFiltered.length === 0) {
 			if (!this.state.loaded) {
 				return (
@@ -157,6 +183,7 @@ class Statistics extends React.Component {
 			return (
 				<div>
 					<div>
+            <p>{this.state.timeMessage}</p>
 						<p>Pelejä pelattu kirjautuneiden käyttäjien osalta: {this.state.gamesByLoggedInUsers} kpl </p>
 						<p>Pelejä pelattu anonyymien käyttäjien osalta: {this.state.gamesByAnonymousUsers} kpl </p>
 						<p>Pelejä pelattu yhteensä: {this.state.gameSessionsFiltered.length} kpl</p>
@@ -166,24 +193,22 @@ class Statistics extends React.Component {
 						<p>Peliä pelattu yhteensä: {this.secondsToHourMinuteSecond(this.state.timePlayed)}</p>
 					</div>
 					<div>
-						<div>
-							<Row>
-								<Col>
-									{this.state.top10EasiestImages.map(index => {
-										return <p>{index}</p>
-									})}
-								</Col>
-							</Row>
-						</div>
-						<div>
-							<Row>
-								<Col>
-									{this.state.top10EasiestImages.map(index => {
-										return <p>{index}</p>
-									})}
-								</Col>
-							</Row>
-						</div>
+            <h4>Helpoimmat kuvat top 10</h4>
+            <Row>
+              <Col>
+                {this.state.top10EasiestImages.map((image, idx) => {
+                  return <a href={getUrl() + "/update/" + image.id}>| {idx + 1}. {image.bone.nameLatin} {Math.round(image.correctness)} | </a>
+                })}
+              </Col>
+            </Row>
+            <h4>Vaikeimmat kuvat top 10</h4>
+            <Row>
+              <Col>
+                {this.state.top10HardestImages.map((image, idx) => {
+                  return <a href={getUrl() + "/update/" + image.id}>| {idx + 1}. {image.bone.nameLatin} {Math.round(image.correctness)}  |  </a>
+                })}
+              </Col>
+            </Row>
 					</div>
 				</div>
 			)
