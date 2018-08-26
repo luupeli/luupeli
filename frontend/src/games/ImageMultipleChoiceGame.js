@@ -12,8 +12,9 @@ class ImageMultipleChoiceGame extends React.Component {
 
   constructor(props) {
     super(props);
-    this.timer = 0;
+    this.timer = 0
     this.state = {
+			clickDisabled: false,
       selectedId: undefined,
       selectedImage: undefined,
       streakMCG: 0,
@@ -41,9 +42,19 @@ class ImageMultipleChoiceGame extends React.Component {
       this.props.setImagesToImageMultipleChoiceGame(this.props.game.images, this.props.game.answers)
       this.props.startGameClock()
     }
+    
+    /*if (this.state.clickDisabled) {
+			this.setState({ clickDisabled: false })
+		}*/
   }
 
   handleSubmit(image) {
+		if (this.state.clickDisabled) {
+			return
+		}
+		console.log("CLICK!")
+		this.setState({ clickDisabled: true })
+		
     this.props.stopGameClock()
     this.setState({
       selectedId: image.id,
@@ -99,6 +110,7 @@ class ImageMultipleChoiceGame extends React.Component {
     setTimeout(() => {
       this.props.setAnswer(this.props.game.currentImage, correctness, image.bone.nameLatin,image.animal.name, current-started, points)
       this.setState({ selectedId: undefined, selectedImage: undefined })
+      this.setState({ clickDisabled: false })
     }, 3000)
   }
 
