@@ -16,6 +16,8 @@ class User extends React.Component {
 			viewedUserName: '',
 			viewedUserEmail: '',
 			totalGames: '',
+			totalScore: 0,
+			tempArr: [],
 			usersBestGame: '',
 			usersBestAnswers: [],
 			//user is just the user viewing this page, nothing to do with the user
@@ -68,6 +70,21 @@ class User extends React.Component {
 			.catch((error) => {
 				console.log(error)
 			})
+
+			userStatistics.getTotalScore(this.props.userId)
+			.then((response) => {
+				if (response.data.length !== 0) {
+					this.setState({
+						totalScore: response.data
+					})
+					
+				}
+				
+				})
+			
+		
+				
+
 		//And this is just for setting the user, although unless the user is an admin
 		//or the very user this user page belongs to, they're going to need to gtfo
 		//of this page immediately so then we're setting redirect to true and redirectTo to /login.
@@ -132,15 +149,18 @@ class User extends React.Component {
 				<Link to={this.state.goBackTo}>
 					<button className="gobackbutton">Takaisin</button>
 				</Link>
-				<font size="4"><div>
+				<font size="3"><div>
 					<h2>Käyttäjä {this.state.viewedUserName}</h2>
 					<p>Sähköposti: {this.state.viewedUserEmail}</p>
+					<br></br>
+					<p>Pisteet yhteensä: {this.state.totalScore}</p>
 					<br></br>
 					<p>Pelattuja pelejä: {this.state.totalGames}</p>
 					<br></br>
 					{this.bestGame()}
 					<br></br>
 					{this.bestAnswersTop5()}
+			
 				</div>
 				</font>
 			</div >

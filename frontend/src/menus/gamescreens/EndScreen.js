@@ -8,6 +8,8 @@ import { gameInitialization } from '../../reducers/gameReducer'
 import { ProgressBar } from 'react-bootstrap'
 import Sound from 'react-sound'
 import BackButton from '../BackButton'
+import userStatistics from '../../services/userStatistics'
+import achievement from '../../menus/Achievement'
 
 /**
  * EndScreen is the game over/results screen of Luupeli.
@@ -22,10 +24,13 @@ class EndScreen extends React.Component {
 		super(props)
 		this.state = {
 			allStyles: JSON.parse(localStorage.getItem("allStyles")),
-      styleIndex: localStorage.getItem('styleIndex'),
+			styleIndex: localStorage.getItem('styleIndex'),
 			style: localStorage.getItem('style'),
 			user: null,
-			redirect: false
+			redirect: false,
+			localScore: -1,
+			localGames: -1,
+			scoreRetrieved: false
 		}
 		this.proceedToMain = this.proceedToMain.bind(this)
 		this.proceedToGameModeSelection = this.proceedToGameModeSelection.bind(this)
@@ -60,6 +65,29 @@ class EndScreen extends React.Component {
 		this.setState({ redirect: true })
 		this.setState({ redirectTo: '/game' })
 	}
+
+	retrieveScore() {
+		if (!this.state.scoreRetrieved && this.state.user !== null) {
+
+			userStatistics.getTotalGamesForIndividual(this.state.user.id)
+				.then((response) => {
+					this.setState({
+						localGames: response.data.length, scoreRetrieved: true
+					})
+				})
+
+			userStatistics.getTotalScore(this.state.user.id)
+				.then((response) => {
+					if (response.data.length !== 0) {
+						this.setState({
+							localScore: response.data
+						})
+					}
+				})
+		}
+
+	}
+
 
 	//Sorts answer array from most difficult to answer (for the player) to least difficult
 	//First incorrect/almost correct answers sorted by correctness, then completely correct answers sorted by time spent answering
@@ -112,30 +140,32 @@ class EndScreen extends React.Component {
 			gradeMark = emoji.get('negative_squared_cross_mark')
 			gradeMarkClass = "grade-mark-bad"
 		}
-		
+
 		const correctAnswer = () => {
 			if (this.props.game.gameDifficulty === 'hard') {
 				return (
 					<p><b>{answer.image.bone.nameLatin}, {answer.image.animal.name}</b></p>
 				)
 			}
-			
+
 			return (
 				<p><b>{answer.image.bone.nameLatin}</b></p>
 			)
 		}
-		
+
 		const playerAnswer = () => {
 			if (this.props.game.gameDifficulty === 'hard' && answer.animal !== 'none') {
 				return (
 					<p>Vastasit: {answer.answer}, {answer.animal}</p>
 				)
 			}
-			
+
 			return (
 				<p>Vastasit: {answer.answer}</p>
 			)
 		}
+
+
 
 		return (
 			<Col xs={12} md={6} lg={6}>
@@ -159,11 +189,11 @@ class EndScreen extends React.Component {
 		)
 
 	}
-	
+
 	//Render all answers as rows and cols
 	//Answer array is split in half so that two answers can be rendered side-by-side
 	renderAnswers() {
-		
+
 		const sortedAnswers = this.sortByDifficulty(this.props.game.answers)
 		console.log(sortedAnswers)
 
@@ -205,7 +235,7 @@ class EndScreen extends React.Component {
 
 	render() {
 		let i = this.state.styleIndex
-		
+
 		if (this.state.redirect) {
 			return (
 				<Redirect to={{
@@ -227,13 +257,45 @@ class EndScreen extends React.Component {
 		console.log(wrongPortion)
 		console.log(this.props.game.answers.length)
 
+		this.retrieveScore()
+
+		let achievementUnlocked = 'Luo profiili kerätäksesi saavutuksia!'
+
+
+
+		let scoreNow = this.state.localScore
+		let gamesNow = this.state.localGames
+		let scoreBefore = scoreNow - this.props.game.totalScore
+
+		let goal = 12500
+
+
+
+		// let goal= 50000+Math.floor(50000*(Math.floor(scoreBefore/100000)))+Math.min(Math.floor(scoreBefore/50000)*50000,50000)
+		// let nextUnlock=50000+Math.floor(50000*(Math.floor(scoreNow/100000)))+Math.min(Math.floor(scoreNow/50000)*50000,50000)
+
+		// let index=Math.floor(Math.min(1,(Math.floor(scoreNow/50000)))+Math.floor(1*(Math.floor(scoreNow/100000))))
+
+		goal = achievement.getGoal(scoreBefore, gamesNow - 1)
+		let index = achievement.getIndex(scoreNow, gamesNow)
+		let goalGames = achievement.getGames(scoreBefore, gamesNow - 1)
+
+		if (this.state.user !== null) {
+			if (scoreNow >= goal && gamesNow >= goalGames && (scoreBefore < goal || gamesNow - 1 < goalGames)) {
+				goal = achievement.getGoal(scoreNow, gamesNow)
+				achievementUnlocked = 'Avasit: ' + this.state.allStyles[Math.min(index, this.state.allStyles.length - 1)].style + ' (i:' + index + '),scr before:' + scoreBefore + ',goal: ' + goal + ',scrnow: ' + scoreNow + ' seur: ' + goal
+			} else {
+				achievementUnlocked = 'Ansaitse ' + Math.max(0, goal - scoreNow) + ' pistettä lisää ja pelaa yhteensä ' + Math.max(0, goalGames - gamesNow) + ' luupeliä seuraavaan saavutukseen (i:' + index + ')'
+			}
+		}
+
 		return (
 			<div className={this.state.allStyles[i].overlay}>
 				<div className={this.state.allStyles[i].background}>
-          <div className={this.state.allStyles[i].style}>
+					<div className={this.state.allStyles[i].style}>
 						<div className='Appbd'>
 							<Sound
-								url="/sounds/351717__monkeyman535__cool-chill-beat-loop.wav"
+								url={"/sounds/" + this.state.allStyles[i].music}
 								playStatus={Sound.status.PLAYING}
 								// playFromPosition={0 /* in milliseconds */}
 								onLoading={this.handleSongLoading}
@@ -242,13 +304,13 @@ class EndScreen extends React.Component {
 								loop="true"
 							/>
 							<div>
-								<h1>Pelin kulku:</h1>
+								<h2>Pelin kulku:</h2>
 								<Row className="show-grid">
 									<Col xs={12} md={6}>
-										<h2>Pisteet yhteensä: {this.props.game.totalScore}</h2>
+										<h3>Pisteet yhteensä: {this.props.game.totalScore}</h3>
 									</Col>
 									<Col xs={12} md={6}>
-										<h2>Pelin kesto: {this.props.game.totalSeconds / 1000} s</h2>
+										<h3>Pelin kesto: {this.props.game.totalSeconds / 1000} s</h3>
 									</Col>
 								</Row>
 								<div className="btn-group-horizontal" role="group">
@@ -256,20 +318,21 @@ class EndScreen extends React.Component {
 									<button type="button" className="btn btn-theme" onClick={this.proceedToGameModeSelection}>Pelimoodivalikkoon</button>
 								</div>
 							</div>
-							
+
 							<div>
-								<h2 id="endScreenTitle">Vastauksesi olivat:</h2>
+								<h5>{achievementUnlocked}</h5>
+								<h3 id="endScreenTitle">Vastauksesi olivat:</h3>
 								<div id="resultsText">
 									<div class="progress progress-fat">
-										<div class="progress-bar progress-bar-fat progress-bar-success" style={{width: correctPortion + "%"}} role="progressbar" aria-valuenow={correctPortion} aria-valuemin="0" aria-valuemax="100">Täysin oikein {correctPortion}%</div>
-										<div class="progress-bar progress-bar-fat progress-bar-warning" style={{width: almostCorrectPortion + "%"}} role="progressbar" aria-valuenow={almostCorrectPortion} aria-valuemin="0" aria-valuemax="100">Melkein oikein {almostCorrectPortion}%</div>
-										<div class="progress-bar progress-bar-fat progress-bar-danger" style={{width: wrongPortion + "%"}} role="progressbar" aria-valuenow={wrongPortion} aria-valuemin="0" aria-valuemax="100">Väärin {wrongPortion}%</div>
+										<div class="progress-bar progress-bar-fat progress-bar-success" style={{ width: correctPortion + "%" }} role="progressbar" aria-valuenow={correctPortion} aria-valuemin="0" aria-valuemax="100">Täysin oikein {correctPortion}%</div>
+										<div class="progress-bar progress-bar-fat progress-bar-warning" style={{ width: almostCorrectPortion + "%" }} role="progressbar" aria-valuenow={almostCorrectPortion} aria-valuemin="0" aria-valuemax="100">Melkein oikein {almostCorrectPortion}%</div>
+										<div class="progress-bar progress-bar-fat progress-bar-danger" style={{ width: wrongPortion + "%" }} role="progressbar" aria-valuenow={wrongPortion} aria-valuemin="0" aria-valuemax="100">Väärin {wrongPortion}%</div>
 									</div>
 									{this.renderAnswers()}
 								</div>
 							</div>
-							
-						<BackButton redirectTo='/' />
+
+							<BackButton redirectTo='/' />
 						</div>
 					</div>
 				</div>

@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom'
 import '../../styles/App.css'
 import BackButton from '../BackButton'
 
+
 class Login extends React.Component {
   constructor(props) {
     super(props)
@@ -43,6 +44,7 @@ class Login extends React.Component {
       })
       console.log(user)
       window.sessionStorage.setItem('loggedLohjanLuunkeraajaUser', JSON.stringify(user))
+
       this.setState({
         username: '',
         password: '',
