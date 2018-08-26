@@ -142,10 +142,11 @@ class Game extends React.Component {
                         {confettiGun()}
                         <div className="game-mainview">
                             {/* <p>{imageWidthR()},{imageHeightR()}</p> */}
-                            <div>
+                            
+                            <GameLoop />
+                            <div className="scoreflas-position">
                                 {scoreFlash()}
                             </div>
-                            <GameLoop />
                         </div>
                         <div className="game-score">
                             <ScoreBoard progressWidth={progressWidth} previous={true} />
@@ -171,14 +172,15 @@ class Game extends React.Component {
                 <div className="thirtythree">
                     <div className="transbox" margin="5">
                     {confettiGun()}
-                        <div>
-                            {/* <ScoreFlash /> */}
-                            {scoreFlash()}
-                        </div>
+                        
                         <div className="thirtythree">
                             <div className="game-mainview-mobile">
                                 {/* <p>{imageWidthR()},{imageHeightR()}</p> */}
                                 <GameLoop />
+                                <div className="scoreflash-position-mobile" position="absolute" z-index="9999" opacity=".99">
+                            {/* <ScoreFlash /> */}
+                            {scoreFlash()}
+                        </div>
                             </div>
                         </div>
                     </div>

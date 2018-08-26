@@ -7,6 +7,7 @@ import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
 import emoji from 'node-emoji'
 import { setAnswerSound } from '../reducers/soundReducer'
+import { Grid, Row, Col } from 'react-bootstrap'
 
 class ImageMultipleChoiceGame extends React.Component {
 
@@ -22,6 +23,7 @@ class ImageMultipleChoiceGame extends React.Component {
       internalStartedAt: new Date().getTime
     }
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.renderImages = this.renderImages.bind(this)
     window.onunload = function () { window.location.href = '/' }
 
   }
@@ -147,6 +149,47 @@ class ImageMultipleChoiceGame extends React.Component {
       }
     }
   }
+  
+  renderImages() {
+		console.log(this.props.game.wrongImageOptions)
+		console.log(this.props.game.wrongImageOptions.slice(0, 2))
+		console.log(this.props.game.wrongImageOptions.slice(2, 4))
+		return (
+			<Grid fluid={true}>
+			<Row>
+			{this.props.game.wrongImageOptions.slice(0, 2).map(choice => {
+				return (
+					<Col xs={6}>
+						<div className="multi-height-restricted" style={this.style(choice)}>
+							<CloudinaryContext cloudName="luupeli">
+								<Image publicId={choice.url} onClick={() => this.handleSubmit(choice)}>
+									<Transformation background="#000000" height="250" width="350" crop="lpad" />
+								</Image>
+							</CloudinaryContext>
+						</div>
+					</Col>
+				)
+			})}
+			</Row>
+			
+			<Row className="top-buffer">
+			{this.props.game.wrongImageOptions.slice(2, 4).map(choice => {
+				return (
+					<Col xs={6}>
+						<div className="multi-height-restricted" style={this.style(choice)}>
+							<CloudinaryContext cloudName="luupeli">
+								<Image publicId={choice.url} onClick={() => this.handleSubmit(choice)}>
+									<Transformation background="#000000" height="250" width="350" crop="lpad" />
+								</Image>
+							</CloudinaryContext>
+						</div>
+					</Col>
+				)
+			})}
+			</Row>
+			</Grid>
+		)
+	}
 
   render() {
     const debug = () => {
@@ -164,29 +207,14 @@ class ImageMultipleChoiceGame extends React.Component {
     }
 
     return (
-      <div className="bottom" z-index="3" position="relative">
-        <div className="intro" z-index="3" position="relative">
+      <div className="fullsize">
+        <div>
           <h2>{this.props.game.currentImage.bone.nameLatin}, {this.props.game.currentImage.animal.name}</h2>
           <p>(klikkaa oikeaa kuvaa!)</p>
           {debug()}
         </div>
-        <div className="container" z-index="3" position="relative">
-          <div z-index="3" position="relative">
-
-            {this.props.game.wrongImageOptions.map(choice => {
-              return (
-                <div className="multi-height-restricted" style={this.style(choice)}>
-                  <CloudinaryContext cloudName="luupeli">
-                    <Image publicId={choice.url} onClick={() => this.handleSubmit(choice)}>
-                      <Transformation background="#000000" height="250" width="350" crop="lpad" />
-                    </Image>
-                  </CloudinaryContext>
-                </div>
-              )
-            }
-            )}
-
-          </div>
+        <div>
+          {this.renderImages()}
         </div>
         <div className="homeicon">
           <Link to='/'>

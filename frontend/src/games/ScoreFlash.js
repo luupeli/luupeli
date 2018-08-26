@@ -70,7 +70,7 @@ class ScoreFlash extends React.Component {
 		}
 		var rowtextLeft = rowtext.substring(0, rowtext.length / 2)
 		var rowtextRight = rowtext.substring(rowtext.length / 2, rowtext.length)
-		return (<div>
+		return (<div className="scoreflash-position">
 			<Animated animationIn="bounceInDown faster" animationOut="bounceOutUp faster" isVisible={this.props.scoreflash.visibility}>
 				<div
 					className={style}
@@ -79,6 +79,7 @@ class ScoreFlash extends React.Component {
 					vertical-align="middle"
 					line-height="90px"
 					z-index="1000"
+					position="relative"
 					margin="5px"
 				>
 

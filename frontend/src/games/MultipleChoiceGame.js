@@ -168,10 +168,7 @@ class MultipleChoiceGame extends React.Component {
             </CloudinaryContext>
           </div>
         </div>
-        <div className="row">
-        </div>
-        <div className="container">
-          <div className="intro" />
+        <div>
           {this.props.game.wrongAnswerOptions.map(choice => <Button bsStyle={this.style(choice)} disabled={undefined !== this.state.value} value={choice.nameLatin} onClick={this.handleSubmit}>{choice.nameLatin}</Button>)}
           {debug()}
         </div>

@@ -1541,3 +1541,38 @@ https://codepen.io/George-Payne/pen/qOrxao
  -moz-animation: Button-Gradient 3.23s ease infinite;
  animation: Button-Gradient 3.23s ease infinite;
 }
+
+.top-buffer {
+	margin-top: 40px;
+}
+
+.nopadding {
+	padding-left: 0!important;
+	padding-right: 0!important;
+	margin-left: 0!important;
+	margin-right: 0!important;
+}
+
+.fullsize {
+	width: 100%;
+}
+
+.scoreflash-position-mobile {
+	position:absolute;
+	margin-top: -10%;
+	margin-left: -50%;
+}
+
+.scoreflash-position {
+	position:absolute;
+	margin-top: -30%;
+}
+
+.top-element {
+	z-index: 9999;
+}
+
+.bottom-element {
+	position: relative;
+	z-index: 3;
+}
