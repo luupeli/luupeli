@@ -46,6 +46,7 @@ describe('WritingGame tests', () => {
 		//Select settings and begin game
 		// await page.screenshot({ path: 'menu3.png', fullPage: true });
 		await page.waitForSelector('#gameLengthShort')
+		await page.click('#gameLengthShort')
 		const gameLength = await page.$eval('#gameLengthShort', el => el.value)
 		console.log(gameLength)
 
