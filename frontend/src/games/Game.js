@@ -24,6 +24,7 @@ class Game extends React.Component {
             user: null,
             allStyles: JSON.parse(localStorage.getItem("allStyles")),
             styleIndex: localStorage.getItem('styleIndex'),
+            startScoreFlashSound: false,
         }
         this.postGameSession = this.postGameSession.bind(this)
         window.onunload = function () { window.location.href = '/' }
@@ -56,7 +57,7 @@ class Game extends React.Component {
         })
     }
 
-    responsiveLayout() {
+    responsiveLayout(startTheBonusSoundNow) {
         const imageWidthR = () => {              // Here we try to measure the window size in order to resize the bone image accordingly
             const windowWidth = Math.max(
                 document.body.scrollWidth,
@@ -208,6 +209,16 @@ class Game extends React.Component {
 		  }
         }`
 
+        
+        if (this.props.game.scoreflash.startPlayingBonusSound && !this.state.startScoreFlashSound) {
+            this.setState({startPlayingBonusSound: true})
+        }
+        else if (!this.props.game.scoreflash.startPlayingBonusSound && this.state.startScoreFlashSound) {
+            this.setState({startPlayingBonusSound: false})
+            this.props.scoreflash.stopPlayingBonusSound()
+        }
+
+
         if (this.props.game.endCounter < 1) {
             setTimeout(function () {
                 this.setState({ redirectToEndPage: true })
@@ -241,7 +252,7 @@ class Game extends React.Component {
                                 <div
                                     className={this.state.allStyles[i].flairLayerD}>
                                 </div>
-                                {this.responsiveLayout()}
+                                {this.responsiveLayout(startTheBonusSoundNow)}
                             </div>
                         </div>
                     </div>

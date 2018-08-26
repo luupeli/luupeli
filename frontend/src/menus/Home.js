@@ -75,7 +75,7 @@ class Home extends React.Component {
                 secondary: '#9999DD',
                 tertiary: '#555599',
                 overlay: null,
-                music: '351717__monkeyman535__cool-chill-beat-loop.wav'
+                music: '324920__frankum__cinematic-guitar-loop-and-fx.mp3'
             }, {                             // KEY
                 style: 'blood-dragon',                  // Name of the visual theme
                 background: 'background-blood-dragon',  // reference to the css background styling
@@ -101,7 +101,7 @@ class Home extends React.Component {
                 secondary: '#cc5490',
                 tertiary: '#FF69B4',
                 overlay: 'cherry-confetti',
-                music: '435958__greek555__trap-beat.mp3'
+                music: '418263__4barrelcarb__eastern-strings.mp3'
             }
             ],
             styleIndex: 0,
@@ -126,6 +126,8 @@ class Home extends React.Component {
             attractAnimation: true,
             loopTheMusic: false,
             bestPlayers: [],
+            cheatClicks: 0,
+            cheatsActivated: false,
             musicStartTime: ''
         }
 
@@ -562,14 +564,15 @@ class Home extends React.Component {
                 lines.push('Error.wav by Autistic Lucario')
                 lines.push('Retro Bonus Pickup SFX by suntemple')
                 lines.push('Trap-Beat by greek555')
+                lines.push('Cinematic Guitar Loop by frankum')
             }
             else if (this.state.attractMode % 80 <= 60) {
                 heading = 'Freesound.org continued...'
                 lines.push('Cool Chill Beat Loop by monkeyman535')
                 lines.push('Techno 80 - base loop by frankum')
                 lines.push('8-bit ElectroHouse by RutgerMuller')
-                lines.push('Used under Creative Commons (CC) license')
-                lines.push('The Luupeli devs kindly thank these content creators! ' + heartEmoji)
+                lines.push('Eastern Strings by 4barrelcarb')
+                lines.push('Used under Creative Commons (CC) license. The Luupeli devs kindly thank these content creators! ' + heartEmoji)
             } else if (this.state.attractMode % 320 <= 80) {
                 heading = 'LUUPELI TIEDOTTAA'
                 lines.push('Miksi sinä vielä luet tätä?')
@@ -671,7 +674,14 @@ class Home extends React.Component {
     }
 
 
-
+    cheatMoar(event) {
+        var cheatNow=false;
+        if (this.state.cheatClicks>10) {
+            cheatNow=true;
+            console.log('YOU F****** CHEATER!!!')
+        }
+        this.setState({cheatClicks:this.state.cheatClicks+1, cheatsActivated=cheatNow})
+    }   
 
     render() {
         if (process.env.NODE_ENV !== 'test') {
@@ -753,8 +763,10 @@ class Home extends React.Component {
                                                         className="menu-button"
                                                         id="bestPlayers"
                                                         onClick={this.proceedToSelect}>
-                                                        &#9733; Pistetaulukko &#9733;
+                                                        &#9733;&#9733; Pistetaulukko &#9733;
                                                     </button>
+                                                    <button
+                                                    onClick={this.cheatMoar}>&#9733;</button>
                                                 </Animated>
                                             </Col>
                                         </Row>
