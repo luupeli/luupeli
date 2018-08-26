@@ -158,7 +158,7 @@ gameSessionsRouter.get('/top_list_all/', async (request, response) => {
 	let limit = 4000
 	let searchParams = {}
 	let userId = ''
-	console.log('request query id = ' + request.query.user)
+	
 	if (request.query.limit !== undefined) {
 		limit = Number(request.query.limit)
 	}
@@ -198,7 +198,6 @@ gameSessionsRouter.get('/top_list_all/', async (request, response) => {
 			return String(element._id) === userId;
 		});
 
-		console.log('found: ' + found.total)
 		response.json(found.total);
 	} else {
 		response.json(gameSessions);
