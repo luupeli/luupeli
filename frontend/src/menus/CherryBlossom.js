@@ -25,13 +25,18 @@ const imageHeightR = () => {              // Here we try to measure the window s
 
 
 const cherryBlossomizer = (style) => {
-    if (style==='cherry-blossom') {
+    if (style==='cherry-blossom' || style==='dark-blossom') {
         
     
     var colors = ['#ffc3e1','#ffd2e8','#ffe1f0','#fff0f7','#ffffff']
-     var numberOfPieces = 75
+    var numberOfPieces = 75
+    if (style==='dark-blossom') {
+        colors = ['#190a12','#331524','#4c1f36','#662a48','#7f345a']
+        var numberOfPieces = 125
+    }
+     
 
-      return (<Confetti width={imageWidthR()} height={imageHeightR()} colors={colors} numberOfPieces={numberOfPieces} run={true} gravity={0.04} />)
+      return (<Confetti width={imageWidthR()} height={imageHeightR()} colors={colors} numberOfPieces={numberOfPieces} run={true} gravity={0.035} />)
     }
     else {
         return null;

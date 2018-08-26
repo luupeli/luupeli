@@ -102,6 +102,19 @@ class Home extends React.Component {
                 tertiary: '#FF69B4',
                 overlay: 'cherry-confetti',
                 music: '418263__4barrelcarb__eastern-strings.mp3'
+            }, {
+                style: 'dark-blossom',
+                background: 'background-dark-cherry',
+                flairLayerD: 'none',
+                flairLayerC: 'none',
+                flairLayerB: 'none',
+                flairLayerA: 'none',
+                highlight: '#FF69B4',
+                primary: '#cc5490',
+                secondary: '#662a48',
+                tertiary: '#331524',
+                overlay: 'cherry-confetti',
+                music: '418263__4barrelcarb__eastern-strings.mp3'
             }
             ],
             styleIndex: 0,
@@ -222,8 +235,8 @@ class Home extends React.Component {
         if (localMaxStyle!==null) {
             maxStyleNow=Math.max(maxStyleNow,localMaxStyle)
         }
-
-        if (this.state.allStyles[next] != null && (maxStyleNow>=next || this.state.admin)) {
+        var ok=true
+        if (this.state.allStyles[next] != null && (maxStyleNow>=next || this.state.admin || ok)) {
             localStorage.setItem('styleIndex', next)
             this.setState({
                 styleIndex: next,

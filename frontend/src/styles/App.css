@@ -359,7 +359,7 @@ animation: Button-Gradient 0.75s ease infinite;
   -webkit-text-stroke-color: var(--secondary);
 }
 
-.normo h1, .normo h2, .normo h3, .cherry-blossom h1, .cherry-blossom h2, .cherry-blossom h3 {
+.normo h1, .normo h2, .normo h3, .cherry-blossom h1, .cherry-blossom h2, .cherry-blossom h3, .dark-blossom h1, .dark-blossom h2, .dark-blossom h3 {
   font-family: 'Lateef', sans-serif!important;
   color:var(--highlight)!important;
   
@@ -367,7 +367,7 @@ animation: Button-Gradient 0.75s ease infinite;
   -webkit-text-stroke-color: var(--primary)!important;
 }
 
-.normo h4,.normo h5,.normo h6, .normo p, .cherry-blossom h4,.cherry-blossom h5,.cherry-blossom h6,.cherry-blossom p {
+.normo h4,.normo h5,.normo h6, .normo p, .cherry-blossom h4,.cherry-blossom h5,.cherry-blossom h6,.cherry-blossom p, .dark-blossom h4, .dark-blossom h5, .dark-blossom h6, .dark-blossom p {
   font-family: 'Montserrat', sans-serif!important;;
   color:var(--highlight)!important;
   -webkit-background-clip: text!important;;
@@ -882,6 +882,35 @@ body {
 #ffe1f0,
 #fff0f7,
 #ffffff);
+  overflow-x: hidden;
+  overflow-y: hidden;
+  overflow: hidden;
+  background-size: 400% 400%;
+
+-webkit-animation: normoflow 25s ease infinite;
+-z-animation: normoflow 25s ease infinite;
+-o-animation: normoflow 25s ease infinite;
+  animation: normoflow 25s ease infinite;
+}
+
+.background-dark-cherry {
+  width: 100vw;
+  min-height: 100vh;
+  height: 100%;
+  color: #100;
+  background: linear-gradient(
+    -15deg,
+    #ff69b4,
+#e55ea2,
+#cc5490,
+#b2497d,
+#993f6c,
+#7f345a,
+#662a48,
+#4c1f36,
+#331524,
+#190a12,
+#000000);
   overflow-x: hidden;
   overflow-y: hidden;
   overflow: hidden;

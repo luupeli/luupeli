@@ -47,7 +47,7 @@
     "setupTestFrameworkScriptFile": "<rootDir>/src/setupTests.js"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set port=3000 && react-scripts start",
     "build": "react-scripts build",
     "test": "NODE_ENV=test node_modules/.bin/jest --detectOpenHandles --env=jsdom --collectCoverageFrom=**/frontend/tests/*.js",
     "eject": "react-scripts eject",
