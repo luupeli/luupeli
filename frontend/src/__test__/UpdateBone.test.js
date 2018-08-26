@@ -8,7 +8,7 @@ const port = process.env.FRONT_PORT
 let browser
 let page
 
-jest.setTimeout(12000000)
+jest.setTimeout(120000)
 
 // An admin user must be logged-in in order to pass these tests,
 // and it is done in this beforeAll block

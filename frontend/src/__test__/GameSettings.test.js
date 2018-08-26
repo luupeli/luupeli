@@ -3,9 +3,9 @@ import React from 'react'
 // import WritingGame from '../../games/WritingGame'
 // import { Redirect, Link } from 'react-router-dom'
 // import Message from '../../games/Message'
-import GameSettings from '../src/menus/gamescreens/GameSettings'
+import GameSettings from '../menus/gamescreens/GameSettings'
 
-jest.setTimeout(12000000)
+jest.setTimeout(120000)
 
 describe("GameSettings", () => {
     const settings = () => {

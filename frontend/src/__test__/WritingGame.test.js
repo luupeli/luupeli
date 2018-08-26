@@ -1,10 +1,10 @@
 import React from 'react'
 import { shallow } from 'enzyme'
-import WritingGame from '../src/games/WritingGame'
+import WritingGame from '../games/WritingGame'
 // import { Redirect } from 'react-router-dom'
 // import Message from './Message'
 
-jest.setTimeout(12000000)
+jest.setTimeout(120000)
 
 describe("WritingGame", () => {
 	const wgcomponent = () => {

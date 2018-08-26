@@ -6,7 +6,7 @@ const port = process.env.FRONT_PORT
 let browser
 let page
 
-jest.setTimeout(15000000)
+jest.setTimeout(120000)
 
 beforeAll(async () => {
 	browser = await puppeteer.launch({ args: ['--no-sandbox'], slowMo: 250 })
@@ -31,14 +31,14 @@ describe('WritingGame tests', () => {
 	test('easy short playthrough', async () => {
 		//Navigate to Select Game Mode-screen
 		console.log("navigating from main page to game mode selection")
-		await page.waitFor(1000)
+		await page.waitFor(2000)
 		await page.waitForSelector('#proceedToSelectGameMode')
 		// await page.screenshot({ path: 'menu1.png', fullPage: true });
 		await page.click('#proceedToSelectGameMode')
 
 		//Navigate to WritingGame settings page
 		console.log("navigating from game mode selection to game settings")
-		await page.waitFor(1000)
+		await page.waitFor(2000)
 		await page.waitForSelector('#writingGameButton')
 		// await page.screenshot({ path: 'menu2.png', fullPage: true });
 		await page.click('#writingGameButton')
@@ -58,11 +58,12 @@ describe('WritingGame tests', () => {
 		await page.click('#luupeliinButton')
 
 		//Play game
-		playRounds(gameLength)
+		await playRounds(gameLength)
 
 		//Look at endscreen results
 		console.log("looking at endscreen")
-		await page.waitForSelector('#endScreenTitle', { timeout: 0 })
+		await page.waitFor(5000)
+		await page.waitForSelector('#endScreenTitle')
 		// await page.screenshot({ path: 'end.png', fullPage: true });
 		const textContent = await page.$eval('#endScreenTitle', el => el.textContent)
 

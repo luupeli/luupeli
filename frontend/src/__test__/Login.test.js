@@ -9,7 +9,7 @@ let browser
 let page
 let loggedIn = false // Helper variable
 
-jest.setTimeout(12000000)
+jest.setTimeout(120000)
 
 beforeAll(async () => {
 	browser = await puppeteer.launch({ args: ['--no-sandbox'], slowMo: 250 })

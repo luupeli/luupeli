@@ -6,7 +6,7 @@ const port = process.env.FRONT_PORT
 let browser
 let page
 
-jest.setTimeout(12000000)
+jest.setTimeout(120000)
 
 beforeAll(async () => {
 	browser = await puppeteer.launch({ args: ['--no-sandbox'], slowMo: 250 })
