@@ -2,6 +2,7 @@ const gameSessionsRouter = require('express').Router()
 const GameSession = require('../models/gameSession')
 const User = require('../models/user')
 const Answer = require('../models/answer')
+const Image = require('../models/image')
 const moment = require('moment');
 
 gameSessionsRouter.post('/', async (request, response) => {
@@ -59,6 +60,54 @@ gameSessionsRouter.post('/', async (request, response) => {
 
 			const savedAnswer = await new Answer(answer).save()
 			savedAnswers.push(savedAnswer)
+
+			const oldImage = await Image.findById(body.answers[i].image.id)
+
+
+			let gameAttempts = 1
+			let gameCorrectAttempts = 0
+			let gameCorrectness = body.answers[i].correctness
+			
+			//remove and rework these if you reupload images
+			if (oldImage.attempts !== undefined) {
+				gameAttempts = oldImage.attempts + 1
+			}
+
+			if (oldImage.correctAttempts !== undefined) {
+				if (body.answers[i].correctness === 100) {
+					gameCorrectAttempts = oldImage.correctAttempts + 1
+				}
+			} else {
+				if (body.answers[i].correctness === 100) {
+					gameCorrectAttempts = 1
+				}
+			}
+
+			if (oldImage.gameCorrectness !== undefined) {
+				gameCorrectness = gameCorrectness + oldImage.correctness
+			}
+
+			console.log(gameCorrectness)
+
+			const image = {
+				difficulty: oldImage.difficulty,
+				url: oldImage.url,
+            	bone: oldImage.bone,
+				animal: oldImage.animal,
+				copyright: oldImage.copyright,
+				photographer: oldImage.photographer,
+				handedness: oldImage.handedness,
+				description: oldImage.description,
+				lastModified: Date.now(),
+            	creationTime: oldImage.creationTime,
+				attempts: gameAttempts,
+				correctAttempts: gameCorrectAttempts,
+				correctness: gameCorrectness
+			}
+
+			console.log(image)
+
+			const updatedImage = await Image.findByIdAndUpdate(body.answers[i].image.id, image, { new: true })
 
 			// Here we check is this answer the best answer
 			if (body.user !== null && body.user !== undefined) {
