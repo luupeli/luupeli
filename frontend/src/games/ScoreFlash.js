@@ -29,7 +29,7 @@ class ScoreFlash extends React.Component {
 		}
 
 		
-		i
+		
 
 		if (this.props.game.playSound && scoreActual > 0 && (this.props.scoreflash.startPlayingBonusSound || playStatus===Sound.status.STOPPED)) {
 			return (
