@@ -10,7 +10,7 @@ import { Animated } from 'react-animated-css';
 import cherryBlossomizer from './CherryBlossom';
 import emoji from 'node-emoji'
 import Sound from 'react-sound'
-
+import achievement from './Achievement'
 import userStatistics from '../services/userStatistics'
 
 
@@ -37,7 +37,7 @@ class Home extends React.Component {
                 tertiary: '#EEEECC',
                 overlay: null,
                 music: '435958__greek555__trap-beat.mp3'
-                },   {
+            }, {
                 style: 'fallout',
                 background: 'background-fallout',
                 flairLayerD: 'none',
@@ -76,7 +76,7 @@ class Home extends React.Component {
                 tertiary: '#555599',
                 overlay: null,
                 music: '351717__monkeyman535__cool-chill-beat-loop.wav'
-            },     {                             // KEY
+            }, {                             // KEY
                 style: 'blood-dragon',                  // Name of the visual theme
                 background: 'background-blood-dragon',  // reference to the css background styling
                 flairLayerD: 'grid-sub',                // on top of the background, a visual style can use up to 4 layers ouf 'flair'
@@ -89,7 +89,7 @@ class Home extends React.Component {
                 tertiary: '#ef007c',                    // Tertiary is the darkest color of the theme
                 overlay: null,                          // Overlay can be used to add an extra layer of vfx on top of the viewport. Optional!
                 music: '346193__frankum__techno-80-base-loop.mp3'
-            },     {
+            }, {
                 style: 'cherry-blossom',
                 background: 'background-cherry',
                 flairLayerD: 'none',
@@ -117,8 +117,10 @@ class Home extends React.Component {
             tertiary: '#EEEECC',
             overlay: null,
             music: '435958__greek555__trap-beat.mp3',
-            overlay: null,
             user: null,
+            totalScore: -1,
+            totalGames: -1,
+            maxStyle: -1,
             admin: false,
             attractMode: 0,
             attractAnimation: true,
@@ -129,8 +131,12 @@ class Home extends React.Component {
 
         // The method sets the first style as default if none are chosen.
         // This occurs when you open the page for the first time
+        if (localStorage.getItem('styleIndex')!==null) {
+            this.setState({maxStyle: localStorage.getItem('styleIndex')})
+        }
+        
         if (localStorage.getItem('styleIndex') === null) {
-            localStorage.setItem('styleIndex', 4)
+            localStorage.setItem('styleIndex', 0)
         }
 
         localStorage.setItem('allStyles', JSON.stringify(this.state.allStyles))   // Array must be converted to JSON before storing it into localStorage!
@@ -144,10 +150,13 @@ class Home extends React.Component {
     componentDidMount() {
         this.setState({
             styleIndex: 0,
+            
         })
         const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
+    
         if (loggedUserJSON) {
             const user = JSON.parse(loggedUserJSON)
+
             this.setState({ user })
             if (user.role === "ADMIN") {
                 this.setState({ admin: true })
@@ -176,18 +185,51 @@ class Home extends React.Component {
         } else {
             this.setState({ attractMode: this.state.attractMode + 1, attractAnimation: true })
         }
+
+        if (this.state.user!==null) {
+            if (this.state.totalGames===-1 && this.state.totalScore===-1) {
+        
+        
+        
+
+        userStatistics.getTotalGamesForIndividual(this.state.user.id)
+            .then((response) => {
+                this.setState({
+                    totalGames: response.data.length
+                })
+            })
+        userStatistics.getTotalScore(this.state.user.id)
+            .then((response) => {
+                if (response.data.length !== 0) {
+                    this.setState({
+						totalScore: response.data
+					})
+                }
+            })
+         
+         } else if (this.state.maxStyle===-1) {
+            this.setState({maxStyle: achievement.getIndex(this.state.totalScore,this.state.totalGames)})   
+            localStorage.setItem('maxStyle', achievement.getIndex(this.state.totalScore,this.state.totalGames))
+         }
+        }
     }
 
     // This event chooses the next css style settings from the list
     changeCss(event) {
         var next = parseInt(localStorage.getItem('styleIndex'), 10) + 1
-        if (this.state.allStyles[next] != null) {
+        var localMaxStyle = localStorage.getItem('maxStyle')
+        var maxStyleNow=this.state.maxStyle
+        if (localMaxStyle!==null) {
+            maxStyleNow=Math.max(maxStyleNow,localMaxStyle)
+        }
+
+        if (this.state.allStyles[next] != null && (maxStyleNow>=next || this.state.admin)) {
             localStorage.setItem('styleIndex', next)
             this.setState({
                 styleIndex: next,
                 style: 'placeholder-next-theme-name'
             })
-        } else {
+        } else  {
             localStorage.setItem('styleIndex', 0)
             this.setState({
                 styleIndex: 0,
@@ -297,7 +339,7 @@ class Home extends React.Component {
                         timePerChar={240}
                     />
                 </h1>
-                
+
             )
         }
         else {
@@ -323,31 +365,31 @@ class Home extends React.Component {
             }
             return (
                 <div id="styleNames" className={this.state.style}>
-                <div className="home-flex-title">
-                    <div className="score">
-                        
+                    <div className="home-flex-title">
+                        <div className="score">
+
                             <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="100" animationOutDelay="100" isVisible={titleVisibility}><h1 className="game-title">L</h1></Animated>
                         </div>
-                    <div className="score">
+                        <div className="score">
                             <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="150" animationOutDelay="150" isVisible={titleVisibility}><h1 className="game-title">u</h1></Animated>
                         </div>
-                    <div className="score">
+                        <div className="score">
                             <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="200" animationOutDelay="200" isVisible={titleVisibility}><h1 className="game-title">u</h1></Animated>
                         </div>
-                    <div className="score">
+                        <div className="score">
                             <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="250" animationOutDelay="250" isVisible={titleVisibility}><h1 className="game-title">p</h1></Animated>
                         </div>
-                    <div className="score">
+                        <div className="score">
                             <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="300" animationOutDelay="300" isVisible={titleVisibility}><h1 className="game-title">e</h1></Animated>
                         </div>
-                    <div className="score">
+                        <div className="score">
                             <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="350" animationOutDelay="350" isVisible={titleVisibility}><h1 className="game-title">l</h1></Animated>
                         </div>
-                    <div className="score">
+                        <div className="score">
                             <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="400" animationOutDelay="400" isVisible={titleVisibility}><h1 className="game-title">i</h1></Animated>
                         </div>
-                    {/* Luupeli</h1> */}
-                </div>
+                        {/* Luupeli</h1> */}
+                    </div>
                 </div>
             )
         }
@@ -412,6 +454,7 @@ class Home extends React.Component {
                 user: null,
                 admin: false
             })
+            localStorage.setItem('maxStyle', 0)
         } catch (error) {
             console.log(error)
         }
@@ -627,8 +670,8 @@ class Home extends React.Component {
         } else { return null }
     }
 
-    
-   
+
+
 
     render() {
         if (process.env.NODE_ENV !== 'test') {
@@ -657,7 +700,12 @@ class Home extends React.Component {
 
         var loggedText = 'Anonyymi Pelaaja'
         if (this.state.user !== null) {
-            loggedText = 'Tervetuloa, ' + this.state.user.username + '!'
+            loggedText = 'Tervetuloa, ' + this.state.user.username + '!'//|'+this.state.user.id+ ' (' + this.state.totalScore + '|' + this.state.totalGames + ')!'
+        }
+
+        var themeButtonText = 'Teema #'+i+': '+this.state.style
+        if (this.state.attractMode % 15>8) {
+         themeButtonText = 'Teemoja avattu: '+Math.max(1,this.state.maxStyle)+'/'+this.state.allStyles.length
         }
 
         return (
@@ -665,7 +713,7 @@ class Home extends React.Component {
                 {this.musicPlayer()}
                 <div className="menu">
                     <div className={this.state.overlay}>
-                    {cherryBlossomizer(this.state.style)}
+                        {cherryBlossomizer(this.state.style)}
                         <div className={this.state.background}>
                             <div id="styleName" className={this.state.style}>
                                 <div
@@ -716,13 +764,13 @@ class Home extends React.Component {
                                                     id="themeChangeButton"
                                                     className="menu-button"
                                                     onClick={this.changeCss}>
-                                                    Teema: {this.state.style}
+                                                    {themeButtonText}
                                                 </button>
                                             </Animated>
                                         </Row>
                                         <h5><div className="username">
                                             {loggedText}
-                                            </div>
+                                        </div>
                                         </h5>
                                         <div className={this.state.style} />
                                     </Col>

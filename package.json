@@ -16,6 +16,7 @@
     "test:frontend": "cd frontend && npm run test && cd .."
   },
   "devDependencies": {
+    "cross-env": "^5.2.0",
     "npm-run-all": "^4.0.2"
   }
 }

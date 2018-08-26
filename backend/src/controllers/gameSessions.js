@@ -151,13 +151,23 @@ gameSessionsRouter.get('/', async (request, response) => {
 	response.json(timeFilter(request, gameSessions).map(GameSession.format));
 })
 
+/**
+ * If the request contains an user id, then only cumulative total score for that specific user if fetched
+ */
 gameSessionsRouter.get('/top_list_all/', async (request, response) => {
 	let limit = 4000
+	let searchParams = {}
+	let userId = ''
+	console.log('request query id = ' + request.query.user)
 	if (request.query.limit !== undefined) {
 		limit = Number(request.query.limit)
 	}
+	if (request.query.user !== undefined) {
 
-	const users = await User.find({})
+		userId = request.query.user
+		searchParams = { ...searchParams, _id: request.query.user }
+	}
+	const users = await User.find(searchParams)
 
 	let gameSessions = await GameSession
 		.aggregate([
@@ -166,14 +176,33 @@ gameSessionsRouter.get('/top_list_all/', async (request, response) => {
 			{ $limit: limit }
 		])
 
-	gameSessions = gameSessions.filter(gs => gs._id !== null)
+
+	if (userId !== undefined && userId.length > 1) {
+		gameSessions = gameSessions.filter(gs => String(gs._id) === String(userId))
+
+
+	} else {
+		gameSessions = gameSessions.filter(gs => gs._id !== null)
+	}
+
 	gameSessions = gameSessions.map(gs => {
 		return ({
 			...gs, user: users.filter(user => user.id.includes(gs._id))[0]
 		})
 	})
 
-	response.json(gameSessions);
+
+	if (userId !== undefined && userId.length > 1) {
+		var found = gameSessions.find(function (element) {
+
+			return String(element._id) === userId;
+		});
+
+		console.log('found: ' + found.total)
+		response.json(found.total);
+	} else {
+		response.json(gameSessions);
+	}
 })
 
 gameSessionsRouter.get('/top_list_game', async (request, response) => {
@@ -188,7 +217,7 @@ gameSessionsRouter.get('/top_list_game', async (request, response) => {
 		searchParams = { ...searchParams, gameDifficulty: request.query.game_difficulty }
 	}
 	let limit = 4000
-	if (request.query.limit!== undefined) {
+	if (request.query.limit !== undefined) {
 		limit = Number(request.query.limit)
 	}
 

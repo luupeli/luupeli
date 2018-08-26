@@ -5,7 +5,9 @@ const url = '/api/gamesessions'
 let games = getUrl() + url
 
 const top50 = '/api/gamesessions/top_list_all?limit=50'
+const totalScore = '/api/gamesessions/top_list_all'
 let top50Url = getUrl() + top50
+let totalScoreUrl = getUrl() + totalScore
 
 const usersBestGames = '/api/gamesessions/top_list_game?limit=50'
 let bestGamesUrl = getUrl() + usersBestGames
@@ -15,6 +17,12 @@ let bestAnswersUrl = getUrl() + usersBestAnswers
 
 const getTop50 = () => {
     const request = axios.get(top50Url)
+    return request.then(response => { return response })
+}
+
+const getTotalScore = (userId) => {
+    console.log('kutsuttiin get total score')
+    const request = axios.get(`${totalScoreUrl}?user=${userId}`)
     return request.then(response => { return response })
 }
 
@@ -33,4 +41,4 @@ const getUsersBestAnswers = (userId) => {
     return request.then(response => { return response })
 }
 
-export default { getTop50, getTotalGamesForIndividual, getUsersBestGames, getUsersBestAnswers }
+export default { getTop50, getTotalScore, getTotalGamesForIndividual, getUsersBestGames, getUsersBestAnswers }
