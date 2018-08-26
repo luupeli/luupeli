@@ -252,7 +252,7 @@ class Game extends React.Component {
                                 <div
                                     className={this.state.allStyles[i].flairLayerD}>
                                 </div>
-                                {this.responsiveLayout(startTheBonusSoundNow)}
+                                {this.responsiveLayout()}
                             </div>
                         </div>
                     </div>

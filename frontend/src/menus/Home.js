@@ -126,8 +126,6 @@ class Home extends React.Component {
             attractAnimation: true,
             loopTheMusic: false,
             bestPlayers: [],
-            cheatClicks: 0,
-            cheatsActivated: false,
             musicStartTime: ''
         }
 
@@ -674,15 +672,6 @@ class Home extends React.Component {
     }
 
 
-    cheatMoar(event) {
-        var cheatNow=false;
-        if (this.state.cheatClicks>10) {
-            cheatNow=true;
-            console.log('YOU F****** CHEATER!!!')
-        }
-        this.setState({cheatClicks:this.state.cheatClicks+1, cheatsActivated=cheatNow})
-    }   
-
     render() {
         if (process.env.NODE_ENV !== 'test') {
             // skelly()
@@ -711,6 +700,9 @@ class Home extends React.Component {
         var loggedText = 'Anonyymi Pelaaja'
         if (this.state.user !== null) {
             loggedText = 'Tervetuloa, ' + this.state.user.username + '!'//|'+this.state.user.id+ ' (' + this.state.totalScore + '|' + this.state.totalGames + ')!'
+            if (this.state.cheatsActivated) {
+                loggedText=loggedText+ '= CHEATER!'
+            }
         }
 
         var themeButtonText = 'Teema #'+i+': '+this.state.style
@@ -763,10 +755,8 @@ class Home extends React.Component {
                                                         className="menu-button"
                                                         id="bestPlayers"
                                                         onClick={this.proceedToSelect}>
-                                                        &#9733;&#9733; Pistetaulukko &#9733;
+                                                        &#9733; Pistetaulukko &#9733;
                                                     </button>
-                                                    <button
-                                                    onClick={this.cheatMoar}>&#9733;</button>
                                                 </Animated>
                                             </Col>
                                         </Row>
