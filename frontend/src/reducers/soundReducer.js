@@ -19,11 +19,15 @@ const soundReducer = (store = initialState.sound, action) => {
     return store
 }
 
+/**
+ * Removed success sound for better mobile performance
+ */
 export const setAnswerSound = (correctness) => {
     let url
-    if (correctness > 99) {
-        url = "/sounds/391540__mativve__electro-success-sound.wav"
-    } else {
+    // if (correctness > 99) {
+    //     url = "/sounds/391540__mativve__electro-success-sound.wav"
+    // } else {
+        if (correctness < 70) {
         url = "/sounds/142608__autistic-lucario__error.wav"
     }
 

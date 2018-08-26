@@ -210,14 +210,15 @@ class Game extends React.Component {
         }`
 
         
+        if (this.props.game.scoreflash!==undefined) {
         if (this.props.game.scoreflash.startPlayingBonusSound && !this.state.startScoreFlashSound) {
             this.setState({startPlayingBonusSound: true})
         }
         else if (!this.props.game.scoreflash.startPlayingBonusSound && this.state.startScoreFlashSound) {
             this.setState({startPlayingBonusSound: false})
-            this.props.scoreflash.stopPlayingBonusSound()
+            this.props.game.scoreflash.stopPlayingBonusSound()
         }
-
+    }
 
         if (this.props.game.endCounter < 1) {
             setTimeout(function () {
