@@ -235,8 +235,9 @@ class Home extends React.Component {
         if (localMaxStyle!==null) {
             maxStyleNow=Math.max(maxStyleNow,localMaxStyle)
         }
-        var ok=true
-        if (this.state.allStyles[next] != null && (maxStyleNow>=next || this.state.admin || ok)) {
+        var override=false
+	
+        if (this.state.allStyles[next] != null && (maxStyleNow>=next || this.state.admin || override)) {
             localStorage.setItem('styleIndex', next)
             this.setState({
                 styleIndex: next,
