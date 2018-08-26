@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer')
 const assert = require('assert')
 require('dotenv').config()
 
-const port = process.env.PORT
+const port = process.env.FRONT_PORT
 
 let browser
 let page

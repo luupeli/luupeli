@@ -3,7 +3,7 @@ require('dotenv').config()
 
 const username = process.env.USERNAME
 const password = process.env.PASSWORD
-const port = process.env.PORT
+const port = process.env.FRONT_PORT
 
 let browser
 let page
