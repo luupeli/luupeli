@@ -1,11 +1,14 @@
 import React from 'react'
 import { Redirect, Link } from 'react-router-dom'
 import { Row, Col } from 'react-bootstrap'
+import BackButton from '../BackButton'
 
 class Admin extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			allStyles: JSON.parse(localStorage.getItem("allStyles")),
+			styleIndex: localStorage.getItem('styleIndex'),	
 			redirect: false,  // false, because we obviously won't be redirecting yet.
 			redirectTo: '', 	// empty string, because we've nowhere to redirect to.
 			user: null
@@ -50,6 +53,8 @@ class Admin extends React.Component {
 	// If redirect is set to true, we will redirect. Else, we will render the admin page,
 	// which contains buttons leading to other pages meant for the admin.
 	render() {
+		let i = this.state.styleIndex
+		
 		// Redirects
 		if (this.state.redirect) {
 			return (
@@ -60,12 +65,12 @@ class Admin extends React.Component {
 		}
 
 		return (
-			<div className="menu-background">
+			<div className={this.state.allStyles[i].overlay}>
+				<div className={this.state.allStyles[i].background}>
+          <div className={this.state.allStyles[i].style}>
 				<div className='App'>
 					<h2>Ylläpitäjän sivu</h2>
-					<Link to='/'>
-						<button className="gobackbutton">Takaisin</button>
-					</Link>
+					<BackButton redirectTo='/' />
 					<div id='adminButtons' className='btn-group'>
 						<Row className="show-grid">
 							<Col>
@@ -89,6 +94,8 @@ class Admin extends React.Component {
 							</Col>
 						</Row>
 					</div>
+				</div>
+			</div>
 				</div>
 			</div>
 		)

@@ -2,11 +2,14 @@ import React from 'react'
 import userService from '../../services/users'
 import { Link, Redirect } from 'react-router-dom'
 import { Row, Col } from 'react-bootstrap'
+import BackButton from '../BackButton'
 
 class UserListing extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			allStyles: JSON.parse(localStorage.getItem("allStyles")),
+			styleIndex: localStorage.getItem('styleIndex'),	
 			redirect: false,
 			redirectTo: '',
 			allUsers: [],
@@ -45,6 +48,7 @@ class UserListing extends React.Component {
 	// Here we return the names of our users as a list.
 	// If a user is an admin, we put a star next to their name.
 	render() {
+		let i = this.state.styleIndex
 		// Redirects
 		if (this.state.redirect) {
 			return (
@@ -54,13 +58,14 @@ class UserListing extends React.Component {
 			)
 		}
 		return (
-			<div className="menu-background App">
+		<div className={this.state.allStyles[i].overlay}>
+				<div className={this.state.allStyles[i].background}>
+          <div className={this.state.allStyles[i].style}>
+			<div className="App">
 				<h2>Käyttäjälista</h2>
 				<font size="4"><p>&#9733; = ylläpitäjä</p></font>
 				<br></br>
-				<Link to='/admin'>
-					<button className="gobackbutton">Takaisin</button>
-				</Link>
+				<BackButton redirectTo='/admin' />
 				<div id='listOfUsers'>
 					<Row>
 						<Col>
@@ -86,6 +91,9 @@ class UserListing extends React.Component {
 					</Row>
 				</div>
 			</div >
+			</div>
+				</div>
+			</div>
 		)
 	}
 }

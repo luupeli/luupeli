@@ -2,12 +2,16 @@ import React from 'react'
 import userService from '../../services/users'
 import userStatistics from '../../services/userStatistics'
 import { Link, Redirect } from 'react-router-dom'
+import BackButton from '../BackButton'
 import Moment from 'moment';
 
 class User extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			allStyles: JSON.parse(localStorage.getItem("allStyles")),
+			styleIndex: localStorage.getItem('styleIndex'),
+			style: localStorage.getItem('style'),
 			//userId is the id that was given in UserListing, inside Redirect
 			userId: this.props.userId,
 			redirect: false,
@@ -133,6 +137,8 @@ class User extends React.Component {
 	}
 
 	render() {
+		let i = this.state.styleIndex
+		
 		//If redirect is set to true, we will redirect. It might, no, WILL be true,
 		//if the user trying to view this page is not an admin.
 		if (this.state.redirect) {
@@ -145,25 +151,28 @@ class User extends React.Component {
 		//If redirect is not true, AKA user is an admin, we can show them some
 		//dank information of whomever this page belongs to.
 		return (
-			<div className="menu-background App">
-				<Link to={this.state.goBackTo}>
-					<button className="gobackbutton">Takaisin</button>
-				</Link>
-				<font size="3"><div>
-					<h2>Käyttäjä {this.state.viewedUserName}</h2>
-					<p>Sähköposti: {this.state.viewedUserEmail}</p>
-					<br></br>
-					<p>Pisteet yhteensä: {this.state.totalScore}</p>
-					<br></br>
-					<p>Pelattuja pelejä: {this.state.totalGames}</p>
-					<br></br>
-					{this.bestGame()}
-					<br></br>
-					{this.bestAnswersTop5()}
-			
+			<div className={this.state.allStyles[i].overlay}>
+				<div className={this.state.allStyles[i].background}>
+					<div className={this.state.allStyles[i].style}>
+						<div className="App">
+							<BackButton redirectTo='/' />
+							<font size="3"><div>
+								<h2>Käyttäjä {this.state.viewedUserName}</h2>
+								<p>Sähköposti: {this.state.viewedUserEmail}</p>
+								<br></br>
+								<p>Pisteet yhteensä: {this.state.totalScore}</p>
+								<br></br>
+								<p>Pelattuja pelejä: {this.state.totalGames}</p>
+								<br></br>
+								{this.bestGame()}
+								<br></br>
+								{this.bestAnswersTop5()}
+							</div>
+							</font>
+						</div>
+					</div>
 				</div>
-				</font>
-			</div >
+			</div>
 		)
 	}
 }
