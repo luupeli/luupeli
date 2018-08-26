@@ -784,8 +784,9 @@ body {
 
     /*overflow-x: hidden;
     overflow-y: hidden;
-    overflow: hidden;*/
+    
     /* font-size: 12px!important; */
+    overflow: hidden!important;
 }
 
 .background-fallout {
