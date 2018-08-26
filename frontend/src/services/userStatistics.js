@@ -21,7 +21,6 @@ const getTop50 = () => {
 }
 
 const getTotalScore = (userId) => {
-    console.log('kutsuttiin get total score')
     const request = axios.get(`${totalScoreUrl}?user=${userId}`)
     return request.then(response => { return response })
 }

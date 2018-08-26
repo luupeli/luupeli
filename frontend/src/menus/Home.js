@@ -75,7 +75,7 @@ class Home extends React.Component {
                 secondary: '#9999DD',
                 tertiary: '#555599',
                 overlay: null,
-                music: '351717__monkeyman535__cool-chill-beat-loop.wav'
+                music: '324920__frankum__cinematic-guitar-loop-and-fx.mp3'
             }, {                             // KEY
                 style: 'blood-dragon',                  // Name of the visual theme
                 background: 'background-blood-dragon',  // reference to the css background styling
@@ -101,7 +101,20 @@ class Home extends React.Component {
                 secondary: '#cc5490',
                 tertiary: '#FF69B4',
                 overlay: 'cherry-confetti',
-                music: '435958__greek555__trap-beat.mp3'
+                music: '418263__4barrelcarb__eastern-strings.mp3'
+            }, {
+                style: 'dark-blossom',
+                background: 'background-dark-cherry',
+                flairLayerD: 'none',
+                flairLayerC: 'none',
+                flairLayerB: 'none',
+                flairLayerA: 'none',
+                highlight: '#FF69B4',
+                primary: '#cc5490',
+                secondary: '#662a48',
+                tertiary: '#331524',
+                overlay: 'cherry-confetti',
+                music: '418263__4barrelcarb__eastern-strings.mp3'
             }
             ],
             styleIndex: 0,
@@ -222,8 +235,8 @@ class Home extends React.Component {
         if (localMaxStyle!==null) {
             maxStyleNow=Math.max(maxStyleNow,localMaxStyle)
         }
-
-        if (this.state.allStyles[next] != null && (maxStyleNow>=next || this.state.admin)) {
+        var ok=true
+        if (this.state.allStyles[next] != null && (maxStyleNow>=next || this.state.admin || ok)) {
             localStorage.setItem('styleIndex', next)
             this.setState({
                 styleIndex: next,
@@ -562,14 +575,15 @@ class Home extends React.Component {
                 lines.push('Error.wav by Autistic Lucario')
                 lines.push('Retro Bonus Pickup SFX by suntemple')
                 lines.push('Trap-Beat by greek555')
+                lines.push('Cinematic Guitar Loop by frankum')
             }
             else if (this.state.attractMode % 80 <= 60) {
                 heading = 'Freesound.org continued...'
                 lines.push('Cool Chill Beat Loop by monkeyman535')
                 lines.push('Techno 80 - base loop by frankum')
                 lines.push('8-bit ElectroHouse by RutgerMuller')
-                lines.push('Used under Creative Commons (CC) license')
-                lines.push('The Luupeli devs kindly thank these content creators! ' + heartEmoji)
+                lines.push('Eastern Strings by 4barrelcarb')
+                lines.push('Used under Creative Commons (CC) license. The Luupeli devs kindly thank these content creators! ' + heartEmoji)
             } else if (this.state.attractMode % 320 <= 80) {
                 heading = 'LUUPELI TIEDOTTAA'
                 lines.push('Miksi sinä vielä luet tätä?')
@@ -671,8 +685,6 @@ class Home extends React.Component {
     }
 
 
-
-
     render() {
         if (process.env.NODE_ENV !== 'test') {
             // skelly()
@@ -701,6 +713,9 @@ class Home extends React.Component {
         var loggedText = 'Anonyymi Pelaaja'
         if (this.state.user !== null) {
             loggedText = 'Tervetuloa, ' + this.state.user.username + '!'//|'+this.state.user.id+ ' (' + this.state.totalScore + '|' + this.state.totalGames + ')!'
+            if (this.state.cheatsActivated) {
+                loggedText=loggedText+ '= CHEATER!'
+            }
         }
 
         var themeButtonText = 'Teema #'+i+': '+this.state.style

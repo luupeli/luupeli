@@ -19,7 +19,7 @@ class ScoreFlash extends React.Component {
 		}, 100);
 		}
 
-	handleSound(scoreActual) {
+	handleSound(scoreActual,playStatus) {
 		var playbackspeed = 1.0;
 		if (scoreActual < 500) {
 			playbackspeed = 1.0 - (scoreActual / 100);
@@ -28,12 +28,15 @@ class ScoreFlash extends React.Component {
 			playbackspeed = Math.min(4, 1.0 + (scoreActual / 2500));
 		}
 
-		if (this.props.game.playSound && scoreActual > 0) {
+		
+		
+
+		if (this.props.game.playSound && scoreActual > 0 && (this.props.scoreflash.startPlayingBonusSound || playStatus===Sound.status.STOPPED)) {
 			return (
 				<Sound
 					url="/sounds/253172__suntemple__retro-bonus-pickup-sfx.wav"
-					playStatus={Sound.status.PLAYING}
-					// playFromPosition={0 /* in milliseconds */}
+					playStatus={playStatus}
+					loop={true}
 					playbackRate={playbackspeed}
 					onLoading={this.handleSongLoading}
 					onPlaying={this.handleSongPlaying}
@@ -70,6 +73,11 @@ class ScoreFlash extends React.Component {
 		}
 		var rowtextLeft = rowtext.substring(0, rowtext.length / 2)
 		var rowtextRight = rowtext.substring(rowtext.length / 2, rowtext.length)
+		var playStatus = Sound.status.PLAYING
+		if (scoreShown>=scoreActual) {
+			playStatus = Sound.status.STOPPED
+		}
+
 		return (<div className="scoreflash-position">
 			<Animated animationIn="bounceInDown faster" animationOut="bounceOutUp faster" isVisible={this.props.scoreflash.visibility}>
 				<div
@@ -94,7 +102,7 @@ class ScoreFlash extends React.Component {
 
 				</div>
 			</Animated>
-			{this.handleSound(scoreActual)}
+			{this.handleSound(scoreActual,playStatus)}
 		</div>
 		)
 	}
