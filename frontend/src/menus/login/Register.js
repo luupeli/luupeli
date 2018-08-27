@@ -142,7 +142,7 @@ class Register extends React.Component {
                                                         required
                                                     />
                                                 </div>
-                                                <div className="form-group">
+                                                {/* <div className="form-group">
                                                     <label for="email">Sähköpostiosoite:</label>
                                                     <input
                                                         className="form-control"
@@ -152,7 +152,7 @@ class Register extends React.Component {
                                                         value={this.state.email}
                                                         onChange={this.handleSignUpFieldChange}
                                                     />
-                                                </div>
+                                                </div> */}
                                                 <div className="form-group">
                                                     <label for="pass">Salasana:</label>
                                                     <input

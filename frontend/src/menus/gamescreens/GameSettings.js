@@ -415,7 +415,7 @@ class GameSettings extends React.Component {
 													onClick={this.changeGameDifficulty.bind(this)}
 													name="difficultylevel"
 												/>
-												Luupää
+												Luupää (helppo)
 											</label>
 											<label className="radio-inline">
 												<input
@@ -426,7 +426,7 @@ class GameSettings extends React.Component {
 													onClick={this.changeGameDifficulty.bind(this)}
 													defaultChecked
 												/>
-												Luunkova
+												Luunkova (normaali)
 											</label>
 											<label className="radio-inline">
 												<input
@@ -436,7 +436,7 @@ class GameSettings extends React.Component {
 													onClick={this.changeGameDifficulty.bind(this)}
 													name="difficultylevel"
 												/>
-												Luu-5
+												Luu-5 (vaikea)
 											</label>
 										</form>
 
