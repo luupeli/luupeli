@@ -8,23 +8,24 @@ import Moment from 'moment';
 import { Row, Col } from 'react-bootstrap'
 import getUrl from '../../services/urls'
 
+//Statistics-page shows stats about the game to the admin, like how many games have been played.
 class Statistics extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
 			loaded: false,
 			gameSessions: [],
-      gameSessionsFiltered: [],
-      allImages: [],
-      top10EasiestImages: [],
-      top10HardestImages: [],
+			gameSessionsFiltered: [],
+			allImages: [],
+			top10EasiestImages: [],
+			top10HardestImages: [],
 			timePlayed: 0.0,
 			writingGameCount: 0,
 			mixedGameCount: 0,
 			multipleChoiceGameCount: 0,
 			gamesByLoggedInUsers: 0,
-      gamesByAnonymousUsers: 0,
-      timeMessage: ''
+			gamesByAnonymousUsers: 0,
+			timeMessage: ''
 		}
 		window.onunload = function () { window.location.href = '/' }
 		this.setInitialStats = this.setInitialStats.bind(this)
@@ -33,10 +34,12 @@ class Statistics extends React.Component {
 		this.setGameTypes = this.setGameModes.bind(this)
     this.setGamesPlayedByLoggedInUsers = this.setGamesPlayedByLoggedInUsers.bind(this)
     this.setImages = this.setImages.bind(this)
-		this.updateDate = this.updateDate.bind(this)
+	this.updateDate = this.updateDate.bind(this)
     this.secondsToHourMinuteSecond = this.secondsToHourMinuteSecond.bind(this)
 	}
 
+	// Checks if the user is admin, and loads initial data to state. 
+	// If not admin then redirects to index.
   componentDidMount() {
 		const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
 		if (loggedUserJSON) {
@@ -67,7 +70,8 @@ class Statistics extends React.Component {
 		}
   }
 
-  //removes images from getted images that haven't been guessed, and orders them on ascending order by difficulty
+	// Removes images from getted images that haven't been guessed.
+	// Then the method orders them on ascending order by difficulty, and places top 10 hardest/easiest images on state.
   setImages(images) {
     var filteredImages = images.filter(function(image) {
         console.log(image.correctness)
@@ -85,6 +89,7 @@ class Statistics extends React.Component {
     this.setState({ top10HardestImages })
   }
 
+	// When two calendar dates aren't equal (two dates are chosen), the method will show statistics between those two dates
 	updateDate(date) {
 		console.log(date)
 		const startDate = Moment(date.startDate._d).format('YYYY MM DD')
@@ -94,7 +99,6 @@ class Statistics extends React.Component {
 			const updatedGameSessions = this.state.gameSessions.filter(session => {
 				var sessionTimeStamp = Moment(session.timeStamp).format('YYYY MM DD')
 				return endDate >= sessionTimeStamp && startDate <= sessionTimeStamp
-				//return session.timeStamp <= date.endDate._d && session.timeStamp >= date.startDate._d
 			})
 			console.log(updatedGameSessions)
       this.setState({ gameSessionsFiltered: updatedGameSessions })
@@ -106,6 +110,7 @@ class Statistics extends React.Component {
 		}
 	}
 
+	// Formats the time to a string that looks decent
 	secondsToHourMinuteSecond(total) {
 		var hours = Math.floor(total / 3600 / 60);
 		var minutes = Math.floor(total % 3600 / 60);
@@ -116,18 +121,24 @@ class Statistics extends React.Component {
 		return hourDisplay + minuteDisplay + secondDisplay;
 	}
 
+	// When called from componentDidMount the method will put initial data from response to state and calls setStats
+	// which handles the data even further. After that "loaded" becomes true, which sends removes the loading-message
+	// from view
 	setInitialStats(response) {			
 		this.setState({ gameSessions: response.data, gameSessionsFiltered: response.data })
     this.setStats(response.data)
     this.setState({ loaded: true })
 	}
 
+	// Calls different methods which handles data. updatedGameSessions is either all data if called from setInitialStats
+	// or it's data that's been filtered via calendar timestamps if called from updateDate
 	setStats(updatedGameSessions) {
 		this.setTimePlayed(updatedGameSessions)
 		this.setGameModes(updatedGameSessions)
     this.setGamesPlayedByLoggedInUsers(updatedGameSessions)
 }
 
+	// Sets the total time played in seconds from all game sessions.
 	setTimePlayed(updatedGameSessions) {
 		let seconds = 0
 		updatedGameSessions.forEach(function (session) {
@@ -137,8 +148,8 @@ class Statistics extends React.Component {
 		this.setState({ timePlayed })
 	}
 
+	// Sets the count on how many games on each game mode has been played
 	setGameModes(updatedGameSessions) {
-		console.log('setting gamemodes')
 		let writingGame = updatedGameSessions.filter(session => {
 			return session.gamemode === "kirjoituspeli"
 		}).length
@@ -155,6 +166,7 @@ class Statistics extends React.Component {
 		})
 	}
 
+	// Sets the count on games played by logged in users and anonymous users.
 	setGamesPlayedByLoggedInUsers(updatedGameSessions) {
 		let gamesByLoggedInUsers = updatedGameSessions.filter(session => {
 			return session.user !== null
@@ -165,10 +177,8 @@ class Statistics extends React.Component {
   }
   
 
-	//renders stats, or sends an informative message to user.
+	//returns stats or an informative message
 	statsJSX() {
-    console.log(this.state.top10EasiestImages)
-    console.log(this.state.top10HardestImages)
 		if (this.state.gameSessionsFiltered.length === 0) {
 			if (!this.state.loaded) {
 				return (
