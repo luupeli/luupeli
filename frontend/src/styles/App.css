@@ -5,6 +5,7 @@
 @import 'https://fonts.googleapis.com/css?family=Lateef';
 @import 'https://fonts.googleapis.com/css?family=Oswald';
 
+
  :root {
   --deep-blue-highlight: #00BBFF;
   --deep-blue-light: #113dBB;
@@ -12,6 +13,7 @@
   --deep-blue-dark: #001144;
  /* --primary: #777777;*/
 } 
+
 .btn-warning:focus {
   filter:brightness(70%);
   background: #999933;

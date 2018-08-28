@@ -205,6 +205,8 @@ class ImageMultipleChoiceGame extends React.Component {
       }
       return null
     }
+    
+    const houseEmoji = emoji.get('house')
 
     return (
       <div className="fullsize">
@@ -218,7 +220,7 @@ class ImageMultipleChoiceGame extends React.Component {
         </div>
         <div className="homeicon">
           <Link to='/'>
-            <img src="homeicon.png" alt="Etusivulle"></img><p>Lopeta</p>
+            <p>{houseEmoji}</p><p>Lopeta</p>
           </Link>
         </div>
       </div>

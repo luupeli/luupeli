@@ -292,7 +292,7 @@ class WritingGame extends React.Component {
       if (this.state.lastValue === undefined) {
         return (
           <div>
-            <div className="game-text-input">
+            <div>
               <input
                 id="gameTextInput"
                 type="text"
@@ -435,6 +435,8 @@ class WritingGame extends React.Component {
       }
       return null
     }
+    
+    const houseEmoji = emoji.get('house')
 
     return (
       <div className="bottomxxx">
@@ -477,7 +479,7 @@ class WritingGame extends React.Component {
         {debug()}
         <div className="homeicon">
           <Link to='/'>
-            <img src="homeicon.png" alt="Etusivulle"></img><p>Lopeta</p>
+            <p>{houseEmoji}</p><p>Lopeta</p>
           </Link>
         </div>
       </div >
