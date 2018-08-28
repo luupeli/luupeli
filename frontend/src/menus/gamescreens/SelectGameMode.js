@@ -88,6 +88,7 @@ class SelectGameMode extends React.Component {
     lines.push('Väärästä vastauksesta pistekerroin nollaantuu')
     lines.push('Vaikeusaste vaikuttaa pisteisiin')
     lines.push('Helpoimmalla vaikeusasteella saat vihjeitä vastauksesta')
+    lines.push('Luu-5-vaikeusasteella saat bonuksen eläinlajin tunnistamisesta')
     lines.push('Nopeus on valttia! '+heartEmoji)
    }
    else if (this.state.instructionMode%100<=40) {
@@ -113,6 +114,7 @@ class SelectGameMode extends React.Component {
    } else if (this.state.instructionMode%100<=100) {
     heading='MUISTA SISÄÄNKIRJAUTUA'
     lines.push('Vain sisäänkirjautuneiden käyttäjien tulokset tallennetaan')
+    lines.push('Sisäänkirjautuneena leräät pisteitä ja ansaitset arvonimiä ja visuaalisia teemoja')
     lines.push('Jos sinulla ei ole käyttäjätunnusta, voit luoda sellaisen päävalikossa')
     lines.push('Parhaat luupelaajat niittävät mainetta pistetaulukoilla! '+heartEmoji)
    } 
