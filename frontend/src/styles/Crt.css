@@ -165,7 +165,7 @@ http://aleclownes.com/2017/02/01/crt-display.html by Alec Lownes.
     animation: textShadow 0.01s infinite;
   }
 
-  .fallout h1, .fallout h2, .fallout p, .fallout label {
+  .fallout h1, .fallout h2, .fallout h3 {/*, .fallout label {
     overflow: hidden; /* Ensures the content is not revealed until the animation */
   /*  border-right: .15em solid orange; /* The typwriter cursor */
     white-space: nowrap; /* Keeps the content on a single line */

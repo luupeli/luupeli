@@ -38,6 +38,19 @@ class Home extends React.Component {
                 overlay: null,
                 music: '435958__greek555__trap-beat.mp3'
             }, {
+                style: 'normo',
+                background: 'background-normo-fancy',
+                flairLayerD: 'normo-flair',
+                flairLayerC: 'none',
+                flairLayerB: 'none',
+                flairLayerA: 'none',
+                highlight: '#222211',
+                primary: '#555544',
+                secondary: '#999988',
+                tertiary: '#EEEECC',
+                overlay: null,
+                music: '435958__greek555__trap-beat.mp3'
+            }, {
                 style: 'fallout',
                 background: 'background-fallout',
                 flairLayerD: 'none',
@@ -76,7 +89,20 @@ class Home extends React.Component {
                 tertiary: '#555599',
                 overlay: null,
                 music: '324920__frankum__cinematic-guitar-loop-and-fx.mp3'
-            }, {                             // KEY
+            }, {                                        // KEY
+                style: 'blood-dragon',                  // Name of the visual theme
+                background: 'background-blood-dragon',  // reference to the css background styling
+                flairLayerD: 'none',                    // on top of the background, a visual style can use up to 4 layers ouf 'flair'
+                flairLayerC: 'grid',                    // Layer D is the bottom most layer of flair, while layer A is the top most
+                flairLayerB: 'none',                    //
+                flairLayerA: 'blinder',                 //
+                highlight: '#ff9de1',                   // Each theme specficies four color codes. Highlight is mostly for the fonts.
+                primary: '#ff5db1',                     // Primary is the second most brightest theme color
+                secondary: '#ff2596',                   // Secondary is the middle color of the theme
+                tertiary: '#ef007c',                    // Tertiary is the darkest color of the theme
+                overlay: null,                          // Overlay can be used to add an extra layer of vfx on top of the viewport. Optional!
+                music: '351717__monkeyman535__cool-chill-beat-loop.wav'
+            }, {                                        // KEY
                 style: 'blood-dragon',                  // Name of the visual theme
                 background: 'background-blood-dragon',  // reference to the css background styling
                 flairLayerD: 'grid-sub',                // on top of the background, a visual style can use up to 4 layers ouf 'flair'
@@ -235,6 +261,10 @@ class Home extends React.Component {
         if (localMaxStyle!==null) {
             maxStyleNow=Math.max(maxStyleNow,localMaxStyle)
         }
+        if (maxStyleNow===-1) {
+            maxStyleNow=1  // The first two themes are free, no matter what!
+        }
+
         var override=false
 	
         if (this.state.allStyles[next] != null && (maxStyleNow>=next || this.state.admin || override)) {

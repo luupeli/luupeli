@@ -10,6 +10,7 @@ import Sound from 'react-sound'
 import BackButton from '../BackButton'
 import userStatistics from '../../services/userStatistics'
 import achievement from '../../menus/Achievement'
+import { Animated } from 'react-animated-css'
 
 /**
  * EndScreen is the game over/results screen of Luupeli.
@@ -259,9 +260,9 @@ class EndScreen extends React.Component {
 
 		this.retrieveScore()
 
-		let achievementUnlocked = 'Luo profiili kerätäksesi saavutuksia!'
-
-
+		let achievementLocked = 'Luo profiili kerätäksesi saavutuksia!'
+		let achievementLockedRowTwo = ''
+		let achievementUnlocked = ''
 
 		let scoreNow = this.state.localScore
 		let gamesNow = this.state.localGames
@@ -283,9 +284,51 @@ class EndScreen extends React.Component {
 		if (this.state.user !== null) {
 			if (scoreNow >= goal && gamesNow >= goalGames && (scoreBefore < goal || gamesNow - 1 < goalGames)) {
 				goal = achievement.getGoal(scoreNow, gamesNow)
-				achievementUnlocked = 'Avasit: ' + this.state.allStyles[Math.min(index, this.state.allStyles.length - 1)].style + ' (i:' + index + '),scr before:' + scoreBefore + ',goal: ' + goal + ',scrnow: ' + scoreNow + ' seur: ' + goal
+				achievementLocked='Sinulle on myönnetty uusi taitotaso: '+achievement.getRank(index)+'!'
+				let unlockedStyle = this.state.allStyles[index].style
+				if (unlockedStyle===undefined) {
+					achievementUnlocked='Onneksi olkoon, saavutit prestiisitason '+index+'!!'
+				} else {
+					if (unlockedStyle===this.state.allStyles[index-1].style) {
+						unlockedStyle=unlockedStyle+' II'
+					}
+					achievementUnlocked='Onneksi olkoon, avasit teeman '+unlockedStyle+'!!'
+				}
+
+				// achievementUnlocked = 'Avasit: ' + this.state.allStyles[Math.min(index, this.state.allStyles.length - 1)].style + ' (i:' + index + '),scr before:' + scoreBefore + ',goal: ' + goal + ',scrnow: ' + scoreNow + ' seur: ' + goal
 			} else {
-				achievementUnlocked = 'Ansaitse ' + Math.max(0, goal - scoreNow) + ' pistettä lisää ja pelaa yhteensä ' + Math.max(0, goalGames - gamesNow) + ' luupeliä seuraavaan saavutukseen (i:' + index + ')'
+				let howManyGamesUntilNextAchievement = Math.max(0, goalGames - gamesNow)
+				let howMuchScoreUntilNextAchievement = Math.max(0, goal - scoreNow)
+
+				let styleCurrent = this.state.allStyles[index].style
+				let styleNext = this.state.allStyles[index + 1].style
+
+				if (styleCurrent === styleNext) {
+					styleNext = styleNext + ' II'
+				} else if (styleNext === undefined) {
+					styleNext = '???'
+				}
+
+				let divider = ' ja '
+				if (index < 3) { divider = ' tai ' }
+
+				let suggestionAboutScore = 'Ansaitse ' + howMuchScoreUntilNextAchievement + ' pistettä lisää'
+				let suggestionAboutGames = 'Pelaa vielä ' + howManyGamesUntilNextAchievement + ' luupeli'
+				if (howManyGamesUntilNextAchievement > 1) {
+					suggestionAboutGames = suggestionAboutGames + 'ä'
+				}
+				if (howManyGamesUntilNextAchievement < 1) {
+					divider = ''
+					suggestionAboutGames = ''
+				}
+				if (howMuchScoreUntilNextAchievement < 20) {
+					divider = ''
+					suggestionAboutScore = ''
+				}
+				achievementLocked = suggestionAboutScore + divider + suggestionAboutGames
+				achievementLockedRowTwo = 'Avataksesi teeman ' + styleNext + '!'
+
+				// achievementUnlocked = 'Ansaitse ' + Math.max(0, goal - scoreNow) + ' pistettä lisää ja pelaa yhteensä ' + Math.max(0, goalGames - gamesNow) + ' luupeliä seuraavaan saavutukseen (i:' + index + ')'
 			}
 		}
 
@@ -303,7 +346,7 @@ class EndScreen extends React.Component {
 								onFinishedPlaying={this.handleSongFinishedPlaying}
 								loop="true"
 							/>
-							<div>
+							<div className="transbox">
 								<h2>Pelin kulku:</h2>
 								<Row className="show-grid">
 									<Col xs={12} md={6}>
@@ -317,10 +360,16 @@ class EndScreen extends React.Component {
 									<button type="button" className="btn btn-theme" onClick={this.proceedToReplay}>Pelaa uudestaan</button>
 									<button type="button" className="btn btn-theme" onClick={this.proceedToGameModeSelection}>Pelimoodivalikkoon</button>
 								</div>
+
+								<Animated animationIn="zoomInDown slower" animationInDelay="500" animationOutDelay="100" isVisible={true}>
+									<h3>{achievementUnlocked}</h3>
+								</Animated>
+								<h3>{achievementLocked}</h3>
+								<h3>{achievementLockedRowTwo}</h3>
 							</div>
 
 							<div>
-								<h5>{achievementUnlocked}</h5>
+
 								<h3 id="endScreenTitle">Vastauksesi olivat:</h3>
 								<div id="resultsText">
 									<div class="progress progress-fat">

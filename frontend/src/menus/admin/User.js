@@ -4,6 +4,8 @@ import userStatistics from '../../services/userStatistics'
 import { Link, Redirect } from 'react-router-dom'
 import BackButton from '../BackButton'
 import Moment from 'moment';
+import achievement from '../Achievement'
+import Achievement from '../Achievement';
 
 class User extends React.Component {
 	constructor(props) {
@@ -148,6 +150,17 @@ class User extends React.Component {
 				}} />
 			)
 		}
+		let index = Achievement.getIndex(this.state.totalScore,this.state.totalGames)
+		let rank = Achievement.getRank(index)
+
+		let progressScore = Achievement.getGoal(this.state.totalScore,this.state.totalGames)
+		let progressGames = Achievement.getGames(this.state.totalScore,this.state.totalGames)
+
+		progressScore=Math.min(1.0,this.state.totalScore/progressScore)
+		progressGames=Math.min(1.0,this.state.totalGames/progressGames)
+
+		let totalProgress = Math.round(((0.66*progressScore)+(0.33*progressGames))*100)
+
 		//If redirect is not true, AKA user is an admin, we can show them some
 		//dank information of whomever this page belongs to.
 		return (
@@ -158,11 +171,13 @@ class User extends React.Component {
 							<BackButton redirectTo='/' />
 							<font size="3"><div>
 								<h2>Käyttäjä {this.state.viewedUserName}</h2>
+								<h3>Luupeli-taitotasosi: {rank}</h3>
+								<h6>Edistymisesi seuraavalle taitotasolle: {totalProgress} %</h6>
 								{/* <p>Sähköposti: {this.state.viewedUserEmail}</p>
 								<br></br> */}
-								<p>Pisteet yhteensä: {this.state.totalScore}</p>
-								<br></br>
-								<p>Pelattuja pelejä: {this.state.totalGames}</p>
+								<h3>Pelattuja pelejä: {this.state.totalGames}</h3>
+								<h3>Pisteet yhteensä: {this.state.totalScore}</h3>
+						
 								<br></br>
 								{this.bestGame()}
 								<br></br>
