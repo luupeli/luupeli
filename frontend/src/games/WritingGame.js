@@ -306,6 +306,7 @@ class WritingGame extends React.Component {
               <input
                 id="gameTextInput"
                 type="text"
+                autocomplete="off"
                 value={this.state.value}
                 name="value"
                 onChange={this.handleChange}

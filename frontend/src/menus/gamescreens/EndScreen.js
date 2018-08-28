@@ -61,6 +61,7 @@ class EndScreen extends React.Component {
 
 	//Reinitialize a game with same settings as previous game played
 	proceedToReplay(event) {
+		this.setState({scoreRetrieved: false})
 		this.props.gameInitialization(this.props.game.gameLength, this.props.game.images, this.props.game.user,
 			this.props.game.gamemode, this.props.game.animals, this.props.game.bodyparts, this.props.game.playSound, this.props.game.gameDifficulty)
 		this.setState({ redirect: true })
@@ -284,7 +285,7 @@ class EndScreen extends React.Component {
 		if (this.state.user !== null) {
 			if (scoreNow >= goal && gamesNow >= goalGames && (scoreBefore < goal || gamesNow - 1 < goalGames)) {
 				goal = achievement.getGoal(scoreNow, gamesNow)
-				achievementLocked='Sinulle on myönnetty uusi taitotaso: '+achievement.getRank(index)+'!'
+				achievementLocked='Sinulle on myönnetty uusi arvonimi: '+achievement.getRank(index)+'!'
 				let unlockedStyle = this.state.allStyles[index].style
 				if (unlockedStyle===undefined) {
 					achievementUnlocked='Onneksi olkoon, saavutit prestiisitason '+index+'!!'
@@ -300,19 +301,34 @@ class EndScreen extends React.Component {
 				let howManyGamesUntilNextAchievement = Math.max(0, goalGames - gamesNow)
 				let howMuchScoreUntilNextAchievement = Math.max(0, goal - scoreNow)
 
-				let styleCurrent = this.state.allStyles[index].style
-				let styleNext = this.state.allStyles[index + 1].style
+				let styleCurrent =''
+				let styleNext = ''
 
-				if (styleCurrent === styleNext) {
-					styleNext = styleNext + ' II'
-				} else if (styleNext === undefined) {
-					styleNext = '???'
+				if(this.state.allStyles[index]===undefined) {
+					styleCurrent=undefined
+					styleNext=undefined
+				} else {
+					styleCurrent=this.state.allStyles[index].style   
+				}
+				if(this.state.allStyles[index+1]!==undefined) {
+					styleNext=this.state.allStyles[index + 1].style
 				}
 
+				if (styleCurrent === styleNext && styleNext!==undefined) {
+					styleNext = styleNext + ' II'
+				} 
+				
+				if (styleNext !==undefined) {
+					styleNext='Avataksesi teeman '+styleNext
+				} else {
+					styleNext = 'Lunastaaksesi seuraavan arvonimen!'
+				}
+
+			
 				let divider = ' ja '
 				if (index < 3) { divider = ' tai ' }
 
-				let suggestionAboutScore = 'Ansaitse ' + howMuchScoreUntilNextAchievement + ' pistettä lisää'
+				let suggestionAboutScore = 'Ansaitse ' + howMuchScoreUntilNextAchievement + ' pts lisää'
 				let suggestionAboutGames = 'Pelaa vielä ' + howManyGamesUntilNextAchievement + ' luupeli'
 				if (howManyGamesUntilNextAchievement > 1) {
 					suggestionAboutGames = suggestionAboutGames + 'ä'
@@ -326,10 +342,19 @@ class EndScreen extends React.Component {
 					suggestionAboutScore = ''
 				}
 				achievementLocked = suggestionAboutScore + divider + suggestionAboutGames
-				achievementLockedRowTwo = 'Avataksesi teeman ' + styleNext + '!'
+				achievementLockedRowTwo = styleNext + '!'
 
 				// achievementUnlocked = 'Ansaitse ' + Math.max(0, goal - scoreNow) + ' pistettä lisää ja pelaa yhteensä ' + Math.max(0, goalGames - gamesNow) + ' luupeliä seuraavaan saavutukseen (i:' + index + ')'
 			}
+		}
+
+		const showAchievement = () => {
+			if (achievementUnlocked.length>0) {
+ 			return (
+				<Animated animationIn="zoomInDown slower" animationInDelay="500" animationOutDelay="100" isVisible={true}>
+				<div className="endscreen-achievement"><h3>{achievementUnlocked}</h3></div>
+				</Animated>
+			) } else return null
 		}
 
 		return (
@@ -361,11 +386,9 @@ class EndScreen extends React.Component {
 									<button type="button" className="btn btn-theme" onClick={this.proceedToGameModeSelection}>Pelimoodivalikkoon</button>
 								</div>
 
-								<Animated animationIn="zoomInDown slower" animationInDelay="500" animationOutDelay="100" isVisible={true}>
-									<h3>{achievementUnlocked}</h3>
-								</Animated>
-								<h3>{achievementLocked}</h3>
-								<h3>{achievementLockedRowTwo}</h3>
+							{showAchievement()}
+								<h5>{achievementLocked}</h5>
+								<h5>{achievementLockedRowTwo}</h5>
 							</div>
 
 							<div>

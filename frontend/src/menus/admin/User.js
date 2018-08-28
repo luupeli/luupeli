@@ -171,7 +171,7 @@ class User extends React.Component {
 							<BackButton redirectTo='/' />
 							<font size="3"><div>
 								<h2>Käyttäjä {this.state.viewedUserName}</h2>
-								<h3>Luupeli-taitotasosi: {rank}</h3>
+								<h3>Arvonimesi: {rank}</h3>
 								<h6>Edistymisesi seuraavalle taitotasolle: {totalProgress} %</h6>
 								{/* <p>Sähköposti: {this.state.viewedUserEmail}</p>
 								<br></br> */}

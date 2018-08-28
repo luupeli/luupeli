@@ -3,10 +3,10 @@ const scoreTier1 = 12500
 const scoreTier2 = 25000
 const scoreTier3 = 60000
 const scoreTier4 = 125000
-const scoreTier5 = 200000
-const scoreTier6 = 350000
-const scoreTier7 = 500000
-const scoreTier8 = 1000000
+const scoreTier5 = 250000
+const scoreTier6 = 450000
+const scoreTier7 = 750000
+const scoreTier8 = 1250000
 const scoreTier9 = 2500000
 
 // ScoreTier marks the amount of played games that needs to be accumulated for an achievement tier
@@ -86,7 +86,7 @@ const getRank = (index) => {
         return 'Luumestari'
     }
     if (index>9 && index<20) {
-        return 'Luumestari, '+index+'. Dan'
+        return 'Luumestari, '+(index-8)+'. Dan'
     }
     if (index>19) {
         return 'Luusensei'

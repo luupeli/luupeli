@@ -98,7 +98,12 @@ h2 {
   -webkit-text-stroke-width: 0.25px;
   -webkit-text-stroke-color: greenyellow;
 }
-
+.fallout88 .username{
+  color:white!important;
+  letter-spacing: 1.1;
+  -webkit-text-stroke-width: 0.25px;
+  -webkit-text-stroke-color: gold;
+}
 
 
 
@@ -150,7 +155,7 @@ animation: Button-Gradient 3.23s ease infinite;
 
 
 
-.App .fallout{
+.App .fallout, .App .fallout88{
   font-family: 'Press start 2p', sans-serif;
   /* font-family: 'VT323', sans-serif; */
   text-align: center;
@@ -398,8 +403,12 @@ animation: Button-Gradient 0.75s ease infinite;
   color: #88FF88 !important;
   font-family: 'Press start 2p', sans-serif;
 }
-.fallout h3, .fallout h4, .fallout h5, .fallout h6 {
+
+.fallout h3, .fallout h4, .fallout h5, .fallout h6,.fallout88 h1, .fallout88 h2, .fallout88 h3,.fallout88 h4, .fallout88 h5, .fallout88 h6 {
   font-family: 'Press start 2p', sans-serif;
+}
+.fallout88 h1, .fallout88 h2 {
+  color: #DDFF22!important;
 }
 
 .steel h3, .steel h4, .steel h5, .steel h6, .steel p {
@@ -447,19 +456,16 @@ p {
   letter-spacing: normal!important;
 }
 
-.fallout p {
+.fallout p, .fallout form,.fallout .menu-button button {
   color: #88FF88;
   font-family: 'Press start 2p', sans-serif;
 }
 
-.fallout form {
-  color: #88FF88;
+.fallout88 p, .fallout88 form,.fallout88 .menu-button button {
+  color: #DDFF22;
   font-family: 'Press start 2p', sans-serif;
 }
-.fallout .menu-button button {
-  color: #88FF88;
-  font-family: 'Press start 2p', sans-serif;
-}
+
 
 
 .steel h2 {
@@ -814,6 +820,25 @@ align-items: center;
   font-family: 'Press start 2p', sans-serif!important;
   color: #ffe34c!important;
 }
+.endscreen-achievement {
+  border: 3px solid gold;
+  background:var(--tertiary);
+}
+.endscreen-achievement h3 {
+  font-family: 'Press start 2p', sans-serif!important;
+ font-size: 6vh!important;
+ /* margin-top: 1px!important;
+ margin-bottom: 1px!important; */
+ text-align: center;
+ margin: auto!important; 
+ font-weight: bold;
+ color: gold!important;
+ text-shadow: black 0px 0px 0.5px;
+ -webkit-font-smoothing: antialiased; 
+ /* -webkit-text-stroke-width: 1.0px;
+ -webkit-text-stroke-color: black; */
+}
+
 
 div.transbox {
     margin:calc(1.1vw + 1.1vh + 0.55vmin);
@@ -948,6 +973,25 @@ body {
       rgb(19, 196, 1) 0vh, 
       rgb(5, 144, 0) 10vh, 
       rgb(3, 65, 0) 35vh, 
+      #000000 80vh);
+  
+  background-size: 100% 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  overflow: hidden;
+ 
+
+}
+.background-fallout88 {
+  width: 100vw;
+  min-height: 100vh;
+  height: 100%;
+  color: #fff;
+  background: radial-gradient(
+    180deg,
+      rgb(116, 196, 1) 0vh, 
+      rgb(69, 144, 0) 10vh, 
+      rgb(45, 65, 0) 35vh, 
       #000000 80vh);
   
   background-size: 100% 100%;

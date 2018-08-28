@@ -64,6 +64,19 @@ class Home extends React.Component {
                 overlay: 'crt',
                 music: '51239__rutgermuller__8-bit-electrohouse.wav'
             }, {
+                style: 'fallout88',
+                background: 'background-fallout88',
+                flairLayerD: 'none',
+                flairLayerC: 'none',
+                flairLayerB: 'none',
+                flairLayerA: 'none',
+                highlight: '#ffe34c',
+                primary: '#d4b100',
+                secondary: '#bb9b00',
+                tertiary: '#776100',
+                overlay: 'crt88',
+                music: '51239__rutgermuller__8-bit-electrohouse.wav'
+            }, {
                 style: 'deep-blue',
                 background: 'background-deep-blue',
                 flairLayerD: 'none',
@@ -520,7 +533,7 @@ class Home extends React.Component {
         effects.push('bounceOutLeft slower')
         effects.push('bounceOutRight slower')
         let heartEmoji = emoji.get('yellow_heart')
-        if (this.state.attractMode % 80 <= 20) {
+        if (this.state.attractMode % 80 <= 20 && this.state.bestPlayers.length>0) {   // Only show highscores if the database has actually output some names!
             // var scores = []
             var scorers = []
             var trueScorers = []
@@ -600,7 +613,7 @@ class Home extends React.Component {
                 lines.push('Toteutettu ohjelmistotuotantoprojektina Helsingin Yliopiston Tietojenkäsittelytieteen laitokselle ' + heartEmoji)
             }
             else if (this.state.attractMode % 80 <= 50) {
-                heading = 'Luupeli features music and sfx from Freesound.org'
+                heading = 'Luupeli features audio from Freesound.org'
                 lines.push('Chiptune Intro #1 by Fred1712')
                 lines.push('Electro success sound by Mativve')
                 lines.push('Error.wav by Autistic Lucario')
@@ -742,16 +755,29 @@ class Home extends React.Component {
         this.setThemeColors(i)
 
         var loggedText = 'Anonyymi Pelaaja'
+
         if (this.state.user !== null) {
-            loggedText = 'Tervetuloa, ' + this.state.user.username + '!'//|'+this.state.user.id+ ' (' + this.state.totalScore + '|' + this.state.totalGames + ')!'
+
+            loggedText = this.state.user.username //|'+this.state.user.id+ ' (' + this.state.totalScore + '|' + this.state.totalGames + ')!'
+            
+            if (loggedText.length>18) {
+                loggedText = this.state.user.username
+            }
+            else if (loggedText.length>10) {
+                loggedText = 'Hei, ' + this.state.user.username + '!'
+            }
+            else {
+                loggedText = 'Tervetuloa, '+loggedText+'!'
+            }
+            
             if (this.state.cheatsActivated) {
                 loggedText=loggedText+ '= CHEATER!'
             }
         }
 
-        var themeButtonText = 'Teema #'+i+': '+this.state.style
+        var themeButtonText = 'Teema '+i+': '+this.state.style
         if (this.state.attractMode % 15>8) {
-         themeButtonText = 'Teemoja avattu: '+Math.max(1,this.state.maxStyle)+'/'+this.state.allStyles.length
+         themeButtonText = 'Teemoja avattu: '+Math.max(2,this.state.maxStyle)+'/'+this.state.allStyles.length
         }
 
         return (
