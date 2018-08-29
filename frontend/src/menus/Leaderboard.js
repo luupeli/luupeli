@@ -63,7 +63,8 @@ class Leaderboard extends React.Component {
 				<div className={this.state.allStyles[i].background}>
           <div className={this.state.allStyles[i].style}>
 						<div className="App">
-							<h2>&#9733; Eniten pisteitä (kaikilta ajoilta) &#9733;</h2>
+							<h3>&#9733; Eniten pisteitä&#9733;</h3>
+							<h6>(Kaikkien aikojen ennätykset)</h6>
 							<BackButton redirectTo='/' />
 							<Row>
 								<Col>

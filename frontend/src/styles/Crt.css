@@ -165,7 +165,39 @@ http://aleclownes.com/2017/02/01/crt-display.html by Alec Lownes.
     animation: textShadow 0.01s infinite;
   }
 
-  .fallout h1, .fallout h2, .fallout p, .fallout label {
+  .crt88::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(18, 16, 16, 0.1);
+    opacity: 0;
+    z-index: 3;
+    pointer-events: none;
+    /* animation: flicker 1s infinite; */
+  }
+  .crt88::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(29, 24, 24, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.13), rgba(0, 255, 0, 0.05), rgba(0, 0, 255, 0.08));
+    z-index: 4;
+    background-size: 100% 4px, 4px 100%;
+    pointer-events: none;
+  }
+  .crt88 {
+    /* animation: textShadow 2s infinite; */
+  }
+
+
+  .fallout h1, .fallout h2, .fallout h3, .fallout88 h1, .fallout88 h2, .fallout88 h3 {/*, .fallout label {
     overflow: hidden; /* Ensures the content is not revealed until the animation */
   /*  border-right: .15em solid orange; /* The typwriter cursor */
     white-space: nowrap; /* Keeps the content on a single line */

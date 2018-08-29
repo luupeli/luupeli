@@ -162,12 +162,16 @@ class ScoreBoard extends React.Component {
 		}
 
 		return (
+			<div>
 			<div className="score-board">
-				<div className="col-md-6 col-md-offset-3 center-block">
+				{/* <div className="col-md-6 col-md-offset-3 center-block"> */}
 					<h3>{correctAnswers.length}/{this.props.game.gameLength}</h3>
 					<div class="progress progress-slim">
 						{progressBar}
 					</div>
+					{/* </div> */}
+					</div>
+					<div className="score-board">
 					<h3>SCORE {this.scoreToShow()}</h3>
 					<h5>TIME {Math.round((current-started)/1000)}</h5>
 					{this.reminderOfPreviousImage(this.props.progressWidth)}
@@ -190,7 +194,7 @@ class ScoreBoard extends React.Component {
 				}
 
 				return (
-					<div>
+					<div className="reminder-of-previous-answer">
 						<Animated animationIn="fadeIn" animationOut="fadeOut faster" animationInDelay="100" animationOutDelay="100" isVisible={animationActive}>
 							<h5>EDELLINEN</h5>
 							<h6>{this.state.previousImage.bone.nameLatin}</h6>

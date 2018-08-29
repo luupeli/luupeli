@@ -98,11 +98,13 @@ class WritingGame extends React.Component {
     }
 
     if (this.props.game.gameDifficulty === 'hard' && this.props.game.gameLength > this.props.game.endCounter && this.state.bonus < 1.5) {
-      points = points * 0.15 // Here we strongly penalize the 'hard mode' player for answering PREVIOUSLY incorrectly
-      points = 10;
+      points = points * 0.25 // Here we strongly penalize the 'hard mode' player for answering PREVIOUSLY incorrectly
+      // points = 10;
     }
 
     let easyBonusPenalizer = 0
+
+    let scoreFlashStyle =''
 
     if (this.props.game.gameDifficulty === 'easy') {
       points = points * 0.5
@@ -123,6 +125,7 @@ class WritingGame extends React.Component {
     }
 
     if (answerCorrectness > 99) {
+      scoreFlashStyle='correct'
       points = points * 5
       correctness = 'Oikein'
       this.setState({ animationActive: false, streakWG: currentStreak + 1, bonus: currentBonus + 1.0 + hardBonus, value: '', previousRevealClock: 0, partialEasyAnswer: '__', easyDifficultyPenalty: 1.0 })
@@ -134,8 +137,10 @@ class WritingGame extends React.Component {
       streakEmoji = streakEmoji.get('fire')
       console.log(streakEmoji)
     } else {
+      scoreFlashStyle='almostcorrect'
       if (this.props.game.gameDifficulty === 'hard') {
         points = 40 * currentBonus
+  
       }
 
       this.setState({ animationActive: false, streakWG: 0, bonus: 1.0, value: '', previousRevealClock: 0, partialEasyAnswer: '__', easyDifficultyPenalty: 1.0 })
@@ -152,20 +157,25 @@ class WritingGame extends React.Component {
 
     //Check answered animal and score accordingly
     if (this.state.imgAnimal === this.props.game.currentImage.animal.name) {
-      points = Math.round(points * 2.5)
+      if (this.props.game.animals.length>2) {
+      points = Math.round(points * (this.props.game.animals.length/1.5)) // You need to choose atleast 3 animal species in order to get this bonus
+      }
+      scoreFlashStyle='supercorrect'
+      streakEmoji='Oikea eläin!'
     } else if (this.state.imgAnimal !== "none") {
       points = Math.round(points * 0.5)
     }
 
     points = Math.round(points / 20) * 20
     if (answerCorrectness <= 70) {
+      scoreFlashStyle='incorrect'
       correctness = 'Väärin'
       points = 0
     }
 
     console.log(' points ennen talennusta: ' + points)
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
-    this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 2.5, true)
+    this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, scoreFlashStyle, 2.5, true)
 
     let answerMoment = this.gameClockUnits()
     let answerCurrentImage = this.props.game.currentImage
@@ -296,13 +306,16 @@ class WritingGame extends React.Component {
               <input
                 id="gameTextInput"
                 type="text"
+                autocomplete="off"
                 value={this.state.value}
                 name="value"
                 onChange={this.handleChange}
               />
             </div>
+            <div className="container">
             {animalRadioNoAnimal()}
             {animalRadio}
+            </div>
             <div className="btn-group">
               <button classname="gobackbutton" type="submit" id="submitButton">Vastaa</button>
             </div>
@@ -405,7 +418,7 @@ class WritingGame extends React.Component {
 
     let cheat = ''
     if (this.props.game.gameDifficulty === 'easy' && this.state.animationActive) {
-      if (currentMoment - timeToCompare > 5000) {
+      if (currentMoment - timeToCompare > 6000) {
         cheat = this.state.partialEasyAnswer
       } else {
         cheat = '____'

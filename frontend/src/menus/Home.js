@@ -38,6 +38,19 @@ class Home extends React.Component {
                 overlay: null,
                 music: '435958__greek555__trap-beat.mp3'
             }, {
+                style: 'normo',
+                background: 'background-normo-fancy',
+                flairLayerD: 'normo-flair',
+                flairLayerC: 'none',
+                flairLayerB: 'none',
+                flairLayerA: 'none',
+                highlight: '#222211',
+                primary: '#555544',
+                secondary: '#999988',
+                tertiary: '#EEEECC',
+                overlay: null,
+                music: '435958__greek555__trap-beat.mp3'
+            }, {
                 style: 'fallout',
                 background: 'background-fallout',
                 flairLayerD: 'none',
@@ -49,6 +62,19 @@ class Home extends React.Component {
                 secondary: '#229922',
                 tertiary: '#115511',
                 overlay: 'crt',
+                music: '51239__rutgermuller__8-bit-electrohouse.wav'
+            }, {
+                style: 'fallout88',
+                background: 'background-fallout88',
+                flairLayerD: 'none',
+                flairLayerC: 'none',
+                flairLayerB: 'none',
+                flairLayerA: 'none',
+                highlight: '#ffe34c',
+                primary: '#d4b100',
+                secondary: '#bb9b00',
+                tertiary: '#776100',
+                overlay: 'crt88',
                 music: '51239__rutgermuller__8-bit-electrohouse.wav'
             }, {
                 style: 'deep-blue',
@@ -76,7 +102,20 @@ class Home extends React.Component {
                 tertiary: '#555599',
                 overlay: null,
                 music: '324920__frankum__cinematic-guitar-loop-and-fx.mp3'
-            }, {                             // KEY
+            }, {                                        // KEY
+                style: 'blood-dragon',                  // Name of the visual theme
+                background: 'background-blood-dragon',  // reference to the css background styling
+                flairLayerD: 'none',                    // on top of the background, a visual style can use up to 4 layers ouf 'flair'
+                flairLayerC: 'grid',                    // Layer D is the bottom most layer of flair, while layer A is the top most
+                flairLayerB: 'none',                    //
+                flairLayerA: 'blinder',                 //
+                highlight: '#ff9de1',                   // Each theme specficies four color codes. Highlight is mostly for the fonts.
+                primary: '#ff5db1',                     // Primary is the second most brightest theme color
+                secondary: '#ff2596',                   // Secondary is the middle color of the theme
+                tertiary: '#ef007c',                    // Tertiary is the darkest color of the theme
+                overlay: null,                          // Overlay can be used to add an extra layer of vfx on top of the viewport. Optional!
+                music: '351717__monkeyman535__cool-chill-beat-loop.wav'
+            }, {                                        // KEY
                 style: 'blood-dragon',                  // Name of the visual theme
                 background: 'background-blood-dragon',  // reference to the css background styling
                 flairLayerD: 'grid-sub',                // on top of the background, a visual style can use up to 4 layers ouf 'flair'
@@ -235,6 +274,10 @@ class Home extends React.Component {
         if (localMaxStyle!==null) {
             maxStyleNow=Math.max(maxStyleNow,localMaxStyle)
         }
+        if (maxStyleNow===-1) {
+            maxStyleNow=1  // The first two themes are free, no matter what!
+        }
+
         var override=false
 	
         if (this.state.allStyles[next] != null && (maxStyleNow>=next || this.state.admin || override)) {
@@ -490,7 +533,7 @@ class Home extends React.Component {
         effects.push('bounceOutLeft slower')
         effects.push('bounceOutRight slower')
         let heartEmoji = emoji.get('yellow_heart')
-        if (this.state.attractMode % 80 <= 20) {
+        if (this.state.attractMode % 80 <= 20 && this.state.bestPlayers.length>0) {   // Only show highscores if the database has actually output some names!
             // var scores = []
             var scorers = []
             var trueScorers = []
@@ -570,7 +613,7 @@ class Home extends React.Component {
                 lines.push('Toteutettu ohjelmistotuotantoprojektina Helsingin Yliopiston Tietojenkäsittelytieteen laitokselle ' + heartEmoji)
             }
             else if (this.state.attractMode % 80 <= 50) {
-                heading = 'Luupeli features music and sfx from Freesound.org'
+                heading = 'Luupeli features audio from Freesound.org'
                 lines.push('Chiptune Intro #1 by Fred1712')
                 lines.push('Electro success sound by Mativve')
                 lines.push('Error.wav by Autistic Lucario')
@@ -712,16 +755,29 @@ class Home extends React.Component {
         this.setThemeColors(i)
 
         var loggedText = 'Anonyymi Pelaaja'
+
         if (this.state.user !== null) {
-            loggedText = 'Tervetuloa, ' + this.state.user.username + '!'//|'+this.state.user.id+ ' (' + this.state.totalScore + '|' + this.state.totalGames + ')!'
+
+            loggedText = this.state.user.username //|'+this.state.user.id+ ' (' + this.state.totalScore + '|' + this.state.totalGames + ')!'
+            
+            if (loggedText.length>18) {
+                loggedText = this.state.user.username
+            }
+            else if (loggedText.length>10) {
+                loggedText = 'Hei, ' + this.state.user.username + '!'
+            }
+            else {
+                loggedText = 'Tervetuloa, '+loggedText+'!'
+            }
+            
             if (this.state.cheatsActivated) {
                 loggedText=loggedText+ '= CHEATER!'
             }
         }
 
-        var themeButtonText = 'Teema #'+i+': '+this.state.style
+        var themeButtonText = 'Teema '+i+': '+this.state.style
         if (this.state.attractMode % 15>8) {
-         themeButtonText = 'Teemoja avattu: '+Math.max(1,this.state.maxStyle)+'/'+this.state.allStyles.length
+         themeButtonText = 'Teemoja avattu: '+Math.max(2,this.state.maxStyle)+'/'+this.state.allStyles.length
         }
 
         return (

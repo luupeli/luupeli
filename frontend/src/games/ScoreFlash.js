@@ -51,7 +51,7 @@ class ScoreFlash extends React.Component {
 	 * Also, "zero points" should probably have some noticeable vfx as well.
 	 */
 	render() {
-		const style = 'scoreflash'   // <--- PLACEHOLDER CSS EFFECT!!! {this.props.scoreflash.score}
+		const style = this.props.scoreflash.style //'scoreflash'   // <--- PLACEHOLDER CSS EFFECT!!! {this.props.scoreflash.score}
 		var gameClock = new Date().getTime() - this.props.scoreflash.startTime
 		const scoreActual = this.props.scoreflash.score
 
@@ -63,14 +63,21 @@ class ScoreFlash extends React.Component {
 		let durationOfScoreRiseForSound = Math.min(30, (scoreActual / 10) + 5) + 5
 		//	position="fixed"
 
-		let rowtext =
+		let rowtext = ''
 			//this.props.scoreflash.streak + '' + 
 			//this.props.scoreflash.streakemoji + '' +
-			'' + scoreShown + ''.toString()//+ ''+this.props.scoreflash.streakemoji
+		let scoreText =	'' + scoreShown + ''.toString()//+ ''+this.props.scoreflash.streakemoji
 
 		if (scoreActual === 0) {
-			rowtext = this.props.scoreflash.streakemoji + 'VÄÄRIN!' + this.props.scoreflash.streakemoji
+			rowtext = 'VÄÄRIN!'//this.props.scoreflash.streakemoji + 'VÄÄRIN!' + this.props.scoreflash.streakemoji
+		} else if (style==='almostcorrect') {
+			rowtext = 'AIKA LÄHELLE!'
+		} else if (style==='correct') {
+			rowtext = 'OIKEIN!'
+		} else {
+			rowtext = 'NIMI & ELÄIN OIKEIN!!'
 		}
+	
 		var rowtextLeft = rowtext.substring(0, rowtext.length / 2)
 		var rowtextRight = rowtext.substring(rowtext.length / 2, rowtext.length)
 		var playStatus = Sound.status.PLAYING
@@ -78,10 +85,10 @@ class ScoreFlash extends React.Component {
 			playStatus = Sound.status.STOPPED
 		}
 
-		return (<div className="scoreflash-position">
+		return (<div className="scoreflash-position" z-index="1000">
 			<Animated animationIn="bounceInDown faster" animationOut="bounceOutUp faster" isVisible={this.props.scoreflash.visibility}>
 				<div
-					className={style}
+					className="scoreflash"
 					role="alert"
 					text-align="center"
 					vertical-align="middle"
@@ -90,16 +97,22 @@ class ScoreFlash extends React.Component {
 					position="relative"
 					margin="5px"
 				>
+				<div className={style} z-index="1000">
 
-				<Animated animationIn="zoomIn faster" animationOut="zoomOut faster" isVisible={this.props.scoreflash.visibility}>	<h3>{rowtext}</h3></Animated>
+				<Animated animationIn="zoomIn faster" animationOut="zoomOut faster" isVisible={this.props.scoreflash.visibility}>
+					<h6>{rowtext}</h6>
+					<h2>{scoreText}</h2>
+					<h6>{this.props.scoreflash.streak}</h6>
+				</Animated>
 					{/* <h3>{this.props.scoreflash.streak}{this.props.scoreflash.streakemoji}</h3> */}
 
 					 {/* <h3><Animated animationIn="bounceInLeft faster" animationOut="bounceOutLeft faster" isVisible={this.props.scoreflash.visibility}>{rowtextLeft}</Animated>
 					 	<Animated animationIn="bounceInRight faster" animationOut="bounceOutRight faster" isVisible={this.props.scoreflash.visibility}>{rowtextRight}</Animated>
 					 </h3> */}
 
-					<Animated animationIn="bounceInUp faster" animationOut="bounceOutDown faster" isVisible={this.props.scoreflash.visibility}><h3>{this.props.scoreflash.streak}{this.props.scoreflash.streakemoji}</h3></Animated>
+					{/* <Animated animationIn="bounceInUp faster" animationOut="bounceOutDown faster" isVisible={this.props.scoreflash.visibility}><h3>{this.props.scoreflash.streak}{this.props.scoreflash.streakemoji}</h3></Animated> */}
 
+				</div>
 				</div>
 			</Animated>
 			{this.handleSound(scoreActual,playStatus)}
