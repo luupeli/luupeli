@@ -1589,6 +1589,15 @@ https://codepen.io/George-Payne/pen/qOrxao
 	width: 100%;
 }
 
+.text-light {
+	color: #fff;
+}
+
+.text-big {
+	margin-top: 3px;
+	font-size: 13px;
+}
+
 .scoreflash-position-mobile {
 	position:absolute;
 	margin-top: -10%;

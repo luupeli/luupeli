@@ -144,24 +144,24 @@ class EndScreen extends React.Component {
 		const correctAnswer = () => {
 			if (this.props.game.gameDifficulty === 'hard') {
 				return (
-					<p><b>{answer.image.bone.nameLatin}, {answer.image.animal.name}</b></p>
+					<p className="text-light"><b>{answer.image.bone.nameLatin}, {answer.image.animal.name}</b></p>
 				)
 			}
 
 			return (
-				<p><b>{answer.image.bone.nameLatin}</b></p>
+				<p className="text-light"><b>{answer.image.bone.nameLatin}</b></p>
 			)
 		}
 
 		const playerAnswer = () => {
 			if (this.props.game.gameDifficulty === 'hard' && answer.animal !== 'none') {
 				return (
-					<p>Vastasit: {answer.answer}, {answer.animal}</p>
+					<p className="text-light">Vastasit: {answer.answer}, {answer.animal}</p>
 				)
 			}
 
 			return (
-				<p>Vastasit: {answer.answer}</p>
+				<p className="text-light">Vastasit: {answer.answer}</p>
 			)
 		}
 
@@ -180,8 +180,8 @@ class EndScreen extends React.Component {
 					<Col xs={6} md={6} lg={6} bsClass="text-bg col">
 						{correctAnswer()}
 						{playerAnswer()}
-						<p>Aika: {answer.seconds / 1000} s</p>
-						<p>Pisteet: {answer.score}</p>
+						<p className="text-light">Aika: {answer.seconds / 1000} s</p>
+						<p className="text-light">Pisteet: {answer.score}</p>
 						<p className={gradeMarkClass}>{gradeMark}</p>
 					</Col>
 				</Row>
@@ -324,9 +324,9 @@ class EndScreen extends React.Component {
 								<h3 id="endScreenTitle">Vastauksesi olivat:</h3>
 								<div id="resultsText">
 									<div class="progress progress-fat">
-										<div class="progress-bar progress-bar-fat progress-bar-success" style={{ width: correctPortion + "%" }} role="progressbar" aria-valuenow={correctPortion} aria-valuemin="0" aria-valuemax="100">Täysin oikein {correctPortion}%</div>
-										<div class="progress-bar progress-bar-fat progress-bar-warning" style={{ width: almostCorrectPortion + "%" }} role="progressbar" aria-valuenow={almostCorrectPortion} aria-valuemin="0" aria-valuemax="100">Melkein oikein {almostCorrectPortion}%</div>
-										<div class="progress-bar progress-bar-fat progress-bar-danger" style={{ width: wrongPortion + "%" }} role="progressbar" aria-valuenow={wrongPortion} aria-valuemin="0" aria-valuemax="100">Väärin {wrongPortion}%</div>
+										<div class="progress-bar progress-bar-fat progress-bar-success" style={{ width: correctPortion + "%" }} role="progressbar" aria-valuenow={correctPortion} aria-valuemin="0" aria-valuemax="100"><p className="text-big">Täysin oikein {correctPortion}%</p></div>
+										<div class="progress-bar progress-bar-fat progress-bar-warning" style={{ width: almostCorrectPortion + "%" }} role="progressbar" aria-valuenow={almostCorrectPortion} aria-valuemin="0" aria-valuemax="100"><p className="text-big">Melkein oikein {almostCorrectPortion}%</p></div>
+										<div class="progress-bar progress-bar-fat progress-bar-danger" style={{ width: wrongPortion + "%" }} role="progressbar" aria-valuenow={wrongPortion} aria-valuemin="0" aria-valuemax="100"><p className="text-big">Väärin {wrongPortion}%</p></div>
 									</div>
 									{this.renderAnswers()}
 								</div>
