@@ -74,6 +74,24 @@ h2 {
   z-index: 11;
 }
 
+.admin-h2 {
+	font-size:calc(2vw + 1.2vh + 0.7vmin);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.admin-bg {
+	background-color: #edf1f4;
+}
+
+.text-dark {
+	color: #343B42;
+}
+
+.full-width {
+	width: 90%;
+}
+
 .page-title {
   display: block;
   width: 100%;

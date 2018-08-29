@@ -397,7 +397,7 @@ class UpdateBone extends React.Component {
 
 		const boneFields = () => {
 			return (
-				<div>
+				<div className="text-dark">
 					<Row className="show-grid luunTiedot">
 						<Col xs={12} md={4}>
 							{this.textField('nameLatin', 'Latinankielinen nimi', this.state.nameLatin, this.handleChange)}
@@ -471,7 +471,7 @@ class UpdateBone extends React.Component {
 
 		const imageFields = (i, handler, value) => {
 			return (
-				<div>
+				<div className="text-dark">
 					<Row className="show-grid">
 						<Col xs={12} md={4}>
 							<FormGroup controlId="animal">
@@ -545,8 +545,8 @@ class UpdateBone extends React.Component {
 		}
 
 		return (
-			<div className="menu-background">
-				<Grid>
+			<div className="admin-bg">
+				<Grid bsClass="full-width container">
 					<div className="App">
 						<Row className="show-grid">
 							<Col xs={12} md={8}>
@@ -562,14 +562,14 @@ class UpdateBone extends React.Component {
 						</Row>
 						<Row className="show-grid">
 							<Col xs={12} md={12} className="pull-left">
-								<h2 className="titleStyle"><Label className="labelStyle">Luun tiedot</Label></h2>
+								<h2 className="titleStyle"><Label className="text-info">Luun tiedot</Label></h2>
 							</Col>
 						</Row>
-						<form onSubmit={this.handleSubmit} enctype="multipart/form-data">
+						<form className="full-width" onSubmit={this.handleSubmit} enctype="multipart/form-data">
 							{boneFields()}
 							<Row className="show-grid">
 								<Col xs={12} md={12} className="pull-left">
-									<h2 className="titleStyle"><Label className="labelStyle">Kuvat</Label></h2>
+									<h2 className="titleStyle"><Label className="text-info">Kuvat</Label></h2>
 								</Col>
 							</Row>
 							{this.state.images.map((file, i) => <li key={file.id} id={"bone" + i} className="list-group-item clearfix listStyle">
@@ -604,7 +604,7 @@ class UpdateBone extends React.Component {
 							)}
 							<Row className="show-grid">
 								<Col xs={12} md={12} className="pull-left">
-									<h2 className="titleStyle"><Label className="labelStyle">Uudet kuvat</Label></h2>
+									<h2 className="titleStyle"><Label className="text-info">Uudet kuvat</Label></h2>
 								</Col>
 							</Row>
 							<ul className="list-group">

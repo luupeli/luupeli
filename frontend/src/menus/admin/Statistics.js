@@ -7,6 +7,7 @@ import { DateRange } from 'react-date-range';
 import Moment from 'moment';
 import { Row, Col } from 'react-bootstrap'
 import getUrl from '../../services/urls'
+import BackButton from '../BackButton'
 
 //Statistics-page shows stats about the game to the admin, like how many games have been played.
 class Statistics extends React.Component {
@@ -182,17 +183,17 @@ class Statistics extends React.Component {
 		if (this.state.gameSessionsFiltered.length === 0) {
 			if (!this.state.loaded) {
 				return (
-					<p>Ladataan tietoja..</p>
+					<p className="text-dark">Ladataan tietoja..</p>
 				)
 			} else {
 				return (
-					<p>Pelejä ei löytynyt valitulla aikavälillä!</p>
+					<p className="text-dark">Pelejä ei löytynyt valitulla aikavälillä!</p>
 				)
 			}
 		} else {
 			return (
 				<div>
-					<div>
+					<div className="text-dark">
             <p>{this.state.timeMessage}</p>
 						<p>Pelejä pelattu kirjautuneiden käyttäjien osalta: {this.state.gamesByLoggedInUsers} kpl </p>
 						<p>Pelejä pelattu anonyymien käyttäjien osalta: {this.state.gamesByAnonymousUsers} kpl </p>
@@ -203,19 +204,19 @@ class Statistics extends React.Component {
 						<p>Peliä pelattu yhteensä: {this.secondsToHourMinuteSecond(this.state.timePlayed)}</p>
 					</div>
 					<div>
-            <h4>Helpoimmat kuvat top 10</h4>
+            <h4 className="text-info">Helpoimmat kuvat top 10</h4>
             <Row>
               <Col>
                 {this.state.top10EasiestImages.map((image, idx) => {
-                  return <a href={getUrl() + "/update/" + image.id}>| {idx + 1}. {image.bone.nameLatin} {Math.round(image.correctness)} | </a>
+                  return <a className="text-muted" href={getUrl() + "/update/" + image.id}>| {idx + 1}. {image.bone.nameLatin} {Math.round(image.correctness)} | </a>
                 })}
               </Col>
             </Row>
-            <h4>Vaikeimmat kuvat top 10</h4>
+            <h4 className="text-info">Vaikeimmat kuvat top 10</h4>
             <Row>
               <Col>
                 {this.state.top10HardestImages.map((image, idx) => {
-                  return <a href={getUrl() + "/update/" + image.id}>| {idx + 1}. {image.bone.nameLatin} {Math.round(image.correctness)}  |  </a>
+                  return <a className="text-muted" href={getUrl() + "/update/" + image.id}>| {idx + 1}. {image.bone.nameLatin} {Math.round(image.correctness)}  |  </a>
                 })}
               </Col>
             </Row>
@@ -235,17 +236,15 @@ class Statistics extends React.Component {
 			)
 		}
 		return (
-			<div className="menu-background App">
-				<Link to='/admin'>
-					<button className="gobackbutton">Takaisin</button>
-				</Link>
+			<div className="App admin-bg">
+				<BackButton redirectTo='/admin' />
 				<div className="App menu">
 					<DateRange
 						maxDate={Date.now()}
 						onChange={this.updateDate}
 					/>
 				</div>
-				<h2>Pelin statistiikka</h2>
+				<h2 className="admin-h2 text-info">Pelin statistiikka</h2>
 				<div id='gameStatistics'>
 					{this.statsJSX()}
 				</div>

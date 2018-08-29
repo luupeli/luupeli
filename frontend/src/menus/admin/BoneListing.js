@@ -3,6 +3,7 @@ import boneService from '../../services/bones'
 import { Link, Redirect } from 'react-router-dom'
 import { ToggleButtonGroup, ToggleButton, Row, Col, Grid, FormControl } from 'react-bootstrap'
 import { connect } from 'react-redux'
+import BackButton from '../BackButton'
 
 class BoneListing extends React.Component {
 
@@ -129,11 +130,9 @@ class BoneListing extends React.Component {
 		console.log(bonesToShow)
 
 		return (
-			<div className="menu-background">
+			<div className="admin-bg">
 				<div className="App">
-					<Link to='/admin'>
-						<button className="gobackbutton">Takaisin</button>
-					</Link>
+					<BackButton redirectTo='/admin' />
 					<div>
 						<Grid>
 							<div id="listGroup" className="list-group">
