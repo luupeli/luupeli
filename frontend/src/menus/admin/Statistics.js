@@ -7,6 +7,7 @@ import { DateRange } from 'react-date-range';
 import Moment from 'moment';
 import { Row, Col } from 'react-bootstrap'
 import getUrl from '../../services/urls'
+import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
 
 //Statistics-page shows stats about the game to the admin, like how many games have been played.
 class Statistics extends React.Component {
@@ -34,8 +35,9 @@ class Statistics extends React.Component {
 		this.setGameTypes = this.setGameModes.bind(this)
     this.setGamesPlayedByLoggedInUsers = this.setGamesPlayedByLoggedInUsers.bind(this)
     this.setImages = this.setImages.bind(this)
-	this.updateDate = this.updateDate.bind(this)
-    this.secondsToHourMinuteSecond = this.secondsToHourMinuteSecond.bind(this)
+		this.updateDate = this.updateDate.bind(this)
+		this.secondsToHourMinuteSecond = this.secondsToHourMinuteSecond.bind(this)
+		this.handleSetMounted = this.handleSetMounted.bind(this);
 	}
 
 	// Checks if the user is admin, and loads initial data to state. 
@@ -68,8 +70,16 @@ class Statistics extends React.Component {
 		} else {
 			this.setState({ redirect: true, redirectTo: '/' })
 		}
+		setTimeout(() => {
+      this.handleSetMounted();
+    }, 500)
   }
 
+	handleSetMounted() {
+    this.setState({
+      hasMounted: true
+    })
+  }
 	// Removes images from getted images that haven't been guessed.
 	// Then the method orders them on ascending order by difficulty, and places top 10 hardest/easiest images on state.
   setImages(images) {
@@ -77,14 +87,14 @@ class Statistics extends React.Component {
         console.log(image.correctness)
         return image.correctness !== undefined
     })
-    filteredImages.sort((a, b) => a.correctness - b.correctness)
+    filteredImages.sort((a, b) => (a.correctness / a.attempts) - (b.correctness / b.attempts))
     this.setState({ allImages : filteredImages })
 
     const top10EasiestImages = filteredImages.slice(filteredImages.length - 10)
     this.setState({ top10EasiestImages })
 
     var top10HardestImages = filteredImages.slice(0, 10)
-    top10HardestImages.sort((a, b) => a.correctness - b.correctness)
+    top10HardestImages.sort((a, b) => (a.correctness / a.attempts) - (b.correctness - b.attempts))
     
     this.setState({ top10HardestImages })
   }
@@ -174,11 +184,11 @@ class Statistics extends React.Component {
 		this.setState({ gamesByLoggedInUsers })
 		let gamesByAnonymousUsers = updatedGameSessions.length - gamesByLoggedInUsers
 		this.setState({ gamesByAnonymousUsers })
-  }
-  
+	}
 
 	//returns stats or an informative message
 	statsJSX() {
+
 		if (this.state.gameSessionsFiltered.length === 0) {
 			if (!this.state.loaded) {
 				return (
@@ -204,21 +214,40 @@ class Statistics extends React.Component {
 					</div>
 					<div>
             <h4>Helpoimmat kuvat top 10</h4>
-            <Row>
-              <Col>
-                {this.state.top10EasiestImages.map((image, idx) => {
-                  return <a href={getUrl() + "/update/" + image.id}>| {idx + 1}. {image.bone.nameLatin} {Math.round(image.correctness)} | </a>
-                })}
-              </Col>
-            </Row>
+						{this.state.top10EasiestImages.map((image, idx) => {
+							console.log(image.url)
+							return (
+							<div key={image.id} id={"bone" + idx}> 
+								<p>{image.bone.nameLatin}, {image.animal.name}</p>
+								<small>Vastattu: {image.attempts} kertaa || </small>
+								<small>Täysin oikein: {image.correctAttempts} kertaa || </small>
+								<small>Oikeellisuuskeskiarvo: {Math.round(image.correctness / image.attempts)}</small>
+								
+								{/* <CloudinaryContext cloudName="luupeli">
+									<Image publicId={image.url}>
+										<Transformation width={imageWidth()} crop='fill' />
+									</Image>
+								</CloudinaryContext> */}
+							</div>
+							)
+						})}
             <h4>Vaikeimmat kuvat top 10</h4>
-            <Row>
-              <Col>
-                {this.state.top10HardestImages.map((image, idx) => {
-                  return <a href={getUrl() + "/update/" + image.id}>| {idx + 1}. {image.bone.nameLatin} {Math.round(image.correctness)}  |  </a>
-                })}
-              </Col>
-            </Row>
+						{this.state.top10HardestImages.map((image, idx) => {
+							console.log(image.url)
+							return (
+							<div key={image.id} id={"bone" + idx}> 
+								<p>{image.bone.nameLatin}, {image.animal.name}</p>
+								<small>Vastattu: {image.attempts} kertaa || </small>
+								<small>Täysin oikein: {image.correctAttempts} kertaa || 	</small>
+								<small>Oikeellisuuskeskiarvo: {Math.round(image.correctness / image.attempts)}</small>
+								<CloudinaryContext cloudName="luupeli">
+									<Image publicId={image.url}>
+										<Transformation width="200" crop="scale" />
+									</Image>
+								</CloudinaryContext>
+							</div>
+							)
+						})}
 					</div>
 				</div>
 			)
@@ -227,6 +256,7 @@ class Statistics extends React.Component {
 
 	render() {
 		Moment.locale('en');
+
 		if (this.state.redirect) {
 			return (
 				<Redirect to={{

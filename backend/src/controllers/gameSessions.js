@@ -74,8 +74,9 @@ gameSessionsRouter.post('/', async (request, response) => {
 			}
 
 			if (oldImage.correctAttempts !== undefined) {
+				gameCorrectAttempts = oldImage.correctAttempts
 				if (body.answers[i].correctness === 100) {
-					gameCorrectAttempts = oldImage.correctAttempts + 1
+					gameCorrectAttempts += 1
 				}
 			} else {
 				if (body.answers[i].correctness === 100) {
@@ -83,8 +84,8 @@ gameSessionsRouter.post('/', async (request, response) => {
 				}
 			}
 
-			if (oldImage.gameCorrectness !== undefined) {
-				gameCorrectness = gameCorrectness + oldImage.correctness
+			if (oldImage.correctness !== undefined) {
+				gameCorrectness += oldImage.correctness
 			}
 
 			console.log(gameCorrectness)
