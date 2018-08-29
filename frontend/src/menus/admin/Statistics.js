@@ -242,7 +242,7 @@ class Statistics extends React.Component {
 								<small>Oikeellisuuskeskiarvo: {Math.round(image.correctness / image.attempts)}</small>
 								<CloudinaryContext cloudName="luupeli">
 									<Image publicId={image.url}>
-										<Transformation width="200" crop="scale" />
+										{/* <Transformation width="200" crop="scale" /> */}
 									</Image>
 								</CloudinaryContext>
 							</div>
