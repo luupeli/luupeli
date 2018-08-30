@@ -17,9 +17,9 @@ beforeEach(async () => {
 	await page.setViewport({ width: 1280, height: 800 })
 	await page.goto('http://localhost:' + port)
 	await page.waitFor(100)
-	await page.goto('http://localhost:' + port + '/gamemode')
+	await page.click('#proceedToSelectGameMode')
 	await page.waitFor(100)
-	await page.goto('http://localhost:' + port + '/settings')
+	await page.click('#luupeliinButton')
 })
 
 afterEach(async () => {
