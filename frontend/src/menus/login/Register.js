@@ -22,8 +22,6 @@ class Register extends React.Component {
 
         this.signUp = this.signUp.bind(this)
         this.handleSignUpFieldChange = this.handleSignUpFieldChange.bind(this)
-
-        window.onunload = function() { window.location.href = '/' };
     }
 
     componentDidMount() {
@@ -195,7 +193,7 @@ class Register extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                            <BackButton redirectTo='/' groupStyle="btn-group" buttonStyle="gobackbutton" />
+                            <BackButton action={() => this.props.history.push('/')} groupStyle="btn-group" buttonStyle="gobackbutton" />
                         </div>
                     </div>
                 </div>

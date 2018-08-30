@@ -470,7 +470,7 @@ class Home extends React.Component {
                                 <button
                                     id='logout-button'
                                     className='menu-button'
-                                    onClick={() => this.props.history.push('/login')}>
+                                    onClick={this.logOut}>
                                     Kirjaudu ulos
                                 </button>
                             </Animated>
