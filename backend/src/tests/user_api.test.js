@@ -63,27 +63,6 @@ describe.only('when there is initially one user in database', async () => {
       }
     })
 
-    test('succesfully adds valid user by POST /api/users with an email', async () => {
-      const usersAtStart = await usersInDb()
-
-      const newUser = {
-        username: 'sukkasaukko',
-        email: 'leluelukka@luu.lol',
-        password: 'kissakiisseli'
-      }
-
-      await api
-        .post(url)
-        .send(newUser)
-
-      const usersAfterPost = await usersInDb()
-      expect(usersAfterPost.length).toBe(usersAtStart.length + 1)
-
-      const emails = usersAfterPost.map(u => u.email)
-      expect(emails).toContain('leluelukka@luu.lol')
-
-    })
-
     test('status code 400 is returned when attempting to POST /api/users is done with missing name', async () => {
       const usersAtStart = await usersInDb()
       const newUser = {
