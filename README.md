@@ -3,6 +3,8 @@
 [![Build 
 Status](https://travis-ci.org/luupeli/luupeli.svg?branch=master)](https://travis-ci.org/luupeli/luupeli)
 
+[Demo presentation](https://docs.google.com/presentation/d/1KM55mybWX6Kvc9l4wOJiYRdYG7cqD0-X4VcanjF5XzI/edit?usp=sharing)
+
 [Backlog](https://docs.google.com/spreadsheets/d/1b66WPYF05FefrFPH069sPz5Ew2VdkUd1fpNZGQjryEQ/edit?usp=sharing)
 
 [The project on Heroku](http://luupeli.herokuapp.com/)
