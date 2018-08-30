@@ -20,7 +20,7 @@ mongoose.Promise = global.Promise
 // Configure app to use cors, parser, logger, etc...
 app.use(cors())
 app.use(require('body-parser').json())
-app.use(express.static('../frontend/build'))
+app.use('/', express.static('../frontend/build'))
 app.use(require('./utils/middleware').logger)
 app.use('/api/users', require('./controllers/users'))
 app.use('/api/login', require('./controllers/login'))
@@ -31,7 +31,7 @@ app.use('/api/bodyparts', require('./controllers/bodyParts'))
 app.use('/api/answers', require('./controllers/answers'))
 app.use('/api/best_answers', require('./controllers/bestAnswers'))
 app.use('/api/gamesessions', require('./controllers/gameSessions'))
-// app.use('/api/*', require('./utils/middleware').error)
+app.use('/api/', require('./utils/middleware').error)
 
 // Create a server
 const server = http.createServer(app)
