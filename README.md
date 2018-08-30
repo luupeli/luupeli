@@ -8,10 +8,4 @@ Status](https://travis-ci.org/luupeli/luupeli.svg?branch=master)](https://travis
 
 [Program logic](logic.md)
 
-## Seuraava asiakastapaaminen: ti 28.8. klo 14.30-17.00 (asiakas saapuu klo 15)
--> huom! tilavaraus tekemättä!
-
-### Ryhmätapaamiset elokuussa:
-* Ma klo 17.45-
-* Ke klo 16.15-
-
+### [Please see the Luupeli wiki for further information!](https://github.com/luupeli/luupeli/wiki)
