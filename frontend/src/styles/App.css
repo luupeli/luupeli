@@ -137,7 +137,12 @@ h2 {
   -webkit-text-stroke-width: 0.25px;
   -webkit-text-stroke-color: greenyellow;
 }
-
+.fallout88 .username{
+  color:white!important;
+  letter-spacing: 1.1;
+  -webkit-text-stroke-width: 0.25px;
+  -webkit-text-stroke-color: gold;
+}
 
 
 
@@ -189,7 +194,7 @@ animation: Button-Gradient 3.23s ease infinite;
 
 
 
-.App .fallout{
+.App .fallout, .App .fallout88{
   font-family: 'Press start 2p', sans-serif;
   /* font-family: 'VT323', sans-serif; */
   text-align: center;
@@ -452,8 +457,12 @@ animation: Button-Gradient 0.75s ease infinite;
   color: #88FF88 !important;
   font-family: 'Press start 2p', sans-serif;
 }
-.fallout h3, .fallout h4, .fallout h5, .fallout h6 {
+
+.fallout h3, .fallout h4, .fallout h5, .fallout h6,.fallout88 h1, .fallout88 h2, .fallout88 h3,.fallout88 h4, .fallout88 h5, .fallout88 h6 {
   font-family: 'Press start 2p', sans-serif;
+}
+.fallout88 h1, .fallout88 h2 {
+  color: #DDFF22!important;
 }
 
 .steel h3, .steel h4, .steel h5, .steel h6, .steel p {
@@ -501,19 +510,16 @@ p {
   letter-spacing: normal!important;
 }
 
-.fallout p {
+.fallout p, .fallout form,.fallout .menu-button button {
   color: #88FF88;
   font-family: 'Press start 2p', sans-serif;
 }
 
-.fallout form {
-  color: #88FF88;
+.fallout88 p, .fallout88 form,.fallout88 .menu-button button {
+  color: #DDFF22;
   font-family: 'Press start 2p', sans-serif;
 }
-.fallout .menu-button button {
-  color: #88FF88;
-  font-family: 'Press start 2p', sans-serif;
-}
+
 
 
 .steel h2 {
@@ -683,7 +689,7 @@ div.row {
   background-color: transparent;
 } */
 
-div.scoreflash {
+div.scoreflash .orig {
   position: absolute;
   width: 30vw;
   height: 20vh;
@@ -698,7 +704,7 @@ div.scoreflash {
       0 0 100px 60px var(--secondary), 
       0 0 160px 90px var(--tertiary) ,
       0 0 240px 120px transparent;
-      background-color: var(--tertiary); 
+      /* background-color: var(--tertiary); 
       background-size: 200% 200%;
       background-image: -webkit-gradient(linear, left top, left bottom, from(var(--secondary)), to(var(--tertiary)));
       background-image: -webkit-linear-gradient(top, var(--secondary),var(--tertiary));
@@ -706,12 +712,124 @@ div.scoreflash {
       background-image: -ms-linear-gradient(top,  var(--secondary),var(--tertiary));
       background-image: -o-linear-gradient(top,  var(--secondary),var(--tertiary));
       background-image: linear-gradient(to bottom,  var(--secondary),var(--tertiary));
-      filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=var(--secondary), endColorstr=var(--tertiary));
+      filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=var(--secondary), endColorstr=var(--tertiary)); */
+     }
+
+     div.scoreflash .almostcorrect {
+      position: absolute;
+      width: 30vw;
+      height: 30vh;
+      z-index: 1000;
+      margin-left: 38vw; 
+      margin-top: 25vh;
+      border-radius: 40%;
+      border: 5px solid var(--highlight);
+      display: flex;
+      justify-content: center;
+      align-items: center; 
+      box-shadow:
+          0 0 60px 30px var(--primary), 
+          0 0 100px 60px var(--secondary), 
+          0 0 160px 90px var(--tertiary) ,
+          0 0 240px 120px transparent;
+      background: linear-gradient(
+      180deg,
+        var(--secondary) 10vh, 
+        var(--secondary) 73vh,
+      var(--tertiary) 100vh);
+   -webkit-animation: Button-Gradient 0.44s ease infinite;
+   -moz-animation: Button-Gradient 0.44s ease infinite;
+   animation: Button-Gradient 0.44s ease infinite;
+      color: orange!important;
+  }
+
+     div.scoreflash .correct {
+      position: absolute;
+      width: 30vw;
+      height: 30vh;
+      z-index: 1000;
+      margin-left: 38vw; 
+      margin-top: 25vh;
+      border-radius: 40%;
+      border: 5px solid var(--highlight);
+      display: flex;
+justify-content: center;
+align-items: center; 
+      box-shadow:
+          0 0 60px 30px var(--primary), 
+          0 0 100px 60px var(--secondary), 
+          0 0 160px 90px var(--tertiary) ,
+          0 0 240px 120px transparent;
+        background: linear-gradient(
+        180deg,
+          #33CC11 10vh, 
+          var(--secondary) 73vh,
+        var(--tertiary) 100vh);
      -webkit-animation: Button-Gradient 0.44s ease infinite;
      -moz-animation: Button-Gradient 0.44s ease infinite;
      animation: Button-Gradient 0.44s ease infinite;
+      color: white!important;
+    }
+  div.scoreflash .supercorrect {
+    position: absolute;
+    width: 30vw;
+    height: 30vh;
+    z-index: 1000;
+    margin-left: 38vw; 
+    margin-top: 25vh;
+    border-radius: 40%;
+    border: 5px solid var(--highlight);
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    box-shadow:
+        0 0 60px 30px #ffe34c,
+        0 0 100px 60px #e5c100,
+        0 0 140px 75px #ccac00,
+        0 0 160px 90px #998100,
+        0 0 240px 120px transparent;
+    border: 6px solid gold!important;
+    background: linear-gradient(
+      180deg,
+        #77FF55 10vh, 
+        #11FF00 73vh,
+      var(--secondary) 100vh);
+   -webkit-animation: Button-Gradient 0.44s ease infinite;
+   -moz-animation: Button-Gradient 0.44s ease infinite;
+   animation: Button-Gradient 0.44s ease infinite;
+   color: gold!important;
+  }
+
+  div.scoreflash .incorrect {
+    position: absolute;
+    width: 30vw;
+    height: 30vh;
+    z-index: 1000;
+    margin-left: 38vw; 
+    margin-top: 25vh;
+    border-radius: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    border: 5px solid var(--highlight);
+    
+    box-shadow:
+        0 0 60px 30px var(--primary), 
+        0 0 100px 60px var(--secondary), 
+        0 0 160px 90px var(--tertiary) ,
+        0 0 240px 120px transparent;
+    background: linear-gradient(
+    180deg,
+      #CC2222 10vh, 
+      var(--secondary) 73vh,
+      var(--tertiary) 100vh);
+ -webkit-animation: Button-Gradient 0.44s ease infinite;
+ -moz-animation: Button-Gradient 0.44s ease infinite;
+ animation: Button-Gradient 0.44s ease infinite;
+ color: lightsalmon!important;
 }
-.scoreflash h2 {
+
+/* .scoreflash h2 {
   position: absolute; 
   left: 0; 
   right: 0; 
@@ -720,7 +838,61 @@ div.scoreflash {
   width: 100px;
   -webkit-text-stroke-width: 0.66px;
   -webkit-text-stroke-color: var(--tertiary);
+} */
+.scoreflash h2 {
+   font-family: 'Press start 2p', sans-serif!important;
+  font-size: 10vh!important;
+  /* margin-top: 1px!important;
+  margin-bottom: 1px!important; */
+  text-align: center;
+  margin: auto!important; 
+  font-weight: bold;
+  color: white!important;
+  text-shadow: black 0px 0px 0.5px;
+  -webkit-font-smoothing: antialiased; 
+  /* -webkit-text-stroke-width: 1.0px;
+  -webkit-text-stroke-color: black; */
 }
+
+.scoreflash h6 {
+  font-family: 'Press start 2p', sans-serif!important;
+ 
+  /* margin-top: 1px!important;
+  margin-bottom: 1px!important; */
+  margin: auto!important;
+  font-size: 4vh!important;
+  text-align: center;
+  /* margin-left: auto; 
+  margin-right: auto; */
+  color: white!important;
+   text-shadow: #eee 0px 0px 0.5px;
+  -webkit-font-smoothing: antialiased;  
+ -webkit-text-stroke-width: 0.5px;
+  -webkit-text-stroke-color: #eee; 
+}
+.scoreflash .supercorrect .h6 {
+  font-family: 'Press start 2p', sans-serif!important;
+  color: #ffe34c!important;
+}
+.endscreen-achievement {
+  border: 3px solid gold;
+  background:var(--tertiary);
+}
+.endscreen-achievement h3 {
+  font-family: 'Press start 2p', sans-serif!important;
+ font-size: 6vh!important;
+ /* margin-top: 1px!important;
+ margin-bottom: 1px!important; */
+ text-align: center;
+ margin: auto!important; 
+ font-weight: bold;
+ color: gold!important;
+ text-shadow: black 0px 0px 0.5px;
+ -webkit-font-smoothing: antialiased; 
+ /* -webkit-text-stroke-width: 1.0px;
+ -webkit-text-stroke-color: black; */
+}
+
 
 div.transbox {
     margin:calc(1.1vw + 1.1vh + 0.55vmin);
@@ -865,6 +1037,25 @@ body {
  
 
 }
+.background-fallout88 {
+  width: 100vw;
+  min-height: 100vh;
+  height: 100%;
+  color: #fff;
+  background: radial-gradient(
+    180deg,
+      rgb(116, 196, 1) 0vh, 
+      rgb(69, 144, 0) 10vh, 
+      rgb(45, 65, 0) 35vh, 
+      #000000 80vh);
+  
+  background-size: 100% 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  overflow: hidden;
+ 
+
+}
 
 .background-steel {
   width: 100vw;
@@ -888,6 +1079,36 @@ body {
 }
 
 .background-normo {
+  width: 100vw;
+  min-height: 100vh;
+  height: 100%;
+  color: #100;
+  background: linear-gradient(
+    44deg,
+      rgb(255,255,255) 0vh, 
+      rgb(222, 222, 222) 4vh, 
+      rgb(255,255,255) 8vh, 
+      rgb(255,244,244) 25vh, 
+      rgb(166, 166, 166) 27vh, 
+      rgb(255,244,244) 29vh, 
+      rgb(233,233, 233) 50vh, 
+      rgb(222, 222, 222) 75vh, 
+      rgb(199, 199, 199) 78vh, 
+      rgb(222, 222, 222) 81vh, 
+      rgb(211, 211, 211)  95vh,
+      rgb(166, 166, 166) 97vh, 
+      rgb(211, 211, 211)  99vh);
+      
+  
+  /* background-size: 100% 100%; */
+  overflow-x: hidden;
+  overflow-y: hidden;
+  overflow: hidden;
+  background-size: 150% 150%;
+
+}
+
+.background-normo-fancy {
   width: 100vw;
   min-height: 100vh;
   height: 100%;
@@ -921,6 +1142,42 @@ body {
   animation: normoflow 25s ease infinite;
 }
 
+.normo-flair {
+  position: absolute;
+  width: 100vw;
+  min-height: 100vh;
+  height: 100%;
+  color: #100;
+  background: linear-gradient(
+    -210deg,
+      transparent 0vh, 
+      rgb(222, 222, 222) 4vh, 
+      transparent 8vh, 
+      transparent 25vh, 
+      rgb(166, 166, 166) 27vh, 
+      transparent 29vh, 
+      transparent 50vh,
+      rgb(133, 133, 133) 53vh,
+      transparent 56vh, 
+      transparent 75vh, 
+      rgb(199, 199, 199) 78vh, 
+      transparent 81vh, 
+      transparent 95vh,
+      rgb(166, 166, 166) 97vh, 
+      transparent 99vh);
+      
+  
+  /* background-size: 100% 100%; */
+  overflow-x: hidden;
+  overflow-y: hidden;
+  overflow: hidden;
+  background-size: 150% 150%;
+
+-webkit-animation: normoflow 19s ease infinite;
+-z-animation: normoflow 19s ease infinite;
+-o-animation: normoflow 19s ease infinite;
+  animation: normoflow 19s ease infinite;
+}
 
 .background-cherry {
   width: 100vw;
@@ -1508,6 +1765,7 @@ https://codepen.io/George-Payne/pen/qOrxao
 .progress-slim {
 /* width: 100%!important; */
   height: 10px!important;
+  margin: auto!important;
 }
 
 .progress-fat {
@@ -1677,3 +1935,6 @@ https://codepen.io/George-Payne/pen/qOrxao
 	z-index: 3;
 }
 
+.reminder-of-previous-answer {
+  padding-top: 30px;
+}

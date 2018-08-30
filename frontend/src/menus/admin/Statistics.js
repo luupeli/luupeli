@@ -8,6 +8,7 @@ import Moment from 'moment';
 import { Row, Col } from 'react-bootstrap'
 import getUrl from '../../services/urls'
 import BackButton from '../BackButton'
+import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
 
 //Statistics-page shows stats about the game to the admin, like how many games have been played.
 class Statistics extends React.Component {
@@ -26,7 +27,7 @@ class Statistics extends React.Component {
 			multipleChoiceGameCount: 0,
 			gamesByLoggedInUsers: 0,
 			gamesByAnonymousUsers: 0,
-			timeMessage: ''
+			timeMessage: 'Päivät kaikilta ajoilta'
 		}
 		window.onunload = function () { window.location.href = '/' }
 		this.setInitialStats = this.setInitialStats.bind(this)
@@ -35,8 +36,8 @@ class Statistics extends React.Component {
 		this.setGameTypes = this.setGameModes.bind(this)
     this.setGamesPlayedByLoggedInUsers = this.setGamesPlayedByLoggedInUsers.bind(this)
     this.setImages = this.setImages.bind(this)
-	this.updateDate = this.updateDate.bind(this)
-    this.secondsToHourMinuteSecond = this.secondsToHourMinuteSecond.bind(this)
+		this.updateDate = this.updateDate.bind(this)
+		this.secondsToHourMinuteSecond = this.secondsToHourMinuteSecond.bind(this)
 	}
 
 	// Checks if the user is admin, and loads initial data to state. 
@@ -70,7 +71,6 @@ class Statistics extends React.Component {
 			this.setState({ redirect: true, redirectTo: '/' })
 		}
   }
-
 	// Removes images from getted images that haven't been guessed.
 	// Then the method orders them on ascending order by difficulty, and places top 10 hardest/easiest images on state.
   setImages(images) {
@@ -78,14 +78,14 @@ class Statistics extends React.Component {
         console.log(image.correctness)
         return image.correctness !== undefined
     })
-    filteredImages.sort((a, b) => a.correctness - b.correctness)
+    filteredImages.sort((a, b) => (a.correctness / a.attempts) - (b.correctness / b.attempts))
     this.setState({ allImages : filteredImages })
 
     const top10EasiestImages = filteredImages.slice(filteredImages.length - 10)
     this.setState({ top10EasiestImages })
 
     var top10HardestImages = filteredImages.slice(0, 10)
-    top10HardestImages.sort((a, b) => a.correctness - b.correctness)
+    top10HardestImages.sort((a, b) => (a.correctness / a.attempts) - (b.correctness - b.attempts))
     
     this.setState({ top10HardestImages })
   }
@@ -93,22 +93,31 @@ class Statistics extends React.Component {
 	// When two calendar dates aren't equal (two dates are chosen), the method will show statistics between those two dates
 	updateDate(date) {
 		console.log(date)
-		const startDate = Moment(date.startDate._d).format('YYYY MM DD')
-		const endDate = Moment(date.endDate._d).format('YYYY MM DD')
+		const firstDate = Moment(date.startDate._d).format('YYYY MM DD')
+		const lastDate = Moment(date.endDate._d).format('YYYY MM DD')
 		console.log(startDate)
-		if (startDate !== endDate) {
-			const updatedGameSessions = this.state.gameSessions.filter(session => {
-				var sessionTimeStamp = Moment(session.timeStamp).format('YYYY MM DD')
-				return endDate >= sessionTimeStamp && startDate <= sessionTimeStamp
-			})
-			console.log(updatedGameSessions)
-      this.setState({ gameSessionsFiltered: updatedGameSessions })
 
-      const timeMessage = Moment(date.startDate._d).format('DD MM YYYY') + ' - ' + Moment(date.endDate._d).format('DD MM YYYY')
-      this.setState({ timeMessage })
-			console.log(this.state.gameSessionsFiltered)
-			this.setStats(updatedGameSessions)
+		var startDate = firstDate
+		var endDate = lastDate
+
+		if (firstDate === lastDate) {
+			startDate = '2018 01 01'
+			endDate = '2048 01 01'
 		}
+
+		const updatedGameSessions = this.state.gameSessions.filter(session => {
+			var sessionTimeStamp = Moment(session.timeStamp).format('YYYY MM DD')
+			return endDate >= sessionTimeStamp && startDate <= sessionTimeStamp
+		})
+
+		console.log(updatedGameSessions)
+		this.setState({ gameSessionsFiltered: updatedGameSessions })
+
+		const timeMessage = (firstDate === lastDate) ? 'Päivät kaikilta ajoilta' : Moment((date.startDate._d)).format('DD MM YYYY') + ' - ' + Moment(date.endDate._d).format('DD MM YYYY')
+		this.setState({ timeMessage })
+		console.log(this.state.gameSessionsFiltered)
+		this.setStats(updatedGameSessions)
+		
 	}
 
 	// Formats the time to a string that looks decent
@@ -175,11 +184,11 @@ class Statistics extends React.Component {
 		this.setState({ gamesByLoggedInUsers })
 		let gamesByAnonymousUsers = updatedGameSessions.length - gamesByLoggedInUsers
 		this.setState({ gamesByAnonymousUsers })
-  }
-  
+	}
 
 	//returns stats or an informative message
 	statsJSX() {
+
 		if (this.state.gameSessionsFiltered.length === 0) {
 			if (!this.state.loaded) {
 				return (
@@ -209,22 +218,50 @@ class Statistics extends React.Component {
 							<Col xs={2}>
 							</Col>
               <Col xs={8}>
-                {this.state.top10EasiestImages.map((image, idx) => {
-                  return <a className="text-muted" href={getUrl() + "/update/" + image.id}>| {idx + 1}. {image.bone.nameLatin} {Math.round(image.correctness)} | </a>
-                })}
-              </Col>
+						{this.state.top10EasiestImages.map((image, idx) => {
+							console.log(image.url)
+							return (
+							<div key={image.id} id={"bone" + idx} className="text-muted"> 
+								<p>{image.bone.nameLatin}, {image.animal.name}</p>
+								<small>Vastattu: {image.attempts} kertaa || </small>
+								<small>Täysin oikein: {image.correctAttempts} kertaa || </small>
+								<small>Oikeellisuuskeskiarvo: {Math.round(image.correctness / image.attempts)}</small>
+								
+								<CloudinaryContext cloudName="luupeli">
+									<Image publicId={image.url}>
+										{/* <Transformation width='300' crop='fill' /> */}
+									</Image>
+								</CloudinaryContext>
+							</div>
+							)
+						})}
+						</Col>
               <Col xs={2}>
               </Col>
             </Row>
+            
             <h2 className="admin-h4 text-info">Vaikeimmat kuvat top 10</h2>
             <Row>
 							<Col xs={2}>
               </Col>
               <Col xs={8}>
-                {this.state.top10HardestImages.map((image, idx) => {
-                  return <a className="text-muted" href={getUrl() + "/update/" + image.id}>| {idx + 1}. {image.bone.nameLatin} {Math.round(image.correctness)}  |  </a>
-                })}
-              </Col>
+						{this.state.top10HardestImages.map((image, idx) => {
+							console.log(image.url)
+							return (
+							<div key={image.id} id={"bone" + idx} className="text-muted"> 
+								<p>{image.bone.nameLatin}, {image.animal.name}</p>
+								<small>Vastattu: {image.attempts} kertaa || </small>
+								<small>Täysin oikein: {image.correctAttempts} kertaa || 	</small>
+								<small>Oikeellisuuskeskiarvo: {Math.round(image.correctness / image.attempts)}</small>
+								<CloudinaryContext cloudName="luupeli">
+									<Image publicId={image.url}>
+										{/* <Transformation width='300' crop='fill' /> */}
+									</Image>
+								</CloudinaryContext>
+							</div>
+							)
+						})}
+						</Col>
               <Col xs={2}>
               </Col>
             </Row>
@@ -236,6 +273,7 @@ class Statistics extends React.Component {
 
 	render() {
 		Moment.locale('en');
+
 		if (this.state.redirect) {
 			return (
 				<Redirect to={{
