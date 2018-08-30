@@ -9,6 +9,7 @@ import { setIntroSound } from '../reducers/soundReducer'
 import ScoreBoard from './ScoreBoard'
 import GameLoop from './GameLoop'
 import Confetti from 'react-confetti'
+import cherryBlossomizer from '../menus/CherryBlossom';
 
 /**
  * Gameloop is the parent component for 'hosting' different game modes of Luupeli.
@@ -173,6 +174,7 @@ class Game extends React.Component {
                 <div className="thirtythree">
                     <div className="transbox" margin="5">
                         {confettiGun()}
+                        
 
                         <div className="thirtythree">
                             <div className="game-mainview-mobile">
@@ -249,6 +251,7 @@ class Game extends React.Component {
                                 <div
                                     className={this.state.allStyles[i].flairLayerD}>
                                 </div>
+                                {cherryBlossomizer(this.state.allStyles[i].style)}
                                 {this.responsiveLayout()}
                             </div>
                         </div>

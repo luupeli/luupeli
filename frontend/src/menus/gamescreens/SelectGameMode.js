@@ -8,6 +8,7 @@ import { Animated } from "react-animated-css";
 import emoji from 'node-emoji'
 import Sound from 'react-sound'
 import BackButton from '../BackButton'
+import cherryBlossomizer from '../CherryBlossom';
 
 class SelectGameMode extends React.Component {
 
@@ -196,6 +197,7 @@ class SelectGameMode extends React.Component {
         <div className={this.state.allStyles[i].overlay}>
           <div className={this.state.allStyles[i].background}>
             <div className={this.state.allStyles[i].style}>
+            {cherryBlossomizer(this.state.allStyles[i].style)}
               <div
                 className={this.state.allStyles[i].flairLayerA}>
               </div>

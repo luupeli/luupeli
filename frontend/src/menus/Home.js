@@ -26,6 +26,7 @@ class Home extends React.Component {
             // These are CSS style settings which are hopefully in a different place in the future
             allStyles: [{
                 style: 'normo',
+                styleAlias: 'NORMO 1.0',
                 background: 'background-normo',
                 flairLayerD: 'none',
                 flairLayerC: 'none',
@@ -39,6 +40,7 @@ class Home extends React.Component {
                 music: '435958__greek555__trap-beat.mp3'
             }, {
                 style: 'normo',
+                styleAlias: 'NORMO 2.0',
                 background: 'background-normo-fancy',
                 flairLayerD: 'normo-flair',
                 flairLayerC: 'none',
@@ -52,6 +54,7 @@ class Home extends React.Component {
                 music: '435958__greek555__trap-beat.mp3'
             }, {
                 style: 'fallout',
+                styleAlias: 'FALL0UT',
                 background: 'background-fallout',
                 flairLayerD: 'none',
                 flairLayerC: 'none',
@@ -65,6 +68,7 @@ class Home extends React.Component {
                 music: '51239__rutgermuller__8-bit-electrohouse.wav'
             }, {
                 style: 'fallout88',
+                styleAlias: 'FALL0UT88',
                 background: 'background-fallout88',
                 flairLayerD: 'none',
                 flairLayerC: 'none',
@@ -78,6 +82,7 @@ class Home extends React.Component {
                 music: '51239__rutgermuller__8-bit-electrohouse.wav'
             }, {
                 style: 'deep-blue',
+                styleAlias: 'DEEP BLUE',
                 background: 'background-deep-blue',
                 flairLayerD: 'none',
                 flairLayerC: 'none',
@@ -91,6 +96,7 @@ class Home extends React.Component {
                 music: '351717__monkeyman535__cool-chill-beat-loop.wav'
             }, {
                 style: 'steel',
+                styleAlias: 'STEEL',
                 background: 'background-steel',
                 flairLayerD: 'none',
                 flairLayerC: 'none',
@@ -104,6 +110,7 @@ class Home extends React.Component {
                 music: '324920__frankum__cinematic-guitar-loop-and-fx.mp3'
             }, {                                        // KEY
                 style: 'blood-dragon',                  // Name of the visual theme
+                styleAlias: 'BLOOD DRAGON',             // The public name of the visual theme
                 background: 'background-blood-dragon',  // reference to the css background styling
                 flairLayerD: 'none',                    // on top of the background, a visual style can use up to 4 layers ouf 'flair'
                 flairLayerC: 'grid',                    // Layer D is the bottom most layer of flair, while layer A is the top most
@@ -117,6 +124,7 @@ class Home extends React.Component {
                 music: '351717__monkeyman535__cool-chill-beat-loop.wav'
             }, {                                        // KEY
                 style: 'blood-dragon',                  // Name of the visual theme
+                styleAlias: 'BLOOD DRAGON LAZER',
                 background: 'background-blood-dragon',  // reference to the css background styling
                 flairLayerD: 'grid-sub',                // on top of the background, a visual style can use up to 4 layers ouf 'flair'
                 flairLayerC: 'grid',                    // Layer D is the bottom most layer of flair, while layer A is the top most
@@ -130,6 +138,7 @@ class Home extends React.Component {
                 music: '346193__frankum__techno-80-base-loop.mp3'
             }, {
                 style: 'cherry-blossom',
+                styleAlias: 'CHERRY BLOSSOM',
                 background: 'background-cherry',
                 flairLayerD: 'none',
                 flairLayerC: 'none',
@@ -143,6 +152,7 @@ class Home extends React.Component {
                 music: '418263__4barrelcarb__eastern-strings.mp3'
             }, {
                 style: 'dark-blossom',
+                styleAlias: 'CHERRY BLOSSOM DARK',
                 background: 'background-dark-cherry',
                 flairLayerD: 'none',
                 flairLayerC: 'none',
@@ -158,6 +168,7 @@ class Home extends React.Component {
             ],
             styleIndex: 0,
             style: 'normo',
+            styleAlias: 'NORMO 1.0',
             background: 'background-normo',
             flairLayerD: 'none',
             flairLayerC: 'none',
@@ -196,6 +207,8 @@ class Home extends React.Component {
         this.setThemeColors = this.setThemeColors.bind(this)
 
     }
+
+
 
     // If someone is logged in he will be set in the state as the user
     componentDidMount() {
@@ -282,34 +295,29 @@ class Home extends React.Component {
         if (this.state.allStyles[next] != null && (maxStyleNow>=next || this.state.admin || override)) {
             localStorage.setItem('styleIndex', next)
             this.setState({
-                styleIndex: next,
-                style: 'placeholder-next-theme-name'
+                // styleIndex: next,
+                // style: 'placeholder-next-theme-name'
             })
         } else  {
-            localStorage.setItem('styleIndex', 0)
+          localStorage.setItem('styleIndex', 0)
             this.setState({
-                styleIndex: 0,
-                style: 'placeholder-last-theme-name'
+                // styleIndex: 0,
+                // style: 'placeholder-last-theme-name'
             })
             next = 0
+            this.props.history.go(0)
         }
         console.log('new style index is now: ' + next)
     }
 
     setThemeColors(i) {
-        injectGlobal`
-    :root {   
-      --highlight: ${this.state.highlight}   
-      --primary: ${this.state.primary}
-      --secondary: ${this.state.secondary}
-      --tertiary: ${this.state.tertiary}
-      }
-    }`
+
 
         if (this.state.styleIndex !== localStorage.styleIndex && this.state.allStyles[localStorage.styleIndex] !== undefined) {
             this.setState({
                 styleIndex: localStorage.styleIndex,
                 style: this.state.allStyles[localStorage.styleIndex].style,
+                styleAlias: this.state.allStyles[localStorage.styleIndex].styleAlias,
                 background: this.state.allStyles[localStorage.styleIndex].background,
                 flairLayerD: this.state.allStyles[localStorage.styleIndex].flairLayerD,
                 flairLayerC: this.state.allStyles[localStorage.styleIndex].flairLayerC,
@@ -322,7 +330,16 @@ class Home extends React.Component {
                 overlay: this.state.allStyles[localStorage.styleIndex].overlay,
                 music: this.state.allStyles[localStorage.styleIndex].music
             })
+            
         }
+        injectGlobal`
+        :root {   
+          --highlight: ${this.state.highlight}   
+          --primary: ${this.state.primary}
+          --secondary: ${this.state.secondary}
+          --tertiary: ${this.state.tertiary}
+          }
+        }`
     }
 
     adminButtons() {
@@ -754,8 +771,8 @@ class Home extends React.Component {
             }
         }
 
-        var themeButtonText = 'Teema '+i+': '+this.state.style
-        if (this.state.attractMode % 15>8) {
+        var themeButtonText = 'Teema '+i+': '+this.state.styleAlias
+        if (this.state.attractMode % 15>10) {
          themeButtonText = 'Teemoja avattu: '+Math.max(2,this.state.maxStyle)+'/'+this.state.allStyles.length
         }
 

@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 import { setMessage } from '../../reducers/messageReducer'
 import emoji from 'node-emoji'
 import BackButton from '../BackButton'
-
+import cherryBlossomizer from '../CherryBlossom';
 
 /**
  * GameSettings is the menu directly prior to a WritingGame session.
@@ -285,6 +285,7 @@ class GameSettings extends React.Component {
 			<div className={this.state.allStyles[i].overlay}>
 				<div className={this.state.allStyles[i].background}>
 					<div className={this.state.allStyles[i].style}>
+					{cherryBlossomizer(this.state.allStyles[i].style)}
 						<div id="App" className="App menu">
 							<div
 								className={this.state.allStyles[i].flairLayerA}>
