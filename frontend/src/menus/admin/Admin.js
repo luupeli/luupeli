@@ -65,39 +65,33 @@ class Admin extends React.Component {
 		}
 
 		return (
-			<div className={this.state.allStyles[i].overlay}>
-				<div className={this.state.allStyles[i].background}>
-          <div className={this.state.allStyles[i].style}>
-				<div className='App'>
-					<h2>Ylläpitäjän sivu</h2>
-					<BackButton redirectTo='/' />
-					<div id='adminButtons' className='btn-group'>
+				<div className='App admin-bg'>
+					<h2 className="admin-h2 text-info">Ylläpitäjän sivu</h2>
+					<BackButton redirectTo='/' groupStyle="btn-group-vanilla" buttonStyle="gobackbutton btn btn-info" />
+					<div id='adminButtons' className='btn-group-vanilla'>
 						<Row className="show-grid">
 							<Col>
-								<button className="menu-button" id="boneList" onClick={this.proceed}>
+								<button className="btn btn-info" id="boneList" onClick={this.proceed}>
 									Luut
            		</button>
 							</Col>
 						</Row>
 						<Row className="show-grid">
 							<Col>
-								<button className="menu-button" id="userList" onClick={this.proceed}>
+								<button className="btn btn-info" id="userList" onClick={this.proceed}>
 									Käyttäjät
            		</button>
 							</Col>
 						</Row>
 						<Row className="show-grid">
 							<Col>
-								<button className="menu-button" id="adminStatistics" onClick={this.proceed}>
+								<button className="btn btn-info" id="adminStatistics" onClick={this.proceed}>
 									Statistiikka
            		</button>
 							</Col>
 						</Row>
 					</div>
 				</div>
-			</div>
-				</div>
-			</div>
 		)
 	}
 }

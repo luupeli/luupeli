@@ -144,7 +144,7 @@ class Game extends React.Component {
                             {/* <p>{imageWidthR()},{imageHeightR()}</p> */}
 
                             <GameLoop history={this.props.history} />
-                            <div className="scoreflas-position">
+                            <div>
                                 {scoreFlash()}
                             </div>
                         </div>
@@ -177,10 +177,10 @@ class Game extends React.Component {
                             <div className="game-mainview-mobile">
                                 {/* <p>{imageWidthR()},{imageHeightR()}</p> */}
                                 <GameLoop />
-                                <div className="scoreflash-position-mobile" position="absolute" z-index="9999" opacity=".99">
-                                    {/* <ScoreFlash /> */}
-                                    {scoreFlash()}
-                                </div>
+                                <div position="absolute" z-index="9999" opacity=".99">
+                            {/* <ScoreFlash /> */}
+                            {scoreFlash()}
+                        </div>
                             </div>
                         </div>
                     </div>

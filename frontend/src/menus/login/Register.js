@@ -195,7 +195,7 @@ class Register extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                            <BackButton redirectTo='/' />
+                            <BackButton redirectTo='/' groupStyle="btn-group" buttonStyle="gobackbutton" />
                         </div>
                     </div>
                 </div>

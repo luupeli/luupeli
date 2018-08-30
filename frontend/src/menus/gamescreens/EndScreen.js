@@ -132,24 +132,24 @@ class EndScreen extends React.Component {
 		const correctAnswer = () => {
 			if (this.props.game.gameDifficulty === 'hard') {
 				return (
-					<p><b>{answer.image.bone.nameLatin}, {answer.image.animal.name}</b></p>
+					<p className="text-light"><b>{answer.image.bone.nameLatin}, {answer.image.animal.name}</b></p>
 				)
 			}
 
 			return (
-				<p><b>{answer.image.bone.nameLatin}</b></p>
+				<p className="text-light"><b>{answer.image.bone.nameLatin}</b></p>
 			)
 		}
 
 		const playerAnswer = () => {
 			if (this.props.game.gameDifficulty === 'hard' && answer.animal !== 'none') {
 				return (
-					<p>Vastasit: {answer.answer}, {answer.animal}</p>
+					<p className="text-light">Vastasit: {answer.answer}, {answer.animal}</p>
 				)
 			}
 
 			return (
-				<p>Vastasit: {answer.answer}</p>
+				<p className="text-light">Vastasit: {answer.answer}</p>
 			)
 		}
 
@@ -157,7 +157,7 @@ class EndScreen extends React.Component {
 
 		return (
 			<Col xs={12} md={6} lg={6}>
-				<Row className="show-grid row-eq-height">
+				<Row className="show-grid row-eq-height answer-bg">
 					<Col xs={6} md={6} lg={6}>
 						<CloudinaryContext cloudName="luupeli">
 							<Image publicId={answer.image.url + ".png"}>
@@ -168,8 +168,8 @@ class EndScreen extends React.Component {
 					<Col xs={6} md={6} lg={6} bsClass="text-bg col">
 						{correctAnswer()}
 						{playerAnswer()}
-						<p>Aika: {answer.seconds / 1000} s</p>
-						<p>Pisteet: {answer.score}</p>
+						<p className="text-light">Aika: {answer.seconds / 1000} s</p>
+						<p className="text-light">Pisteet: {answer.score}</p>
 						<p className={gradeMarkClass}>{gradeMark}</p>
 					</Col>
 				</Row>
@@ -358,13 +358,13 @@ class EndScreen extends React.Component {
 								onFinishedPlaying={this.handleSongFinishedPlaying}
 								loop="true"
 							/>
-							<div className="transbox">
+							<div className="width-md center">
 								<h2>Pelin kulku:</h2>
 								<Row className="show-grid">
-									<Col xs={12} md={6}>
+									<Col xs={6}>
 										<h3>Pisteet yhteensä: {this.props.game.totalScore}</h3>
 									</Col>
-									<Col xs={12} md={6}>
+									<Col xs={6}>
 										<h3>Pelin kesto: {this.props.game.totalSeconds / 1000} s</h3>
 									</Col>
 								</Row>
@@ -372,26 +372,25 @@ class EndScreen extends React.Component {
 									<button type="button" className="btn btn-theme" onClick={this.proceedToReplay}>Pelaa uudestaan</button>
 									<button type="button" className="btn btn-theme" onClick={() => this.props.history.push('/play', {mode: 'gamemode'})}>>Pelimoodivalikkoon</button>
 								</div>
-
-								{showAchievement()}
+							{showAchievement()}
 								<h5>{achievementLocked}</h5>
 								<h5>{achievementLockedRowTwo}</h5>
+								<h3 id="endScreenTitle">Vastauksesi olivat:</h3>
 							</div>
 
 							<div>
 
-								<h3 id="endScreenTitle">Vastauksesi olivat:</h3>
 								<div id="resultsText">
 									<div class="progress progress-fat">
-										<div class="progress-bar progress-bar-fat progress-bar-success" style={{ width: correctPortion + "%" }} role="progressbar" aria-valuenow={correctPortion} aria-valuemin="0" aria-valuemax="100">Täysin oikein {correctPortion}%</div>
-										<div class="progress-bar progress-bar-fat progress-bar-warning" style={{ width: almostCorrectPortion + "%" }} role="progressbar" aria-valuenow={almostCorrectPortion} aria-valuemin="0" aria-valuemax="100">Melkein oikein {almostCorrectPortion}%</div>
-										<div class="progress-bar progress-bar-fat progress-bar-danger" style={{ width: wrongPortion + "%" }} role="progressbar" aria-valuenow={wrongPortion} aria-valuemin="0" aria-valuemax="100">Väärin {wrongPortion}%</div>
+										<div class="progress-bar progress-bar-fat progress-bar-success" style={{ width: correctPortion + "%" }} role="progressbar" aria-valuenow={correctPortion} aria-valuemin="0" aria-valuemax="100"><p className="text-big">Täysin oikein {correctPortion}%</p></div>
+										<div class="progress-bar progress-bar-fat progress-bar-warning" style={{ width: almostCorrectPortion + "%" }} role="progressbar" aria-valuenow={almostCorrectPortion} aria-valuemin="0" aria-valuemax="100"><p className="text-big">Melkein oikein {almostCorrectPortion}%</p></div>
+										<div class="progress-bar progress-bar-fat progress-bar-danger" style={{ width: wrongPortion + "%" }} role="progressbar" aria-valuenow={wrongPortion} aria-valuemin="0" aria-valuemax="100"><p className="text-big">Väärin {wrongPortion}%</p></div>
 									</div>
 									{this.renderAnswers()}
 								</div>
 							</div>
 
-							<BackButton redirectTo='/' />
+							<BackButton redirectTo='/' groupStyle="btn-group" buttonStyle="gobackbutton" />
 						</div>
 					</div>
 				</div>

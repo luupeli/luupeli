@@ -58,14 +58,12 @@ class UserListing extends React.Component {
 			)
 		}
 		return (
-		<div className={this.state.allStyles[i].overlay}>
-				<div className={this.state.allStyles[i].background}>
-          <div className={this.state.allStyles[i].style}>
-			<div className="App">
-				<h2>Käyttäjälista</h2>
-				<font size="4"><p>&#9733; = ylläpitäjä</p></font>
+		<div className="admin-bg">
+			<div className="App scroll">
+				<h2 className="admin-h2 text-info">Käyttäjälista</h2>
+				<font size="4"><p className="text-dark">&#9733; = ylläpitäjä</p></font>
 				<br></br>
-				<BackButton redirectTo='/admin' />
+				<BackButton redirectTo='/admin' groupStyle="btn-group-vanilla" buttonStyle="gobackbutton btn btn-info" />
 				<div id='listOfUsers'>
 					<Row>
 						<Col>
@@ -91,8 +89,6 @@ class UserListing extends React.Component {
 					</Row>
 				</div>
 			</div >
-			</div>
-				</div>
 			</div>
 		)
 	}

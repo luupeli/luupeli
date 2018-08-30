@@ -85,7 +85,7 @@ class ScoreFlash extends React.Component {
 			playStatus = Sound.status.STOPPED
 		}
 
-		return (<div className="scoreflash-position" z-index="1000">
+		return (<div z-index="1000">
 			<Animated animationIn="bounceInDown faster" animationOut="bounceOutUp faster" isVisible={this.props.scoreflash.visibility}>
 				<div
 					className="scoreflash"

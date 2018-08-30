@@ -3,6 +3,7 @@ import boneService from '../../services/bones'
 import { Link, Redirect } from 'react-router-dom'
 import { ToggleButtonGroup, ToggleButton, Row, Col, Grid, FormControl } from 'react-bootstrap'
 import { connect } from 'react-redux'
+import BackButton from '../BackButton'
 
 class BoneListing extends React.Component {
 
@@ -129,20 +130,18 @@ class BoneListing extends React.Component {
 		console.log(bonesToShow)
 
 		return (
-			<div className="menu-background">
-				<div className="App">
-					<Link to='/admin'>
-						<button className="gobackbutton">Takaisin</button>
-					</Link>
+			<div className="admin-bg">
+				<div className="App scroll">
+					<BackButton redirectTo='/admin' groupStyle="btn-group-vanilla" buttonStyle="gobackbutton btn btn-info" />
 					<div>
-						<Grid>
+						<Grid bsClass="width-md container">
 							<div id="listGroup" className="list-group">
 								<span className="list-group-item list-group-item-info clearfix">
 									<Row className="show-grid">
 										<Col xs={12} md={6}>
 											<Row className="show-grid">
 												<Col>
-													<h5>Suodata lajin mukaan</h5>
+													<h2 className="admin-h4 text-info">Suodata lajin mukaan</h2>
 												</Col>
 											</Row>
 											<Row className="show-grid">
@@ -166,7 +165,7 @@ class BoneListing extends React.Component {
 											</Row>
 											<Row className="show-grid">
 												<Col>
-													<h5>Suodata ruumiinosan mukaan</h5>
+													<h2 className="admin-h4 text-info">Suodata ruumiinosan mukaan</h2>
 												</Col>
 											</Row>
 											<Row className="show-grid">
@@ -192,7 +191,7 @@ class BoneListing extends React.Component {
 										<Col xs={12} md={6}>
 											<Row className="show-grid">
 												<Col xs={12} md={10} style={searchStyle}>
-													<form>
+													<form className="width-md">
 														<FormControl
 															id="searchByKeyword"
 															type="text"
@@ -210,7 +209,7 @@ class BoneListing extends React.Component {
 									{bonesToShow.map((bone, i) =>
 										<Link key={bone.id} to={{
 											pathname: '/update/' + bone.id}}>
-											<button type="button" id={"bone" + i} className="list-group-item list-group-item-action">{bone.nameLatin} ({this.boneAnimalsToString(bone)})</button>
+											<button type="button" id={"bone" + i} className="list-group-item list-group-item-action">{bone.nameLatin}</button>
 										</Link>)}
 								</div>
 							</div>

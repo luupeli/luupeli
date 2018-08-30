@@ -285,7 +285,7 @@ musicPlayer() {
                 </Col>
               </Row>
               {this.instructionMode()}
-							<BackButton redirectTo='/' />
+							<BackButton redirectTo='/' groupStyle="btn-group" buttonStyle="gobackbutton" />
             </div>
           </div>
         </div>
