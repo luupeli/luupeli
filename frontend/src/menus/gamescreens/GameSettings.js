@@ -47,7 +47,6 @@ class GameSettings extends React.Component {
 		this.toggleCheck = this.toggleCheck.bind(this)
 		this.atLeastOneBodyPartIsSelected = this.atLeastOneBodyPartIsSelected.bind(this)
 		this.initializeGame = this.initializeGame.bind(this)
-		window.onunload = function () { window.location.href = '/' };
 
 		animalService.getAll()  // here we fill the allAnimals array and connect selected-attribute for each row 
 			.then(response => {
@@ -183,17 +182,17 @@ class GameSettings extends React.Component {
 		}
 	}
 
-	
+
 
 	// Returns the state
 	state() {
 		return this.state
 	}
 
-	initializeGame() {
+	async initializeGame() {
 		// Filtering selected animals and body parts
 		let chosenAnimals = this.state.allAnimals.filter(animal => animal.selected === true)
- 	    let chosenBodyParts = this.state.allBodyParts.filter(bodyPart => bodyPart.selected === true)
+		let chosenBodyParts = this.state.allBodyParts.filter(bodyPart => bodyPart.selected === true)
 
 		console.log(this.state.allAnimals)
 		console.log(chosenAnimals)
@@ -226,32 +225,35 @@ class GameSettings extends React.Component {
 		if (pics.length === 0) {
 			this.props.setMessage('Peliä ei voitu luoda halutuilla asetuksilla', 'danger')
 		} else {
-      for(let animal of chosenAnimals) {
-        delete animal.emoji
-        delete animal.selected
-      }
-      for (let bodyPart of chosenBodyParts) {
-        delete bodyPart.selected
-	  }
+			for (let animal of chosenAnimals) {
+				delete animal.emoji
+				delete animal.selected
+			}
+			for (let bodyPart of chosenBodyParts) {
+				delete bodyPart.selected
+			}
 
-	  //sets the gameLength from String to Integer, and between 3 and 25 if necessary
-	  if (this.state.gameLength === '') {
-		  this.setState({ gameLength : 3 })
-	  } else {
-		  //string to number
-		  let length = parseInt(this.state.gameLength, 10)
-		  if (length < 3) {
-			  length = 3
-		  } else if (length > 25) {
-			  length = 25
-		  }
-		  this.setState({gameLength : length})
-	  }
-	  console.log(this.state.gameLength)
-	  console.log(typeof this.state.gameLength)
-	  
-	  
-	this.setState({ images: pics,animals : chosenAnimals, bodyParts: chosenBodyParts, redirect: true })
+			//sets the gameLength from String to Integer, and between 3 and 25 if necessary
+			if (this.state.gameLength === '') {
+				this.setState({ gameLength: 3 })
+			} else {
+				//string to number
+				let length = parseInt(this.state.gameLength, 10)
+				if (length < 3) {
+					length = 3
+				} else if (length > 25) {
+					length = 25
+				}
+				this.setState({ gameLength: length })
+			}
+			console.log(this.state.gameLength)
+			console.log(typeof this.state.gameLength)
+
+
+			await this.setState({ images: pics, animals: chosenAnimals, bodyParts: chosenBodyParts })
+			await this.props.gameInitialization(this.state.gameLength, this.state.images, this.state.user,
+				this.props.location.state.gamemode, this.state.animals, this.state.bodyParts, this.state.playSound, this.state.gameDifficulty)
+			this.props.history.push('/play', { mode: 'game' })
 		}
 		console.log(pics)
 
@@ -269,25 +271,6 @@ class GameSettings extends React.Component {
 		  --tertiary: ${this.state.allStyles[i].tertiary}
 		  }
 		}`
-
-		if (this.state.redirect) {
-			this.props.gameInitialization(this.state.gameLength, this.state.images, this.state.user,
-				this.props.location.state.gamemode, this.state.animals, this.state.bodyParts, this.state.playSound, this.state.gameDifficulty)
-				
-				
-				
-			return (
-				
-
-				<Redirect to={{
-					pathname: '/game',
-					state: {
-						allStyles: this.state.allStyles,
-						styleIndex: this.state.styleIndex
-					}
-				}} />
-			)
-		}
 
 		// Creating an animal menu
 		const selectAnimal = this.state.allAnimals.map((animal, i) => {
@@ -340,68 +323,68 @@ class GameSettings extends React.Component {
 								</div>
 								<div>
 
-								<div className="container">
- 									<div className="col-md-12">
- 										<h3 className="form-header">Luupelin pituus:</h3>
- 										<form>
- 											<label className="radio-inline">
- 												<input
- 													type="radio"
- 													id="gameLengthShort"
- 													value="5"
- 													onClick={this.changeGameLength.bind(this)}
-													name="length"
- 												/>
- 												5
+									<div className="container">
+										<div className="col-md-12">
+											<h3 className="form-header">Luupelin pituus:</h3>
+											<form>
+												<label className="radio-inline">
+													<input
+														type="radio"
+														id="gameLengthShort"
+														value="5"
+														onClick={this.changeGameLength.bind(this)}
+														name="length"
+													/>
+													5
  											</label>
- 											<label className="radio-inline">
- 												<input
- 													type="radio"
- 													id="gameLengthMedium"
- 													value="10"
- 													onClick={this.changeGameLength.bind(this)}
- 													name="length"
-													defaultChecked 													
- 												/>
- 												10
+												<label className="radio-inline">
+													<input
+														type="radio"
+														id="gameLengthMedium"
+														value="10"
+														onClick={this.changeGameLength.bind(this)}
+														name="length"
+														defaultChecked
+													/>
+													10
  											</label>
- 											<label className="radio-inline">
- 												<input
- 													type="radio"
- 													id="gameLengthLong"
- 													value="15"
- 													onClick={this.changeGameLength.bind(this)}
- 													name="length"
- 												/>
-												15
+												<label className="radio-inline">
+													<input
+														type="radio"
+														id="gameLengthLong"
+														value="15"
+														onClick={this.changeGameLength.bind(this)}
+														name="length"
+													/>
+													15
  											</label>
-											 <label className="radio-inline">
- 												<input
- 													type="radio"
- 													id="gameLengthLong"
- 													value="20"
- 													onClick={this.changeGameLength.bind(this)}
- 													name="length"
- 												/>
-												20
+												<label className="radio-inline">
+													<input
+														type="radio"
+														id="gameLengthLong"
+														value="20"
+														onClick={this.changeGameLength.bind(this)}
+														name="length"
+													/>
+													20
  											</label>
-											 <label className="radio-inline">
- 												<input
- 													type="radio"
- 													id="gameLengthLong"
- 													value="25"
- 													onClick={this.changeGameLength.bind(this)}
- 													name="length"
- 												/>
-												25
+												<label className="radio-inline">
+													<input
+														type="radio"
+														id="gameLengthLong"
+														value="25"
+														onClick={this.changeGameLength.bind(this)}
+														name="length"
+													/>
+													25
  											</label>
- 										</form>
- 										
- 									</div>
- 								</div>
+											</form>
 
-			
-									
+										</div>
+									</div>
+
+
+
 								</div>
 								<div className="container">
 									<div className="col-md-12">
@@ -476,7 +459,7 @@ class GameSettings extends React.Component {
 								</div>
 							</div>
 						</div>
-						<BackButton redirectTo='/gamemode' groupStyle="btn-group" buttonStyle="gobackbutton" />
+						<BackButton action={() => this.props.history.go(-1)} groupStyle="btn-group" buttonStyle="gobackbutton" />
 					</div>
 				</div>
 			</div>

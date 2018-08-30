@@ -45,6 +45,7 @@ class User extends React.Component {
 					viewedUserEmail: response.data.email
 				})
 			})
+		//We only need the number of played games, so we're saving the length of the response data
 		userStatistics.getTotalGamesForIndividual(this.props.userId)
 			.then((response) => {
 				this.setState({
@@ -64,7 +65,7 @@ class User extends React.Component {
 					})
 				}
 			})
-
+		//Again, if answers by this user exist, save them. Backend sorts them by score.
 		userStatistics.getUsersBestAnswers(this.props.userId)
 			.then((response) => {
 				if (response.data.length !== 0) {
@@ -98,14 +99,14 @@ class User extends React.Component {
 		if (loggedUserJSON) {
 			const user = JSON.parse(loggedUserJSON)
 			if (user.role !== "ADMIN" && user.id !== this.state.userId) {
-				this.setState({ redirect: true, redirectTo: '/' })
+				this.props.history.push('/')
 			}
 			this.setState({ user })
 			if (user.role === "ADMIN") {
-				this.setState({ goBackTo: '/users' })
+				this.props.history.push('/users')
 			}
 		} else {
-			this.setState({ redirect: true, redirectTo: '/login' })
+			this.props.history.push('/login')
 		}
 	}
 
@@ -168,7 +169,7 @@ class User extends React.Component {
 				<div className={this.state.allStyles[i].background}>
 					<div className={this.state.allStyles[i].style}>
 						<div className="App">
-							<BackButton redirectTo='/' />
+							<BackButton action={() => this.props.history.push('/')} />
 							<font size="3"><div>
 								<h2>Käyttäjä {this.state.viewedUserName}</h2>
 								<h3>Arvonimesi: {rank}</h3>

@@ -193,7 +193,6 @@ class Home extends React.Component {
 
         localStorage.setItem('allStyles', JSON.stringify(this.state.allStyles))   // Array must be converted to JSON before storing it into localStorage!
         this.changeCss = this.changeCss.bind(this)
-        this.proceedToSelect = this.proceedToSelect.bind(this)
         this.setThemeColors = this.setThemeColors.bind(this)
 
     }
@@ -295,25 +294,6 @@ class Home extends React.Component {
             next = 0
         }
         console.log('new style index is now: ' + next)
-        window.location.reload()
-        window.onunload = function () { window.location.href = '/' }
-
-    }
-
-    proceedToSelect(event) {
-        if (event.target.id === 'proceedToSelectGameMode') {
-            this.setState({ redirect: true, redirectTo: '/gamemode' })
-        } else if (event.target.id === 'homeMenuLoginButton') {
-            this.setState({ redirect: true, redirectTo: '/login' })
-        } else if (event.target.id === 'homeMenuSignUpButton') {
-            this.setState({ redirect: true, redirectTo: '/register' })
-        } else if (event.target.id === 'adminPageButton') {
-            this.setState({ redirect: true, redirectTo: '/admin' })
-        } else if (event.target.id === 'profilePageButton') {
-            this.setState({ redirect: true, redirectTo: '/users/' + this.state.user.id })
-        } else if (event.target.id === 'bestPlayers') {
-            this.setState({ redirect: true, redirectTo: '/leaderboard' })
-        }
     }
 
     setThemeColors(i) {
@@ -354,7 +334,7 @@ class Home extends React.Component {
                             <button
                                 id="adminPageButton"
                                 className="menu-button"
-                                onClick={this.proceedToSelect}>
+                                onClick={() => this.props.history.push('/admin')}>
                                 Ylläpitäjälle
                             </button>
                         </Animated>
@@ -369,7 +349,7 @@ class Home extends React.Component {
                             <button
                                 id="profilePageButton"
                                 className="menu-button"
-                                onClick={this.proceedToSelect}>
+                                onClick={() => this.props.history.push('/users/' + this.state.user.id)}>
                                 Profiili
                             </button>
                         </Animated>
@@ -445,7 +425,6 @@ class Home extends React.Component {
                         <div className="score">
                             <Animated animationIn={inEffect} animationOut={outEffect} animationInDelay="400" animationOutDelay="400" isVisible={titleVisibility}><h1 className="game-title">i</h1></Animated>
                         </div>
-                        {/* Luupeli</h1> */}
                     </div>
                 </div>
             )
@@ -462,7 +441,7 @@ class Home extends React.Component {
                                 <button
                                     id="homeMenuLoginButton"
                                     className="menu-button"
-                                    onClick={this.proceedToSelect}>
+                                    onClick={() => this.props.history.push('/login')}>
                                     Kirjaudu sisään
                                 </button>
                             </Animated>
@@ -474,7 +453,7 @@ class Home extends React.Component {
                                 <button
                                     id="homeMenuSignUpButton"
                                     className="menu-button"
-                                    onClick={this.proceedToSelect}>
+                                    onClick={() => this.props.history.push('/register')}>
                                     Luo käyttäjätili
                                 </button>
                             </Animated>
@@ -810,7 +789,7 @@ class Home extends React.Component {
                                                     <button
                                                         className="menu-button gamelink"
                                                         id="proceedToSelectGameMode"
-                                                        onClick={this.proceedToSelect}>
+                                                        onClick={() => this.props.history.push('/play', {mode: 'gamemode'})}>
                                                         Pelaa
                                                     </button>
                                                 </Animated>
@@ -824,7 +803,7 @@ class Home extends React.Component {
                                                     <button
                                                         className="menu-button"
                                                         id="bestPlayers"
-                                                        onClick={this.proceedToSelect}>
+                                                        onClick={() => this.props.history.push('/leaderboard')}>
                                                         &#9733; Pistetaulukko &#9733;
                                                     </button>
                                                 </Animated>

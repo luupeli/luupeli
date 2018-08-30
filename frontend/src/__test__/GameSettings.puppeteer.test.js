@@ -16,10 +16,12 @@ beforeEach(async () => {
 	page = await browser.newPage()
 	await page.setViewport({ width: 1280, height: 800 })
 	await page.goto('http://localhost:' + port)
-	await page.waitFor(100)
-	await page.goto('http://localhost:' + port + '/gamemode')
-	await page.waitFor(100)
-	await page.goto('http://localhost:' + port + '/settings')
+	await page.waitFor(2000)
+	await page.waitForSelector('#proceedToSelectGameMode')
+	await page.click('#proceedToSelectGameMode')
+	await page.waitFor(2000)
+	await page.waitForSelector('#writingGameButton')
+	await page.click('#writingGameButton')
 })
 
 afterEach(async () => {

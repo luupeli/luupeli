@@ -554,11 +554,9 @@ class UpdateBone extends React.Component {
 								<Message />
 							</Col>
 							<Col xs={12} md={4}>
-								<Link to='/listing'>
-									<button id="backToListing" className="btn btn-default pull-right">
+									<button id="backToListing" onClick={() => this.props.history.push('/listing')} className="btn btn-default pull-right">
 										Takaisin listaukseen
 									</button>
-								</Link>
 							</Col>
 						</Row>
 						<Row className="show-grid">

@@ -27,7 +27,6 @@ class Game extends React.Component {
             startScoreFlashSound: false,
         }
         this.postGameSession = this.postGameSession.bind(this)
-        window.onunload = function () { window.location.href = '/' }
     };
 
     componentDidMount() {
@@ -135,7 +134,7 @@ class Game extends React.Component {
             }`
 
             /* REMOVED FROM INJECTION:   --image-height-restriction: ${heightRestriction}vh;*/
-          
+
             return (
                 <div className={responsive}>
                     {/* // {this.getConfetti(imageWidthR(),imageHeightR())} */}
@@ -143,8 +142,8 @@ class Game extends React.Component {
                         {confettiGun()}
                         <div className="game-mainview">
                             {/* <p>{imageWidthR()},{imageHeightR()}</p> */}
-                            
-                            <GameLoop />
+
+                            <GameLoop history={this.props.history} />
                             <div>
                                 {scoreFlash()}
                             </div>
@@ -172,8 +171,8 @@ class Game extends React.Component {
             return (
                 <div className="thirtythree">
                     <div className="transbox" margin="5">
-                    {confettiGun()}
-                        
+                        {confettiGun()}
+
                         <div className="thirtythree">
                             <div className="game-mainview-mobile">
                                 {/* <p>{imageWidthR()},{imageHeightR()}</p> */}
@@ -199,7 +198,6 @@ class Game extends React.Component {
      *    If all images have been cycled through, redirect to endscreen, otherwise render quiz page 
      */
     render() {
-
         let i = parseInt(localStorage.getItem('styleIndex'), 10)
         // Here we inject the visual style specific colors into the css. Each visual style has a primary, secondary and tertiary color (accent).
         injectGlobal`
@@ -211,29 +209,21 @@ class Game extends React.Component {
 		  }
         }`
 
-        
-        if (this.props.game.scoreflash!==undefined) {
-        if (this.props.game.scoreflash.startPlayingBonusSound && !this.state.startScoreFlashSound) {
-            this.setState({startPlayingBonusSound: true})
+
+        if (this.props.game.scoreflash !== undefined) {
+            if (this.props.game.scoreflash.startPlayingBonusSound && !this.state.startScoreFlashSound) {
+                this.setState({ startPlayingBonusSound: true })
+            }
+            else if (!this.props.game.scoreflash.startPlayingBonusSound && this.state.startScoreFlashSound) {
+                this.setState({ startPlayingBonusSound: false })
+                this.props.game.scoreflash.stopPlayingBonusSound()
+            }
         }
-        else if (!this.props.game.scoreflash.startPlayingBonusSound && this.state.startScoreFlashSound) {
-            this.setState({startPlayingBonusSound: false})
-            this.props.game.scoreflash.stopPlayingBonusSound()
-        }
-    }
 
         if (this.props.game.endCounter < 1) {
             setTimeout(function () {
-                this.setState({ redirectToEndPage: true })
             }.bind(this), 3500)
-            if (this.state.redirectToEndPage) {
-                this.postGameSession()
-                return (
-                    <Redirect to={{
-                        pathname: "/endscreen"
-                    }} />
-                )
-            }
+            this.props.history.push('/play', { mode: 'endscreen' })
         }
 
         return (
@@ -264,6 +254,7 @@ class Game extends React.Component {
         );
     }
 }
+
 
 const mapStateToProps = (state) => {
     return {

@@ -19,7 +19,6 @@ class Login extends React.Component {
     }
     this.login = this.login.bind(this)
     this.handleLoginFieldChange = this.handleLoginFieldChange.bind(this)
-    window.onunload = function () { window.location.href = '/' };
   }
 
   // If loggedLohjanLuunkeraajaUser has a value, the user is logged in.
@@ -68,13 +67,6 @@ class Login extends React.Component {
       this.setState({ user: null })
     } catch (error) {
       console.log(error)
-    }
-  }
-
-  proceedToMain(event) {
-
-    if (event.target.id === "gobackbutton") {
-
     }
   }
 
@@ -165,7 +157,7 @@ class Login extends React.Component {
               <div className="transbox">
                 {this.ifLoggedInForms()}
               </div>
-              <BackButton redirectTo='/' groupStyle="btn-group" buttonStyle="gobackbutton" />
+              <BackButton action={() => this.props.history.push('/')} groupStyle="btn-group" buttonStyle="gobackbutton" />
             </div>
           </div>
         </div>

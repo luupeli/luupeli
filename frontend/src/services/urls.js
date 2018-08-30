@@ -1,3 +1,6 @@
+//This eliminates some copypaste, other services can use getUrl
+//to get the appropriate url.
+
 const getUrl = () => {
   let baseUrl = ''
   console.log(process.env.NODE_ENV)

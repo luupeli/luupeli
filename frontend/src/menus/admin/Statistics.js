@@ -284,7 +284,7 @@ class Statistics extends React.Component {
 		return (
 			<div className="admin-bg">
 			<div className="App scroll">
-				<BackButton redirectTo='/admin' groupStyle="btn-group-vanilla" buttonStyle="gobackbutton btn btn-info" />
+				<BackButton action={() => this.props.history.push('/admin')} groupStyle="btn-group-vanilla" buttonStyle="gobackbutton btn btn-info" />
 				<div className="App menu">
 					<DateRange
 						maxDate={Date.now()}

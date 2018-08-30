@@ -2,6 +2,9 @@ import axios from 'axios'
 import getUrl from './urls'
 const url = '/api/gamesessions'
 
+//This is a service used for fetching all kinds of fun information
+//to be shown on user pages and the leaderboards
+
 let games = getUrl() + url
 
 const top50 = '/api/gamesessions/top_list_all?limit=50'

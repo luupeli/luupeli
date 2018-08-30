@@ -33,10 +33,7 @@ class EndScreen extends React.Component {
 			localGames: -1,
 			scoreRetrieved: false
 		}
-		this.proceedToMain = this.proceedToMain.bind(this)
-		this.proceedToGameModeSelection = this.proceedToGameModeSelection.bind(this)
 		this.proceedToReplay = this.proceedToReplay.bind(this)
-		window.onunload = function () { window.location.href = '/' }
 	}
 
 	componentDidMount() {
@@ -49,23 +46,12 @@ class EndScreen extends React.Component {
 		console.log(this.props.game.gameLength)
 	}
 
-	proceedToMain(event) {
-		this.setState({ redirect: true })
-		this.setState({ redirectTo: '/' })
-	}
-
-	proceedToGameModeSelection(event) {
-		this.setState({ redirect: true })
-		this.setState({ redirectTo: '/gamemode' })
-	}
-
 	//Reinitialize a game with same settings as previous game played
 	proceedToReplay(event) {
-		this.setState({scoreRetrieved: false})
+		this.setState({ scoreRetrieved: false })
 		this.props.gameInitialization(this.props.game.gameLength, this.props.game.images, this.props.game.user,
 			this.props.game.gamemode, this.props.game.animals, this.props.game.bodyparts, this.props.game.playSound, this.props.game.gameDifficulty)
-		this.setState({ redirect: true })
-		this.setState({ redirectTo: '/game' })
+		this.props.history.push('/play', { mode: 'game', gamemode: this.props.game.gamemode })
 	}
 
 	retrieveScore() {
@@ -285,15 +271,15 @@ class EndScreen extends React.Component {
 		if (this.state.user !== null) {
 			if (scoreNow >= goal && gamesNow >= goalGames && (scoreBefore < goal || gamesNow - 1 < goalGames)) {
 				goal = achievement.getGoal(scoreNow, gamesNow)
-				achievementLocked='Sinulle on myönnetty uusi arvonimi: '+achievement.getRank(index)+'!'
+				achievementLocked = 'Sinulle on myönnetty uusi arvonimi: ' + achievement.getRank(index) + '!'
 				let unlockedStyle = this.state.allStyles[index].style
-				if (unlockedStyle===undefined) {
-					achievementUnlocked='Onneksi olkoon, saavutit prestiisitason '+index+'!!'
+				if (unlockedStyle === undefined) {
+					achievementUnlocked = 'Onneksi olkoon, saavutit prestiisitason ' + index + '!!'
 				} else {
-					if (unlockedStyle===this.state.allStyles[index-1].style) {
-						unlockedStyle=unlockedStyle+' II'
+					if (unlockedStyle === this.state.allStyles[index - 1].style) {
+						unlockedStyle = unlockedStyle + ' II'
 					}
-					achievementUnlocked='Onneksi olkoon, avasit teeman '+unlockedStyle+'!!'
+					achievementUnlocked = 'Onneksi olkoon, avasit teeman ' + unlockedStyle + '!!'
 				}
 
 				// achievementUnlocked = 'Avasit: ' + this.state.allStyles[Math.min(index, this.state.allStyles.length - 1)].style + ' (i:' + index + '),scr before:' + scoreBefore + ',goal: ' + goal + ',scrnow: ' + scoreNow + ' seur: ' + goal
@@ -301,30 +287,30 @@ class EndScreen extends React.Component {
 				let howManyGamesUntilNextAchievement = Math.max(0, goalGames - gamesNow)
 				let howMuchScoreUntilNextAchievement = Math.max(0, goal - scoreNow)
 
-				let styleCurrent =''
+				let styleCurrent = ''
 				let styleNext = ''
 
-				if(this.state.allStyles[index]===undefined) {
-					styleCurrent=undefined
-					styleNext=undefined
+				if (this.state.allStyles[index] === undefined) {
+					styleCurrent = undefined
+					styleNext = undefined
 				} else {
-					styleCurrent=this.state.allStyles[index].style   
+					styleCurrent = this.state.allStyles[index].style
 				}
-				if(this.state.allStyles[index+1]!==undefined) {
-					styleNext=this.state.allStyles[index + 1].style
+				if (this.state.allStyles[index + 1] !== undefined) {
+					styleNext = this.state.allStyles[index + 1].style
 				}
 
-				if (styleCurrent === styleNext && styleNext!==undefined) {
+				if (styleCurrent === styleNext && styleNext !== undefined) {
 					styleNext = styleNext + ' II'
-				} 
-				
-				if (styleNext !==undefined) {
-					styleNext='Avataksesi teeman '+styleNext
+				}
+
+				if (styleNext !== undefined) {
+					styleNext = 'Avataksesi teeman ' + styleNext
 				} else {
 					styleNext = 'Lunastaaksesi seuraavan arvonimen!'
 				}
 
-			
+
 				let divider = ' ja '
 				if (index < 3) { divider = ' tai ' }
 
@@ -349,12 +335,13 @@ class EndScreen extends React.Component {
 		}
 
 		const showAchievement = () => {
-			if (achievementUnlocked.length>0) {
- 			return (
-				<Animated animationIn="zoomInDown slower" animationInDelay="500" animationOutDelay="100" isVisible={true}>
-				<div className="endscreen-achievement"><h3>{achievementUnlocked}</h3></div>
-				</Animated>
-			) } else return null
+			if (achievementUnlocked.length > 0) {
+				return (
+					<Animated animationIn="zoomInDown slower" animationInDelay="500" animationOutDelay="100" isVisible={true}>
+						<div className="endscreen-achievement"><h3>{achievementUnlocked}</h3></div>
+					</Animated>
+				)
+			} else return null
 		}
 
 		return (
@@ -383,7 +370,7 @@ class EndScreen extends React.Component {
 								</Row>
 								<div className="btn-group-horizontal" role="group">
 									<button type="button" className="btn btn-theme" onClick={this.proceedToReplay}>Pelaa uudestaan</button>
-									<button type="button" className="btn btn-theme" onClick={this.proceedToGameModeSelection}>Pelimoodivalikkoon</button>
+									<button type="button" className="btn btn-theme" onClick={() => this.props.history.push('/play', {mode: 'gamemode'})}>>Pelimoodivalikkoon</button>
 								</div>
 							{showAchievement()}
 								<h5>{achievementLocked}</h5>
@@ -403,7 +390,7 @@ class EndScreen extends React.Component {
 								</div>
 							</div>
 
-							<BackButton redirectTo='/' groupStyle="btn-group" buttonStyle="gobackbutton" />
+							<BackButton action={() => this.props.history.push('/')} groupStyle="btn-group" buttonStyle="gobackbutton" />
 						</div>
 					</div>
 				</div>
