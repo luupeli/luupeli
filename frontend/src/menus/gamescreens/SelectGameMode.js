@@ -65,126 +65,127 @@ class SelectGameMode extends React.Component {
 
 
   instructionMode() {
-    
-    
-    var effects= [];
+
+
+    var effects = [];
     effects.push('bounceOutLeft faster')
     effects.push('bounceOutRight faster')
     let heartEmoji = emoji.get('yellow_heart')
 
-    
 
-  
-   var lines = [];
-   var heading = ''
 
-   if (this.state.instructionMode%100<=20) {
-    heading='KIRJOITUSPELI'
-    lines.push('Ansaitse pisteitä kirjoittamalla latinankielinen nimi oikein')
-    lines.push('Korota pistekerrointasi vastaamalla peräkkäin oikein')
-    lines.push('Väärästä vastauksesta pistekerroin nollaantuu')
-    lines.push('Vaikeusaste vaikuttaa pisteisiin')
-    lines.push('Helpoimmalla vaikeusasteella saat vihjeitä vastauksesta')
-    lines.push('Luu-5-vaikeusasteella saat bonuksen eläinlajin tunnistamisesta')
-    lines.push('Nopeus on valttia! '+heartEmoji)
-   }
-   else if (this.state.instructionMode%100<=40) {
-    heading='MONIVALINTAPELI'
-    lines.push('Valitse kuva joka esittää latinankielisesti nimettyä luuta')
-    lines.push('Voit myös yrittää parasta arvaustasi...')
-    lines.push('Korota pistekerrointasi vastaamalla peräkkäin oikein')
-    lines.push('Nopeus on valttia! '+heartEmoji)
-   }
 
-   else if (this.state.instructionMode%100<=60) {
-    heading='SEKAPELI'
-    lines.push('Valitse kuva joka esittää latinankielisesti nimettyä luuta')
-    lines.push('Sekapelissä osassa kysymyksistä kuvia on yksi, mutta nimivaihtoehtoja monta')
-    lines.push('Korota pistekerrointasi vastaamalla peräkkäin oikein')
-    lines.push('Nopeus on valttia! '+heartEmoji)
-   } else if (this.state.instructionMode%100<=80) {
-    heading='HARJOITUSTENTTI'
-    lines.push('Kuin kirjoituspeli, mutta tenttipituisena')
-    lines.push('Harjoitustentissä vaikeusaste on lukittu vaikeimpaan, et siis saa vihjeitä')
-    lines.push('Pistekertoimet toimivat kuten tavallisessa kirjoituspelissä')
-    lines.push('Nopeus on jälleen valttia! '+heartEmoji)
-   } else if (this.state.instructionMode%100<=100) {
-    heading='MUISTA SISÄÄNKIRJAUTUA'
-    lines.push('Vain sisäänkirjautuneiden käyttäjien tulokset tallennetaan')
-    lines.push('Sisäänkirjautuneena leräät pisteitä ja ansaitset arvonimiä ja visuaalisia teemoja')
-    lines.push('Jos sinulla ei ole käyttäjätunnusta, voit luoda sellaisen päävalikossa')
-    lines.push('Parhaat luupelaajat niittävät mainetta pistetaulukoilla! '+heartEmoji)
-   } 
-   
+    var lines = [];
+    var heading = ''
 
-   const rollingMessage = lines.map((line,i) =>
-   <Animated animationIn="bounceInUp slower" animationOut={effects[i%2]} animationInDelay={1500+(i*500)}  animationOutDelay={i*50} isVisible={this.state.instructionAnimation}>
-         <div className="home-highscore">
-      {/* <div className="score"> */}
-       <h5>
-     {line.toUpperCase()}
-     </h5>
-     {/* </div> */}
-     </div>
-       
-   </Animated>
-  )
+    if (this.state.instructionMode % 100 <= 20) {
+      heading = 'KIRJOITUSPELI'
+      lines.push('Ansaitse pisteitä kirjoittamalla latinankielinen nimi oikein')
+      lines.push('Korota pistekerrointasi vastaamalla peräkkäin oikein')
+      lines.push('Väärästä vastauksesta pistekerroin nollaantuu')
+      lines.push('Vaikeusaste vaikuttaa pisteisiin')
+      lines.push('Helpoimmalla vaikeusasteella saat vihjeitä vastauksesta')
+      lines.push('Luu-5-vaikeusasteella saat bonuksen eläinlajin tunnistamisesta')
+      lines.push('Nopeus on valttia! ' + heartEmoji)
+    }
+    else if (this.state.instructionMode % 100 <= 40) {
+      heading = 'MONIVALINTAPELI'
+      lines.push('Valitse kuva joka esittää latinankielisesti nimettyä luuta')
+      lines.push('Voit myös yrittää parasta arvaustasi...')
+      lines.push('Korota pistekerrointasi vastaamalla peräkkäin oikein')
+      lines.push('Nopeus on valttia! ' + heartEmoji)
+    }
 
-      return (
+    else if (this.state.instructionMode % 100 <= 60) {
+      heading = 'SEKAPELI'
+      lines.push('Valitse kuva joka esittää latinankielisesti nimettyä luuta')
+      lines.push('Sekapelissä osassa kysymyksistä kuvia on yksi, mutta nimivaihtoehtoja monta')
+      lines.push('Korota pistekerrointasi vastaamalla peräkkäin oikein')
+      lines.push('Nopeus on valttia! ' + heartEmoji)
+    } else if (this.state.instructionMode % 100 <= 80) {
+      heading = 'HARJOITUSTENTTI'
+      lines.push('Kuin kirjoituspeli, mutta tenttipituisena')
+      lines.push('Harjoitustentissä vaikeusaste on lukittu vaikeimpaan, et siis saa vihjeitä')
+      lines.push('Pistekertoimet toimivat kuten tavallisessa kirjoituspelissä')
+      lines.push('Nopeus on jälleen valttia! ' + heartEmoji)
+    } else if (this.state.instructionMode % 100 <= 100) {
+      heading = 'MUISTA SISÄÄNKIRJAUTUA'
+      lines.push('Vain sisäänkirjautuneiden käyttäjien tulokset tallennetaan')
+      lines.push('Sisäänkirjautuneena leräät pisteitä ja ansaitset arvonimiä ja visuaalisia teemoja')
+      lines.push('Jos sinulla ei ole käyttäjätunnusta, voit luoda sellaisen päävalikossa')
+      lines.push('Parhaat luupelaajat niittävät mainetta pistetaulukoilla! ' + heartEmoji)
+    }
 
-        <div>
-        <div className="home-highscore-top">
-                    
-                    <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay={1000} animationOutDelay={0} isVisible={this.state.instructionAnimation}>
-                    <h3>
-                    {heading}
-                    </h3>
-                  </Animated>
-                  </div>
-              {rollingMessage}
-                  </div>
-      )
-  
-}
 
-startTheMusic () {
-   this.setState({loopTheMusicMore: true})
-}
+    const rollingMessage = lines.map((line, i) =>
+      <Animated animationIn="bounceInUp slower" animationOut={effects[i % 2]} animationInDelay={1500 + (i * 500)} animationOutDelay={i * 50} isVisible={this.state.instructionAnimation}>
+        <div className="home-highscore">
+          {/* <div className="score"> */}
+          <h5>
+            {line.toUpperCase()}
+          </h5>
+          {/* </div> */}
+        </div>
 
-musicPlayer() {
-  if (this.state.loopTheMusicMore) {
-  return (
-    <Sound
-    url={"/sounds/"+this.state.allStyles[this.state.styleIndex].music}
-      playStatus={Sound.status.PLAYING}
-      //  playFromPosition={new Date().getTime()-this.state.musicStartTime}
-      onLoading={this.handleSongLoading}
-      onPlaying={this.handleSongPlaying}
-      onFinishedPlaying={this.handleSongFinishedPlaying}
-      loop={this.state.loopTheMusicMore}
-      />
-
-  )}
-  else if (!this.state.loopTheMusicMore) {
-    return (
-      <Sound
-      url={"/sounds/"+this.state.allStyles[this.state.styleIndex].music}
-        playStatus={Sound.status.STOPPED}
-        // playFromPosition={new Date().getTime()-this.state.musicStartTime}
-        onLoading={this.handleSongLoading}
-        onLoad={this.startTheMusic()}
-        onPlaying={this.handleSongPlaying}
-        onFinishedPlaying={this.handleSongFinishedPlaying}
-        loop={this.state.loopTheMusicMore}
-        />
-  
+      </Animated>
     )
-  } else {return null}
-}
+
+    return (
+
+      <div>
+        <div className="home-highscore-top">
+
+          <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight faster" animationInDelay={1000} animationOutDelay={0} isVisible={this.state.instructionAnimation}>
+            <h3>
+              {heading}
+            </h3>
+          </Animated>
+        </div>
+        {rollingMessage}
+      </div>
+    )
+
+  }
+
+  startTheMusic() {
+    this.setState({ loopTheMusicMore: true })
+  }
+
+  musicPlayer() {
+    if (this.state.loopTheMusicMore) {
+      return (
+        <Sound
+          url={"/sounds/" + this.state.allStyles[this.state.styleIndex].music}
+          playStatus={Sound.status.PLAYING}
+          //  playFromPosition={new Date().getTime()-this.state.musicStartTime}
+          onLoading={this.handleSongLoading}
+          onPlaying={this.handleSongPlaying}
+          onFinishedPlaying={this.handleSongFinishedPlaying}
+          loop={this.state.loopTheMusicMore}
+        />
+
+      )
+    }
+    else if (!this.state.loopTheMusicMore) {
+      return (
+        <Sound
+          url={"/sounds/" + this.state.allStyles[this.state.styleIndex].music}
+          playStatus={Sound.status.STOPPED}
+          // playFromPosition={new Date().getTime()-this.state.musicStartTime}
+          onLoading={this.handleSongLoading}
+          onLoad={this.startTheMusic()}
+          onPlaying={this.handleSongPlaying}
+          onFinishedPlaying={this.handleSongFinishedPlaying}
+          loop={this.state.loopTheMusicMore}
+        />
+
+      )
+    } else { return null }
+  }
   proceedToExam(event) {
     this.props.gameInitialization(15, this.state.images, this.state.user,
       event.target.value, this.props.init.animals, this.props.init.bodyParts, false, 'hard')
-      this.props.history.push('/', { mode: 'exam', gamemode: 'harjoitustentti'})
+    this.props.history.push('/play', { mode: 'game', gamemode: 'harjoitustentti' })
   }
 
   render() {
@@ -206,7 +207,7 @@ musicPlayer() {
     let i = this.state.styleIndex
     return (
       <div id="gameBody" className="App menu">
-       {this.musicPlayer()}
+        {this.musicPlayer()}
         <div className={this.state.allStyles[i].overlay}>
           <div className={this.state.allStyles[i].background}>
             <div className={this.state.allStyles[i].style}>
@@ -223,61 +224,61 @@ musicPlayer() {
                 className={this.state.allStyles[i].flairLayerD}>
               </div>
               <Animated animationIn="bounceInLeft" animationInDelay={0} isVisible={true}>
-              <h2 className="game-title">Valitse</h2>
+                <h2 className="game-title">Valitse</h2>
               </Animated>
               <Animated animationIn="bounceInRight" animationInDelay={100} isVisible={true}>
-              <h2 className="game-title">luupelimuoto</h2>
+                <h2 className="game-title">luupelimuoto</h2>
               </Animated>
               <Row className="show-grid">
                 <Col xs={10} xsOffset={1} md={4} sm={4} mdOffset={4} smOffset={4}>
                   <Row className="show-grid">
                     <Col>
-                    <Animated animationIn="bounceInLeft" animationInDelay={200} isVisible={true}>
-                      <button
-                        className="menu-button"
-                        id="writingGameButton"
-                        value="kirjoituspeli"
-                        onClick={() => this.props.history.push('/play', {mode: 'settings', gamemode: 'kirjoituspeli'})}>
-                        Kirjoituspeli
+                      <Animated animationIn="bounceInLeft" animationInDelay={200} isVisible={true}>
+                        <button
+                          className="menu-button"
+                          id="writingGameButton"
+                          value="kirjoituspeli"
+                          onClick={() => this.props.history.push('/play', { mode: 'settings', gamemode: 'kirjoituspeli' })}>
+                          Kirjoituspeli
                       </button>
                       </Animated>
                     </Col>
                   </Row>
                   <Row className="show-grid">
                     <Col>
-                    <Animated animationIn="bounceInRight" animationInDelay={300} isVisible={true}>
-                      <button
-                        className="menu-button"
-                        id="multipleChoiceButton"
-                        value="monivalintapeli"
-                        onClick={() => this.props.history.push('/play', {mode: 'settings', gamemode: 'monivalintapeli'})}>
-                        Monivalintapeli
+                      <Animated animationIn="bounceInRight" animationInDelay={300} isVisible={true}>
+                        <button
+                          className="menu-button"
+                          id="multipleChoiceButton"
+                          value="monivalintapeli"
+                          onClick={() => this.props.history.push('/play', { mode: 'settings', gamemode: 'monivalintapeli' })}>
+                          Monivalintapeli
                       </button>
                       </Animated>
                     </Col>
                   </Row>
                   <Row className="show-grid">
                     <Col>
-                    <Animated animationIn="bounceInLeft" animationInDelay={400} isVisible={true}>
-                      <button
-                        className="menu-button"
-                        id="mixedGameButton"
-                        value="sekapeli"
-                        onClick={() => this.props.history.push('/play', {mode: 'settings', gamemode: 'sekapeli'})}>
-                        Sekapeli
+                      <Animated animationIn="bounceInLeft" animationInDelay={400} isVisible={true}>
+                        <button
+                          className="menu-button"
+                          id="mixedGameButton"
+                          value="sekapeli"
+                          onClick={() => this.props.history.push('/play', { mode: 'settings', gamemode: 'sekapeli' })}>
+                          Sekapeli
                       </button>
                       </Animated>
                     </Col>
                   </Row>
                   <Row className="show-grid">
                     <Col>
-                    <Animated animationIn="bounceInRight" animationInDelay={500} isVisible={true}>
-                      <button
-                        className="menu-button"
-                        id="examButton"
-                        value="harjoitustentti"
-                        onClick={this.proceedToExam}>
-                        Harjoitustentti
+                      <Animated animationIn="bounceInRight" animationInDelay={500} isVisible={true}>
+                        <button
+                          className="menu-button"
+                          id="examButton"
+                          value="harjoitustentti"
+                          onClick={this.proceedToExam}>
+                          Harjoitustentti
                       </button>
                       </Animated>
                     </Col>
@@ -285,7 +286,7 @@ musicPlayer() {
                 </Col>
               </Row>
               {this.instructionMode()}
-							<BackButton action={() => this.props.history.go(-1)} groupStyle="btn-group" buttonStyle="gobackbutton" />
+              <BackButton action={() => this.props.history.go(-1)} groupStyle="btn-group" buttonStyle="gobackbutton" />
             </div>
           </div>
         </div>

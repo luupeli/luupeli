@@ -7,6 +7,7 @@ import Home from './menus/Home'
 import Leaderboard from './menus/Leaderboard'
 import Sounds from './Sounds'
 import GameSettings from './menus/gamescreens/GameSettings'
+import WritingGame from './games/WritingGame'
 import BoneListing from './menus/admin/BoneListing'
 import UserListing from './menus/admin/UserListing'
 import User from './menus/admin/User'
@@ -77,18 +78,21 @@ class Main extends React.Component {
               <Route exact path="/leaderboard" render={({ location, history }) => {
                 return <Leaderboard location={location} history={history} />
               }} />
+              <Route exact path="/exam" render={({ location, history }) => {
+                return <WritingGame location={location} history={history} />
+              }} />
               <Route path="/play" render={({ location, history }) => {
                 console.log(location)
                 console.log(history)
-                  if (history.location.state.mode === 'settings') {
-                    return <GameSettings location={location} history={history} />
-                  } else if (history.location.state.mode === 'gamemode') {
-                    return <SelectGameMode location={location} history={history} />
-                  } else if (history.location.state.mode === 'game') {
-                    return <Game location={location} history={history} />
-                  } else if (history.location.state.mode === 'endscreen') {
-                    return <EndScreen location={location} history={history} />
-                  }
+                if (history.location.state.mode === 'settings') {
+                  return <GameSettings location={location} history={history} />
+                } else if (history.location.state.mode === 'gamemode') {
+                  return <SelectGameMode location={location} history={history} />
+                } else if (history.location.state.mode === 'game') {
+                  return <Game location={location} history={history} />
+                } else if (history.location.state.mode === 'endscreen') {
+                  return <EndScreen location={location} history={history} />
+                }
               }} />
             </div>
           </BrowserRouter>
