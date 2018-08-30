@@ -45,6 +45,7 @@ class User extends React.Component {
 					viewedUserEmail: response.data.email
 				})
 			})
+		//We only need the number of played games, so we're saving the length of the response data
 		userStatistics.getTotalGamesForIndividual(this.props.userId)
 			.then((response) => {
 				this.setState({
@@ -64,7 +65,7 @@ class User extends React.Component {
 					})
 				}
 			})
-
+		//Again, if answers by this user exist, save them. Backend sorts them by score.
 		userStatistics.getUsersBestAnswers(this.props.userId)
 			.then((response) => {
 				if (response.data.length !== 0) {

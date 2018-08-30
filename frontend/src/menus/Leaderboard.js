@@ -3,6 +3,10 @@ import userStatistics from '../services/userStatistics'
 import BackButton from './BackButton'
 import { Row, Col } from 'react-bootstrap'
 
+//This leaderboard utilizes an array of 50 users sorted by points earned.
+//It then shows 20 of them, since that seems like an appropriate amount.
+//We might want to show more sometime.
+
 class Leaderboard extends React.Component {
 	constructor(props) {
 		super(props)
@@ -24,12 +28,13 @@ class Leaderboard extends React.Component {
 			this.setState({ user })
 		}
 	}
-	
+	//If we're going back, there's only one page to go to, home, so redirectTo will be /
 	proceedToMain(event) {
 		this.setState({ redirect: true })
 		this.setState({ redirectTo: '/' })
   }
-
+	//We're using userStatistics to fetch an array of 50 users in decreasing order by points.
+	//We're also calling bestPlayersAuxiliaryMethod, see what it does below.
 	setBestPlayers() {
 		userStatistics.getTop50()
 			.then((response) => {
@@ -40,7 +45,10 @@ class Leaderboard extends React.Component {
 				console.log(error)
 			})
 	}
-
+	//Initialize an array for top 20. Remember, we have 50 users saved in this.state.
+	//So let i = 5, if the 5th index of top50 is not undefined, AKA it holds a user,
+	//put this user in top20AllTime in the form of "6. username (x pistettä)" (since i = 0 at first).
+	//Otherwise, just put "6.". Then, we can easily use this array in render().
 	bestPlayersAuxiliaryMethod() {
 		var top20AllTime = []
 		var i
