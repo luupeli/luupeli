@@ -230,8 +230,7 @@ class Statistics extends React.Component {
 			return (
 				<div>
 					<div className="text-dark">
-          <h2 className="admin-h4 text-info">{this.state.timeMessage}</h2>
-
+            <h2 className="admin-h4 text-info">{this.state.timeMessage}</h2>
 						<p>Pelejä pelattu kirjautuneiden käyttäjien osalta: {this.state.gamesByLoggedInUsers} kpl </p>
 						<p>Pelejä pelattu anonyymien käyttäjien osalta: {this.state.gamesByAnonymousUsers} kpl </p>
 						<p>Pelejä pelattu yhteensä: {this.state.gameSessionsFiltered.length} kpl</p>
