@@ -15,7 +15,7 @@ class Statistics extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			loaded: false,
+      loaded: false,
 			gameSessions: [],
 			gameSessionsFiltered: [],
 			allImages: [],
@@ -37,7 +37,8 @@ class Statistics extends React.Component {
     this.setGamesPlayedByLoggedInUsers = this.setGamesPlayedByLoggedInUsers.bind(this)
     this.setImages = this.setImages.bind(this)
 		this.updateDate = this.updateDate.bind(this)
-		this.secondsToHourMinuteSecond = this.secondsToHourMinuteSecond.bind(this)
+    this.secondsToHourMinuteSecond = this.secondsToHourMinuteSecond.bind(this)
+    this.hardestAndEasiestImages = this.hardestAndEasiestImages.bind(this)
 	}
 
 	// Checks if the user is admin, and loads initial data to state. 
@@ -75,7 +76,6 @@ class Statistics extends React.Component {
 	// Then the method orders them on ascending order by difficulty, and places top 10 hardest/easiest images on state.
   setImages(images) {
     var filteredImages = images.filter(function(image) {
-        console.log(image.correctness)
         return image.correctness !== undefined
     })
     filteredImages.sort((a, b) => (a.correctness / a.attempts) - (b.correctness / b.attempts))
@@ -184,11 +184,38 @@ class Statistics extends React.Component {
 		this.setState({ gamesByLoggedInUsers })
 		let gamesByAnonymousUsers = updatedGameSessions.length - gamesByLoggedInUsers
 		this.setState({ gamesByAnonymousUsers })
-	}
+  }
+  
+  hardestAndEasiestImages(array, message) {
+    return (
+    <div>
+      <Row>
+        <Col xs={2}>
+        </Col>
+        <Col xs={8}>
+      {array.map((image, idx) => {
+        return (
+        <div key={image.id} id={"bone" + idx} className="text-muted">
+          <CloudinaryContext cloudName="luupeli">
+            <Image publicId={image.url} width='150' crop='fill' />
+          </CloudinaryContext>
+          <p>{image.bone.nameLatin}, {image.animal.name}</p>
+          <small>Vastattu: {image.attempts} kertaa || </small>
+          <small>Täysin oikein: {image.correctAttempts} kertaa || </small>
+          <small>Oikeellisuuskeskiarvo: {Math.round(image.correctness / image.attempts)}</small>
+        </div>
+        )
+      })}
+      </Col>
+        <Col xs={2}>
+        </Col>
+      </Row>
+    </div>
+    )
+  }
 
 	//returns stats or an informative message
 	statsJSX() {
-
 		if (this.state.gameSessionsFiltered.length === 0) {
 			if (!this.state.loaded) {
 				return (
@@ -203,7 +230,8 @@ class Statistics extends React.Component {
 			return (
 				<div>
 					<div className="text-dark">
-            <p>{this.state.timeMessage}</p>
+          <h2 className="admin-h4 text-info">{this.state.timeMessage}</h2>
+
 						<p>Pelejä pelattu kirjautuneiden käyttäjien osalta: {this.state.gamesByLoggedInUsers} kpl </p>
 						<p>Pelejä pelattu anonyymien käyttäjien osalta: {this.state.gamesByAnonymousUsers} kpl </p>
 						<p>Pelejä pelattu yhteensä: {this.state.gameSessionsFiltered.length} kpl</p>
@@ -212,64 +240,14 @@ class Statistics extends React.Component {
 						<p>Sekapelejä pelattu: {this.state.mixedGameCount} kpl</p>
 						<p>Peliä pelattu yhteensä: {this.secondsToHourMinuteSecond(this.state.timePlayed)}</p>
 					</div>
-					<div>
-            <h2 className="admin-h4 text-info">Helpoimmat kuvat top 10</h2>
-            <Row>
-							<Col xs={2}>
-							</Col>
-              <Col xs={8}>
-						{this.state.top10EasiestImages.map((image, idx) => {
-							console.log(image.url)
-							return (
-							<div key={image.id} id={"bone" + idx} className="text-muted"> 
-								<p>{image.bone.nameLatin}, {image.animal.name}</p>
-								<small>Vastattu: {image.attempts} kertaa || </small>
-								<small>Täysin oikein: {image.correctAttempts} kertaa || </small>
-								<small>Oikeellisuuskeskiarvo: {Math.round(image.correctness / image.attempts)}</small>
-								
-								<CloudinaryContext cloudName="luupeli">
-									<Image publicId={image.url}>
-										{/* <Transformation width='300' crop='fill' /> */}
-									</Image>
-								</CloudinaryContext>
-							</div>
-							)
-						})}
-						</Col>
-              <Col xs={2}>
-              </Col>
-            </Row>
-            
-            <h2 className="admin-h4 text-info">Vaikeimmat kuvat top 10</h2>
-            <Row>
-							<Col xs={2}>
-              </Col>
-              <Col xs={8}>
-						{this.state.top10HardestImages.map((image, idx) => {
-							console.log(image.url)
-							return (
-							<div key={image.id} id={"bone" + idx} className="text-muted"> 
-								<p>{image.bone.nameLatin}, {image.animal.name}</p>
-								<small>Vastattu: {image.attempts} kertaa || </small>
-								<small>Täysin oikein: {image.correctAttempts} kertaa || 	</small>
-								<small>Oikeellisuuskeskiarvo: {Math.round(image.correctness / image.attempts)}</small>
-								<CloudinaryContext cloudName="luupeli">
-									<Image publicId={image.url}>
-										{/* <Transformation width='300' crop='fill' /> */}
-									</Image>
-								</CloudinaryContext>
-							</div>
-							)
-						})}
-						</Col>
-              <Col xs={2}>
-              </Col>
-            </Row>
-					</div>
-				</div>
+					<div className="text-dark">
+            {this.hardestAndEasiestImages(this.state.top10EasiestImages, 'Helpoimmat kuvat top 10')}
+            {this.hardestAndEasiestImages(this.state.top10HardestImages, 'Vaikeimmat kuvat top 10')}
+          </div>
+        </div>
 			)
 		}
-	}
+  }
 
 	render() {
 		Moment.locale('en');
