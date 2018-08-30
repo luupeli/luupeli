@@ -23,8 +23,6 @@ class BoneListing extends React.Component {
 		this.handleBodyPartChange = this.handleBodyPartChange.bind(this)
 		this.handleChange = this.handleChange.bind(this)
 		this.boneAnimalsToString = this.boneAnimalsToString.bind(this)
-
-		window.onunload = function () { window.location.href = '/' }
 	}
 
 	// GET list of bones from database and stuff it into this.state.bones for rendering
@@ -132,7 +130,7 @@ class BoneListing extends React.Component {
 		return (
 			<div className="admin-bg">
 				<div className="App scroll">
-					<BackButton redirectTo='/admin' groupStyle="btn-group-vanilla" buttonStyle="gobackbutton btn btn-info" />
+					<BackButton action={() => this.props.history.push('/admin')} groupStyle="btn-group-vanilla" buttonStyle="gobackbutton btn btn-info" />
 					<div>
 						<Grid bsClass="width-md container">
 							<div id="listGroup" className="list-group">

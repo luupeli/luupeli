@@ -223,7 +223,7 @@ class Game extends React.Component {
         if (this.props.game.endCounter < 1) {
             setTimeout(function () {
             }.bind(this), 3500)
-            this.props.history.push('/', { mode: 'endscreen' })
+            this.props.history.push('/play', { mode: 'endscreen' })
         }
 
         return (

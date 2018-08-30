@@ -390,7 +390,7 @@ class EndScreen extends React.Component {
 								</div>
 							</div>
 
-							<BackButton redirectTo='/' groupStyle="btn-group" buttonStyle="gobackbutton" />
+							<BackButton action={() => this.props.history.push('/')} groupStyle="btn-group" buttonStyle="gobackbutton" />
 						</div>
 					</div>
 				</div>

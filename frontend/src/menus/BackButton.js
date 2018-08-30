@@ -1,33 +1,18 @@
 import React from 'react'
-import { Redirect } from 'react-router-dom'
 
 class BackButton extends React.Component {
 	constructor(props) {
     super(props)
-    this.state = {
-      redirect: false
-    }
-    this.proceedToPage = this.proceedToPage.bind(this)
   }
   
-  proceedToPage() {
-		this.setState({ redirect: true })
-		this.setState({ redirectTo: this.props.redirectTo })
-	}
-  
   render() {
-		if (this.state.redirect === true) {
-			return (
-				<Redirect to={this.props.redirectTo}  />
-			)
-		}
-		
+	
 		return (
 			<div className={this.props.groupStyle}>
 				<button
 					id="goBackButton"
 					className={this.props.buttonStyle}
-					onClick={this.proceedToPage}>
+					onClick={this.props.action}>
 					Takaisin
 				</button>
 			</div>

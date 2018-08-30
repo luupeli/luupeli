@@ -15,8 +15,6 @@ class UserListing extends React.Component {
 			allUsers: [],
 			user: null
 		}
-		// see Admin.js if you want to know more about why this is here.
-		window.onunload = function () { window.location.href = '/' }
 	}
 
 	// Using userService to fetch all users. this.state.allUsers will hold the response data,
@@ -37,11 +35,11 @@ class UserListing extends React.Component {
 		if (loggedUserJSON) {
 			const user = JSON.parse(loggedUserJSON)
 			if (user.role !== "ADMIN") {
-				this.setState({ redirect: true, redirectTo: '/' })
+				this.props.history.push('/')
 			}
 			this.setState({ user })
 		} else {
-			this.setState({ redirect: true, redirectTo: '/' })
+			this.props.history.push('/')
 		}
 	}
 

@@ -98,14 +98,14 @@ class User extends React.Component {
 		if (loggedUserJSON) {
 			const user = JSON.parse(loggedUserJSON)
 			if (user.role !== "ADMIN" && user.id !== this.state.userId) {
-				this.setState({ redirect: true, redirectTo: '/' })
+				this.props.history.push('/')
 			}
 			this.setState({ user })
 			if (user.role === "ADMIN") {
-				this.setState({ goBackTo: '/users' })
+				this.props.history.push('/users')
 			}
 		} else {
-			this.setState({ redirect: true, redirectTo: '/login' })
+			this.props.history.push('/login')
 		}
 	}
 
@@ -168,7 +168,7 @@ class User extends React.Component {
 				<div className={this.state.allStyles[i].background}>
 					<div className={this.state.allStyles[i].style}>
 						<div className="App">
-							<BackButton redirectTo='/' />
+							<BackButton action={() => this.props.history.push('/')} />
 							<font size="3"><div>
 								<h2>Käyttäjä {this.state.viewedUserName}</h2>
 								<h3>Arvonimesi: {rank}</h3>

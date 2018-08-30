@@ -65,7 +65,7 @@ class Leaderboard extends React.Component {
 						<div className="App">
 							<h3>&#9733; Eniten pisteitä&#9733;</h3>
 							<h6>(Kaikkien aikojen ennätykset)</h6>
-							<BackButton redirectTo='/' groupStyle="btn-group" buttonStyle="gobackbutton" />
+							<BackButton action={() => this.props.history.go(-1)} groupStyle="btn-group" buttonStyle="gobackbutton" />
 							<Row>
 								<Col>
 									{this.state.bestPlayersTop20AllTime.map(index => {
