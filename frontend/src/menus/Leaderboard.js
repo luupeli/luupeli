@@ -64,7 +64,7 @@ class Leaderboard extends React.Component {
           <div className={this.state.allStyles[i].style}>
 						<div className="App">
 							<h2>&#9733; Eniten pisteitä (kaikilta ajoilta) &#9733;</h2>
-							<BackButton redirectTo='/' />
+							<BackButton redirectTo='/' groupStyle="btn-group" buttonStyle="gobackbutton" />
 							<Row>
 								<Col>
 									{this.state.bestPlayersTop20AllTime.map(index => {

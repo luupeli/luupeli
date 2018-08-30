@@ -169,7 +169,7 @@ class EndScreen extends React.Component {
 
 		return (
 			<Col xs={12} md={6} lg={6}>
-				<Row className="show-grid row-eq-height">
+				<Row className="show-grid row-eq-height answer-bg">
 					<Col xs={6} md={6} lg={6}>
 						<CloudinaryContext cloudName="luupeli">
 							<Image publicId={answer.image.url + ".png"}>
@@ -303,13 +303,13 @@ class EndScreen extends React.Component {
 								onFinishedPlaying={this.handleSongFinishedPlaying}
 								loop="true"
 							/>
-							<div>
+							<div className="width-md center">
 								<h2>Pelin kulku:</h2>
 								<Row className="show-grid">
-									<Col xs={12} md={6}>
+									<Col xs={6}>
 										<h3>Pisteet yhteensä: {this.props.game.totalScore}</h3>
 									</Col>
-									<Col xs={12} md={6}>
+									<Col xs={6}>
 										<h3>Pelin kesto: {this.props.game.totalSeconds / 1000} s</h3>
 									</Col>
 								</Row>
@@ -317,11 +317,11 @@ class EndScreen extends React.Component {
 									<button type="button" className="btn btn-theme" onClick={this.proceedToReplay}>Pelaa uudestaan</button>
 									<button type="button" className="btn btn-theme" onClick={this.proceedToGameModeSelection}>Pelimoodivalikkoon</button>
 								</div>
+								<h5>{achievementUnlocked}</h5>
+								<h3 id="endScreenTitle">Vastauksesi olivat:</h3>
 							</div>
 
 							<div>
-								<h5>{achievementUnlocked}</h5>
-								<h3 id="endScreenTitle">Vastauksesi olivat:</h3>
 								<div id="resultsText">
 									<div class="progress progress-fat">
 										<div class="progress-bar progress-bar-fat progress-bar-success" style={{ width: correctPortion + "%" }} role="progressbar" aria-valuenow={correctPortion} aria-valuemin="0" aria-valuemax="100"><p className="text-big">Täysin oikein {correctPortion}%</p></div>
@@ -332,7 +332,7 @@ class EndScreen extends React.Component {
 								</div>
 							</div>
 
-							<BackButton redirectTo='/' />
+							<BackButton redirectTo='/' groupStyle="btn-group" buttonStyle="gobackbutton" />
 						</div>
 					</div>
 				</div>

@@ -23,10 +23,10 @@ class BackButton extends React.Component {
 		}
 		
 		return (
-			<div className="btn-group">
+			<div className={this.props.groupStyle}>
 				<button
 					id="goBackButton"
-					className="gobackbutton"
+					className={this.props.buttonStyle}
 					onClick={this.proceedToPage}>
 					Takaisin
 				</button>

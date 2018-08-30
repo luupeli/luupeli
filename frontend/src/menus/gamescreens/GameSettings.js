@@ -476,7 +476,7 @@ class GameSettings extends React.Component {
 								</div>
 							</div>
 						</div>
-						<BackButton redirectTo='/gamemode' />
+						<BackButton redirectTo='/gamemode' groupStyle="btn-group" buttonStyle="gobackbutton" />
 					</div>
 				</div>
 			</div>

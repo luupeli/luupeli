@@ -204,20 +204,28 @@ class Statistics extends React.Component {
 						<p>Peliä pelattu yhteensä: {this.secondsToHourMinuteSecond(this.state.timePlayed)}</p>
 					</div>
 					<div>
-            <h4 className="text-info">Helpoimmat kuvat top 10</h4>
+            <h2 className="admin-h4 text-info">Helpoimmat kuvat top 10</h2>
             <Row>
-              <Col>
+							<Col xs={2}>
+							</Col>
+              <Col xs={8}>
                 {this.state.top10EasiestImages.map((image, idx) => {
                   return <a className="text-muted" href={getUrl() + "/update/" + image.id}>| {idx + 1}. {image.bone.nameLatin} {Math.round(image.correctness)} | </a>
                 })}
               </Col>
+              <Col xs={2}>
+              </Col>
             </Row>
-            <h4 className="text-info">Vaikeimmat kuvat top 10</h4>
+            <h2 className="admin-h4 text-info">Vaikeimmat kuvat top 10</h2>
             <Row>
-              <Col>
+							<Col xs={2}>
+              </Col>
+              <Col xs={8}>
                 {this.state.top10HardestImages.map((image, idx) => {
                   return <a className="text-muted" href={getUrl() + "/update/" + image.id}>| {idx + 1}. {image.bone.nameLatin} {Math.round(image.correctness)}  |  </a>
                 })}
+              </Col>
+              <Col xs={2}>
               </Col>
             </Row>
 					</div>
@@ -236,8 +244,9 @@ class Statistics extends React.Component {
 			)
 		}
 		return (
-			<div className="App admin-bg">
-				<BackButton redirectTo='/admin' />
+			<div className="admin-bg">
+			<div className="App scroll">
+				<BackButton redirectTo='/admin' groupStyle="btn-group-vanilla" buttonStyle="gobackbutton btn btn-info" />
 				<div className="App menu">
 					<DateRange
 						maxDate={Date.now()}
@@ -248,6 +257,7 @@ class Statistics extends React.Component {
 				<div id='gameStatistics'>
 					{this.statsJSX()}
 				</div>
+			</div>
 			</div>
 		)
 	}

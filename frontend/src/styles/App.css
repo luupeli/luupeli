@@ -75,13 +75,23 @@ h2 {
 }
 
 .admin-h2 {
+	margin-top: 1vh;
 	font-size:calc(2vw + 1.2vh + 0.7vmin);
   font-weight: 700;
   line-height: 1.2;
 }
 
+.admin-h4 {
+	font-size:calc(1vw + 1vh + 0.7vmin);
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+}
+
 .admin-bg {
+	height: 100vh;
 	background-color: #edf1f4;
+	overflow: hidden;
 }
 
 .text-dark {
@@ -92,6 +102,17 @@ h2 {
 	width: 90%;
 }
 
+.width-md {
+	width: 75%;
+}
+
+.center {
+	margin: auto;
+}
+
+.full-height {
+	height: 100%;
+}
 .page-title {
   display: block;
   width: 100%;
@@ -178,6 +199,21 @@ animation: Button-Gradient 3.23s ease infinite;
 .deep-blue App {
   text-align: center;
 
+}
+
+.btn-group-vanilla button {
+		margin: auto;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    font-size:calc(0.9vw + 0.5vh + .5vmin);/*10vh;/*24px;*/
+    cursor: pointer;
+    width: 50%;
+    display: block;
+    
+    padding: 1.0vh 1.25vw;/*20px 24px;*/
+    text-decoration:none;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
 }
 
 .btn-group button {
@@ -776,6 +812,7 @@ form {
 }
 
 .scroll {
+	height: 100%;
 	overflow-y: scroll;
 	overflow-x: hidden;
 }
@@ -1429,8 +1466,12 @@ https://codepen.io/George-Payne/pen/qOrxao
   position: fixed;
 }
 
+.answer-bg {
+	background-color: #000;
+}
+
 .text-bg {
-	background-color:rgba(0, 0, 0, 0.5);
+	background-color:rgba(255, 255, 255, 0.5);
 }
 
 .row-eq-height {
@@ -1613,7 +1654,7 @@ https://codepen.io/George-Payne/pen/qOrxao
 
 .text-big {
 	margin-top: 3px;
-	font-size: 13px;
+	font-size: 15px;
 }
 
 .scoreflash-position-mobile {
@@ -1635,3 +1676,4 @@ https://codepen.io/George-Payne/pen/qOrxao
 	position: relative;
 	z-index: 3;
 }
+

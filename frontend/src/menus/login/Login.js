@@ -165,7 +165,7 @@ class Login extends React.Component {
               <div className="transbox">
                 {this.ifLoggedInForms()}
               </div>
-              <BackButton redirectTo='/' />
+              <BackButton redirectTo='/' groupStyle="btn-group" buttonStyle="gobackbutton" />
             </div>
           </div>
         </div>
