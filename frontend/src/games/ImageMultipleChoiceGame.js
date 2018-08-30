@@ -27,8 +27,10 @@ class ImageMultipleChoiceGame extends React.Component {
   }
 
   componentDidMount() {
+    if (this.props.game.totalSeconds<2 &&  this.props.game.gameLength === this.props.game.endCounter) {
     this.props.setImagesToImageMultipleChoiceGame(this.props.game.images, this.props.game.answers)
     this.props.startGameClock()
+    }
     setInterval(() => {
       this.setState(() => {
         console.log('test')
@@ -86,12 +88,13 @@ class ImageMultipleChoiceGame extends React.Component {
     let streakNote = ''
     let currentStreak = this.state.streakMCG
     let currentBonus = this.state.bonus
-
+    let streakStyle = 'correct'
 
     if (correctness === 100) {
       this.setState({ streakMCG: currentStreak + 1, bonus: currentBonus + 0.5 })
       streakNote = currentBonus + 'x!'
     } else {
+      streakStyle='incorrect'
       points = 0
       streakEmoji = require('node-emoji')
       streakEmoji = streakEmoji.get('poop')
@@ -102,7 +105,7 @@ class ImageMultipleChoiceGame extends React.Component {
 
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
 
-    this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 2.5, true)
+    this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, streakStyle, 2.5, true)
     this.setState({ choices: [] })
     console.log('points: ' + points)
     console.log('this.state.selectedImage.bone.nameLatin: ' + image.bone.nameLatin)
@@ -207,7 +210,7 @@ class ImageMultipleChoiceGame extends React.Component {
     const houseEmoji = emoji.get('house')
 
     return (
-      <div className="fullsize">
+      <div className="fullsize" z-index="0">
         <div>
           <h2>{this.props.game.currentImage.bone.nameLatin}, {this.props.game.currentImage.animal.name}</h2>
           <p>(klikkaa oikeaa kuvaa!)</p>

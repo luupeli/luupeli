@@ -58,6 +58,7 @@ class WritingGame extends React.Component {
     if (this.props.game.endCounter !== prevProps.game.endCounter) {
       this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
       this.props.startGameClock()
+      console.log('COMPONENT DID UPDATE')
     }
   }
 
@@ -68,8 +69,13 @@ class WritingGame extends React.Component {
         return { unseen: "does not display" }
       });
     }, 1000)
+    //if  {
+      //if (this.props.game.endCounter !== prevProps.game.endCounter || 
+        if (this.props.game.totalSeconds<2 &&  this.props.game.gameLength === this.props.game.endCounter) {
     this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
     this.props.startGameClock()
+    console.log('COMPONENT DID MOUNT')
+    }
   }
 
   handleChange(event) {
@@ -457,7 +463,7 @@ class WritingGame extends React.Component {
           <div className="intro">
             <CloudinaryContext cloudName="luupeli">
               <div className="height-restricted" >
-                <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationOutDelay="0" isVisible={this.state.animationActive}>
+                <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1000" animationOutDelay="0" isVisible={this.state.animationActive}>
                   <Image id="bone-image" publicId={this.props.game.currentImage.url}>
                     <Transformation width={imageWidth()} />
                   </Image>

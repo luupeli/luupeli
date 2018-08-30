@@ -25,6 +25,7 @@ class Game extends React.Component {
             allStyles: JSON.parse(localStorage.getItem("allStyles")),
             styleIndex: localStorage.getItem('styleIndex'),
             startScoreFlashSound: false,
+            injected: false
         }
         this.postGameSession = this.postGameSession.bind(this)
     };
@@ -144,7 +145,7 @@ class Game extends React.Component {
                             {/* <p>{imageWidthR()},{imageHeightR()}</p> */}
 
                             <GameLoop history={this.props.history} />
-                            <div>
+                            <div className="scoreflash-position">
                                 {scoreFlash()}
                             </div>
                         </div>
@@ -177,7 +178,7 @@ class Game extends React.Component {
                             <div className="game-mainview-mobile">
                                 {/* <p>{imageWidthR()},{imageHeightR()}</p> */}
                                 <GameLoop />
-                                <div position="absolute" z-index="9999" opacity=".99">
+                                <div className="scoreflash-position-mobile" position="absolute" z-index="9999" opacity=".99">
                             {/* <ScoreFlash /> */}
                             {scoreFlash()}
                         </div>
@@ -200,6 +201,8 @@ class Game extends React.Component {
     render() {
         let i = parseInt(localStorage.getItem('styleIndex'), 10)
         // Here we inject the visual style specific colors into the css. Each visual style has a primary, secondary and tertiary color (accent).
+    
+        if (!this.state.injected) {
         injectGlobal`
 		:root {  
             --highlight: ${this.state.allStyles[i].highlight}
@@ -208,7 +211,8 @@ class Game extends React.Component {
 		  --tertiary: ${this.state.allStyles[i].tertiary}
 		  }
         }`
-
+        this.setState({injected:true})
+        }
 
         if (this.props.game.scoreflash !== undefined) {
             if (this.props.game.scoreflash.startPlayingBonusSound && !this.state.startScoreFlashSound) {

@@ -37,8 +37,10 @@ class MultipleChoiceGame extends React.Component {
         return { unseen: "does not display" }
       });
     }, 1000)
+    if (this.props.game.totalSeconds<2 &&  this.props.game.gameLength === this.props.game.endCounter) {
     this.props.setImagesToMultipleChoiceGame(this.props.game.images, this.props.game.answers)
     this.props.startGameClock()
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -81,13 +83,14 @@ class MultipleChoiceGame extends React.Component {
     let streakNote = ''
     let currentStreak = this.state.streakMCG
     let currentBonus = this.state.bonus
-
+    let streakStyle = 'correct'
     
     if (correctness === 100) {
       this.setState({ streakMCG: currentStreak + 1, bonus: currentBonus + 0.5 })
       streakNote = currentBonus + 'x!'
     } else {
       points = 0
+      streakStyle='incorrect'
       streakEmoji = require('node-emoji')
       streakEmoji = streakEmoji.get('poop')
       streakNote = ''
@@ -95,7 +98,7 @@ class MultipleChoiceGame extends React.Component {
     }
 
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
-    this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 3, true)
+    this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, streakStyle, 3, true)
 
     setTimeout(() => {
       this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(this.state.value), this.state.value,this.props.game.currentImage.animal.name,current-started,points)
