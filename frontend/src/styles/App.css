@@ -689,6 +689,11 @@ div.row {
   background-color: transparent;
 } */
 
+.limit-width {
+	width: 100%;
+	max-width: 100%;
+}
+
 div.scoreflash .orig {
   position: absolute;
   width: 30vw;

@@ -484,6 +484,7 @@ class WritingGame extends React.Component {
          */}
         <div className="game-answer-input" />
         <form
+					className="limit-width"
           id='gameForm'
           onSubmit={this.handleSubmit}
         >
