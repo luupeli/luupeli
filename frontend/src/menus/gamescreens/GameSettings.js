@@ -1,5 +1,4 @@
 import React from 'react'
-import { Redirect } from 'react-router-dom'
 import Message from '../../games/Message'
 import imageService from '../../services/images'
 import bodyPartService from '../../services/bodyParts'
@@ -27,7 +26,6 @@ class GameSettings extends React.Component {
 		this.state = {
 			gameLength: '10',
 			gamemode: '',
-			redirect: false,
 			allImages: [],		   // used to store an array of alla known images
 			allAnimals: [],        // used to store an array of all known animals
 			allBodyParts: [],      // used to store an array of all known bodyparts

@@ -1,6 +1,5 @@
 import React from 'react'
 import loginService from '../../services/login'
-import { Redirect } from 'react-router-dom'
 import '../../styles/App.css'
 import BackButton from '../BackButton'
 
@@ -12,7 +11,6 @@ class Login extends React.Component {
       allStyles: JSON.parse(localStorage.getItem("allStyles")),
       styleIndex: localStorage.getItem('styleIndex'),
       error: null,
-      redirect: false,
       username: '',
       password: '',
       user: null
@@ -49,7 +47,7 @@ class Login extends React.Component {
         password: '',
         user
       })
-      this.setState({ redirect: true })
+      this.props.history.push('/')
       // If we get here, the attempt to log in was unsuccessful.
     } catch (error) {
       console.log(error)
@@ -130,11 +128,6 @@ class Login extends React.Component {
   }
 
   render() {
-    if (this.state.redirect) {
-      return (
-        <Redirect to="/" />
-      )
-    }
     let i = this.state.styleIndex
     return (
       <div className={this.state.allStyles[i].overlay}>

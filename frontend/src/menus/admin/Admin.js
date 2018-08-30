@@ -39,7 +39,7 @@ class Admin extends React.Component {
 		return (
 			<div className='App admin-bg'>
 				<h2 className="admin-h2 text-info">Ylläpitäjän sivu</h2>
-				<BackButton action={() => this.props.history.go(-1)} groupStyle="btn-group-vanilla" buttonStyle="gobackbutton btn btn-info" />
+				<BackButton action={() => this.props.history.push('/')} groupStyle="btn-group-vanilla" buttonStyle="gobackbutton btn btn-info" />
 				<div id='adminButtons' className='btn-group-vanilla'>
 					<Row className="show-grid">
 						<Col>

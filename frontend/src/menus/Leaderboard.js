@@ -28,11 +28,7 @@ class Leaderboard extends React.Component {
 			this.setState({ user })
 		}
 	}
-	//If we're going back, there's only one page to go to, home, so redirectTo will be /
-	proceedToMain(event) {
-		this.setState({ redirect: true })
-		this.setState({ redirectTo: '/' })
-  }
+
 	//We're using userStatistics to fetch an array of 50 users in decreasing order by points.
 	//We're also calling bestPlayersAuxiliaryMethod, see what it does below.
 	setBestPlayers() {

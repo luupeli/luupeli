@@ -1,7 +1,6 @@
 import React from 'react'
 import usersService from '../../services/users'
 import loginService from '../../services/login'
-import { Redirect } from 'react-router-dom'
 import '../../styles/App.css'
 import BackButton from '../BackButton'
 
@@ -12,7 +11,6 @@ class Register extends React.Component {
             allStyles: JSON.parse(localStorage.getItem("allStyles")),
             styleIndex: localStorage.getItem('styleIndex'),
             error: null,
-            redirect: false,
             username: '',
             email: '',
             password: '',
@@ -58,7 +56,7 @@ class Register extends React.Component {
                     repeatPassword: '',
                     user
                 })
-                this.setState({ redirect: true })
+                this.props.history.push('/')
                 // If we end up here, a new user could not be created. Backend rejected the request.
             } catch (error) {
                 console.log(error)
@@ -89,11 +87,6 @@ class Register extends React.Component {
     // Also a button for creating an account, one for going back to the previous page, and one for going to
     // the login page in case the user wants to sign in instead of signing up.
     render() {
-        if (this.state.redirect) {
-            return (
-                <Redirect to="/" />
-            )
-        }
         let i = this.state.styleIndex
         console.log(this.state)
         return (
