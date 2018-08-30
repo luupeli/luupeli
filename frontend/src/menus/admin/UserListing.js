@@ -61,7 +61,7 @@ class UserListing extends React.Component {
 				<h2 className="admin-h2 text-info">Käyttäjälista</h2>
 				<font size="4"><p className="text-dark">&#9733; = ylläpitäjä</p></font>
 				<br></br>
-				<BackButton redirectTo='/admin' groupStyle="btn-group-vanilla" buttonStyle="gobackbutton btn btn-info" />
+				<BackButton action={() => this.props.history.push('/admin')} groupStyle="btn-group-vanilla" buttonStyle="gobackbutton btn btn-info" />
 				<div id='listOfUsers'>
 					<Row>
 						<Col>

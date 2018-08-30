@@ -1,5 +1,4 @@
 import React from 'react'
-import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
 import { Grid, Row, Col } from 'react-bootstrap'
@@ -28,7 +27,6 @@ class EndScreen extends React.Component {
 			styleIndex: localStorage.getItem('styleIndex'),
 			style: localStorage.getItem('style'),
 			user: null,
-			redirect: false,
 			localScore: -1,
 			localGames: -1,
 			scoreRetrieved: false
@@ -223,14 +221,6 @@ class EndScreen extends React.Component {
 
 	render() {
 		let i = this.state.styleIndex
-
-		if (this.state.redirect) {
-			return (
-				<Redirect to={{
-					pathname: this.state.redirectTo,
-				}} />
-			)
-		}
 
 		const correctAnswers = this.props.game.answers.filter(ans => ans.correctness === 100)
 		const almostCorrectAnswers = this.props.game.answers.filter(ans => ans.correctness > 70 && ans.correctness < 100)

@@ -189,21 +189,6 @@ class SelectGameMode extends React.Component {
   }
 
   render() {
-    if (this.state.redirect) {
-      console.log(this.state.gamemode)
-      return (
-        <Redirect to=
-          {{
-            pathname: this.state.redirectTo,
-            state: {
-              allStyles: this.state.allStyles,
-              styleIndex: this.state.styleIndex,
-              gamemode: this.state.gamemode
-            }
-          }}
-        />
-      )
-    }
     let i = this.state.styleIndex
     return (
       <div id="gameBody" className="App menu">
