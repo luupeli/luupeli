@@ -23,10 +23,7 @@ class SelectGameMode extends React.Component {
       instructionAnimation: true,
       loopTheMusicMore: false,
     }
-    this.proceedToSettings = this.proceedToSettings.bind(this)
-    this.proceedToMain = this.proceedToMain.bind(this)
     this.proceedToExam = this.proceedToExam.bind(this)
-    window.onunload = function () { window.location.href = '/' };
   }
 
   componentDidMount() {
@@ -187,19 +184,7 @@ musicPlayer() {
   proceedToExam(event) {
     this.props.gameInitialization(15, this.state.images, this.state.user,
       event.target.value, this.props.init.animals, this.props.init.bodyParts, false, 'hard')
-    this.setState({ redirect: true })
-    this.setState({ redirectTo: '/game' })
-  }
-
-  proceedToSettings(event) {
-    this.setState({ gamemode: event.target.value })
-    this.setState({ redirect: true })
-    this.setState({ redirectTo: '/settings' })
-  }
-
-  proceedToMain(event) {
-    this.setState({ redirect: true })
-    this.setState({ redirectTo: '/' })
+      this.props.history.push('/', { mode: 'exam', gamemode: 'harjoitustentti'})
   }
 
   render() {
@@ -252,7 +237,7 @@ musicPlayer() {
                         className="menu-button"
                         id="writingGameButton"
                         value="kirjoituspeli"
-                        onClick={this.proceedToSettings}>
+                        onClick={() => this.props.history.push('/play', {mode: 'settings', gamemode: 'kirjoituspeli'})}>
                         Kirjoituspeli
                       </button>
                       </Animated>
@@ -265,7 +250,7 @@ musicPlayer() {
                         className="menu-button"
                         id="multipleChoiceButton"
                         value="monivalintapeli"
-                        onClick={this.proceedToSettings}>
+                        onClick={() => this.props.history.push('/play', {mode: 'settings', gamemode: 'monivalintapeli'})}>
                         Monivalintapeli
                       </button>
                       </Animated>
@@ -278,7 +263,7 @@ musicPlayer() {
                         className="menu-button"
                         id="mixedGameButton"
                         value="sekapeli"
-                        onClick={this.proceedToSettings}>
+                        onClick={() => this.props.history.push('/play', {mode: 'settings', gamemode: 'sekapeli'})}>
                         Sekapeli
                       </button>
                       </Animated>

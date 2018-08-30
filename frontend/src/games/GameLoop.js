@@ -14,9 +14,6 @@ import { setIntroSound } from '../reducers/soundReducer'
 class GameLoop extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            redirectToEndPage: false
-        }
     }
 
     /**

@@ -37,34 +37,21 @@ class Main extends React.Component {
 
     return (
       <div>
-        {/* <NavBar/> */}
         <main>
           <BrowserRouter>
             <div>
               {sound()}
-              <Route exact path="/add_data" render={({ location, history }) => {
-                return <AddData location={location} history={history} />
-              }} />
               <Route exact path="/" render={({ location, history }) => {
                 return <Home location={location} history={history} />
+              }} />
+              <Route exact path="/add_data" render={({ location, history }) => {
+                return <AddData location={location} history={history} />
               }} />
               <Route exact path="/login" render={({ location, history }) => {
                 return <Login location={location} history={history} />
               }} />
               <Route exact path="/register" render={({ location, history }) => {
                 return <Register location={location} history={history} />
-              }} />
-              <Route exact path="/gamemode" render={({ location, history }) => {
-                return <SelectGameMode location={location} history={history} />
-              }} />
-              <Route exact path="/game" render={({ location, history }) => {
-                return <Game location={location} history={history} />
-              }} />
-              <Route exact path="/settings" render={({ location, history }) => {
-                return <GameSettings location={location} history={history} />
-              }} />
-              <Route exact path="/endscreen" render={({ location, history }) => {
-                return <EndScreen location={location} history={history} />
               }} />
               <Route exact path="/listing" render={({ location, history }) => {
                 return <BoneListing location={location} history={history} />
@@ -89,6 +76,19 @@ class Main extends React.Component {
               }} />
               <Route exact path="/leaderboard" render={({ location, history }) => {
                 return <Leaderboard location={location} history={history} />
+              }} />
+              <Route path="/play" render={({ location, history }) => {
+                console.log(location)
+                console.log(history)
+                  if (history.location.state.mode === 'settings') {
+                    return <GameSettings location={location} history={history} />
+                  } else if (history.location.state.mode === 'gamemode') {
+                    return <SelectGameMode location={location} history={history} />
+                  } else if (history.location.state.mode === 'game') {
+                    return <Game location={location} history={history} />
+                  } else if (history.location.state.mode === 'endscreen') {
+                    return <EndScreen location={location} history={history} />
+                  }
               }} />
             </div>
           </BrowserRouter>

@@ -15,7 +15,7 @@ class ImageMultipleChoiceGame extends React.Component {
     super(props);
     this.timer = 0
     this.state = {
-			clickDisabled: false,
+      clickDisabled: false,
       selectedId: undefined,
       selectedImage: undefined,
       streakMCG: 0,
@@ -24,8 +24,6 @@ class ImageMultipleChoiceGame extends React.Component {
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.renderImages = this.renderImages.bind(this)
-    window.onunload = function () { window.location.href = '/' }
-
   }
 
   componentDidMount() {
@@ -44,19 +42,19 @@ class ImageMultipleChoiceGame extends React.Component {
       this.props.setImagesToImageMultipleChoiceGame(this.props.game.images, this.props.game.answers)
       this.props.startGameClock()
     }
-    
+
     /*if (this.state.clickDisabled) {
 			this.setState({ clickDisabled: false })
 		}*/
   }
 
   handleSubmit(image) {
-		if (this.state.clickDisabled) {
-			return
-		}
-		console.log("CLICK!")
-		this.setState({ clickDisabled: true })
-		
+    if (this.state.clickDisabled) {
+      return
+    }
+    console.log("CLICK!")
+    this.setState({ clickDisabled: true })
+
     this.props.stopGameClock()
     this.setState({
       selectedId: image.id,
@@ -66,12 +64,12 @@ class ImageMultipleChoiceGame extends React.Component {
     this.props.setAnswerSound(correctness)
     let current = new Date().getTime()
     let started = this.props.game.startedAt
-    if (started<1 || isNaN(started) || started===undefined) {
-      started=this.state.internalStartedAt
+    if (started < 1 || isNaN(started) || started === undefined) {
+      started = this.state.internalStartedAt
     }
 
-    let points = (Math.round((this.checkCorrectness(image) * Math.min(10, this.props.game.currentImage.bone.nameLatin.length)) *((30 + Math.max(0, (30 - ((current- started)/1000)) / 60))))) / 80
-	console.log(this.props.game)
+    let points = (Math.round((this.checkCorrectness(image) * Math.min(10, this.props.game.currentImage.bone.nameLatin.length)) * ((30 + Math.max(0, (30 - ((current - started) / 1000)) / 60))))) / 80
+    console.log(this.props.game)
 
 
     if (correctness > 99) {
@@ -89,7 +87,7 @@ class ImageMultipleChoiceGame extends React.Component {
     let currentStreak = this.state.streakMCG
     let currentBonus = this.state.bonus
 
-    
+
     if (correctness === 100) {
       this.setState({ streakMCG: currentStreak + 1, bonus: currentBonus + 0.5 })
       streakNote = currentBonus + 'x!'
@@ -106,11 +104,11 @@ class ImageMultipleChoiceGame extends React.Component {
 
     this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, 'success', 2.5, true)
     this.setState({ choices: [] })
-    console.log('points: '+points)
-    console.log('this.state.selectedImage.bone.nameLatin: '+image.bone.nameLatin)
-    console.log('gameClock: '+current-started)
+    console.log('points: ' + points)
+    console.log('this.state.selectedImage.bone.nameLatin: ' + image.bone.nameLatin)
+    console.log('gameClock: ' + current - started)
     setTimeout(() => {
-      this.props.setAnswer(this.props.game.currentImage, correctness, image.bone.nameLatin,image.animal.name, current-started, points)
+      this.props.setAnswer(this.props.game.currentImage, correctness, image.bone.nameLatin, image.animal.name, current - started, points)
       this.setState({ selectedId: undefined, selectedImage: undefined })
       this.setState({ clickDisabled: false })
     }, 3000)
@@ -149,47 +147,47 @@ class ImageMultipleChoiceGame extends React.Component {
       }
     }
   }
-  
+
   renderImages() {
-		console.log(this.props.game.wrongImageOptions)
-		console.log(this.props.game.wrongImageOptions.slice(0, 2))
-		console.log(this.props.game.wrongImageOptions.slice(2, 4))
-		return (
-			<Grid fluid={true}>
-			<Row>
-			{this.props.game.wrongImageOptions.slice(0, 2).map(choice => {
-				return (
-					<Col xs={6}>
-						<div className="multi-height-restricted" style={this.style(choice)}>
-							<CloudinaryContext cloudName="luupeli">
-								<Image publicId={choice.url} onClick={() => this.handleSubmit(choice)}>
-									<Transformation background="#000000" height="250" width="350" crop="lpad" />
-								</Image>
-							</CloudinaryContext>
-						</div>
-					</Col>
-				)
-			})}
-			</Row>
-			
-			<Row className="top-buffer">
-			{this.props.game.wrongImageOptions.slice(2, 4).map(choice => {
-				return (
-					<Col xs={6}>
-						<div className="multi-height-restricted" style={this.style(choice)}>
-							<CloudinaryContext cloudName="luupeli">
-								<Image publicId={choice.url} onClick={() => this.handleSubmit(choice)}>
-									<Transformation background="#000000" height="250" width="350" crop="lpad" />
-								</Image>
-							</CloudinaryContext>
-						</div>
-					</Col>
-				)
-			})}
-			</Row>
-			</Grid>
-		)
-	}
+    console.log(this.props.game.wrongImageOptions)
+    console.log(this.props.game.wrongImageOptions.slice(0, 2))
+    console.log(this.props.game.wrongImageOptions.slice(2, 4))
+    return (
+      <Grid fluid={true}>
+        <Row>
+          {this.props.game.wrongImageOptions.slice(0, 2).map(choice => {
+            return (
+              <Col xs={6}>
+                <div className="multi-height-restricted" style={this.style(choice)}>
+                  <CloudinaryContext cloudName="luupeli">
+                    <Image publicId={choice.url} onClick={() => this.handleSubmit(choice)}>
+                      <Transformation background="#000000" height="250" width="350" crop="lpad" />
+                    </Image>
+                  </CloudinaryContext>
+                </div>
+              </Col>
+            )
+          })}
+        </Row>
+
+        <Row className="top-buffer">
+          {this.props.game.wrongImageOptions.slice(2, 4).map(choice => {
+            return (
+              <Col xs={6}>
+                <div className="multi-height-restricted" style={this.style(choice)}>
+                  <CloudinaryContext cloudName="luupeli">
+                    <Image publicId={choice.url} onClick={() => this.handleSubmit(choice)}>
+                      <Transformation background="#000000" height="250" width="350" crop="lpad" />
+                    </Image>
+                  </CloudinaryContext>
+                </div>
+              </Col>
+            )
+          })}
+        </Row>
+      </Grid>
+    )
+  }
 
   render() {
     const debug = () => {
@@ -199,13 +197,13 @@ class ImageMultipleChoiceGame extends React.Component {
             if (choice.correct) {
               return 'Oikea vastaus ylhäältä laskettuna: ' + i + '(laskenta alkaa nollasta)'
             }
-          return null
+            return null
           })
         )
       }
       return null
     }
-    
+
     const houseEmoji = emoji.get('house')
 
     return (

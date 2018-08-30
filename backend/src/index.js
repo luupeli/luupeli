@@ -31,7 +31,7 @@ app.use('/api/bodyparts', require('./controllers/bodyParts'))
 app.use('/api/answers', require('./controllers/answers'))
 app.use('/api/best_answers', require('./controllers/bestAnswers'))
 app.use('/api/gamesessions', require('./controllers/gameSessions'))
-app.use(require('./utils/middleware').error)
+// app.use('/api/*', require('./utils/middleware').error)
 
 // Create a server
 const server = http.createServer(app)

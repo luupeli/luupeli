@@ -296,7 +296,7 @@ class Home extends React.Component {
         }
         console.log('new style index is now: ' + next)
         window.location.reload()
-        window.onunload = function () { window.location.href = '/' }
+  //      window.onunload = function () { window.location.href = '/' }
 
     }
 
@@ -810,7 +810,7 @@ class Home extends React.Component {
                                                     <button
                                                         className="menu-button gamelink"
                                                         id="proceedToSelectGameMode"
-                                                        onClick={this.proceedToSelect}>
+                                                        onClick={() => this.props.history.push('/play', {mode: 'gamemode'})}>
                                                         Pelaa
                                                     </button>
                                                 </Animated>
