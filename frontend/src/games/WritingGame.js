@@ -452,7 +452,7 @@ class WritingGame extends React.Component {
     const houseEmoji = emoji.get('house')
 
     return (
-      <div className="bottomxxx">
+      <div className="bottom">
         <div className="row" id="image-holder">
           <div className="intro">
             <CloudinaryContext cloudName="luupeli">

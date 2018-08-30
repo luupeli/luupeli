@@ -546,6 +546,7 @@ class UpdateBone extends React.Component {
 
 		return (
 			<div className="admin-bg">
+				<div className="scroll">
 				<Grid bsClass="full-width container">
 					<div className="App">
 						<Row className="show-grid">
@@ -653,6 +654,7 @@ class UpdateBone extends React.Component {
 						</form>
 					</div>
 				</Grid>
+				</div>
 			</div>
 		)
 	}
