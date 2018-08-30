@@ -9,7 +9,6 @@ Status](https://travis-ci.org/luupeli/luupeli.svg?branch=master)](https://travis
 
 [Program logic](logic.md)
 
-![](https://github.com/luupeli/luupeli/blob/master/docs/images/luupeli-home.png)
-
 ### [Please see the Luupeli wiki for further information!](https://github.com/luupeli/luupeli/wiki)
 
+![](https://github.com/luupeli/luupeli/blob/master/docs/images/luupeli-home.png)
