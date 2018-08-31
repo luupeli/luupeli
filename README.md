@@ -1,4 +1,4 @@
-# Luupeli
+![](https://github.com/luupeli/luupeli/blob/master/docs/images/luupeli-hotpink-logo.png)
 
 [![Build 
 Status](https://travis-ci.org/luupeli/luupeli.svg?branch=master)](https://travis-ci.org/luupeli/luupeli)
