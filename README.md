@@ -21,10 +21,11 @@ Status](https://travis-ci.org/luupeli/luupeli.svg?branch=master)](https://travis
 ![](https://github.com/luupeli/luupeli/blob/master/docs/images/luupeli-home.png)
 
 ### Words of attribution
-The "Blood Dragon" visual theme, as seen above, features CSS effects modfied from a codepen by George Payne, [link](https://codepen.io/George-Payne/pen/qOrxao)
+- The "Blood Dragon" visual theme, as seen above, features CSS effects modfied from a codepen by George Payne, [link](https://codepen.io/George-Payne/pen/qOrxao)
 
-The "FALL0UT" visual theme features CSS effect modified from tutorial by Alec Lownes, [link](http://aleclownes.com/2017/02/01/crt-display.html)
+- The "FALL0UT" visual theme features CSS cathode ray tube effect modified from a tutorial by Alec Lownes, [link](http://aleclownes.com/2017/02/01/crt-display.html)
 
+### Freesound.org credits 
 Luupeli features Freesound.org creative commons audio from the following artists:
 - Chiptune Intro #1 by Fred1712
 - Electro success sound by Mativve
