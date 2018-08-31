@@ -44,7 +44,7 @@
     "regenerator-runtime": "^0.12.1"
   },
   "scripts": {
-    "start": "set PORT=3000 && react-scripts start",
+    "start": "PORT=3000 react-scripts start",
     "build": "react-scripts build",
     "test": "NODE_ENV=test jest --env=jsdom --coverage --collectCoverageFrom=**/tests/*.js",
     "eject": "react-scripts eject",
