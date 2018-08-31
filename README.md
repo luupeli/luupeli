@@ -19,3 +19,20 @@ Status](https://travis-ci.org/luupeli/luupeli.svg?branch=master)](https://travis
 ### [Please see the Luupeli wiki for further information!](https://github.com/luupeli/luupeli/wiki)
 
 ![](https://github.com/luupeli/luupeli/blob/master/docs/images/luupeli-home.png)
+
+### Words of attribution
+The "Blood Dragon" visual theme, as seen above, features CSS effects modfied from a codepen by George Payne, [link](https://codepen.io/George-Payne/pen/qOrxao)
+
+The "FALL0UT" visual theme features CSS effect modified from tutorial by Alec Lownes, [link](http://aleclownes.com/2017/02/01/crt-display.html)
+
+Luupeli features Freesound.org creative commons audio from the following artists:
+- Chiptune Intro #1 by Fred1712
+- Electro success sound by Mativve
+- Error.wav by Autistic Lucario
+- Retro Bonus Pickup SFX by suntemple
+- Trap-Beat by greek555
+- Cinematic Guitar Loop by frankum
+- Cool Chill Beat Loop by monkeyman535
+- Techno 80 - base loop by frankum
+- 8-bit ElectroHouse by RutgerMuller
+- Eastern Strings by 4barrelcarb
