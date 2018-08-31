@@ -42,7 +42,6 @@ class WritingGame extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.revealPartialAnswer = this.revealPartialAnswer.bind(this)
     this.gameClockUnits = this.gameClockUnits.bind(this)
-    window.onunload = function () { window.location.href = '/' }
   }
 
   gameClockUnits() {
@@ -473,6 +472,12 @@ class WritingGame extends React.Component {
           </div>
         </div>
         {/* <div className="row"> */}
+        <div>
+          <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="550" animationOutDelay="250" isVisible={this.state.animationActive}>
+            <center>
+              <p>Kuva: {this.props.game.currentImage.photographer}</p></center>
+          </Animated>
+        </div>
         <div>
           <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="550" animationOutDelay="250" isVisible={this.state.animationActive}>
             <center>

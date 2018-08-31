@@ -7,7 +7,6 @@ import Home from './menus/Home'
 import Leaderboard from './menus/Leaderboard'
 import Sounds from './Sounds'
 import GameSettings from './menus/gamescreens/GameSettings'
-import WritingGame from './games/WritingGame'
 import BoneListing from './menus/admin/BoneListing'
 import UserListing from './menus/admin/UserListing'
 import User from './menus/admin/User'
@@ -45,9 +44,11 @@ class Main extends React.Component {
               <Route exact path="/" render={({ location, history }) => {
                 return <Home location={location} history={history} />
               }} />
+              {/*  
+              This is commented out because we don't want to give this action to users.
               <Route exact path="/add_data" render={({ location, history }) => {
                 return <AddData location={location} history={history} />
-              }} />
+              }} /> */}
               <Route exact path="/login" render={({ location, history }) => {
                 return <Login location={location} history={history} />
               }} />
@@ -77,9 +78,6 @@ class Main extends React.Component {
               }} />
               <Route exact path="/leaderboard" render={({ location, history }) => {
                 return <Leaderboard location={location} history={history} />
-              }} />
-              <Route exact path="/exam" render={({ location, history }) => {
-                return <WritingGame location={location} history={history} />
               }} />
               <Route path="/play" render={({ location, history }) => {
                 console.log(location)

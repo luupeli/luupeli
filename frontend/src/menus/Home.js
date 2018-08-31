@@ -194,10 +194,10 @@ class Home extends React.Component {
 
         // The method sets the first style as default if none are chosen.
         // This occurs when you open the page for the first time
-        if (localStorage.getItem('styleIndex')!==null) {
-            this.setState({maxStyle: localStorage.getItem('styleIndex')})
+        if (localStorage.getItem('styleIndex') !== null) {
+            this.setState({ maxStyle: localStorage.getItem('styleIndex') })
         }
-        
+
         if (localStorage.getItem('styleIndex') === null) {
             localStorage.setItem('styleIndex', 0)
         }
@@ -214,10 +214,10 @@ class Home extends React.Component {
     componentDidMount() {
         this.setState({
             styleIndex: 0,
-            
+
         })
         const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
-    
+
         if (loggedUserJSON) {
             const user = JSON.parse(loggedUserJSON)
 
@@ -250,31 +250,31 @@ class Home extends React.Component {
             this.setState({ attractMode: this.state.attractMode + 1, attractAnimation: true })
         }
 
-        if (this.state.user!==null) {
-            if (this.state.totalGames===-1 && this.state.totalScore===-1) {
-        
-        
-        
+        if (this.state.user !== null) {
+            if (this.state.totalGames === -1 && this.state.totalScore === -1) {
 
-        userStatistics.getTotalGamesForIndividual(this.state.user.id)
-            .then((response) => {
-                this.setState({
-                    totalGames: response.data.length
-                })
-            })
-        userStatistics.getTotalScore(this.state.user.id)
-            .then((response) => {
-                if (response.data.length !== 0) {
-                    this.setState({
-						totalScore: response.data
-					})
-                }
-            })
-         
-         } else if (this.state.maxStyle===-1) {
-            this.setState({maxStyle: achievement.getIndex(this.state.totalScore,this.state.totalGames)})   
-            localStorage.setItem('maxStyle', achievement.getIndex(this.state.totalScore,this.state.totalGames))
-         }
+
+
+
+                userStatistics.getTotalGamesForIndividual(this.state.user.id)
+                    .then((response) => {
+                        this.setState({
+                            totalGames: response.data.length
+                        })
+                    })
+                userStatistics.getTotalScore(this.state.user.id)
+                    .then((response) => {
+                        if (response.data.length !== 0) {
+                            this.setState({
+                                totalScore: response.data
+                            })
+                        }
+                    })
+
+            } else if (this.state.maxStyle === -1) {
+                this.setState({ maxStyle: achievement.getIndex(this.state.totalScore, this.state.totalGames) })
+                localStorage.setItem('maxStyle', achievement.getIndex(this.state.totalScore, this.state.totalGames))
+            }
         }
     }
 
@@ -282,24 +282,24 @@ class Home extends React.Component {
     changeCss(event) {
         var next = parseInt(localStorage.getItem('styleIndex'), 10) + 1
         var localMaxStyle = localStorage.getItem('maxStyle')
-        var maxStyleNow=this.state.maxStyle
-        if (localMaxStyle!==null) {
-            maxStyleNow=Math.max(maxStyleNow,localMaxStyle)
+        var maxStyleNow = this.state.maxStyle
+        if (localMaxStyle !== null) {
+            maxStyleNow = Math.max(maxStyleNow, localMaxStyle)
         }
-        if (maxStyleNow===-1) {
-            maxStyleNow=1  // The first two themes are free, no matter what!
+        if (maxStyleNow === -1) {
+            maxStyleNow = 1  // The first two themes are free, no matter what!
         }
 
-        var override=false
-	
-        if (this.state.allStyles[next] != null && (maxStyleNow>=next || this.state.admin || override)) {
+        var override = false
+
+        if (this.state.allStyles[next] != null && (maxStyleNow >= next || this.state.admin || override)) {
             localStorage.setItem('styleIndex', next)
             this.setState({
                 // styleIndex: next,
                 // style: 'placeholder-next-theme-name'
             })
-        } else  {
-          localStorage.setItem('styleIndex', 0)
+        } else {
+            localStorage.setItem('styleIndex', 0)
             this.setState({
                 // styleIndex: 0,
                 // style: 'placeholder-last-theme-name'
@@ -330,7 +330,7 @@ class Home extends React.Component {
                 overlay: this.state.allStyles[localStorage.styleIndex].overlay,
                 music: this.state.allStyles[localStorage.styleIndex].music
             })
-            
+
         }
         injectGlobal`
         :root {   
@@ -529,7 +529,7 @@ class Home extends React.Component {
         effects.push('bounceOutLeft slower')
         effects.push('bounceOutRight slower')
         let heartEmoji = emoji.get('yellow_heart')
-        if (this.state.attractMode % 80 <= 20 && this.state.bestPlayers.length>0) {   // Only show highscores if the database has actually output some names!
+        if (this.state.attractMode % 80 <= 20 && this.state.bestPlayers.length > 0) {   // Only show highscores if the database has actually output some names!
             // var scores = []
             var scorers = []
             var trueScorers = []
@@ -600,48 +600,13 @@ class Home extends React.Component {
             var heading = ''
             if (this.state.attractMode % 80 <= 40) {
                 heading = 'CREDITS'
-                lines.push("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-                lines.push("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-                lines.push("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-                lines.push("@@@@@@@@@@ DOOT! @@@@@@@@@@@@@@@@@@@@@&..........*@@@@@@@@@")
-                lines.push("@@@@@@@@@@@@@@@@@@@@@ DOOT! @@@@@@@@(...............@@@@@@@")
-                lines.push("@@@@@@@@@@@@ DOOT! @@@@@@@@@@@@@@@@,......     ......,@@@@@")
-                lines.push("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&,.....       .......*@@@@")
-                lines.push("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@(.......       ......*/@@@@")
-                lines.push("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@,..,....       ......*/(@@@@")
-                lines.push("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#/*,,,...   .........,*(%&@@@@")
-                lines.push("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@(%&%/*,.............,*(%&@@@@@")
-                lines.push("@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%@@@@@/,..,........./#&@@@@@@@")
-                lines.push("@@@@@@@@@@@@@@@@@@@@@@@@@@@@% @@@@#/*/,%(((//**,(%@@@@@@@@@")
-                // lines.push("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&..../%#//@@@&%#(*,&@&@@@@@@@@ \n" +
-                // lines.push("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&(/@@@*(*@@@@@#*##%@@@@@@@@@ \n" +
-                // lines.push("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#(@@@(*,,.@@&,((/@@@@@@@@@@@ \n" +
-                // lines.push("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&*..@@*/#@&@@&*#@@@@@@@@@@@@@ \n" +
-                // lines.push("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%*,,..,*,,*&,#&@@@@@@@@@@@@@@ \n" +
-                // lines.push("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@((*,*(##%/&@@@@@@@@@@@@@@@@@@ \n" +
-                // lines.push("@@@@@@@@@@@@@@@@@@@@@@@@/@%@@@/#&%((%%%#@@@@@@@@@@@@@@@@@@@ \n" +
-                // lines.push( "@@@@@@@@@@@@@@@@@@@@.@@@%,(@@(#/,,*(#@@@@@@@@@@@@@@@@@@@@@@ \n" +
-                // lines.push("@@@@@@@@@@@@@@@@@@@@@**((,(*/@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n" +
-                // lines.push( "@@@@@@@@@@@@@@@@%,@@/*/((#,/@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n" +
-                // lines.push("@@@@@@@@@@@@@@@@@@@.*/@%*%*..@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n" +
-                // lines.push("@@@@@@@@@@@@@@@@(**(@@# %*/.@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n" +
-                // lines.push("@@@@@@@@@@@@@@(**(@@ #(./%..@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n" +
-                // lines.push("@@@@@@&%@@@@/***%@@@(#(.#&.%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n" +
-                // lines.push("@@@#%&@@@@@/**(@@@#*/ (.%/.@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n" +
-                // lines.push("@@(%#%%&%(**%#@@&/*#% &(#/*@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n" +
-                // lines.push("@%((//*******%%&/((##%#@%(@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n" +
-                // lines.push("@@/****,,***/###@%#%@@#&*(@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n" +
-                // lines.push("@@@@/***..****/(%@@@@@...#%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n" +
-                // lines.push("@@@@&/*******/#@@@@@@@%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n" +
-                // lines.push("@@@@@@@@%&@&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n" +
-                // lines.push("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-                // lines.push('Helena Parviainen')
-                // lines.push('Kerem Atak')
-                // lines.push('Peppi Mattsson')
-                // lines.push('Timo Leskinen')
-                // lines.push('Tuomas Honkala')
-                // lines.push('Ville Hänninen')
-                // lines.push('Toteutettu ohjelmistotuotantoprojektina Helsingin Yliopiston Tietojenkäsittelytieteen laitokselle ' + heartEmoji)
+                lines.push('Helena Parviainen')
+                lines.push('Kerem Atak')
+                lines.push('Peppi Mattsson')
+                lines.push('Timo Leskinen')
+                lines.push('Tuomas Honkala')
+                lines.push('Ville Hänninen')
+                lines.push('Toteutettu ohjelmistotuotantoprojektina Helsingin Yliopiston Tietojenkäsittelytieteen laitokselle ' + heartEmoji)
             }
             else if (this.state.attractMode % 80 <= 50) {
                 heading = 'Luupeli features audio from Freesound.org'
@@ -790,25 +755,25 @@ class Home extends React.Component {
         if (this.state.user !== null) {
 
             loggedText = this.state.user.username //|'+this.state.user.id+ ' (' + this.state.totalScore + '|' + this.state.totalGames + ')!'
-            
-            if (loggedText.length>18) {
+
+            if (loggedText.length > 18) {
                 loggedText = this.state.user.username
             }
-            else if (loggedText.length>10) {
+            else if (loggedText.length > 10) {
                 loggedText = 'Hei, ' + this.state.user.username + '!'
             }
             else {
-                loggedText = 'Tervetuloa, '+loggedText+'!'
+                loggedText = 'Tervetuloa, ' + loggedText + '!'
             }
-            
+
             if (this.state.cheatsActivated) {
-                loggedText=loggedText+ '= CHEATER!'
+                loggedText = loggedText + '= CHEATER!'
             }
         }
 
-        var themeButtonText = 'Teema '+i+': '+this.state.styleAlias
-        if (this.state.attractMode % 15>10) {
-         themeButtonText = 'Teemoja avattu: '+Math.max(2,this.state.maxStyle)+'/'+this.state.allStyles.length
+        var themeButtonText = 'Teema ' + i + ': ' + this.state.styleAlias
+        if (this.state.attractMode % 15 > 10) {
+            themeButtonText = 'Teemoja avattu: ' + Math.max(2, this.state.maxStyle) + '/' + this.state.allStyles.length
         }
 
         return (
@@ -841,7 +806,7 @@ class Home extends React.Component {
                                                     <button
                                                         className="menu-button gamelink"
                                                         id="proceedToSelectGameMode"
-                                                        onClick={() => this.props.history.push('/play', {mode: 'gamemode'})}>
+                                                        onClick={() => this.props.history.push('/play', { mode: 'gamemode' })}>
                                                         Pelaa
                                                     </button>
                                                 </Animated>

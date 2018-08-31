@@ -5,6 +5,8 @@ import bodyPartService from '../services/bodyParts'
 import boneService from '../services/bones'
 import imageService from '../services/images'
 
+// This is how we parse the data from the xlsx file and moved these to the database. Only for developers.
+
 class AddData extends React.Component {
 	constructor(props) {
 		super(props)
@@ -117,7 +119,8 @@ class AddData extends React.Component {
 				difficulty: difficulty,
 				animal: animalsInDatabase[0].id,
 				url: this.state.newImages[index].url,
-				bone: boneInDatabase[0].id
+				bone: boneInDatabase[0].id,
+				photographer: this.state.newImages[index].photographer
 			})
 		}
 
@@ -143,6 +146,7 @@ class AddData extends React.Component {
 						imageType: d[6] !== undefined ? d[6].trim() : null,
 						difficulty: d[7] !== undefined ? d[7].trim() : null,
 						luuVaiRakenne: d[8] !== undefined ? d[8].trim() : null,
+						photographer: d[9] !== undefined ? d[9].trim() : null
 					}
 				}
 				return null
@@ -191,7 +195,8 @@ class AddData extends React.Component {
 					animal: i.animal,
 					handedness: i.handedness,
 					difficulty: i.difficulty,
-					nameLatin: i.nameLatin
+					nameLatin: i.nameLatin,
+					photographer: i.photographer
 				})
 			})
 

@@ -85,8 +85,10 @@ class UpdateBone extends React.Component {
 	// newImages is used to dynamically render correct amount of file & difficulty input elements in the update form
 	handleAddImage(event) {
 		const animal = this.props.init.animals.filter((animal) => animal.name === "Ca")[0]
-		const expandList = this.state.newImages.concat({ difficulty: "1", description: "", photographer: "", 
-			copyright: "", attempts: 0, correctAttempts: 0, handedness: "", animal: animal.id })
+		const expandList = this.state.newImages.concat({
+			difficulty: "1", description: "", photographer: "",
+			copyright: "", attempts: 0, correctAttempts: 0, handedness: "", animal: animal.id
+		})
 		this.setState({ newImages: expandList })
 	}
 	// Removes element at index i from this.state.newImages (and thus the corresponding file input element from the form)
@@ -275,10 +277,10 @@ class UpdateBone extends React.Component {
 		}
 		// TODO: only show this message if there is no existing failure message
 		if (this.props.boneId) {
-		this.props.setMessage('Muutokset tallennettu.', 'success')
+			this.props.setMessage('Muutokset tallennettu.', 'success')
 		} else {
-		this.props.setMessage('Uusi luu lisätty! Voit nyt lisätä toisenkin luun tai palata nappulasta takaisin listausnäkymään.', 'success')
-		this.resetFields()
+			this.props.setMessage('Uusi luu lisätty! Voit nyt lisätä toisenkin luun tai palata nappulasta takaisin listausnäkymään.', 'success')
+			this.resetFields()
 		}
 	}
 
@@ -402,9 +404,11 @@ class UpdateBone extends React.Component {
 						<Col xs={12} md={4}>
 							{this.textField('nameLatin', 'Latinankielinen nimi', this.state.nameLatin, this.handleChange)}
 						</Col>
+						{/*
+						We don't use altNameLatin in software logic (correctness etc) so this is commented out.
 						<Col xs={12} md={4}>
 							{this.textField('altNameLatin', 'Vaihtoehtoinen latinankielinen nimi', this.state.altNameLatin, this.handleChange)}
-						</Col>
+			</Col> */ }
 						<Col xs={12} md={4}>
 							{this.textField('name', 'Suomenkielinen nimi', this.state.name, this.handleChange)}
 						</Col>
@@ -547,111 +551,111 @@ class UpdateBone extends React.Component {
 		return (
 			<div className="admin-bg">
 				<div className="scroll">
-				<Grid bsClass="full-width container">
-					<div className="App">
-						<Row className="show-grid">
-							<Col xs={12} md={8}>
-								<Message />
-							</Col>
-							<Col xs={12} md={4}>
+					<Grid bsClass="full-width container">
+						<div className="App">
+							<Row className="show-grid">
+								<Col xs={12} md={8}>
+									<Message />
+								</Col>
+								<Col xs={12} md={4}>
 									<button id="backToListing" onClick={() => this.props.history.push('/listing')} className="btn btn-default pull-right">
 										Takaisin listaukseen
 									</button>
-							</Col>
-						</Row>
-						<Row className="show-grid">
-							<Col xs={12} md={12} className="pull-left">
-								<h2 className="titleStyle"><Label className="text-info">Luun tiedot</Label></h2>
-							</Col>
-						</Row>
-						<form className="full-width" onSubmit={this.handleSubmit} enctype="multipart/form-data">
-							{boneFields()}
-							<Row className="show-grid">
-								<Col xs={12} md={12} className="pull-left">
-									<h2 className="titleStyle"><Label className="text-info">Kuvat</Label></h2>
 								</Col>
 							</Row>
-							{this.state.images.map((file, i) => <li key={file.id} id={"bone" + i} className="list-group-item clearfix listStyle">
-								{(this.state.images[i].deleted
-									? " (Poistetaan tallennuksen yhteydessä)" :
-									<Row className="show-grid">
-										<Col md={4} xs={12} className="imgStyle">
-											<CloudinaryContext cloudName="luupeli">
-												<Image publicId={file.url}>
-													<Transformation width={imageWidth()} crop="fill" />
-												</Image>
-											</CloudinaryContext>
-										</Col>
-										<Col md={8} xs={12}>
-											{imageFields(i, this.handleImageChange, this.state.images[i])}
-										</Col>
-									</Row>
-								)
-								}
+							<Row className="show-grid">
+								<Col xs={12} md={12} className="pull-left">
+									<h2 className="titleStyle"><Label className="text-info">Luun tiedot</Label></h2>
+								</Col>
+							</Row>
+							<form className="full-width" onSubmit={this.handleSubmit} enctype="multipart/form-data">
+								{boneFields()}
 								<Row className="show-grid">
-									<Col xs={12} md={12}>
-										<button
-											id={"deleteImageButton" + i}
-											type="button" className="btn btn-danger pull-right"
-											onClick={this.markForDelete.bind(this, i)}
-										>
-											{(this.state.images[i].deleted ? "Peruuta poisto" : "Poista")}
-										</button>
+									<Col xs={12} md={12} className="pull-left">
+										<h2 className="titleStyle"><Label className="text-info">Kuvat</Label></h2>
 									</Col>
 								</Row>
-							</li>
-							)}
-							<Row className="show-grid">
-								<Col xs={12} md={12} className="pull-left">
-									<h2 className="titleStyle"><Label className="text-info">Uudet kuvat</Label></h2>
-								</Col>
-							</Row>
-							<ul className="list-group">
-								{
-									this.state.newImages.map((file, i) =>
-										<li key={file.id}
-											className="list-group-item clearfix listStyle">
-											<Row className="show-grid">
-												<Col md={4} xs={12}>
-													<img id="new_image" alt="bone" width={imageWidth()} />
-													<center>
-														<input
-															type="file"
-															accept="image/x-png,image/jpeg"
-															id="boneImage"
-															onChange={input => this.previewImage(input)}
-															ref={input => { this[`fileInput${i}`] = input }} />
-													</center>
-												</Col>
-												<Col md={8} xs={12}>
-													{imageFields(i, this.handleNewImageChange, this.state.newImages[i])}
-												</Col>
-											</Row>
-										</li>
-									)}
-								<li className="list-group-item clearfix">
-									<span className="btn-toolbar">
-										<button
-											id="addNewImageFieldButton"
-											type="button"
-											className="btn btn-info pull-right"
-											onClick={this.handleAddImage}>
-											Lisää kuvakenttä
-										</button>
-										<button
-											id="removeNewImageFieldButton"
-											type="button"
-											className="btn btn-danger pull-right"
-											onClick={this.handleDeleteNewImage}>
-											Poista kuvakenttä
-									</button>
-									</span>
+								{this.state.images.map((file, i) => <li key={file.id} id={"bone" + i} className="list-group-item clearfix listStyle">
+									{(this.state.images[i].deleted
+										? " (Poistetaan tallennuksen yhteydessä)" :
+										<Row className="show-grid">
+											<Col md={4} xs={12} className="imgStyle">
+												<CloudinaryContext cloudName="luupeli">
+													<Image publicId={file.url}>
+														<Transformation width={imageWidth()} crop="fill" />
+													</Image>
+												</CloudinaryContext>
+											</Col>
+											<Col md={8} xs={12}>
+												{imageFields(i, this.handleImageChange, this.state.images[i])}
+											</Col>
+										</Row>
+									)
+									}
+									<Row className="show-grid">
+										<Col xs={12} md={12}>
+											<button
+												id={"deleteImageButton" + i}
+												type="button" className="btn btn-danger pull-right"
+												onClick={this.markForDelete.bind(this, i)}
+											>
+												{(this.state.images[i].deleted ? "Peruuta poisto" : "Poista")}
+											</button>
+										</Col>
+									</Row>
 								</li>
-							</ul>
-							{saveButtons()}
-						</form>
-					</div>
-				</Grid>
+								)}
+								<Row className="show-grid">
+									<Col xs={12} md={12} className="pull-left">
+										<h2 className="titleStyle"><Label className="text-info">Uudet kuvat</Label></h2>
+									</Col>
+								</Row>
+								<ul className="list-group">
+									{
+										this.state.newImages.map((file, i) =>
+											<li key={file.id}
+												className="list-group-item clearfix listStyle">
+												<Row className="show-grid">
+													<Col md={4} xs={12}>
+														<img id="new_image" alt="bone" width={imageWidth()} />
+														<center>
+															<input
+																type="file"
+																accept="image/x-png,image/jpeg"
+																id="boneImage"
+																onChange={input => this.previewImage(input)}
+																ref={input => { this[`fileInput${i}`] = input }} />
+														</center>
+													</Col>
+													<Col md={8} xs={12}>
+														{imageFields(i, this.handleNewImageChange, this.state.newImages[i])}
+													</Col>
+												</Row>
+											</li>
+										)}
+									<li className="list-group-item clearfix">
+										<span className="btn-toolbar">
+											<button
+												id="addNewImageFieldButton"
+												type="button"
+												className="btn btn-info pull-right"
+												onClick={this.handleAddImage}>
+												Lisää kuvakenttä
+										</button>
+											<button
+												id="removeNewImageFieldButton"
+												type="button"
+												className="btn btn-danger pull-right"
+												onClick={this.handleDeleteNewImage}>
+												Poista kuvakenttä
+									</button>
+										</span>
+									</li>
+								</ul>
+								{saveButtons()}
+							</form>
+						</div>
+					</Grid>
 				</div>
 			</div>
 		)
