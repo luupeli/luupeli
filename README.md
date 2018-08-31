@@ -25,7 +25,7 @@ Status](https://travis-ci.org/luupeli/luupeli.svg?branch=master)](https://travis
 
 - The "FALL0UT" visual theme features CSS cathode ray tube effect modified from a tutorial by Alec Lownes, [link](http://aleclownes.com/2017/02/01/crt-display.html)
 
-### Freesound.org credits 
+### Usage of Freesound.org assets
 Luupeli features Freesound.org creative commons audio from the following artists:
 - Chiptune Intro #1 by Fred1712
 - Electro success sound by Mativve
