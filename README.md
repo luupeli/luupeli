@@ -21,7 +21,7 @@ Status](https://travis-ci.org/luupeli/luupeli.svg?branch=master)](https://travis
 ![](https://github.com/luupeli/luupeli/blob/master/docs/images/luupeli-home.png)
 
 ### Words of attribution
-- The "Blood Dragon" visual theme, as seen above, features CSS 3D grid effects modfied from a codepen by George Payne, [link](https://codepen.io/George-Payne/pen/qOrxao)
+- The "Blood Dragon" visual theme, as seen above, features CSS 3D grid effect based on George Payne's codepen work, [link](https://codepen.io/George-Payne/pen/qOrxao)
 
 - The "FALL0UT" visual theme features CSS cathode ray tube effect modified from a tutorial by Alec Lownes, [link](http://aleclownes.com/2017/02/01/crt-display.html)
 
