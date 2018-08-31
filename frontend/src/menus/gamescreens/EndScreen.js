@@ -151,7 +151,11 @@ class EndScreen extends React.Component {
 			)
 		}
 
-
+		let photographer = answer.image.photographer
+		
+		if (photographer===undefined || photographer===null) {
+			photographer = 'tuntematon'
+		} 
 
 		return (
 			<Col xs={12} md={6} lg={6}>
@@ -162,6 +166,8 @@ class EndScreen extends React.Component {
 								<Transformation height={imageWidth()} crop="fill" />
 							</Image>
 						</CloudinaryContext>
+						<h6>Kuvaaja:</h6>
+						<h6>{photographer}</h6>
 					</Col>
 					<Col xs={6} md={6} lg={6} bsClass="text-bg col">
 						{correctAnswer()}

@@ -330,7 +330,7 @@ class WritingGame extends React.Component {
         if (this.checkCorrectness(this.state.lastValue) > 99) {
           return (
             <div>
-              <div className="game-text-input" style={{ color: 'green' }}>
+              <div className="game-text-input"> 
                 {/*     <Sounds correctness={this.checkCorrectness(this.state.lastValue)} />*/}
                 <input
                   id="gameTextInput"
@@ -351,7 +351,7 @@ class WritingGame extends React.Component {
         } else {
           return (
             <div>
-              <div className="game-text-input" style={{ color: 'red' }}>
+              <div className="game-text-input">
                 {/*    <Sounds correctness={this.checkCorrectness(this.state.lastValue)} />*/}
                 <input
                   id="gameTextInput"
@@ -472,12 +472,12 @@ class WritingGame extends React.Component {
           </div>
         </div>
         {/* <div className="row"> */}
-        <div>
+        {/* <div>
           <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="550" animationOutDelay="250" isVisible={this.state.animationActive}>
             <center>
               <p>Kuva: {this.props.game.currentImage.photographer}</p></center>
           </Animated>
-        </div>
+        </div> */}
         <div>
           <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="550" animationOutDelay="250" isVisible={this.state.animationActive}>
             <center>

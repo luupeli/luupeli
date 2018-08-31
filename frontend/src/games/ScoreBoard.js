@@ -186,7 +186,7 @@ class ScoreBoard extends React.Component {
 		let current= new Date().getTime()
 		
 
-		if (this.state.previousImage !== null && this.state.previousImage !== '' && this.props.game.gamemode === 'kirjoituspeli' && this.props.game.endCounter < this.props.game.gameLength) {
+		if (!this.props.mobileLayout && this.state.previousImage !== null && this.state.previousImage !== '' && this.props.game.gamemode === 'kirjoituspeli' && this.props.game.endCounter < this.props.game.gameLength) {
 			if (this.state.previousImage.bone.nameLatin !== this.props.game.currentImage.bone.nameLatin || this.state.previousImage.bone.nameLatin === this.props.game.currentImage.bone.nameLatin) {
 				let animationActive = false
 				if (current-started>5000) {

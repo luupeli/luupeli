@@ -606,7 +606,7 @@ class Home extends React.Component {
                 lines.push('Timo Leskinen')
                 lines.push('Tuomas Honkala')
                 lines.push('Ville Hänninen')
-                lines.push('Toteutettu ohjelmistotuotantoprojektina Helsingin Yliopiston Tietojenkäsittelytieteen laitokselle ' + heartEmoji)
+                lines.push('Kesän 2018 ohjelmistotuotantoprojekti Helsingin Yliopiston Tietojenkäsittelytieteen laitokselle ' + heartEmoji)
             }
             else if (this.state.attractMode % 80 <= 50) {
                 heading = 'Luupeli features audio from Freesound.org'
@@ -773,7 +773,13 @@ class Home extends React.Component {
 
         var themeButtonText = 'Teema ' + i + ': ' + this.state.styleAlias
         if (this.state.attractMode % 15 > 10) {
-            themeButtonText = 'Teemoja avattu: ' + Math.max(2, this.state.maxStyle) + '/' + this.state.allStyles.length
+            if (this.state.maxStyle<10) {
+            themeButtonText = 'Teemoja auki: ' + Math.max(2, this.state.maxStyle) + '/' + this.state.allStyles.length
+            } else {
+            themeButtonText = 'Avattu: ' + Math.max(2, this.state.maxStyle) + '/' + this.state.allStyles.length
+            }
+        } else if (this.state.attractMode % 15 <5) {
+            themeButtonText = 'Vaihda teemaa'
         }
 
         return (

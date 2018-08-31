@@ -151,7 +151,7 @@ class Game extends React.Component {
                             </div>
                         </div>
                         <div className="game-score">
-                            <ScoreBoard progressWidth={progressWidth} previous={true} />
+                            <ScoreBoard progressWidth={progressWidth} previous={true}  mobileLayout={false}/>
                         </div>
                     </div>
                 </div>
@@ -189,7 +189,7 @@ class Game extends React.Component {
                     </div>
                     <div className="transbox" margin="5">
                         <div className="game-score-mobile">
-                            <ScoreBoard progressWidth={progressWidth} previous={false} />
+                            <ScoreBoard progressWidth={progressWidth} previous={false} mobileLayout={true}/>
                         </div>
                     </div>
                 </div>
