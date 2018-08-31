@@ -1,4 +1,9 @@
 ![](https://github.com/luupeli/luupeli/blob/master/docs/images/luupeli-hotpink-logo.png)
+> "Luupeli is by far the best game I've ever played!"
+> - some anonymous developer
+
+> "Luupeli made me the person I am today!"
+> - uknown (probably not a developer)
 
 [![Build 
 Status](https://travis-ci.org/luupeli/luupeli.svg?branch=master)](https://travis-ci.org/luupeli/luupeli)
