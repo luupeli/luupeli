@@ -59,7 +59,7 @@ class Register extends React.Component {
                 this.props.history.push('/')
                 // If we end up here, a new user could not be created. Backend rejected the request.
             } catch (error) {
-                console.log(error)
+          //      console.log(error)
                 this.setState({ error: 'käyttäjätunnus tai salasana on virheellinen' })
                 setTimeout(() => { this.setState({ error: null }) }, 5000)
             }

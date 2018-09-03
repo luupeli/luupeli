@@ -29,7 +29,7 @@ class UserListing extends React.Component {
 				this.setState({ allUsers: response.data })
 			})
 			.catch((error) => {
-				console.log(error)
+			//	console.log(error)
 			})
 		const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')
 		if (loggedUserJSON) {

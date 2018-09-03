@@ -510,16 +510,27 @@ p {
   letter-spacing: normal!important;
 }
 
-.fallout p, .fallout form,.fallout .menu-button button {
+.fallout p, .fallout form,.fallout .menu-button button, .fallout .btn-group {
   color: #88FF88;
-  font-family: 'Press start 2p', sans-serif;
+  font-family: 'Press start 2p', sans-serif!important;
 }
 
-.fallout88 p, .fallout88 form,.fallout88 .menu-button button {
+.fallout88 p, .fallout88 form,.fallout88 .menu-button button, .fallout88 .btn-group {
   color: #DDFF22;
-  font-family: 'Press start 2p', sans-serif;
+  font-family: 'Press start 2p', sans-serif!important;
 }
 
+.version::before {
+  content: 'v';
+}
+.version {
+  color: var(--secondary);
+  font-size: 6px;
+  font-family: 'Press start 2p', sans-serif!important;
+  left: 5px;
+  top: 5px;
+  position: absolute;
+}
 
 
 .steel h2 {

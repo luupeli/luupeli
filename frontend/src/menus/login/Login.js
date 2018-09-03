@@ -39,7 +39,7 @@ class Login extends React.Component {
         username: this.state.username,
         password: this.state.password
       })
-      console.log(user)
+     // console.log(user)
       window.sessionStorage.setItem('loggedLohjanLuunkeraajaUser', JSON.stringify(user))
 
       this.setState({
@@ -50,7 +50,7 @@ class Login extends React.Component {
       this.props.history.push('/')
       // If we get here, the attempt to log in was unsuccessful.
     } catch (error) {
-      console.log(error)
+     // console.log(error)
       this.setState({ error: 'käyttäjätunnus tai salasana on virheellinen' })
       setTimeout(() => { this.setState({ error: null }) }, 5000)
     }
@@ -64,7 +64,7 @@ class Login extends React.Component {
       window.sessionStorage.removeItem('loggedLohjanLuunkeraajaUser')
       this.setState({ user: null })
     } catch (error) {
-      console.log(error)
+  //    console.log(error)
     }
   }
 

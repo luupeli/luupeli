@@ -57,7 +57,7 @@ class Statistics extends React.Component {
           this.setImages(response.data)
         })
         .catch((error) => {
-          console.log(error)
+          // console.log(error)
         })
       
 			gameSessionService.getAll()
@@ -65,7 +65,7 @@ class Statistics extends React.Component {
 					this.setInitialStats(response)
 				})
 				.catch((error) => {
-					console.log(error)
+					// console.log(error)
         })
       
 		} else {

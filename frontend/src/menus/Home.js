@@ -13,7 +13,7 @@ import Sound from 'react-sound'
 import achievement from './Achievement'
 import userStatistics from '../services/userStatistics'
 
-
+const versionNumber = 1.01
 /**
  * This is the index page for the site. You can for example login from here or start creating the game.
  * 
@@ -383,7 +383,7 @@ class Home extends React.Component {
 
     gameTitle() {
 
-        if (this.state.style === 'fallout') {
+        if (this.state.style === 'fallout' || this.state.style === 'fallout88') {
             return (
                 <h1 className="game-title">
                     <RandomTextGenerator
@@ -517,10 +517,10 @@ class Home extends React.Component {
         userStatistics.getTop50()
             .then((response) => {
                 this.setState({ bestPlayers: response.data })
-                console.log(this.state.bestPlayers)
+          //      console.log(this.state.bestPlayers)
             })
             .catch((error) => {
-                console.log(error)
+         //       console.log(error)
             })
     }
 
@@ -802,7 +802,8 @@ class Home extends React.Component {
                                 <div
                                     className={this.state.flairLayerD}>
                                 </div>
-
+                                <div className="version">{versionNumber}
+                                </div>
                                 {this.gameTitle()}
                                 <Row className="show-grid">
                                     <Col xs={10} xsOffset={1} md={4} sm={4} mdOffset={4} smOffset={4}>

@@ -74,7 +74,7 @@ class User extends React.Component {
 				}
 			})
 			.catch((error) => {
-				console.log(error)
+			//	console.log(error)
 			})
 
 			userStatistics.getTotalScore(this.props.userId)

@@ -8,11 +8,11 @@ const initialState = {
 const soundReducer = (store = initialState.sound, action) => {
     //  console.log(action.type)
     if (action.type === 'SET_SOUND_ON') {
-        console.log(action)
+ //       console.log(action)
         return { ...store, url: action.url, active: true }
     }
     if (action.type === 'SET_SOUND_OFF') {
-        console.log(action)
+       // console.log(action)
         return { ...store, active: false }
     }
 

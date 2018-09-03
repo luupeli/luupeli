@@ -110,7 +110,7 @@ class UpdateBone extends React.Component {
 				}
 			})
 			.catch((error) => {
-				console.log(error)
+	//			console.log(error)
 			})
 		this.setState({ images: this.state.images.filter((element, index) => { return index !== i }) })
 	}
@@ -144,7 +144,7 @@ class UpdateBone extends React.Component {
 				return response.data.url
 			})
 			.catch((error) => {
-				console.log(error)
+	//			console.log(error)
 			})
 	}
 
@@ -162,7 +162,7 @@ class UpdateBone extends React.Component {
 				return response.data
 			})
 			.catch((error) => {
-				console.log(error)
+		//		console.log(error)
 				this.props.setMessage('Tallentaminen epäonnistui :(', 'danger')
 			})
 	}
@@ -187,7 +187,7 @@ class UpdateBone extends React.Component {
 				}
 			})
 			.catch((error) => {
-				console.log(error)
+		//		console.log(error)
 			})
 	}
 	// PUT updated fields of an existing image to database
@@ -208,7 +208,7 @@ class UpdateBone extends React.Component {
 				}
 			})
 			.catch((error) => {
-				console.log(error)
+			//	console.log(error)
 			})
 	}
 	// Display an error message to the user
@@ -233,7 +233,7 @@ class UpdateBone extends React.Component {
 				return response.data
 			})
 			.catch((error) => {
-				console.log(error)
+			//	console.log(error)
 			})
 	}
 	// Generate and return a list of all animals related to this bone, with no duplicate animals
@@ -310,7 +310,7 @@ class UpdateBone extends React.Component {
 				}
 			})
 			.catch((error) => {
-				console.log(error)
+			//	console.log(error)
 				this.props.setMessage('Poisto epäonnistui.', 'danger')
 			})
 		// TODO: only show this message if there is no existing failure message

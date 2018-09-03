@@ -61,16 +61,38 @@ class WritingGame extends React.Component {
     }
   }
 
-  componentDidMount() {
+  
+   /**
+   * Extra care is taken here to ensure that the quiz images are refreshed only when the questionnaire is transiting from one question to next.
+   * Should the component mount freely (without the confusing if-else-logic), the result would be that each time the window is resized in order
+   * to switch the game ui layout between horizontal/vertical, the question and the timer would be reset. This would pretty much amount to cheating,
+   * as you could just keep resizing the window until you get a question you know for certain.
+   * 
+   * There would absolutely be a 'better' way to circumvent this problem, but that would possibly require major refactoring with the way a 
+   * games are initialized and the subsequent questions served. This is an ugly hack, but hopefully it 
+   * works reasonably well...
+   * 
+   */
+  componentDidMount(prevProps) {
+    let prevCounter = 0
+    if (prevProps !== undefined) {
+      if (prevProps.game !== undefined) {
+        prevCounter = prevProps.game.endCounter
+      }
+    } else if (this.props.game.images !== undefined) {
+      prevCounter = this.props.game.endCounter
+    }
+
+    if (this.props.game.totalSeconds < 2 && prevCounter !== this.props.game.endCounter) {
+      this.props.setImagesToImageMultipleChoiceGame(this.props.game.images, this.props.game.answers)
+      this.props.startGameClock()
+    }
     setInterval(() => {
       this.setState(() => {
         console.log('test')
         return { unseen: "does not display" }
       });
-    }, 1000) 
-      this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
-      this.props.startGameClock()
-      console.log('COMPONENT DID MOUNT')
+    }, 1000)
   }
 
   handleChange(event) {

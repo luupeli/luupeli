@@ -32,7 +32,7 @@ class BoneListing extends React.Component {
 				this.setState({ bones: response.data })
 			})
 			.catch((error) => {
-				console.log(error)
+				// console.log(error)
 			})
 
 		const loggedUserJSON = sessionStorage.getItem('loggedLohjanLuunkeraajaUser')

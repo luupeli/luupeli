@@ -38,7 +38,7 @@ class Leaderboard extends React.Component {
 				this.bestPlayersAuxiliaryMethod()
 			})
 			.catch((error) => {
-				console.log(error)
+		//		console.log(error)
 			})
 	}
 	//Initialize an array for top 20. Remember, we have 50 users saved in this.state.

@@ -89,8 +89,9 @@ const getRank = (index) => {
         return 'Luumestari, '+(index-8)+'. Dan'
     }
     if (index>19) {
-        return 'Luusensei'
+        return 'Luusensei, '+(index-19)+'. Dan'
     }
+    
     return 'Tuntematon'
 }
 

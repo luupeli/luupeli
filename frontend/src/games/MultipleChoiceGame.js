@@ -30,15 +30,40 @@ class MultipleChoiceGame extends React.Component {
 
   }
 
-  componentDidMount() {
+  /**
+   * Extra care is taken here to ensure that the quiz images are refreshed only when the questionnaire is transiting from one question to next.
+   * Should the component mount freely (without the confusing if-else-logic), the result would be that each time the window is resized in order
+   * to switch the game ui layout between horizontal/vertical, the question and the timer would be reset. This would pretty much amount to cheating,
+   * as you could just keep resizing the window until you get a question you know for certain.
+   * 
+   * There would absolutely be a 'better' way to circumvent this problem, but that would possibly require major refactoring with the way a 
+   * multiplechoice/imagemultiplechoice games are initialized and the subsequent questions served. This is an ugly hack, but hopefully it 
+   * works reasonably well...
+   * 
+   */
+  componentDidMount(prevProps) {
+    let prevCounter = 0
+    
+    if (prevProps !== undefined) {
+      if (prevProps.game !== undefined) {
+        prevCounter = prevProps.game.endCounter
+      } 
+    } else if (this.props.game.images !== undefined) {
+      prevCounter = this.props.game.endCounter
+    }
+
+
+    if (this.props.game.totalSeconds < 2 && prevCounter !== this.props.game.endCounter) {
+      this.props.setImagesToMultipleChoiceGame(this.props.game.images, this.props.game.answers)
+      this.props.startGameClock()
+    }
     setInterval(() => {
       this.setState(() => {
         console.log('test')
         return { unseen: "does not display" }
       });
     }, 1000)
-    this.props.setImagesToMultipleChoiceGame(this.props.game.images, this.props.game.answers)
-    this.props.startGameClock()
+
   }
 
   componentDidUpdate(prevProps) {
@@ -61,11 +86,11 @@ class MultipleChoiceGame extends React.Component {
 
     let current = new Date().getTime()
     let started = this.props.game.startedAt
-    if (started<1 || isNaN(started) || started===undefined) {
-      started=this.state.internalStartedAt
+    if (started < 1 || isNaN(started) || started === undefined) {
+      started = this.state.internalStartedAt
     }
     //let points = (Math.round((this.checkCorrectness(event.target.value) * Math.max(10, this.props.game.currentImage.bone.nameLatin.length)) * ((300 + Math.max(0, (300 - this.state.seconds))) / 600))) / 20
-    let points = (Math.round((correctness * Math.min(10, this.props.game.currentImage.bone.nameLatin.length)) * ((30 + Math.max(0, (30 - ((current- started)/1000)) / 60))))) / 80
+    let points = (Math.round((correctness * Math.min(10, this.props.game.currentImage.bone.nameLatin.length)) * ((30 + Math.max(0, (30 - ((current - started) / 1000)) / 60))))) / 80
 
     if (this.checkCorrectness(event.target.value) > 99) {
       points = points * 10
@@ -82,13 +107,13 @@ class MultipleChoiceGame extends React.Component {
     let currentStreak = this.state.streakMCG
     let currentBonus = this.state.bonus
     let streakStyle = 'correct'
-    
+
     if (correctness === 100) {
       this.setState({ streakMCG: currentStreak + 1, bonus: currentBonus + 0.5 })
       streakNote = currentBonus + 'x!'
     } else {
       points = 0
-      streakStyle='incorrect'
+      streakStyle = 'incorrect'
       streakEmoji = require('node-emoji')
       streakEmoji = streakEmoji.get('poop')
       streakNote = ''
@@ -99,7 +124,7 @@ class MultipleChoiceGame extends React.Component {
     this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, streakStyle, 3, true)
 
     setTimeout(() => {
-      this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(this.state.value), this.state.value,this.props.game.currentImage.animal.name,current-started,points)
+      this.props.setAnswer(this.props.game.currentImage, this.checkCorrectness(this.state.value), this.state.value, this.props.game.currentImage.animal.name, current - started, points)
       this.setState({ value: undefined })
     }, 3000)
   }
@@ -155,7 +180,7 @@ class MultipleChoiceGame extends React.Component {
       }
       return null
     }
-    
+
     const houseEmoji = emoji.get('house')
 
     return (
