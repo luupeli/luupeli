@@ -27,10 +27,8 @@ class ImageMultipleChoiceGame extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.game.totalSeconds<2 &&  this.props.game.gameLength === this.props.game.endCounter) {
     this.props.setImagesToImageMultipleChoiceGame(this.props.game.images, this.props.game.answers)
     this.props.startGameClock()
-    }
     setInterval(() => {
       this.setState(() => {
         console.log('test')
@@ -44,10 +42,6 @@ class ImageMultipleChoiceGame extends React.Component {
       this.props.setImagesToImageMultipleChoiceGame(this.props.game.images, this.props.game.answers)
       this.props.startGameClock()
     }
-
-    /*if (this.state.clickDisabled) {
-			this.setState({ clickDisabled: false })
-		}*/
   }
 
   handleSubmit(image) {
@@ -161,9 +155,9 @@ class ImageMultipleChoiceGame extends React.Component {
           {this.props.game.wrongImageOptions.slice(0, 2).map(choice => {
             return (
               <Col xs={6}>
-                <div className="multi-height-restricted" style={this.style(choice)}>
+                <div className="multi-height-restricted">
                   <CloudinaryContext cloudName="luupeli">
-                    <Image publicId={choice.url} onClick={() => this.handleSubmit(choice)}>
+                    <Image publicId={choice.url} onClick={() => this.handleSubmit(choice)} style={this.style(choice)}>
                       <Transformation background="#000000" height="250" width="350" crop="lpad" />
                     </Image>
                   </CloudinaryContext>
@@ -177,9 +171,9 @@ class ImageMultipleChoiceGame extends React.Component {
           {this.props.game.wrongImageOptions.slice(2, 4).map(choice => {
             return (
               <Col xs={6}>
-                <div className="multi-height-restricted" style={this.style(choice)}>
+                <div className="multi-height-restricted">
                   <CloudinaryContext cloudName="luupeli">
-                    <Image publicId={choice.url} onClick={() => this.handleSubmit(choice)}>
+                    <Image publicId={choice.url} onClick={() => this.handleSubmit(choice)} style={this.style(choice)}>
                       <Transformation background="#000000" height="250" width="350" crop="lpad" />
                     </Image>
                   </CloudinaryContext>

@@ -67,14 +67,10 @@ class WritingGame extends React.Component {
         console.log('test')
         return { unseen: "does not display" }
       });
-    }, 1000)
-    //if  {
-      //if (this.props.game.endCounter !== prevProps.game.endCounter || 
-        if (this.props.game.totalSeconds<2 &&  this.props.game.gameLength === this.props.game.endCounter) {
-    this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
-    this.props.startGameClock()
-    console.log('COMPONENT DID MOUNT')
-    }
+    }, 1000) 
+      this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
+      this.props.startGameClock()
+      console.log('COMPONENT DID MOUNT')
   }
 
   handleChange(event) {
@@ -109,7 +105,7 @@ class WritingGame extends React.Component {
 
     let easyBonusPenalizer = 0
 
-    let scoreFlashStyle =''
+    let scoreFlashStyle = ''
 
     if (this.props.game.gameDifficulty === 'easy') {
       points = points * 0.5
@@ -130,7 +126,7 @@ class WritingGame extends React.Component {
     }
 
     if (answerCorrectness > 99) {
-      scoreFlashStyle='correct'
+      scoreFlashStyle = 'correct'
       points = points * 5
       correctness = 'Oikein'
       this.setState({ animationActive: false, streakWG: currentStreak + 1, bonus: currentBonus + 1.0 + hardBonus, value: '', previousRevealClock: 0, partialEasyAnswer: '__', easyDifficultyPenalty: 1.0 })
@@ -142,10 +138,10 @@ class WritingGame extends React.Component {
       streakEmoji = streakEmoji.get('fire')
       console.log(streakEmoji)
     } else {
-      scoreFlashStyle='almostcorrect'
+      scoreFlashStyle = 'almostcorrect'
       if (this.props.game.gameDifficulty === 'hard') {
         points = 40 * currentBonus
-  
+
       }
 
       this.setState({ animationActive: false, streakWG: 0, bonus: 1.0, value: '', previousRevealClock: 0, partialEasyAnswer: '__', easyDifficultyPenalty: 1.0 })
@@ -162,18 +158,18 @@ class WritingGame extends React.Component {
 
     //Check answered animal and score accordingly
     if (this.state.imgAnimal === this.props.game.currentImage.animal.name) {
-      if (this.props.game.animals.length>2) {
-      points = Math.round(points * (this.props.game.animals.length/1.5)) // You need to choose atleast 3 animal species in order to get this bonus
+      if (this.props.game.animals.length > 2) {
+        points = Math.round(points * (this.props.game.animals.length / 1.5)) // You need to choose atleast 3 animal species in order to get this bonus
       }
-      scoreFlashStyle='supercorrect'
-      streakEmoji='Oikea eläin!'
+      scoreFlashStyle = 'supercorrect'
+      streakEmoji = 'Oikea eläin!'
     } else if (this.state.imgAnimal !== "none") {
       points = Math.round(points * 0.5)
     }
 
     points = Math.round(points / 20) * 20
     if (answerCorrectness <= 70) {
-      scoreFlashStyle='incorrect'
+      scoreFlashStyle = 'incorrect'
       correctness = 'Väärin'
       points = 0
     }
@@ -318,8 +314,8 @@ class WritingGame extends React.Component {
               />
             </div>
             <div className="container">
-            {animalRadioNoAnimal()}
-            {animalRadio}
+              {animalRadioNoAnimal()}
+              {animalRadio}
             </div>
             <div className="btn-group">
               <button classname="gobackbutton" type="submit" id="submitButton">Vastaa</button>
@@ -330,7 +326,7 @@ class WritingGame extends React.Component {
         if (this.checkCorrectness(this.state.lastValue) > 99) {
           return (
             <div>
-              <div className="game-text-input"> 
+              <div className="game-text-input">
                 {/*     <Sounds correctness={this.checkCorrectness(this.state.lastValue)} />*/}
                 <input
                   id="gameTextInput"
@@ -396,6 +392,7 @@ class WritingGame extends React.Component {
       if (windowWidth > 1000) {
         return 1000
       }
+      console.log(windowWidth)
       return Math.round(windowWidth * 0.7)
     }
 
@@ -417,9 +414,6 @@ class WritingGame extends React.Component {
     let correctAttempts = this.props.game.currentImage.correctAttempts
     let correctPercentile = Math.round(100 * (correctAttempts / attempts))
     if (isNaN(correctPercentile) || correctPercentile < 0) { correctPercentile = 0 }
-
-    //{/* <Transformation width={imageWidth()} crop="fill" format="png" radius="20" /> */}
-    //            {/* <Transformation width={imageWidth()} crop="fill" format="png" radius="20" /> */}
 
     let cheat = ''
     if (this.props.game.gameDifficulty === 'easy' && this.state.animationActive) {
@@ -453,7 +447,7 @@ class WritingGame extends React.Component {
       }
       return null
     }
-    
+
     const houseEmoji = emoji.get('house')
 
     return (
@@ -495,7 +489,7 @@ class WritingGame extends React.Component {
          */}
         <div className="game-answer-input" />
         <form
-					className="limit-width"
+          className="limit-width"
           id='gameForm'
           onSubmit={this.handleSubmit}
         >

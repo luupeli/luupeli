@@ -37,10 +37,8 @@ class MultipleChoiceGame extends React.Component {
         return { unseen: "does not display" }
       });
     }, 1000)
-    if (this.props.game.totalSeconds<2 &&  this.props.game.gameLength === this.props.game.endCounter) {
     this.props.setImagesToMultipleChoiceGame(this.props.game.images, this.props.game.answers)
     this.props.startGameClock()
-    }
   }
 
   componentDidUpdate(prevProps) {
@@ -166,8 +164,8 @@ class MultipleChoiceGame extends React.Component {
           <div className="intro">
             <CloudinaryContext cloudName="luupeli">
               <div className="height-restricted">
-                <Image publicId={this.props.game.currentImage.url + ".png"}>
-                  <Transformation width={imageWidth()} format="png" crop="fill" radius="20" />
+                <Image publicId={this.props.game.currentImage.url}>
+                  <Transformation width={imageWidth()} />
                 </Image>
               </div>
             </CloudinaryContext>
