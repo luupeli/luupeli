@@ -69,9 +69,10 @@ class BoneListing extends React.Component {
 	}
 
 	handleChange(e) {
+		e.preventDefault()
 		this.setState({ search: e.target.value })
 	}
-	
+
 	boneAnimalsToString(bone) {
 		var animalsString = ""
 		bone.animals.forEach((animal, i) => {
@@ -111,7 +112,11 @@ class BoneListing extends React.Component {
 		// Filter by search attribute (latin names and finnish name)
 		if (this.state.search.length > 0) {
 			bonesToShow = bonesToShow.filter(bone => {
-				return bone.nameLatin.toLowerCase().includes(this.state.search.toLowerCase()) || bone.altNameLatin.toLowerCase().includes(this.state.search.toLowerCase()) || bone.name.toLowerCase().includes(this.state.search.toLowerCase())
+				if (bone.name !== null) {
+					return bone.nameLatin.toLowerCase().includes(this.state.search.toLowerCase()) || bone.name.toLowerCase().includes(this.state.search.toLowerCase())
+				} else {
+					return bone.nameLatin.toLowerCase().includes(this.state.search.toLowerCase())
+				}
 			})
 		}
 
@@ -206,7 +211,8 @@ class BoneListing extends React.Component {
 								<div id="bones">
 									{bonesToShow.map((bone, i) =>
 										<Link key={bone.id} to={{
-											pathname: '/update/' + bone.id}}>
+											pathname: '/update/' + bone.id
+										}}>
 											<button type="button" id={"bone" + i} className="list-group-item list-group-item-action">{bone.nameLatin}</button>
 										</Link>)}
 								</div>
