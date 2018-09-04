@@ -24,7 +24,7 @@ const gameReducer = (store = initialState.game, action) => {
     if (action.type === 'INIT_GAME') {
         console.log(action)
         return {
-            ...store, gameModeChanged: false, surpriseGameMode: action.surpriseGameMode, wrongImageOptions: action.wrongImageOptions,
+            ...store, posted: false, gameModeChanged: false, surpriseGameMode: action.surpriseGameMode, wrongImageOptions: action.wrongImageOptions,
             wrongAnswerOptions: action.wrongAnswerOptions, currentImage: action.currentImage, user: action.user,
             totalScore: action.totalScore, gameLength: action.gameLength, endCounter: action.endCounter,
             totalSeconds: action.totalSeconds, images: action.images, animals: action.animals,
@@ -69,6 +69,9 @@ const gameReducer = (store = initialState.game, action) => {
     }
     if (action.type === 'GAME_MODE_CHANGED_TO_FALSE') {
         return { ...store, gameModeChanged: false }
+    }
+    if (action.type === 'SET_SESSION_TO_POSTED') {
+        return { ...store, posted: true }
     }
     return store
 }
@@ -198,6 +201,12 @@ export const getGameClock = () => {
 export const toggleSound = () => {
     return {
         type: 'TOGGLE_SOUND'
+    }
+}
+
+export const setSessionToPosted = () => {
+    return {
+        type: 'SET_SESSION_TO_POSTED'
     }
 }
 

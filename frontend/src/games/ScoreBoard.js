@@ -9,16 +9,7 @@ class ScoreBoard extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			seconds: 0,
-			score: 0
-		}
-
 		this.reminderOfPreviousImage = this.reminderOfPreviousImage.bind(this)
-	}
-
-	tick() {
-		this.setState({ seconds: this.getElapsedTime(), score: this.scoreToShow() });
 	}
 
 	componentDidMount() {
@@ -95,7 +86,7 @@ class ScoreBoard extends React.Component {
 				</div>
 				<div className="score-board">
 					<h3>SCORE {this.scoreToShow()}</h3>
-					<h5>TIME {this.state.seconds}</h5>
+					<h5>TIME {this.getElapsedTime()}</h5>
 					{this.reminderOfPreviousImage()}
 				</div>
 			</div>

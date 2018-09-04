@@ -1,9 +1,7 @@
-import { Redirect } from 'react-router-dom'
 import React from 'react'
 import ScoreFlash from './ScoreFlash'
 import { connect } from 'react-redux'
 import { gameInitialization, setAnswer } from '../reducers/gameReducer'
-import gameSessionService from '../services/gameSessions'
 import { injectGlobal } from 'styled-components'
 import { setIntroSound } from '../reducers/soundReducer'
 import ScoreBoard from './ScoreBoard'
@@ -28,7 +26,6 @@ class Game extends React.Component {
             startScoreFlashSound: false,
             injected: false
         }
-        this.postGameSession = this.postGameSession.bind(this)
     };
 
     componentDidMount() {
@@ -43,19 +40,6 @@ class Game extends React.Component {
                 return { unseen: "does not display" }
             });
         }, 500);
-    }
-
-    postGameSession() {
-        gameSessionService.create({
-            user: this.props.game.user !== null ? this.props.game.user.id : null,
-            gamemode: this.props.game.gamemode,
-            answers: this.props.game.answers,
-            length: this.props.game.gameLength,
-            gameDifficulty: this.props.game.gameDifficulty,
-            animals: this.props.game.animals.map(animal => animal.id),
-            bodyparts: this.props.game.bodyparts.map(bodypart => bodypart.id),
-            seconds: this.props.game.totalSeconds / 20
-        })
     }
 
     responsiveLayout(startTheBonusSoundNow) {

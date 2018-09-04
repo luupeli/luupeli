@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
 import { Grid, Row, Col } from 'react-bootstrap'
 import emoji from 'node-emoji'
-import { gameInitialization } from '../../reducers/gameReducer'
-import { ProgressBar } from 'react-bootstrap'
+import { gameInitialization, setSessionToPosted } from '../../reducers/gameReducer'
+import gameSessionService from '../../services/gameSessions'
 import Sound from 'react-sound'
 import BackButton from '../BackButton'
 import userStatistics from '../../services/userStatistics'
@@ -32,6 +32,7 @@ class EndScreen extends React.Component {
 			scoreRetrieved: false
 		}
 		this.proceedToReplay = this.proceedToReplay.bind(this)
+		this.postGameSession = this.postGameSession.bind(this)
 	}
 
 	componentDidMount() {
@@ -42,6 +43,25 @@ class EndScreen extends React.Component {
 		}
 		console.log(this.props.game)
 		console.log(this.props.game.gameLength)
+
+		if (!this.props.game.posted) {
+			this.postGameSession()
+			this.props.setSessionToPosted()
+		}
+	}
+
+	postGameSession() {
+		console.log('POST SESSION')
+		gameSessionService.create({
+			user: this.props.game.user !== null ? this.props.game.user.id : null,
+			gamemode: this.props.game.gamemode,
+			answers: this.props.game.answers,
+			length: this.props.game.gameLength,
+			gameDifficulty: this.props.game.gameDifficulty,
+			animals: this.props.game.animals.map(animal => animal.id),
+			bodyparts: this.props.game.bodyparts.map(bodypart => bodypart.id),
+			seconds: this.props.game.totalSeconds / 20
+		})
 	}
 
 	//Reinitialize a game with same settings as previous game played
@@ -152,10 +172,10 @@ class EndScreen extends React.Component {
 		}
 
 		let photographer = answer.image.photographer
-		
-		if (photographer===undefined || photographer===null) {
+
+		if (photographer === undefined || photographer === null) {
 			photographer = 'tuntematon'
-		} 
+		}
 
 		return (
 			<Col xs={12} md={6} lg={6}>
@@ -366,9 +386,9 @@ class EndScreen extends React.Component {
 								</Row>
 								<div className="btn-group-horizontal" role="group">
 									<button type="button" className="btn btn-theme" onClick={this.proceedToReplay}>Pelaa uudestaan</button>
-									<button type="button" className="btn btn-theme" onClick={() => this.props.history.push('/play', {mode: 'gamemode'})}>>Pelimoodivalikkoon</button>
+									<button type="button" className="btn btn-theme" onClick={() => this.props.history.push('/play', { mode: 'gamemode' })}>>Pelimoodivalikkoon</button>
 								</div>
-							{showAchievement()}
+								{showAchievement()}
 								<h5>{achievementLocked}</h5>
 								<h5>{achievementLockedRowTwo}</h5>
 								<h3 id="endScreenTitle">Vastauksesi olivat:</h3>
@@ -402,7 +422,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-	gameInitialization
+	gameInitialization,
+	setSessionToPosted
 }
 
 const ConnectedEndScreen = connect(
