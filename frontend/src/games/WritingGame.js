@@ -2,7 +2,7 @@ import React from 'react'
 import StringSimilarity from 'string-similarity'
 import { Link } from 'react-router-dom'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
-import { setAnswer, setImageToWritingGame, startGameClock, stopGameClock } from '../reducers/gameReducer'
+import { gameModeChangedToFalse, setAnswer, setImageToWritingGame, startGameClock, stopGameClock } from '../reducers/gameReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { setAnswerSound } from '../reducers/soundReducer'
 import { connect } from 'react-redux'
@@ -57,6 +57,7 @@ class WritingGame extends React.Component {
     if (this.props.game.endCounter !== prevProps.game.endCounter) {
       this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
       this.props.startGameClock()
+      this.props.gameModeChangedToFalse()
       console.log('COMPONENT DID UPDATE')
     }
   }
@@ -73,20 +74,12 @@ class WritingGame extends React.Component {
   * works reasonably well...
   * 
   */
-  componentDidMount(prevProps) {
-    /*  let prevCounter = 0
-      if (prevProps !== undefined) {
-        if (prevProps.game !== undefined) {
-          prevCounter = prevProps.game.endCounter
-        }
-      } else if (this.props.game.images !== undefined) {
-        prevCounter = this.props.game.endCounter
-      }
-  
-      if (this.props.game.totalSeconds < 2 && prevCounter !== this.props.game.endCounter) { */
-    this.props.setImagesToImageMultipleChoiceGame(this.props.game.images, this.props.game.answers)
-    this.props.startGameClock()
-    //  }
+  componentDidMount() {
+    if (this.props.game.gameModeChanged) {
+      this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
+      this.props.startGameClock()
+      this.props.gameModeChangedToFalse()
+    }
     setInterval(() => {
       this.setState(() => {
         console.log('test')
@@ -543,7 +536,8 @@ const mapDispatchToProps = {
   setScoreFlash,
   startGameClock,
   stopGameClock,
-  setAnswerSound
+  setAnswerSound,
+  gameModeChangedToFalse
 }
 
 const ConnectedWritingGame = connect(

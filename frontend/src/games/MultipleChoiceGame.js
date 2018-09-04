@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
-import { setAnswer, setImagesToMultipleChoiceGame, startGameClock, stopGameClock } from '../reducers/gameReducer'
+import { gameModeChangedToFalse, setAnswer, setImagesToMultipleChoiceGame, startGameClock, stopGameClock } from '../reducers/gameReducer'
 import { setMessage } from '../reducers/messageReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
@@ -41,22 +41,12 @@ class MultipleChoiceGame extends React.Component {
    * works reasonably well...
    * 
    */
-  componentDidMount(prevProps) {
-    // let prevCounter = 0
-    
-    // if (prevProps !== undefined) {
-    //   if (prevProps.game !== undefined) {
-    //     prevCounter = prevProps.game.endCounter
-    //   } 
-    // } else if (this.props.game.images !== undefined) {
-    //   prevCounter = this.props.game.endCounter
-    // }
-
-
-    // if (this.props.game.totalSeconds < 2 && prevCounter !== this.props.game.endCounter) {
+  componentDidMount() {
+    if (this.props.game.gameModeChanged) {
       this.props.setImagesToMultipleChoiceGame(this.props.game.images, this.props.game.answers)
       this.props.startGameClock()
-    // }
+      this.props.gameModeChangedToFalse()
+    }
     setInterval(() => {
       this.setState(() => {
         console.log('test')
@@ -70,6 +60,7 @@ class MultipleChoiceGame extends React.Component {
     if (this.props.game.endCounter !== prevProps.game.endCounter) {
       this.props.setImagesToMultipleChoiceGame(this.props.game.images, this.props.game.answers)
       this.props.startGameClock()
+      this.props.gameModeChangedToFalse()
     }
   }
 
@@ -78,7 +69,6 @@ class MultipleChoiceGame extends React.Component {
  * @param {*} event 
  */
   handleSubmit(event) {
-    event.preventDefault()
     this.props.stopGameClock()
     this.setState({ value: event.target.value })
     const correctness = this.checkCorrectness(event.target.value)
@@ -223,7 +213,8 @@ const mapDispatchToProps = {
   setScoreFlash,
   startGameClock,
   stopGameClock,
-  setAnswerSound
+  setAnswerSound,
+  gameModeChangedToFalse
 }
 
 const ConnectedMultipleChoiceGame = connect(

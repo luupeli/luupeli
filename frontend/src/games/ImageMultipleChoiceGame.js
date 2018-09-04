@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
-import { setAnswer, setImagesToImageMultipleChoiceGame, startGameClock, stopGameClock } from '../reducers/gameReducer'
+import { gameModeChangedToFalse, setAnswer, setImagesToImageMultipleChoiceGame, startGameClock, stopGameClock } from '../reducers/gameReducer'
 import { setMessage } from '../reducers/messageReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
@@ -37,20 +37,12 @@ class ImageMultipleChoiceGame extends React.Component {
    * works reasonably well...
    * 
    */
-  componentDidMount(prevProps) {
-    // let prevCounter = 0
-    // if (prevProps !== undefined) {
-    //   if (prevProps.game !== undefined) {
-    //     prevCounter = prevProps.game.endCounter
-    //   }
-    // } else if (this.props.game.images !== undefined) {
-    //   prevCounter = this.props.game.endCounter
-    // }
-
-    // if (this.props.game.totalSeconds < 2 && prevCounter !== this.props.game.endCounter) {
+  componentDidMount() {
+    if (this.props.game.gameModeChanged) {
       this.props.setImagesToImageMultipleChoiceGame(this.props.game.images, this.props.game.answers)
       this.props.startGameClock()
-    // }
+      this.props.gameModeChangedToFalse()
+     }
     setInterval(() => {
       this.setState(() => {
         console.log('test')
@@ -63,6 +55,7 @@ class ImageMultipleChoiceGame extends React.Component {
     if (this.props.game.endCounter !== prevProps.game.endCounter) {
       this.props.setImagesToImageMultipleChoiceGame(this.props.game.images, this.props.game.answers)
       this.props.startGameClock()
+      this.props.gameModeChangedToFalse()
     }
   }
 
@@ -258,7 +251,8 @@ const mapDispatchToProps = {
   setScoreFlash,
   startGameClock,
   stopGameClock,
-  setAnswerSound
+  setAnswerSound,
+  gameModeChangedToFalse
 }
 
 const ConnectedImageMultipleChoiceGame = connect(
