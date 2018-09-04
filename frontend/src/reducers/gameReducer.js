@@ -24,7 +24,7 @@ const gameReducer = (store = initialState.game, action) => {
     if (action.type === 'INIT_GAME') {
         console.log(action)
         return {
-            ...store, posted: false, gameModeChanged: false, surpriseGameMode: action.surpriseGameMode, wrongImageOptions: action.wrongImageOptions,
+            ...store, posted: false, needToChangeQuestion: true, surpriseGameMode: action.surpriseGameMode, wrongImageOptions: action.wrongImageOptions,
             wrongAnswerOptions: action.wrongAnswerOptions, currentImage: action.currentImage, user: action.user,
             totalScore: action.totalScore, gameLength: action.gameLength, endCounter: action.endCounter,
             totalSeconds: action.totalSeconds, images: action.images, animals: action.animals,
@@ -36,9 +36,9 @@ const gameReducer = (store = initialState.game, action) => {
     if (action.type === 'SET_ANSWER') {
         console.log(action)
         if (store.answers === undefined) {
-            return { ...store, gameModeChanged: store.surpriseGameMode !== action.surpriseGameMode, surpriseGameMode: action.surpriseGameMode, answers: action.answer, endCounter: store.endCounter - 1, gameClock: 0, totalSeconds: action.totalSeconds, totalScore: action.totalScore }
+            return { ...store, needToChangeQuestion: store.surpriseGameMode !== action.surpriseGameMode, surpriseGameMode: action.surpriseGameMode, answers: action.answer, endCounter: store.endCounter - 1, gameClock: 0, totalSeconds: action.totalSeconds, totalScore: action.totalScore }
         } else {
-            return { ...store, gameModeChanged: store.surpriseGameMode !== action.surpriseGameMode, surpriseGameMode: action.surpriseGameMode, answers: store.answers.concat(action.answer), endCounter: store.endCounter - 1, gameClock: 0, totalSeconds: store.totalSeconds + action.totalSeconds, totalScore: store.totalScore + action.totalScore }
+            return { ...store, needToChangeQuestion: store.surpriseGameMode !== action.surpriseGameMode, surpriseGameMode: action.surpriseGameMode, answers: store.answers.concat(action.answer), endCounter: store.endCounter - 1, gameClock: 0, totalSeconds: store.totalSeconds + action.totalSeconds, totalScore: store.totalScore + action.totalScore }
         }
     }
     if (action.type === 'SET_IMAGE_TO_WRITING_GAME') {
@@ -67,8 +67,8 @@ const gameReducer = (store = initialState.game, action) => {
     if (action.type === 'STOP_GAME_CLOCK') {
         return { ...store, stoppedAt: action.now, gameClock: action.now - store.startedAt }
     }
-    if (action.type === 'GAME_MODE_CHANGED_TO_FALSE') {
-        return { ...store, gameModeChanged: false }
+    if (action.type === 'SET_NEED_TO_CHANGE_QUESTION_FALSE') {
+        return { ...store, needToChangeQuestion: false }
     }
     if (action.type === 'SET_SESSION_TO_POSTED') {
         return { ...store, posted: true }
@@ -118,9 +118,9 @@ export const startGameClock = () => {
     };
 }
 
-export const gameModeChangedToFalse = () => {
+export const setNeedToChangeQuestionFalse = () => {
     return {
-        type: "GAME_MODE_CHANGED_TO_FALSE"
+        type: "SET_NEED_TO_CHANGE_QUESTION_FALSE"
     };
 }
 

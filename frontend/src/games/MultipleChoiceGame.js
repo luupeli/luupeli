@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
-import { gameModeChangedToFalse, setAnswer, setImagesToMultipleChoiceGame, startGameClock, stopGameClock } from '../reducers/gameReducer'
+import { setNeedToChangeQuestionFalse, setAnswer, setImagesToMultipleChoiceGame, startGameClock, stopGameClock } from '../reducers/gameReducer'
 import { setMessage } from '../reducers/messageReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { connect } from 'react-redux'
@@ -42,10 +42,10 @@ class MultipleChoiceGame extends React.Component {
    * 
    */
   componentDidMount() {
-    if (this.props.game.gameModeChanged) {
+    if (this.props.game.needToChangeQuestion) {
       this.props.setImagesToMultipleChoiceGame(this.props.game.images, this.props.game.answers)
       this.props.startGameClock()
-      this.props.gameModeChangedToFalse()
+      this.props.setNeedToChangeQuestionFalse()
     }
     setInterval(() => {
       this.setState(() => {
@@ -60,7 +60,7 @@ class MultipleChoiceGame extends React.Component {
     if (this.props.game.endCounter !== prevProps.game.endCounter) {
       this.props.setImagesToMultipleChoiceGame(this.props.game.images, this.props.game.answers)
       this.props.startGameClock()
-      this.props.gameModeChangedToFalse()
+      this.props.setNeedToChangeQuestionFalse()
     }
   }
 
@@ -214,7 +214,7 @@ const mapDispatchToProps = {
   startGameClock,
   stopGameClock,
   setAnswerSound,
-  gameModeChangedToFalse
+  setNeedToChangeQuestionFalse
 }
 
 const ConnectedMultipleChoiceGame = connect(

@@ -2,7 +2,7 @@ import React from 'react'
 import StringSimilarity from 'string-similarity'
 import { Link } from 'react-router-dom'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
-import { gameModeChangedToFalse, setAnswer, setImageToWritingGame, startGameClock, stopGameClock } from '../reducers/gameReducer'
+import { setNeedToChangeQuestionFalse, setAnswer, setImageToWritingGame, startGameClock, stopGameClock } from '../reducers/gameReducer'
 import { setScoreFlash } from '../reducers/scoreFlashReducer'
 import { setAnswerSound } from '../reducers/soundReducer'
 import { connect } from 'react-redux'
@@ -57,7 +57,7 @@ class WritingGame extends React.Component {
     if (this.props.game.endCounter !== prevProps.game.endCounter) {
       this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
       this.props.startGameClock()
-      this.props.gameModeChangedToFalse()
+      this.props.setNeedToChangeQuestionFalse()
       console.log('COMPONENT DID UPDATE')
     }
   }
@@ -75,10 +75,10 @@ class WritingGame extends React.Component {
   * 
   */
   componentDidMount() {
-    if (this.props.game.gameModeChanged) {
+    if (this.props.game.needToChangeQuestion) {
       this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers)
       this.props.startGameClock()
-      this.props.gameModeChangedToFalse()
+      this.props.setNeedToChangeQuestionFalse()
     }
     setInterval(() => {
       this.setState(() => {
@@ -537,7 +537,7 @@ const mapDispatchToProps = {
   startGameClock,
   stopGameClock,
   setAnswerSound,
-  gameModeChangedToFalse
+  setNeedToChangeQuestionFalse
 }
 
 const ConnectedWritingGame = connect(
