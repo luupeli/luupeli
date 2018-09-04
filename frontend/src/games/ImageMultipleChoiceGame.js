@@ -48,7 +48,7 @@ class ImageMultipleChoiceGame extends React.Component {
     // }
 
     // if (this.props.game.totalSeconds < 2 && prevCounter !== this.props.game.endCounter) {
-    //   this.props.setImagesToImageMultipleChoiceGame(this.props.game.images, this.props.game.answers)
+      this.props.setImagesToImageMultipleChoiceGame(this.props.game.images, this.props.game.answers)
       this.props.startGameClock()
     // }
     setInterval(() => {
