@@ -1954,4 +1954,5 @@ https://codepen.io/George-Payne/pen/qOrxao
 
 .reminder-of-previous-answer {
   padding-top: 30px;
+  z-index:0!important;
 }

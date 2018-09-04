@@ -101,18 +101,18 @@ class ScoreBoard extends React.Component {
 			prevImage = this.props.game.answers[this.props.game.answers.length - 1].image
 		}
 
-		if (!this.props.mobileLayout && prevImage !== undefined) {
+		if (!this.props.mobileLayout && prevImage !== undefined && !this.props.scoreflash.visibility) {
 
 			return (
 				<div className="reminder-of-previous-answer">
-					<Animated animationIn="fadeIn" animationOut="fadeOut faster" animationInDelay="500" animationOutDelay="100">
+					<Animated animationIn="fadeIn" animationOut="fadeOut faster" animationInDelay="500" animationOutDelay="0">
 						<h5>EDELLINEN</h5>
 						<h6>{prevImage.bone.nameLatin}</h6>
 					</Animated>
 					<div className="intro">
 						<CloudinaryContext cloudName="luupeli">
 							<div className="height-restricted" >
-								<Animated animat3="fadeIn" animationOut="fadeOut faster" animationInDelay="500" animationOutDelay="100">
+								<Animated animationIn="fadeIn" animationInDelay="500" animationOutDelay="0">
 									<Image id="bone-image" publicId={prevImage.url}>
 
 										<Transformation width="250" height="150" crop="scale" effect="grayscale" />

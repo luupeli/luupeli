@@ -598,7 +598,7 @@ class Home extends React.Component {
         } else {
             var lines = [];
             var heading = ''
-            if (this.state.attractMode % 80 <= 40) {
+            if (this.state.attractMode % 80 <= 32) {
                 heading = 'CREDITS'
                 lines.push('Helena Parviainen')
                 lines.push('Kerem Atak')
@@ -607,6 +607,14 @@ class Home extends React.Component {
                 lines.push('Tuomas Honkala')
                 lines.push('Ville Hänninen')
                 lines.push('Kesän 2018 ohjelmistotuotantoprojekti Helsingin Yliopiston Tietojenkäsittelytieteen laitokselle ' + heartEmoji)
+            } else if (this.state.attractMode % 80 <= 40) {
+                heading = 'SPECIAL THANKS'
+                lines.push('George Payne for his 80\'s grid codepen')
+                lines.push('Alex Lownes for his \'crt\' tutorial')
+                lines.push('Luupeli\'s VFX make extensive use of:')
+                lines.push('react-animated-css')
+                lines.push('react-confetti')
+                lines.push('Extra special thanks to all Luupeli playtesters! '+heartEmoji)
             }
             else if (this.state.attractMode % 80 <= 50) {
                 heading = 'Luupeli features audio from Freesound.org'
