@@ -13,7 +13,7 @@ import Sound from 'react-sound'
 import achievement from './Achievement'
 import userStatistics from '../services/userStatistics'
 
-const versionNumber = 1.02
+const versionNumber = 1.05
 /**
  * This is the index page for the site. You can for example login from here or start creating the game.
  * 
@@ -244,7 +244,7 @@ class Home extends React.Component {
 
 
     tick() {
-        if (this.state.attractMode % 20 > 16 || (this.state.attractMode % 80 > 7 && this.state.attractMode % 80 < 10) || (this.state.attractMode % 80 > 47 && this.state.attractMode % 80 < 50)) {
+        if (this.state.attractMode % 20 > 17 || (this.state.attractMode % 80 > 7 && this.state.attractMode % 80 < 10) || (this.state.attractMode % 80 > 30 && this.state.attractMode % 80 < 33) || (this.state.attractMode % 80 > 47 && this.state.attractMode % 80 < 50)) {
             this.setState({ attractMode: this.state.attractMode + 1, attractAnimation: false })
         } else {
             this.setState({ attractMode: this.state.attractMode + 1, attractAnimation: true })
@@ -609,12 +609,10 @@ class Home extends React.Component {
                 lines.push('Kesän 2018 ohjelmistotuotantoprojekti Helsingin Yliopiston Tietojenkäsittelytieteen laitokselle ' + heartEmoji)
             } else if (this.state.attractMode % 80 <= 40) {
                 heading = 'SPECIAL THANKS'
-                lines.push('George Payne for his 80\'s grid codepen')
+                lines.push('George Payne for his \'80\'s grid\' codepen')
                 lines.push('Alex Lownes for his \'crt\' tutorial')
-                lines.push('Luupeli\'s VFX make extensive use of:')
-                lines.push('react-animated-css')
-                lines.push('react-confetti')
-                lines.push('Extra special thanks to all Luupeli playtesters! '+heartEmoji)
+                lines.push('Luupeli\'s VFX make extensive use of react-animated-css & react-confetti')
+                lines.push('Extra special thanks to all Luupeli playtesters!! '+heartEmoji)
             }
             else if (this.state.attractMode % 80 <= 50) {
                 heading = 'Luupeli features audio from Freesound.org'
@@ -671,7 +669,7 @@ class Home extends React.Component {
             }
 
             const rollingMessage = lines.map((line, i) =>
-                <Animated animationIn="bounceInUp slower" animationOut={effects[i % 2]} animationInDelay={1500 + (i * 500)} animationOutDelay={i * 50} isVisible={this.state.attractAnimation}>
+                <Animated animationIn="bounceInUp slower" animationOut={effects[i % 2]} animationInDelay={750 + (i * 500)} animationOutDelay={i * 50} isVisible={this.state.attractAnimation}>
                     <div className="home-highscore">
                         <div className="score">
                             <h5>
@@ -685,7 +683,7 @@ class Home extends React.Component {
             return (
                 <div>
                     <div className="home-highscore-top">
-                        <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight slower" animationInDelay={1000} animationOutDelay={0} isVisible={this.state.attractAnimation}>
+                        <Animated animationIn="bounceInUp slower" animationOut="bounceOutRight slower" animationInDelay={100} animationOutDelay={0} isVisible={this.state.attractAnimation}>
                             <h3>
                                 {heading}
                             </h3>
