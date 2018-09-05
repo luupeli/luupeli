@@ -37,3 +37,6 @@ Luupeli features Freesound.org creative commons audio from the following artists
 - Techno 80 - base loop by frankum
 - 8-bit ElectroHouse by RutgerMuller
 - Eastern Strings by 4barrelcarb
+
+### Visual effect libraries
+Many of Luupeli's visual effects wouldn't have been possible without the [react-animated-css](https://www.npmjs.com/package/react-animated-css) and the [react-co)nfetti](https://www.npmjs.com/package/react-confetti libraries!
