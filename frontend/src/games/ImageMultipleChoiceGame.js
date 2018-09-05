@@ -136,14 +136,14 @@ class ImageMultipleChoiceGame extends React.Component {
       return {
         borderStyle: 'solid',
         borderWidth: 10,
-        borderRadius: 30,
+        borderRadius: 20,
         borderColor: 'green'
       }
     } else if (choice.correct === false && choice.id === this.state.selectedId) {
       return {
         borderStyle: 'solid',
         borderWidth: 10,
-        borderRadius: 30,
+        borderRadius: 20,
         borderColor: 'red'
       }
     }
@@ -151,8 +151,15 @@ class ImageMultipleChoiceGame extends React.Component {
       return {
         borderStyle: 'solid',
         borderWidth: 10,
-        borderRadius: 30,
+        borderRadius: 20,
         borderColor: 'green'
+      }
+    }
+    if (this.state.selectedId === undefined || (choice.id !== this.state.selectedId && !choice.correct)) {
+      return {
+        borderStyle: 'solid',
+        borderRadius: 20,
+        cursor: 'pointer'
       }
     }
   }

@@ -461,7 +461,7 @@ class WritingGame extends React.Component {
             <CloudinaryContext cloudName="luupeli">
               <div className="height-restricted" >
                 <Animated animationIn="zoomIn faster" animationOut="zoomOut faster" animationInDelay="1000" animationOutDelay="0" isVisible={this.state.animationActive}>
-                  <Image id="bone-image" publicId={this.props.game.currentImage.url}>
+                  <Image id="bone-image" publicId={this.props.game.currentImage.url} style={{ borderRadius: 20 }}>
                     <Transformation width={imageWidth()} />
                   </Image>
                 </Animated>

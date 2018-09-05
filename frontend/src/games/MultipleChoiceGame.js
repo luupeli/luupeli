@@ -178,7 +178,7 @@ class MultipleChoiceGame extends React.Component {
           <div className="intro">
             <CloudinaryContext cloudName="luupeli">
               <div className="height-restricted">
-                <Image publicId={this.props.game.currentImage.url}>
+                <Image publicId={this.props.game.currentImage.url} style={{ borderRadius: 10 }}>
                   <Transformation width={imageWidth()} />
                 </Image>
               </div>

@@ -113,7 +113,7 @@ class ScoreBoard extends React.Component {
 						<CloudinaryContext cloudName="luupeli">
 							<div className="height-restricted" >
 								<Animated animationIn="fadeIn" animationInDelay="500" animationOutDelay="0">
-									<Image id="bone-image" publicId={prevImage.url}>
+									<Image id="bone-image" publicId={prevImage.url} style={{ borderRadius: 20 }}>
 
 										<Transformation width="250" height="150" crop="scale" effect="grayscale" />
 
