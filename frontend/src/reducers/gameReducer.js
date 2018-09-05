@@ -235,7 +235,7 @@ function selectWrongAnswerOptions(images, currentImage, difficulty) {
     })
     // Järjestetään taulukko siten, että lähimpänä oikeaa vastausta oleva on ylimpänä
     allLatinNames.sort((a, b) => b.similarity - a.similarity)
-
+    console.log(allLatinNames)
 
     // Valitaan väärät vastaukset peliin. 
     let answersToGame = []
@@ -244,11 +244,11 @@ function selectWrongAnswerOptions(images, currentImage, difficulty) {
     let howFarFromCorrect = allLatinNames.length
 
     if (difficulty === 'medium') {
-        // keskivaikealla tasolla arvonta kohdistuu samankaltaisuuslistassa top-25%
-        howFarFromCorrect = Math.max(2, howFarFromCorrect / 4)
+        // keskivaikealla tasolla arvonta kohdistuu samankaltaisuuslistassa top-20%
+        howFarFromCorrect = Math.max(2, howFarFromCorrect / 5)
     } else if (difficulty === 'hard') {
         // Vaikealla tasolla arvonta kohdistuu vain samankaltaisuuslistassa top-viiteen
-        howFarFromCorrect = 5
+        howFarFromCorrect = 2
     }
 
     while (answersToGame.length < numberOfButtons) {
@@ -308,7 +308,7 @@ function selectWrongImageOptions(images, currentImage, difficulty) {
         // Jos kyseisiä kuvia ei ole riittävästi, otetaan mukaan saman ruumiinosan luita.
         const sameBoneDifferentAnimal = allImages.filter(img => img.bone === currentImage.bone)
         while (sameBoneDifferentAnimal.length < 3) {
-            const sameBodyPart = allImages.filter(img => img.bone.bodyPart === currentImage.bone.bodyPart)
+            const sameBodyPart = allImages.filter(img => img.bone.bodyPart === currentImage.bone.bodyPart && img.bone !== currentImage.bone)
             const index = Math.floor(Math.random() * sameBodyPart.length - 1);
             sameBoneDifferentAnimal.push(sameBodyPart[index])
             sameBodyPart.splice(index, 1)
