@@ -28,7 +28,7 @@ const gameReducer = (store = initialState.game, action) => {
             wrongAnswerOptions: action.wrongAnswerOptions, currentImage: action.currentImage, user: action.user,
             totalScore: action.totalScore, gameLength: action.gameLength, endCounter: action.endCounter,
             totalSeconds: action.totalSeconds, images: action.images, animals: action.animals,
-            bodyparts: action.bodyparts, answers: action.answer, gamemode: action.gamemode, playSound: action.playSound, 
+            bodyparts: action.bodyparts, answers: action.answer, gamemode: action.gamemode, playSound: action.playSound,
             gameDifficulty: action.gameDifficulty, startTime: action.startTime, getGameClock: action.getGameClock,
             gameStarted: action.gameStarted
         }
@@ -150,9 +150,9 @@ export const setAnswer = (image, correctness, answer, animal, seconds, score) =>
 }
 
 // When the previous question is answered, this call will choose the image for the next question.
-export const setImageToWritingGame = (images, answers) => {
+export const setImageToWritingGame = (images, answers, difficulty) => {
 
-    const imageToAsk = selectNextImage(answers, images);
+    const imageToAsk = selectNextImage(answers, images, difficulty, 'kirjoituspeli');
     console.log(answers + '!!!')
     return {
         type: 'SET_IMAGE_TO_WRITING_GAME',
@@ -161,8 +161,8 @@ export const setImageToWritingGame = (images, answers) => {
 }
 
 // When the previous question is answered, this call will choose incorrect answer options for multiple choice game mode (MultipleChoiceGame).
-export const setImagesToMultipleChoiceGame = (images, answers) => {
-    const imageToAsk = selectNextImage(answers, images);
+export const setImagesToMultipleChoiceGame = (images, answers, difficulty) => {
+    const imageToAsk = selectNextImage(answers, images, difficulty);
     const wrongAnswerOptions = selectWrongAnswerOptions(images, imageToAsk);
     return {
         type: 'SET_IMAGES_TO_MULTIPLE',
@@ -172,8 +172,8 @@ export const setImagesToMultipleChoiceGame = (images, answers) => {
 }
 
 // When the previous question is answered, this call will choose incorrect image options for multiple choice game mode (ImageMultipleChoiceGame).
-export const setImagesToImageMultipleChoiceGame = (images, answers) => {
-    const imageToAsk = selectNextImage(answers, images);
+export const setImagesToImageMultipleChoiceGame = (images, answers, difficulty) => {
+    const imageToAsk = selectNextImage(answers, images, difficulty);
     const wrongImageOptions = selectWrongImageOptions(images, imageToAsk);
     return {
         type: 'SET_IMAGES_TO_IMAGE_MULTIPLE',
@@ -276,22 +276,116 @@ function selectWrongImageOptions(images, currentImage) {
 }
 
 /**
-This method chooses an image for the next question. I think this is not ready yet. 
+This method chooses an image for the next question.  
 We first use all the images that have not yet been asked. 
 Then we use those images that correctness is less than correctness average. The images are chosen randomly.
  */
-function selectNextImage(answers, images) {
+function selectNextImage(answers, images, difficulty, gamemode) {
     let noAskedImages;
+
+    // Tässä suodatetaan pois kuvat, jotka on jo kysytty
     if (answers !== undefined) {
         noAskedImages = images.filter(img => !answers.some(ans => ans.image.id === img.id));
     }
     else {
         noAskedImages = images;
     }
-    console.log(noAskedImages);
+
+    // Jos admin on määritellyt kuvan helpoksi, se tallennetaan tietokantaan arvolla 0. 
+    // Tämä on kuitenkin ongelmallista kertolaskun kannalta myöhemmin, joten muutetaan 0 -> 1.
+    noAskedImages = noAskedImages.map(img => {
+        if (img.difficulty === undefined || img.difficulty === '0') {
+            return { ...img, difficulty: 1 }
+        }
+        return { ...img, difficulty: 100 }
+    })
+    console.log(noAskedImages)
+
+    /* 
+    - Lasketaan kullekin kuvalle difficultyAvg painokertoimien yhdistelmänä: mitä isompi difficultyAvg, sitä vaikeampi kuva
+    - NameLatin-pituutta verrataan mielivaltaisesti numeroon 10. Parempi saattaisi olla esim nimien keskipituus, mutta onko sellaista tarpeellista laskea jokaisen kysymyksen välissä?
+    - correctness/attempts -arvo vähennetään sadasta, koska tämä käyttäytyy muutoin päin vastoin kuin haluaisimme.
+    */
+    if (gamemode !== undefined) {
+        if (gamemode === 'kirjoituspeli') {
+            noAskedImages = noAskedImages.map(img => {
+                if (img.attempts !== undefined && img.correctness !== undefined && img.difficulty !== undefined && img.correctness !== 0) {
+                    return { ...img, difficultyAvg: img.bone.nameLatin.length / 10 * (100 - Number(img.correctness / img.attempts)) * img.difficulty }
+                } else if (img.attempts === undefined || img.correctness === undefined || img.correctness === 0) {
+                    return { ...img, difficultyAvg: img.bone.nameLatin.length / 10 * img.difficulty }
+                } else if (img.difficulty === undefined) {
+                    return { ...img, difficultyAvg: img.bone.nameLatin.length / 10 * (100 - Number(img.correctness / img.attempts)) }
+                }
+                return { ...img, difficultyAvg: 50 }
+            })
+        }
+    } else {
+        noAskedImages = noAskedImages.map(img => {
+            if (img.attempts !== undefined && img.correctness !== undefined && img.difficulty !== undefined && img.correctness !== 0) {
+                return { ...img, difficultyAvg: (100 - Number(img.correctness / img.attempts)) * img.difficulty }
+            } else if (img.attempts === undefined || img.correctness === undefined || img.correctness === 0) {
+                return { ...img, difficultyAvg: img.difficulty }
+            } else if (img.difficulty === undefined) {
+                return { ...img, difficultyAvg: (100 - Number(img.correctness / img.attempts)) }
+            }
+            return { ...img, difficultyAvg: 50 }
+        })
+    }
+
+    // Luodaan taulukko kunkin kuvan difficultyAvg-arvoista
+    let difficultyAvgs = noAskedImages.map(img => img.difficultyAvg)
+    // Järjestetään taulukko
+    difficultyAvgs.sort((a, b) => a - b)
+    console.log(difficultyAvgs)
+    console.log(noAskedImages)
+
+    // Asetetaan helppojen kuvien maksimiraja ensimmäisen 33% jälkeen
+    let easyDifficultyLimit = difficultyAvgs[Math.floor(difficultyAvgs.length / 3)]
+    // Asetetaan keskitason kuvien maksimiraja ensimmäisen 66% jälkeen
+    let mediumDifficultyLimit = difficultyAvgs[Math.floor(difficultyAvgs.length / 3 * 2)]
+
+    console.log('easy-difficulty-limit ' + easyDifficultyLimit)
+    console.log('medium-difficulty-limit ' + mediumDifficultyLimit)
+
+    // Arvotaan luku väliltä 1-10
+    let randomNumber = Math.floor(Math.random() * 9) + 1
+    console.log('randomNumber ' + randomNumber)
+
+    if (difficulty === 'easy') {
+        // Jos arvottu luku on 5 tai alle, kysytään helppo kuva
+        if (randomNumber <= 5) {
+            let images = noAskedImages.filter(img => img.difficultyAvg <= easyDifficultyLimit)
+            if (images.length !== 0) {
+                noAskedImages = images
+            }
+        }
+    }
+
+    if (difficulty === 'medium') {
+        // Jos arvottu numero on välissä 2-8, kysytään keskitason kuva
+        if (2 < randomNumber && randomNumber < 8) {
+            let images = noAskedImages.filter(img => img.difficultyAvg > easyDifficultyLimit && img.difficultyAvg < mediumDifficultyLimit)
+            if (images.length !== 0) {
+                noAskedImages = images
+            }
+        }
+    }
+
+    if (difficulty === 'hard') {
+        // Jos arvottu numero on 5 tai isompi, kysytään vaikea kuva
+        if (5 <= randomNumber) {
+            let images = noAskedImages.filter(img => img.difficultyAvg >= mediumDifficultyLimit)
+            if (images.length !== 0) {
+                noAskedImages = images
+            }
+        }
+    }
+
+    // Jos arvottu numero ei osunut mihinkään yllä olevaan, kysytään täysin sattumanvarainen kuva.
 
     let imageToAsk
     if (noAskedImages.length > 0) {
+        // Arvotaan kuva siitä joukosta, mikä edellä määriteltiin
         imageToAsk = noAskedImages[Math.floor(Math.random() * noAskedImages.length)];
     } else {
         let values = answers.map(ans => ans.correctness)

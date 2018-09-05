@@ -39,7 +39,7 @@ class ImageMultipleChoiceGame extends React.Component {
    */
   componentDidMount() {
     if (this.props.game.needToChangeQuestion) {
-      this.props.setImagesToImageMultipleChoiceGame(this.props.game.images, this.props.game.answers)
+      this.props.setImagesToImageMultipleChoiceGame(this.props.game.images, this.props.game.answers, this.props.game.gameDifficulty)
       this.props.startGameClock()
       this.props.setNeedToChangeQuestionFalse()
      }
@@ -53,7 +53,7 @@ class ImageMultipleChoiceGame extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.game.endCounter !== prevProps.game.endCounter) {
-      this.props.setImagesToImageMultipleChoiceGame(this.props.game.images, this.props.game.answers)
+      this.props.setImagesToImageMultipleChoiceGame(this.props.game.images, this.props.game.answers, this.props.game.gameDifficulty)
       this.props.startGameClock()
       this.props.setNeedToChangeQuestionFalse()
     }

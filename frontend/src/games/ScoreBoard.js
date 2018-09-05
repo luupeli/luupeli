@@ -15,7 +15,7 @@ class ScoreBoard extends React.Component {
 	componentDidMount() {
 		setInterval(() => {
 			this.setState(() => {
-				console.log('test')
+			//	console.log('test')
 				return { unseen: "does not display" }
 			});
 		}, 150);

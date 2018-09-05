@@ -58,7 +58,6 @@ class ScoreFlash extends React.Component {
 		const durationOfScoreRise = Math.min(30, (scoreActual / 10) + 5) * 50
 
 		let scoreShown = Math.min(scoreActual, Math.round(scoreActual * (gameClock / durationOfScoreRise)))
-		console.log('scoreFlash: gameclock: ' + gameClock + ', scoreShown: ' + scoreShown)
 	//	let scoreShownForDelayedSound = Math.min(scoreActual * 1.4, Math.round(scoreActual * (gameClock / durationOfScoreRise)))
 		let durationOfScoreRiseForSound = Math.min(30, (scoreActual / 10) + 5) + 5
 		//	position="fixed"
