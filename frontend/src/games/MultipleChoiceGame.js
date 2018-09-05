@@ -49,7 +49,6 @@ class MultipleChoiceGame extends React.Component {
     }
     setInterval(() => {
       this.setState(() => {
-        console.log('test')
         return { unseen: "does not display" }
       });
     }, 1000)

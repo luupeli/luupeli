@@ -1,3 +1,5 @@
+import StringSimilarity from 'string-similarity'
+
 const initialState = {
     game: {
         user: '',
@@ -79,7 +81,7 @@ const gameReducer = (store = initialState.game, action) => {
 
 export const gameInitialization = (gameLength, images, user, gamemode, animals, bodyparts, playSound, gameDifficulty) => {
     const imageToAsk = selectNextImage(undefined, images);
-    const wrongAnswerOptions = selectWrongAnswerOptions(images, imageToAsk)
+    const wrongAnswerOptions = selectWrongAnswerOptions(images, imageToAsk, gameDifficulty)
     const wrongImageOptions = selectWrongImageOptions(images, imageToAsk)
 
 
@@ -163,7 +165,7 @@ export const setImageToWritingGame = (images, answers, difficulty) => {
 // When the previous question is answered, this call will choose incorrect answer options for multiple choice game mode (MultipleChoiceGame).
 export const setImagesToMultipleChoiceGame = (images, answers, difficulty) => {
     const imageToAsk = selectNextImage(answers, images, difficulty);
-    const wrongAnswerOptions = selectWrongAnswerOptions(images, imageToAsk);
+    const wrongAnswerOptions = selectWrongAnswerOptions(images, imageToAsk, difficulty);
     return {
         type: 'SET_IMAGES_TO_MULTIPLE',
         wrongAnswerOptions: wrongAnswerOptions,
@@ -174,7 +176,7 @@ export const setImagesToMultipleChoiceGame = (images, answers, difficulty) => {
 // When the previous question is answered, this call will choose incorrect image options for multiple choice game mode (ImageMultipleChoiceGame).
 export const setImagesToImageMultipleChoiceGame = (images, answers, difficulty) => {
     const imageToAsk = selectNextImage(answers, images, difficulty);
-    const wrongImageOptions = selectWrongImageOptions(images, imageToAsk);
+    const wrongImageOptions = selectWrongImageOptions(images, imageToAsk, difficulty);
     return {
         type: 'SET_IMAGES_TO_IMAGE_MULTIPLE',
         wrongImageOptions: wrongImageOptions,
@@ -218,31 +220,56 @@ export default gameReducer
  * The bones are chosen randomly. If there are too few bones, the answer options will be less than three.
  * The correct answer can not be among the wrong answers.
 */
-function selectWrongAnswerOptions(images, currentImage) {
-    let allLatinNames = images.map(img => img.bone.nameLatin);
-    allLatinNames = Array.from(new Set(allLatinNames));
-    allLatinNames = allLatinNames.filter(answer => answer !== currentImage.bone.nameLatin);
-    let selectedAnswers = [];
+function selectWrongAnswerOptions(images, currentImage, difficulty) {
+
+    // Tehdään taulukko latinankielisistä nimistä ja poistetaan dublikaatit sekä oikea vastaus
+    let allLatinNames = images.map(img => img.bone.nameLatin)
+    allLatinNames = Array.from(new Set(allLatinNames))
+    allLatinNames = allLatinNames.filter(answer => answer !== currentImage.bone.nameLatin)
+
+    // Verrataan kutakin latinankielistä nimeä oikeaan vastaukseen ja tallennetaan samankaltaisuus
+    allLatinNames = allLatinNames.map(nameLatin => {
+        return ({
+            nameLatin: nameLatin, similarity: StringSimilarity.compareTwoStrings(nameLatin, currentImage.bone.nameLatin)
+        })
+    })
+    // Järjestetään taulukko siten, että lähimpänä oikeaa vastausta oleva on ylimpänä
+    allLatinNames.sort((a, b) => b.similarity - a.similarity)
+
+
+    // Valitaan väärät vastaukset peliin. 
+    let answersToGame = []
     const numberOfButtons = Math.min(3, allLatinNames.length);
-    while (selectedAnswers.length < numberOfButtons) {
-        const index = Math.floor(Math.random() * allLatinNames.length);
-        selectedAnswers.push(allLatinNames[index]);
-        allLatinNames.splice(index, 1);
+    // Helpolla tasolla arvonta kohdistuu kaikkiin nimiin
+    let howFarFromCorrect = allLatinNames.length
+
+    if (difficulty === 'medium') {
+        // keskivaikealla tasolla arvonta kohdistuu samankaltaisuuslistassa top-25%
+        howFarFromCorrect = Math.max(2, howFarFromCorrect / 4)
+    } else if (difficulty === 'hard') {
+        // Vaikealla tasolla arvonta kohdistuu vain samankaltaisuuslistassa top-viiteen
+        howFarFromCorrect = 5
     }
 
-    selectedAnswers = selectedAnswers.map(ans => {
+    while (answersToGame.length < numberOfButtons) {
+        const index = Math.floor(Math.random() * howFarFromCorrect)
+        answersToGame.push(allLatinNames[index].nameLatin)
+        allLatinNames.splice(index, 1)
+    }
+
+    answersToGame = answersToGame.map(ans => {
         return ({
             nameLatin: ans, correct: false
         })
     })
     const correctAns = { nameLatin: currentImage.bone.nameLatin, correct: true }
-    selectedAnswers.push(correctAns)
+    answersToGame.push(correctAns)
 
     var shuffle = require('shuffle-array')
-    shuffle(selectedAnswers)
+    shuffle(answersToGame)
     console.log(correctAns)
-    console.log(selectedAnswers)
-    return selectedAnswers;
+    console.log(answersToGame)
+    return answersToGame;
 }
 
 
@@ -251,20 +278,57 @@ function selectWrongAnswerOptions(images, currentImage) {
  * The images are chosen randomly. If there are too few images, the image options will be less than three.
  * The correct answer can not be among the wrong answers.
 */
-function selectWrongImageOptions(images, currentImage) {
-    const allImages = images.filter(img => !((img.animal === currentImage.animal) && (img.bone === currentImage.bone)));
+function selectWrongImageOptions(images, currentImage, difficulty) {
+    // Tehdään taulukko kuvista ja jätetään oikea kuva pois
+    let allImages = images.filter(img => !((img.animal === currentImage.animal) && (img.bone === currentImage.bone)));
+
+    // Järjestetään taulukko siten, että ensin tulee luut, jotka ovat samasta ruumiinosasta kuin oikea vastaus
+    allImages = allImages.sort((a, b) => {
+        if (a.bone.bodyPart === currentImage.bone.bodyPart) {
+            return -1
+        }
+        if (b.bone.bodyPart === currentImage.bone.bodyPart) {
+            return -1
+        }
+        return a.bone.bodyPart - b.bone.bodyPart
+    })
+
+    console.log(allImages)
+
     let selectedImages = [];
     const numberOfImages = Math.min(3, allImages.length);
+    // Helpolla tasolla arvonta kohdistuu kaikkiin kuviin
+    let howFarFromCorrect = allImages.length
+
+    // Keskitasolla arvonta kohdistuu kuviin, jotka ovat samasta ruumiinosasta oikean vastauksen kanssa.
+    if (difficulty === 'medium') {
+        howFarFromCorrect = Math.max(2, allImages.filter(img => img.bone.bodyPart === currentImage.bone.bodyPart).length - 1)
+    } else if (difficulty === 'hard') {
+        // Vaikealla tasolla valitaan ensisijaisesti kuvat, jotka ovat samasta luusta, mutta eri eläimeltä.
+        // Jos kyseisiä kuvia ei ole riittävästi, otetaan mukaan saman ruumiinosan luita.
+        const sameBoneDifferentAnimal = allImages.filter(img => img.bone === currentImage.bone)
+        while (sameBoneDifferentAnimal.length < 3) {
+            const sameBodyPart = allImages.filter(img => img.bone.bodyPart === currentImage.bone.bodyPart)
+            const index = Math.floor(Math.random() * sameBodyPart.length - 1);
+            sameBoneDifferentAnimal.push(sameBodyPart[index])
+            sameBodyPart.splice(index, 1)
+        }
+        selectedImages = sameBoneDifferentAnimal
+    }
+
     while (selectedImages.length < numberOfImages) {
-        const index = Math.floor(Math.random() * allImages.length);
+        const index = Math.floor(Math.random() * howFarFromCorrect);
         selectedImages.push(allImages[index]);
         allImages.splice(index, 1);
     }
+
     selectedImages = selectedImages.map(image => {
         return ({
             ...image, correct: false
         })
     })
+
+    // Lisätään oikea vastaus kuvavaihtoehtoihin
     const correctImg = { ...currentImage, correct: true }
     selectedImages.push(correctImg)
 
@@ -332,17 +396,15 @@ function selectNextImage(answers, images, difficulty, gamemode) {
         })
     }
 
-    // Luodaan taulukko kunkin kuvan difficultyAvg-arvoista
-    let difficultyAvgs = noAskedImages.map(img => img.difficultyAvg)
-    // Järjestetään taulukko
-    difficultyAvgs.sort((a, b) => a - b)
-    console.log(difficultyAvgs)
+    // Järjestetään taulukko difficultyAvg:n mukaan
+    noAskedImages.sort((a, b) => a.difficultyAvg - b.difficultyAvg)
+
     console.log(noAskedImages)
 
     // Asetetaan helppojen kuvien maksimiraja ensimmäisen 33% jälkeen
-    let easyDifficultyLimit = difficultyAvgs[Math.floor(difficultyAvgs.length / 3)]
+    let easyDifficultyLimit = noAskedImages[Math.floor(noAskedImages.length / 3)].difficultyAvg
     // Asetetaan keskitason kuvien maksimiraja ensimmäisen 66% jälkeen
-    let mediumDifficultyLimit = difficultyAvgs[Math.floor(difficultyAvgs.length / 3 * 2)]
+    let mediumDifficultyLimit = noAskedImages[Math.floor(noAskedImages.length / 3 * 2)].difficultyAvg
 
     console.log('easy-difficulty-limit ' + easyDifficultyLimit)
     console.log('medium-difficulty-limit ' + mediumDifficultyLimit)
@@ -351,33 +413,27 @@ function selectNextImage(answers, images, difficulty, gamemode) {
     let randomNumber = Math.floor(Math.random() * 9) + 1
     console.log('randomNumber ' + randomNumber)
 
-    if (difficulty === 'easy') {
-        // Jos arvottu luku on 5 tai alle, kysytään helppo kuva
-        if (randomNumber <= 5) {
-            let images = noAskedImages.filter(img => img.difficultyAvg <= easyDifficultyLimit)
-            if (images.length !== 0) {
-                noAskedImages = images
-            }
+    if (difficulty === 'easy' && randomNumber <= 5) {
+        // Jos arvottu luku on helpossa pelimuodossa 5 tai alle, kysytään helppo kuva
+        let images = noAskedImages.filter(img => img.difficultyAvg <= easyDifficultyLimit)
+        if (images.length !== 0) {
+            noAskedImages = images
         }
     }
 
-    if (difficulty === 'medium') {
-        // Jos arvottu numero on välissä 2-8, kysytään keskitason kuva
-        if (2 < randomNumber && randomNumber < 8) {
-            let images = noAskedImages.filter(img => img.difficultyAvg > easyDifficultyLimit && img.difficultyAvg < mediumDifficultyLimit)
-            if (images.length !== 0) {
-                noAskedImages = images
-            }
+    if (difficulty === 'medium' && 2 < randomNumber && randomNumber < 8) {
+        // Jos arvottu numero on keskitasoisessa pelissä välissä 2-8, kysytään keskitason kuva
+        let images = noAskedImages.filter(img => img.difficultyAvg > easyDifficultyLimit && img.difficultyAvg < mediumDifficultyLimit)
+        if (images.length !== 0) {
+            noAskedImages = images
         }
     }
 
-    if (difficulty === 'hard') {
-        // Jos arvottu numero on 5 tai isompi, kysytään vaikea kuva
-        if (5 <= randomNumber) {
-            let images = noAskedImages.filter(img => img.difficultyAvg >= mediumDifficultyLimit)
-            if (images.length !== 0) {
-                noAskedImages = images
-            }
+    if (difficulty === 'hard' && 5 <= randomNumber) {
+        // Jos arvottu numero on vaikeassa pelissä 5 tai isompi, kysytään vaikea kuva
+        let images = noAskedImages.filter(img => img.difficultyAvg >= mediumDifficultyLimit)
+        if (images.length !== 0) {
+            noAskedImages = images
         }
     }
 

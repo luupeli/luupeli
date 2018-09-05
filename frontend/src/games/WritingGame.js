@@ -58,7 +58,6 @@ class WritingGame extends React.Component {
       this.props.setImageToWritingGame(this.props.game.images, this.props.game.answers, this.props.game.gameDifficulty)
       this.props.startGameClock()
       this.props.setNeedToChangeQuestionFalse()
-  //    console.log('COMPONENT DID UPDATE')
     }
   }
 
@@ -82,7 +81,6 @@ class WritingGame extends React.Component {
     }
     setInterval(() => {
       this.setState(() => {
- //       console.log('test')
         return { unseen: "does not display" }
       });
     }, 1000)
@@ -151,7 +149,6 @@ class WritingGame extends React.Component {
       }
       streakEmoji = require('node-emoji')
       streakEmoji = streakEmoji.get('fire')
- //     console.log(streakEmoji)
     } else {
       scoreFlashStyle = 'almostcorrect'
       if (this.props.game.gameDifficulty === 'hard') {
@@ -189,16 +186,13 @@ class WritingGame extends React.Component {
       points = 0
     }
 
-//    console.log(' points ennen talennusta: ' + points)
     let scoreFlashRowtext = '' + streakNote + '' + streakEmoji + '' + points + ' PTS!!!' + streakEmoji
     this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, scoreFlashStyle, 2.5, true)
 
     let answerMoment = this.gameClockUnits()
     let answerCurrentImage = this.props.game.currentImage
 
-//    console.log('BEFORE TIMEOUT: ' + this.gameClockUnits())
     setTimeout(() => {
-//      console.log('AFTER timeout!! ' + this.gameClockUnits())
       this.props.setAnswer(answerCurrentImage, answerCorrectness, this.state.lastValue, this.state.imgAnimal, this.props.game.gameClock, points)
       this.setState({ animationActive: true, lastValue: undefined })
     }, 2500)
@@ -242,7 +236,6 @@ class WritingGame extends React.Component {
     //  const gameClock = this.gameClockUnits()
 
     if (this.getRandomInt(0, 15) < 1 + Math.min(12, (this.state.easyDifficultyPenalty * 5) + (currentLatin.length / 5)) && currentMoment - previousClock > (5000 * this.state.easyDifficultyPenalty)) { //+(2000*this.state.easyDifficultyPenalty)
- //     console.log('entered inside random')
       let randomIndex = this.getRandomInt(0, currentLatin.length);
       let newPartial = ''
       let addPenalty = 0.0
@@ -269,7 +262,6 @@ class WritingGame extends React.Component {
 
         //   newPartial[randomIndex] =this.props.game.currentImage.bone.nameLatin[randomIndex]
         this.setState({ previousRevealClock: currentMoment, partialEasyAnswer: newPartial, easyDifficultyPenalty: this.state.easyDifficultyPenalty - addPenalty })
-        // console.log('new partial on nyt : ' + newPartial)
       }
     }
   }
@@ -390,9 +382,7 @@ class WritingGame extends React.Component {
       timeToCompare = currentMoment - 5001
     }
 
- //   console.log('curr: ' + currentMoment + " vs started: " + timeToCompare)
     if (currentMoment - timeToCompare > (5000) && this.props.game.gameDifficulty === 'easy') {
- //     console.log('trying to reveal...')
       this.revealPartialAnswer(currentMoment, this.props.game.currentImage.bone.nameLatin)
     }
 
@@ -407,7 +397,6 @@ class WritingGame extends React.Component {
       if (windowWidth > 1000) {
         return 1000
       }
-  //    console.log(windowWidth)
       return Math.round(windowWidth * 0.7)
     }
 

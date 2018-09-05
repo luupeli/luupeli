@@ -26,26 +26,25 @@ class ImageMultipleChoiceGame extends React.Component {
     this.renderImages = this.renderImages.bind(this)
   }
 
-   /**
-   * Extra care is taken here to ensure that the quiz images are refreshed only when the questionnaire is transiting from one question to next.
-   * Should the component mount freely (without the confusing if-else-logic), the result would be that each time the window is resized in order
-   * to switch the game ui layout between horizontal/vertical, the question and the timer would be reset. This would pretty much amount to cheating,
-   * as you could just keep resizing the window until you get a question you know for certain.
-   * 
-   * There would absolutely be a 'better' way to circumvent this problem, but that would possibly require major refactoring with the way a 
-   * games are initialized and the subsequent questions served. This is an ugly hack, but hopefully it 
-   * works reasonably well...
-   * 
-   */
+  /**
+  * Extra care is taken here to ensure that the quiz images are refreshed only when the questionnaire is transiting from one question to next.
+  * Should the component mount freely (without the confusing if-else-logic), the result would be that each time the window is resized in order
+  * to switch the game ui layout between horizontal/vertical, the question and the timer would be reset. This would pretty much amount to cheating,
+  * as you could just keep resizing the window until you get a question you know for certain.
+  * 
+  * There would absolutely be a 'better' way to circumvent this problem, but that would possibly require major refactoring with the way a 
+  * games are initialized and the subsequent questions served. This is an ugly hack, but hopefully it 
+  * works reasonably well...
+  * 
+  */
   componentDidMount() {
     if (this.props.game.needToChangeQuestion) {
       this.props.setImagesToImageMultipleChoiceGame(this.props.game.images, this.props.game.answers, this.props.game.gameDifficulty)
       this.props.startGameClock()
       this.props.setNeedToChangeQuestionFalse()
-     }
+    }
     setInterval(() => {
       this.setState(() => {
-        console.log('test')
         return { unseen: "does not display" }
       });
     }, 1000)
@@ -63,7 +62,6 @@ class ImageMultipleChoiceGame extends React.Component {
     if (this.state.clickDisabled) {
       return
     }
-    console.log("CLICK!")
     this.setState({ clickDisabled: true })
 
     this.props.stopGameClock()
@@ -80,8 +78,6 @@ class ImageMultipleChoiceGame extends React.Component {
     }
 
     let points = (Math.round((this.checkCorrectness(image) * Math.min(10, this.props.game.currentImage.bone.nameLatin.length)) * ((30 + Math.max(0, (30 - ((current - started) / 1000)) / 60))))) / 80
-    console.log(this.props.game)
-
 
     if (correctness > 99) {
       points = points * 10
@@ -102,6 +98,9 @@ class ImageMultipleChoiceGame extends React.Component {
     if (correctness === 100) {
       this.setState({ streakMCG: currentStreak + 1, bonus: currentBonus + 0.5 })
       streakNote = currentBonus + 'x!'
+    } else if (correctness === 50) {
+      streakStyle = 'almostcorrect'
+      streakNote = 'Luu oikein, eläin väärin'
     } else {
       streakStyle = 'incorrect'
       points = 0
@@ -116,9 +115,6 @@ class ImageMultipleChoiceGame extends React.Component {
 
     this.props.setScoreFlash(points, streakNote, streakEmoji, scoreFlashRowtext, streakStyle, 2.5, true)
     this.setState({ choices: [] })
-    console.log('points: ' + points)
-    console.log('this.state.selectedImage.bone.nameLatin: ' + image.bone.nameLatin)
-    console.log('gameClock: ' + current - started)
     setTimeout(() => {
       this.props.setAnswer(this.props.game.currentImage, correctness, image.bone.nameLatin, image.animal.name, current - started, points)
       this.setState({ selectedId: undefined, selectedImage: undefined })
@@ -129,23 +125,24 @@ class ImageMultipleChoiceGame extends React.Component {
   checkCorrectness(image) {
     if (image.correct) {
       return 100
-    } else {
-      return 0
+    } else if (image.bone.nameLatin === this.props.game.currentImage.bone.nameLatin) {
+      return 50
     }
+    return 0
   }
 
   style(choice) {
     if (choice.correct && choice.id === this.state.selectedId) {
       return {
         borderStyle: 'solid',
-        borderWidth: 20,
+        borderWidth: 10,
         borderRadius: 30,
         borderColor: 'green'
       }
     } else if (choice.correct === false && choice.id === this.state.selectedId) {
       return {
         borderStyle: 'solid',
-        borderWidth: 20,
+        borderWidth: 10,
         borderRadius: 30,
         borderColor: 'red'
       }
@@ -153,7 +150,7 @@ class ImageMultipleChoiceGame extends React.Component {
     if (choice.correct && undefined !== this.state.selectedId && choice.id !== this.state.selectedId) {
       return {
         borderStyle: 'solid',
-        borderWidth: 20,
+        borderWidth: 10,
         borderRadius: 30,
         borderColor: 'green'
       }
@@ -161,9 +158,6 @@ class ImageMultipleChoiceGame extends React.Component {
   }
 
   renderImages() {
-    console.log(this.props.game.wrongImageOptions)
-    console.log(this.props.game.wrongImageOptions.slice(0, 2))
-    console.log(this.props.game.wrongImageOptions.slice(2, 4))
     return (
       <Grid fluid={true}>
         <Row>
