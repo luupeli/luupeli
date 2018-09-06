@@ -324,7 +324,8 @@ class WritingGame extends React.Component {
                 onChange={this.handleChange}
               />
             </div>
-            <div className="container">
+            {/* <div className="container"> */}
+            <div>
               {animalRadioNoAnimal()}
               {animalRadio}
             </div>
@@ -348,8 +349,10 @@ class WritingGame extends React.Component {
                   disabled
                 />
               </div>
+              <div>
               {animalRadioNoAnimal()}
               {animalRadio}
+              </div>
               <div className="btn-group">
                 <button classname="gobackbutton" disabled id="submitButton">Vastaa</button>
               </div>
@@ -369,8 +372,10 @@ class WritingGame extends React.Component {
                   disabled
                 />
               </div>
+              <div>
               {animalRadioNoAnimal()}
               {animalRadio}
+              </div>
               <div className="btn-group">
                 <button classname="gobackbutton" disabled id="submitButton">Vastaa</button>
               </div>

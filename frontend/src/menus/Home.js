@@ -13,7 +13,7 @@ import Sound from 'react-sound'
 import achievement from './Achievement'
 import userStatistics from '../services/userStatistics'
 
-const versionNumber = 1.05
+const versionNumber = 1.1
 /**
  * This is the index page for the site. You can for example login from here or start creating the game.
  * 
