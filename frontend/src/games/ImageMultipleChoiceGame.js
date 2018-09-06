@@ -98,7 +98,7 @@ class ImageMultipleChoiceGame extends React.Component {
     if (correctness === 100) {
       this.setState({ streakMCG: currentStreak + 1, bonus: currentBonus + 0.5 })
       streakNote = currentBonus + 'x!'
-    } else if (correctness === 50) {
+    } else if (correctness === 71) {
       streakStyle = 'almostcorrect'
       streakNote = 'Luu oikein, eläin väärin'
     } else {
@@ -126,7 +126,7 @@ class ImageMultipleChoiceGame extends React.Component {
     if (image.correct) {
       return 100
     } else if (image.bone.nameLatin === this.props.game.currentImage.bone.nameLatin) {
-      return 50
+      return 71
     }
     return 0
   }

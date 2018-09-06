@@ -272,55 +272,98 @@ function selectWrongAnswerOptions(images, currentImage, difficulty) {
     return answersToGame;
 }
 
-
-
 /** This method defines the wrong image options. We only use the images that match the game settings. 
  * The images are chosen randomly. If there are too few images, the image options will be less than three.
  * The correct answer can not be among the wrong answers.
 */
 function selectWrongImageOptions(images, currentImage, difficulty) {
     // Tehdään taulukko kuvista ja jätetään oikea kuva pois
-    let allImages = images.filter(img => !((img.animal === currentImage.animal) && (img.bone === currentImage.bone)));
+    let allImages = images.filter(img => !((img.animal.name === currentImage.animal.name) && (img.bone.nameLatin === currentImage.bone.nameLatin)));
+    let selectedImages = []
 
-    // Järjestetään taulukko siten, että ensin tulee luut, jotka ovat samasta ruumiinosasta kuin oikea vastaus
-    allImages = allImages.sort((a, b) => {
-        if (a.bone.bodyPart === currentImage.bone.bodyPart) {
-            return -1
-        }
-        if (b.bone.bodyPart === currentImage.bone.bodyPart) {
-            return -1
-        }
-        return a.bone.bodyPart - b.bone.bodyPart
-    })
-
-    console.log(allImages)
-
-    let selectedImages = [];
-    const numberOfImages = Math.min(3, allImages.length);
     // Helpolla tasolla arvonta kohdistuu kaikkiin kuviin
-    let howFarFromCorrect = allImages.length
-
-    // Keskitasolla arvonta kohdistuu kuviin, jotka ovat samasta ruumiinosasta oikean vastauksen kanssa.
-    if (difficulty === 'medium') {
-        howFarFromCorrect = Math.max(2, allImages.filter(img => img.bone.bodyPart === currentImage.bone.bodyPart).length - 1)
-    } else if (difficulty === 'hard') {
-        // Vaikealla tasolla valitaan ensisijaisesti kuvat, jotka ovat samasta luusta, mutta eri eläimeltä.
-        // Jos kyseisiä kuvia ei ole riittävästi, otetaan mukaan saman ruumiinosan luita.
-        const sameBoneDifferentAnimal = allImages.filter(img => img.bone === currentImage.bone)
-        while (sameBoneDifferentAnimal.length < 3) {
-            const sameBodyPart = allImages.filter(img => img.bone.bodyPart === currentImage.bone.bodyPart && img.bone !== currentImage.bone)
-            const index = Math.floor(Math.random() * sameBodyPart.length - 1);
-            sameBoneDifferentAnimal.push(sameBodyPart[index])
-            sameBodyPart.splice(index, 1)
+    if (difficulty === 'easy') {
+        while (selectedImages.length < Math.min(3, allImages.length)) {
+            const index = Math.floor(Math.random() * allImages.length);
+            selectedImages.push(allImages[index]);
+            allImages.splice(index, 1);
         }
-        selectedImages = sameBoneDifferentAnimal
+    } else {
+        // Ryhmitellään luut ruumiinosan mukaan
+        let groupByBodyPart = Object.values(allImages.reduce(function (acc, obj) {
+            var key = obj.bone.bodyPart;
+            if (!acc[key]) {
+                acc[key] = [];
+            }
+            acc[key].push(obj);
+            return acc;
+        }, {}));
+
+        // Valitaan oikeaa vastausta vastaava ruumiinosa
+        groupByBodyPart = groupByBodyPart.filter(imgGroup => imgGroup.some(img => img.bone.bodyPart === currentImage.bone.bodyPart))
+
+        console.log(groupByBodyPart)
+
+        // Vaikealla tasolla valitaan kaksi kuvaa samasta luusta, jotka ovat eri eläimestä.
+        // Täytyy siis osata tunnistaa luu (kaksi vaihtoehtoa) ja sitten eläin (kaksi vaihtoehtoa).
+        if (difficulty === 'hard') {
+            const sameBoneDifferentAnimal = groupByBodyPart[0].filter(img => img.bone._id === currentImage.bone._id)
+            let imagesWithSameBone = groupByBodyPart[0].filter(img => img.bone._id !== currentImage.bone._id && img.bone.bodyPart === currentImage.bone.bodyPart)
+            // Ryhmitellään samasta luusta olevat kuvat
+            imagesWithSameBone = Object.values(imagesWithSameBone.reduce(function (acc, obj) {
+                var key = obj.bone._id;
+                if (!acc[key]) {
+                    acc[key] = [];
+                }
+                acc[key].push(obj);
+                return acc;
+            }, {}));
+
+            // Jos samasta luusta on alle kaksi kuvaa, sitä ei hyväksytä
+            imagesWithSameBone = imagesWithSameBone.filter(imgGroup => imgGroup.length >= 2)
+
+            // Vertaillaan luiden nimien samankaltaisuutta oikeaan vastaukseen
+            imagesWithSameBone = imagesWithSameBone.map(imgGroup => {
+                return ({
+                    imgGroup: imgGroup, similarity: StringSimilarity.compareTwoStrings(imgGroup[0].bone.nameLatin, currentImage.bone.nameLatin)
+                })
+            })
+            // Järjestetään taulukko siten, että lähimpänä oikeaa vastausta oleva on ylimpänä
+            imagesWithSameBone.sort((a, b) => b.similarity - a.similarity)
+
+            console.log(imagesWithSameBone)
+            console.log(sameBoneDifferentAnimal)
+            if (sameBoneDifferentAnimal.length >= 1 && imagesWithSameBone.length >= 1) {
+                // Valitaan oikealle vastaukselle pari (vastaava luu toiselta eläimeltä)
+                const index = Math.floor(Math.random() * sameBoneDifferentAnimal.length);
+                selectedImages.push(sameBoneDifferentAnimal[index]);
+                sameBoneDifferentAnimal.splice(index, 1);
+
+                // Valitaan vaihtoehtoinen luu
+                const oIndex = Math.floor(Math.random() * Math.min(1, imagesWithSameBone.length));
+                while (selectedImages.length < 3) {
+                    const index = Math.floor(Math.random() * imagesWithSameBone[oIndex].imgGroup.length);
+                    selectedImages.push(imagesWithSameBone[oIndex].imgGroup[index]);
+                    imagesWithSameBone[oIndex].imgGroup.splice(index, 1);
+                    console.log(selectedImages)
+                }
+            } else {
+                // Jos kuvia ei ole tarpeeksi, vaihdetaan tasoksi medium
+                difficulty = 'medium'
+            }
+        }
+        // Keskitasolla arvonta kohdistuu kuviin, jotka ovat samasta ruumiinosasta oikean vastauksen kanssa.
+        if (difficulty === 'medium') {
+            const sameBodyPart = groupByBodyPart[0]
+            while (selectedImages.length < Math.min(3, sameBodyPart.length)) {
+                const index = Math.floor(Math.random() * sameBodyPart.length);
+                selectedImages.push(sameBodyPart[index])
+                sameBodyPart.splice(index, 1)
+            }
+        }
     }
 
-    while (selectedImages.length < numberOfImages) {
-        const index = Math.floor(Math.random() * howFarFromCorrect);
-        selectedImages.push(allImages[index]);
-        allImages.splice(index, 1);
-    }
+    console.log(selectedImages)
 
     selectedImages = selectedImages.map(image => {
         return ({
@@ -342,7 +385,7 @@ function selectWrongImageOptions(images, currentImage, difficulty) {
 /**
 This method chooses an image for the next question.  
 We first use all the images that have not yet been asked. 
-Then we use those images that correctness is less than correctness average. The images are chosen randomly.
+Then we use those images that correctness is less than correctness average. 
  */
 function selectNextImage(answers, images, difficulty, gamemode) {
     let noAskedImages;
@@ -357,42 +400,47 @@ function selectNextImage(answers, images, difficulty, gamemode) {
 
     // Jos admin on määritellyt kuvan helpoksi, se tallennetaan tietokantaan arvolla 0. 
     // Tämä on kuitenkin ongelmallista kertolaskun kannalta myöhemmin, joten muutetaan 0 -> 1.
+    // Lisäksi vaikea kuva ei ole 100 kertaa vaikeampi vaan kaksi kertaa vaikeampi 100 -> 2.
     noAskedImages = noAskedImages.map(img => {
         if (img.difficulty === undefined || img.difficulty === '0') {
             return { ...img, difficulty: 1 }
         }
-        return { ...img, difficulty: 100 }
+        return { ...img, difficulty: 2 }
     })
     console.log(noAskedImages)
 
     /* 
     - Lasketaan kullekin kuvalle difficultyAvg painokertoimien yhdistelmänä: mitä isompi difficultyAvg, sitä vaikeampi kuva
-    - NameLatin-pituutta verrataan mielivaltaisesti numeroon 10. Parempi saattaisi olla esim nimien keskipituus, mutta onko sellaista tarpeellista laskea jokaisen kysymyksen välissä?
     - correctness/attempts -arvo vähennetään sadasta, koska tämä käyttäytyy muutoin päin vastoin kuin haluaisimme.
+    - Kaikkien arvojen alin mahdollinen luku on 1, joten mikään arvo ei vaikuta alentavasti vaikeuteen, arvot ovat välillä 1-2.
     */
     if (gamemode !== undefined) {
         if (gamemode === 'kirjoituspeli') {
             noAskedImages = noAskedImages.map(img => {
                 if (img.attempts !== undefined && img.correctness !== undefined && img.difficulty !== undefined && img.correctness !== 0) {
-                    return { ...img, difficultyAvg: img.bone.nameLatin.length / 10 * (100 - Number(img.correctness / img.attempts)) * img.difficulty }
+                    console.log('pituus: ' + Math.max(10, img.bone.nameLatin.length) / 10 + ', statistiikka-vaikeus ' + (1 + ((100 - Number(img.correctness / img.attempts)) / 100)) + ' , admin-vaikeus ' + img.difficulty)
+                    console.log('kokonaisvaikeus: ' + Math.max(8, img.bone.nameLatin.length) / 8 * (1 + ((100 - Number(img.correctness / img.attempts)) / 100)) * img.difficulty)
+                    return { ...img, difficultyAvg: Math.max(8, img.bone.nameLatin.length) / 8 * ((100 - Number(img.correctness / img.attempts)) / 100) * img.difficulty }
                 } else if (img.attempts === undefined || img.correctness === undefined || img.correctness === 0) {
-                    return { ...img, difficultyAvg: img.bone.nameLatin.length / 10 * img.difficulty }
+                    return { ...img, difficultyAvg: Math.max(8, img.bone.nameLatin.length) / 8 * img.difficulty }
                 } else if (img.difficulty === undefined) {
-                    return { ...img, difficultyAvg: img.bone.nameLatin.length / 10 * (100 - Number(img.correctness / img.attempts)) }
+                    return { ...img, difficultyAvg: Math.max(8, img.bone.nameLatin.length) / 8 * (1 + ((100 - Number(img.correctness / img.attempts)) / 100)) }
                 }
-                return { ...img, difficultyAvg: 50 }
+                return { ...img, difficultyAvg: 1 }
             })
         }
     } else {
         noAskedImages = noAskedImages.map(img => {
             if (img.attempts !== undefined && img.correctness !== undefined && img.difficulty !== undefined && img.correctness !== 0) {
-                return { ...img, difficultyAvg: (100 - Number(img.correctness / img.attempts)) * img.difficulty }
+                console.log('statistiikka-vaikeus ' + (1 + ((100 - Number(img.correctness / img.attempts)) / 100)) + ' , admin-vaikeus ' + img.difficulty)
+                console.log(1 + ((100 - Number(img.correctness / img.attempts)) / 100) * img.difficulty)
+                return { ...img, difficultyAvg: 1 + ((100 - Number(img.correctness / img.attempts)) / 100) * img.difficulty }
             } else if (img.attempts === undefined || img.correctness === undefined || img.correctness === 0) {
                 return { ...img, difficultyAvg: img.difficulty }
             } else if (img.difficulty === undefined) {
-                return { ...img, difficultyAvg: (100 - Number(img.correctness / img.attempts)) }
+                return { ...img, difficultyAvg: 1 + ((100 - Number(img.correctness / img.attempts)) / 100) }
             }
-            return { ...img, difficultyAvg: 50 }
+            return { ...img, difficultyAvg: 1 }
         })
     }
 
@@ -401,10 +449,14 @@ function selectNextImage(answers, images, difficulty, gamemode) {
 
     console.log(noAskedImages)
 
-    // Asetetaan helppojen kuvien maksimiraja ensimmäisen 33% jälkeen
-    let easyDifficultyLimit = noAskedImages[Math.floor(noAskedImages.length / 3)].difficultyAvg
-    // Asetetaan keskitason kuvien maksimiraja ensimmäisen 66% jälkeen
-    let mediumDifficultyLimit = noAskedImages[Math.floor(noAskedImages.length / 3 * 2)].difficultyAvg
+    let easyDifficultyLimit = 0
+    let mediumDifficultyLimit = 0
+    if (noAskedImages[Math.floor(noAskedImages.length / 3)] !== undefined) {
+        // Asetetaan helppojen kuvien maksimiraja ensimmäisen 33% jälkeen
+        easyDifficultyLimit = noAskedImages[Math.floor(noAskedImages.length / 3)].difficultyAvg
+        // Asetetaan keskitason kuvien maksimiraja ensimmäisen 66% jälkeen
+        mediumDifficultyLimit = noAskedImages[Math.floor(noAskedImages.length / 3 * 2)].difficultyAvg
+    }
 
     console.log('easy-difficulty-limit ' + easyDifficultyLimit)
     console.log('medium-difficulty-limit ' + mediumDifficultyLimit)
