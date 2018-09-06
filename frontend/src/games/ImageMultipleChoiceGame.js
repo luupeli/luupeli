@@ -100,7 +100,7 @@ class ImageMultipleChoiceGame extends React.Component {
       streakNote = currentBonus + 'x!'
     } else if (correctness === 71) {
       streakStyle = 'almostcorrect'
-      streakNote = 'Luu oikein, eläin väärin'
+      streakNote = 'väärä eläin'
     } else {
       streakStyle = 'incorrect'
       points = 0

@@ -164,6 +164,10 @@ class WritingGame extends React.Component {
       }
     }
 
+    if (this.props.game.gameDifficulty === 'hard' && this.state.imgAnimal !== this.props.game.currentImage.animal.name && this.state.imgAnimal !== 'none') {
+      streakNote = 'eläin väärin'
+    }
+
     if (answerCorrectness > 85) {
       points = points * 2 * currentBonus
     }
@@ -194,7 +198,7 @@ class WritingGame extends React.Component {
 
     setTimeout(() => {
       this.props.setAnswer(answerCurrentImage, answerCorrectness, this.state.lastValue, this.state.imgAnimal, this.props.game.gameClock, points)
-      this.setState({ animationActive: true, lastValue: undefined })
+      this.setState({ animationActive: true, lastValue: undefined, imgAnimal: 'none' })
     }, 2500)
   }
 
